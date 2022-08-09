@@ -1,7 +1,8 @@
-package com.example.adro
+package com.example.adro.di
 
 import android.content.Context
 import android.util.Base64
+import com.example.adro.BuildConfig
 import com.example.adro.api.CustomDateTimeAdapter
 import com.example.adro.api.JWTInterceptor
 import com.example.adro.common.PrefsHelper
