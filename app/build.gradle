@@ -48,11 +48,11 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
-//    externalNativeBuild {
-//        cmake {
-//            path file('../CMakeLists.txt')
-//        }
-//    }
+    externalNativeBuild {
+        cmake {
+            path file('../CMakeLists.txt')
+        }
+    }
 
     productFlavors {
         devnode {
@@ -98,7 +98,7 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-pager:0.23.1"
 
-    implementation("io.coil-kt:coil-compose:2.0.0-rc01")
+    implementation("io.coil-kt:coil-compose:2.1.0")
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'

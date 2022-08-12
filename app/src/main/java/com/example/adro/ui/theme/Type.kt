@@ -12,7 +12,7 @@ val Emad = FontFamily(Font(R.font.emad_diana_extra_normal),
         Font(R.font.emad_diana_extra_regular, FontWeight.W500))
 
 val Typography = Typography(
-        h1 = TextStyle(fontFamily = Emad,
+        body2 = TextStyle(fontFamily = Emad,
                 fontWeight = FontWeight.W500,
                 fontSize = 20.sp),
         body1 = TextStyle(fontFamily = Emad,
