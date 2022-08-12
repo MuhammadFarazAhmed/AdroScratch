@@ -1,5 +1,5 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
@@ -7,18 +7,13 @@ plugins {
 
 android {
     compileSdk 32
-    flavorDimensions "default"
+
     defaultConfig {
-        applicationId "com.example.adro"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -26,13 +21,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
-    }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
     kapt {
         correctErrorTypes true
@@ -43,29 +31,12 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion compose_version
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
-    externalNativeBuild {
-        cmake {
-            path file('../CMakeLists.txt')
-        }
-    }
-
-    productFlavors {
-        devnode {
-            manifestPlaceholders = [enableCrashReporting: "false"]
-        }
-        qanode {
-        }
-        uatnode {
-        }
-        rcnode {
-        }
-        production {
-        }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
@@ -100,8 +71,13 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.1.0")
 
-    implementation(project(':home'))
+    implementation(project(':base'))
+    implementation(project(':domain'))
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

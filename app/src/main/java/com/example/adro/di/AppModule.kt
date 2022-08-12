@@ -4,8 +4,7 @@ import android.content.Context
 import android.util.Base64
 import com.example.adro.BuildConfig
 import com.example.adro.api.CustomDateTimeAdapter
-import com.example.adro.api.JWTInterceptor
-import com.example.adro.common.PrefsHelper
+import com.example.adro.common.PreferencesHelper
 import com.example.adro.security.CLibController
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
@@ -17,6 +16,7 @@ import dagger.hilt.components.SingletonComponent
 import io.jsonwebtoken.JwsHeader
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -40,12 +40,20 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(jwtInterceptor: JWTInterceptor) =
+    fun provideAuthInterceptor(jwtToken: String) = Interceptor { chain: Interceptor.Chain ->
+        val request =
+            chain.request().newBuilder().addHeader("Authorization", "Bearer $jwtToken").build()
+        chain.proceed(request)
+    }
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(authInterceptor: Interceptor) =
         OkHttpClient.Builder()
-            .addNetworkInterceptor(jwtInterceptor)
             .connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
+            .addNetworkInterceptor(authInterceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 if (BuildConfig.DEBUG)
                     HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
@@ -54,21 +62,20 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun getJwtToken(prefsHelper: PrefsHelper): String =
+    fun provideJwtToken(preferencesHelper: PreferencesHelper): String =
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
-            .claim("company", prefsHelper.getCompany())
-            .claim("session_token", prefsHelper.getSessionToken())
-            .claim("api_token", prefsHelper.getJToken())
+            .claim("company", preferencesHelper.getCompany())
+            .claim("session_token", preferencesHelper.getSessionToken())
+            .claim("api_token", preferencesHelper.getJToken())
             .signWith(
                 SignatureAlgorithm.HS256,
-                Base64.encodeToString(prefsHelper.getSRKey().toByteArray(), Base64.DEFAULT)
+                Base64.encodeToString(preferencesHelper.getSRKey().toByteArray(), Base64.DEFAULT)
             )
             .compact()
 
     @Provides
     @Singleton
-    fun prefsHelper(context: Context) = PrefsHelper(context)
-
+    fun preferencesHelper(context: Context) = PreferencesHelper(context)
 
     @Provides
     @Singleton

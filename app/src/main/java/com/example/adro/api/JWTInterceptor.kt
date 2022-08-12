@@ -1,7 +1,5 @@
 package com.example.adro.api
 
-import com.example.adro.common.PrefsHelper
-import dagger.Provides
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject

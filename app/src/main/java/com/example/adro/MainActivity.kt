@@ -21,13 +21,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.adro.ui.favorite.FavoriteScreen
-import com.example.adro.ui.home.HomeScreen
 import com.example.adro.ui.offers.OffersScreen
 import com.example.adro.ui.profile.ProfileScreen
 import com.example.adro.ui.theme.AdroScratchTheme
-import com.example.adro.vm.FavoriteViewModel
-import com.example.adro.vm.ProfileViewModel
-import com.example.adro.vm.OffersViewModel
+import com.example.home.ui.HomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint class MainActivity : ComponentActivity() {
@@ -55,15 +52,12 @@ import dagger.hilt.android.AndroidEntryPoint
                 HomeScreen()
             }
             composable(NavigationItem.Offers.route) {
-                val offersViewModel by viewModels<OffersViewModel>()
                 OffersScreen()
             }
             composable(NavigationItem.Favorite.route) {
-                val favVm by viewModels<FavoriteViewModel>()
                 FavoriteScreen(navigator)
             }
             composable(NavigationItem.Profile.route) {
-                val profileVm by viewModels<ProfileViewModel>()
                 ProfileScreen(navigator)
             }
         }

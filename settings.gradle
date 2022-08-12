@@ -21,3 +21,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Adro Scratch"
 include ':app'
+include ':repositories'
+include ':home'
+include ':base'
+include ':domain'
