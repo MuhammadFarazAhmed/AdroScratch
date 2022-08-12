@@ -1,11 +1,12 @@
 package com.example.adro.di
 
+import android.app.Application
 import android.content.Context
 import android.util.Base64
 import com.example.adro.BuildConfig
 import com.example.adro.api.CustomDateTimeAdapter
 import com.example.adro.common.PreferencesHelper
-import com.example.adro.security.CLibController
+import com.example.repositories.security.CLibController
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -79,17 +80,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideBuildFlavor() = BuildConfig.FLAVOR
+    fun provideContext(application: Application): Context =
+        application.applicationContext
 
     @Provides
     @Singleton
-    fun provideBaseUrl() = CLibController.getCoreBaseUrlOnline()
-
-    @Provides
-    @Singleton
-    fun provideRetrofit(baseUrl: String, gson: Gson, client: OkHttpClient): Retrofit =
+    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl(baseUrl)
+            .baseUrl(CLibController.getCoreBaseUrlOnline())
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
