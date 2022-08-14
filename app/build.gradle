@@ -102,6 +102,9 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.1.0")
 
+    debugApi "androidx.customview:customview:1.2.0-alpha01"
+    debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
+
     api(project(':home'))
     api(project(':repositories'))
     api(project(':domain'))
