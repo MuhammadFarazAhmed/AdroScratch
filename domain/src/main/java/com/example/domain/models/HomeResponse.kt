@@ -1,4 +1,6 @@
-package com.example.home.ui.models
+package com.example.domain.models
+
+import com.example.home.ui.models.Data
 
 data class HomeResponse(
     val cmd: String,

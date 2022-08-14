@@ -6,7 +6,7 @@ import android.util.Base64
 import com.example.adro.BuildConfig
 import com.example.adro.api.CustomDateTimeAdapter
 import com.example.adro.common.PreferencesHelper
-import com.example.repositories.security.CLibController
+import com.example.adro.security.CLibController
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -26,70 +26,60 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
-@Module
-@InstallIn(SingletonComponent::class)
-class AppModule {
-
+@Module @InstallIn(SingletonComponent::class) class AppModule {
+    
     @Provides
     @Singleton
-    fun provideGson(): Gson = GsonBuilder()
-        .serializeNulls()
-        .setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-        .registerTypeAdapter(Date::class.java, CustomDateTimeAdapter::class.java)
-        .setLenient()
-        .setPrettyPrinting().create()
-
+    fun provideGson(): Gson = GsonBuilder().serializeNulls()
+            .setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+            //.registerTypeAdapter(Date::class.java, CustomDateTimeAdapter::class.java)
+            .setLenient().setPrettyPrinting().create()
+    
     @Provides
     @Singleton
     fun provideAuthInterceptor(jwtToken: String) = Interceptor { chain: Interceptor.Chain ->
         val request =
-            chain.request().newBuilder().addHeader("Authorization", "Bearer $jwtToken").build()
+                chain.request().newBuilder().addHeader("Authorization", "Bearer $jwtToken").build()
         chain.proceed(request)
     }
-
+    
+    
     @Provides
     @Singleton
     fun provideOkHttpClient(authInterceptor: Interceptor) =
-        OkHttpClient.Builder()
-            .connectTimeout(30, TimeUnit.SECONDS)
-            .writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS)
-            .addNetworkInterceptor(authInterceptor)
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                if (BuildConfig.DEBUG)
-                    HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE
-            })
-            .build()
-
+            OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
+                    .addInterceptor(authInterceptor).addInterceptor(HttpLoggingInterceptor().apply {
+                        if (BuildConfig.DEBUG) this.level = HttpLoggingInterceptor.Level.BODY
+                    }).build()
+    
     @Provides
     @Singleton
     fun provideJwtToken(preferencesHelper: PreferencesHelper): String =
-        Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
-            .claim("company", preferencesHelper.getCompany())
-            .claim("session_token", preferencesHelper.getSessionToken())
-            .claim("api_token", preferencesHelper.getJToken())
-            .signWith(
-                SignatureAlgorithm.HS256,
-                Base64.encodeToString(preferencesHelper.getSRKey().toByteArray(), Base64.DEFAULT)
-            )
-            .compact()
-
+            Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
+                    .claim("company", preferencesHelper.getCompany())
+                    .claim("session_token", preferencesHelper.getSessionToken())
+                    .claim("api_token", preferencesHelper.getApiToken())
+                    .signWith(SignatureAlgorithm.HS256,
+                            Base64.encodeToString(preferencesHelper.getSRKey().toByteArray(),
+                                    Base64.DEFAULT)).compact()
+    
     @Provides
     @Singleton
     fun preferencesHelper(context: Context) = PreferencesHelper(context)
-
+    
     @Provides
     @Singleton
-    fun provideContext(application: Application): Context =
-        application.applicationContext
-
+    fun provideContext(application: Application): Context = application.applicationContext
+    
     @Provides
     @Singleton
-    fun provideRetrofit(gson: Gson, client: OkHttpClient): Retrofit =
-        Retrofit.Builder()
-            .baseUrl(CLibController.getCoreBaseUrlOnline())
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .client(client)
-            .build()
-
+    fun provideClibController() = CLibController()
+    
+    @Provides
+    @Singleton
+    fun provideRetrofit(gson: Gson, client: OkHttpClient, controller: CLibController): Retrofit =
+            Retrofit.Builder().baseUrl("https://apiutb2baldpy.theentertainerme.com/")
+                    .addConverterFactory(GsonConverterFactory.create(gson)).client(client).build()
+    
 }

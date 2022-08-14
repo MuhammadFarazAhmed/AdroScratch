@@ -1,12 +1,15 @@
 package com.example.repositories.repos
 
+import com.example.adro.base.ApiResult
+import com.example.domain.models.HomeResponse
 import com.example.domain.repos.HomeRepository
 import com.example.repositories.remote.api.HomeApi
-import javax.inject.Inject
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class HomeRepositoryImp(private val homeApi: HomeApi) : HomeRepository {
-
-    override suspend fun fetchHome() {
+    
+    override  fun fetchHome(): Flow<ApiResult<HomeResponse>> = flow {
         homeApi.home()
     }
 }

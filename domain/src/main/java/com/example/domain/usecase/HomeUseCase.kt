@@ -1,6 +1,11 @@
 package com.example.domain.usecase
 
-interface HomeUseCase {
+import com.example.adro.base.ApiResult
+import com.example.domain.models.HomeResponse
+import kotlinx.coroutines.flow.Flow
+import retrofit2.Response
 
-    suspend fun fetchHome()
+interface HomeUseCase {
+    
+    fun fetchHome(): Flow<ApiResult<HomeResponse>>
 }

@@ -1,22 +1,19 @@
 package com.example.home.vm
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
+import com.example.adro.common.CommonExtensions.handleErrors
 import com.example.domain.usecase.HomeUseCase
-import com.example.home.ui.models.HomeResponse
+import com.example.home.ui.models.Section
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
-@HiltViewModel
-class HomeViewModel @Inject constructor(application: Application, homeUseCase: HomeUseCase) :
+@HiltViewModel class HomeViewModel @Inject constructor(application: Application,
+                                                       homeUseCase: HomeUseCase) :
     AndroidViewModel(application) {
-
-    val homeResponse = flow<HomeResponse> {
-        homeUseCase.fetchHome()
-    }
-
-
+    
+    val sections: Flow<List<Section>?> =
+            homeUseCase.fetchHome().handleErrors().map { it.data?.data?.sections }
+    
 }

@@ -1,12 +1,10 @@
 package com.example.repositories.remote.api
 
-import com.example.home.ui.models.HomeResponse
-import com.example.repositories.security.CLibController
-import retrofit2.http.POST
-import retrofit2.http.Url
+import com.example.domain.models.HomeResponse
+import retrofit2.Response
+import retrofit2.http.*
 
 interface HomeApi {
-
     @POST("ets_api/v5/home")
-    suspend fun home(@Url baseUrl: String = CLibController.getENTBaseUrlOnline()): HomeResponse
+    suspend fun home(): Response<HomeResponse>
 }

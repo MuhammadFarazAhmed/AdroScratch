@@ -1,9 +1,8 @@
-package com.example.repositories.security
+package com.example.adro.security
 
-import com.example.domain.BuildConfig
+import com.example.adro.BuildConfig
 
-
-object CLibController {
+class CLibController {
 
     init {
         System.loadLibrary("native-blue-lib")
