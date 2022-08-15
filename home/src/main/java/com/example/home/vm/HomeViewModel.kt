@@ -1,8 +1,10 @@
 package com.example.home.vm
 
 import android.app.Application
+import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.*
+import com.example.adro.base.ApiStatus
 import com.example.adro.common.CommonExtensions.handleErrors
 import com.example.domain.models.Section
 import com.example.domain.usecase.HomeUseCase
@@ -20,8 +22,14 @@ class HomeViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            homeUseCase.fetchHome().handleErrors().collect {
-                sections.value = it.data?.data?.sections!!
+            homeUseCase.fetchHome().collect {
+                when (it.status) {
+                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
+                    ApiStatus.ERROR -> {
+                        Log.d("TAG", "${it.message}: ")
+                    }
+                    ApiStatus.LOADING -> {}
+                }
             }
         }
     }

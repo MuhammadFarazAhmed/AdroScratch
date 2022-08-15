@@ -10,6 +10,6 @@ import javax.inject.Inject
 
 class HomeUseCaseImp @Inject constructor(private val homeRepository: HomeRepository) : HomeUseCase {
     
-    override fun fetchHome(): Flow<ApiResult<HomeResponse>> = homeRepository.fetchHome()
+    override fun fetchHome() = homeRepository.fetchHome()
 }
 

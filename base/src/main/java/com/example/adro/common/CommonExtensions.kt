@@ -9,23 +9,52 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
+import com.example.adro.base.ApiResult
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
+import retrofit2.Response
+import java.lang.Exception
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 object CommonExtensions {
-    
+
     fun <T> Flow<T>.handleErrors(): Flow<T> =
-            catch { e -> Log.d("TAG", "handleErrors: ", e.fillInStackTrace()) }
+        catch { e -> Log.d("TAG", "handleErrors: ", e.fillInStackTrace()) }
+
+    fun <T> toResultFlow(call: suspend () -> Response<T>): Flow<ApiResult<T>> {
+        return flow<ApiResult<T>> {
+            emit(ApiResult.Loading(true))
+
+            try {
+                val result = call()
+                if (result.isSuccessful) {
+                    result.body()?.let {
+                        emit(ApiResult.Success(result.body()))
+                    }
+                } else {
+                    result.errorBody()?.let {
+                        val error = it.string()
+                        it.close()
+                        emit(ApiResult.Error(error))
+                    }
+                }
+            } catch (e: Exception) {
+                emit(ApiResult.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 
     @Composable
     fun <T> rememberFlow(
         flow: Flow<T>,
         lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current
     ): Flow<T> {
-        return remember(key1 = flow, key2 = lifecycleOwner) { flow.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED) }
+        return remember(
+            key1 = flow,
+            key2 = lifecycleOwner
+        ) { flow.flowWithLifecycle(lifecycleOwner.lifecycle, Lifecycle.State.STARTED) }
     }
 
     @Composable
