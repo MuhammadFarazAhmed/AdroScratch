@@ -1,4 +1,4 @@
-package com.example.home.ui.models
+package com.example.domain.models
 
 data class Section(
     val section_identifier: String,

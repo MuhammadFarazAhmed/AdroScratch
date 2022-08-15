@@ -1,4 +1,4 @@
-package com.example.home.ui.models
+package com.example.domain.models
 
 data class SectionItem(
     val button_bg_color: String,
@@ -6,7 +6,7 @@ data class SectionItem(
     val deeplink: String,
     val id: Int,
     val image_url: String,
-    val is_external_link: Int,
+    val is_external_link: Any,
     val should_show_button: Int,
     val subtitle: String,
     val title: String

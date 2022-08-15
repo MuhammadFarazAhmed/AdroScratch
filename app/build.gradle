@@ -19,12 +19,19 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        externalNativeBuild {
+            cmake {
+                version "3.18.1"
+                cppFlags ""
+            }
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            jniDebuggable false
         }
     }
     compileOptions {
@@ -67,6 +74,7 @@ android {
         production {
         }
     }
+    ndkVersion '21.4.7075529'
 }
 
 dependencies {

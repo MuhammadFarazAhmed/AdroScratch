@@ -1,4 +1,6 @@
-package com.example.home.ui.models
+package com.example.domain.models
+
+import com.example.home.ui.models.BannerDetail
 
 data class Data(
     val banner_detail: BannerDetail,

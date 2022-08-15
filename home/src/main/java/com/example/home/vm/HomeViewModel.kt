@@ -1,19 +1,31 @@
 package com.example.home.vm
 
 import android.app.Application
+import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.*
 import com.example.adro.common.CommonExtensions.handleErrors
+import com.example.domain.models.Section
 import com.example.domain.usecase.HomeUseCase
-import com.example.home.ui.models.Section
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel class HomeViewModel @Inject constructor(application: Application,
-                                                       homeUseCase: HomeUseCase) :
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    application: Application,
+    homeUseCase: HomeUseCase
+) :
     AndroidViewModel(application) {
-    
-    val sections: Flow<List<Section>?> =
-            homeUseCase.fetchHome().handleErrors().map { it.data?.data?.sections }
-    
+
+    init {
+        viewModelScope.launch {
+            homeUseCase.fetchHome().handleErrors().collect {
+                sections.value = it.data?.data?.sections!!
+            }
+        }
+    }
+
+    val sections: MutableStateFlow<List<Section>> = MutableStateFlow(emptyList())
+
 }

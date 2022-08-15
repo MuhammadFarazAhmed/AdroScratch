@@ -232,8 +232,8 @@ const char *PRODUCTION_PROMO_CODE_BUNDLE_URL = "et_rs_prd/web/v70/wl/";
 const char *DEV_APPBOY_KEY = "85ee5070-ee71-4eb5-9f8d-b61fa9de961b";
 const char *QA_APPBOY_KEY = "85ee5070-ee71-4eb5-9f8d-b61fa9de961b";
 const char *UAT_APPBOY_KEY = "85ee5070-ee71-4eb5-9f8d-b61fa9de961b";
-const char *RC_APPBOY_KEY = "5187c33c-78a6-4e7e-9d45-accbd69191ec";
-const char *PRODUCTION_APPBOY_KEY = "5187c33c-78a6-4e7e-9d45-accbd69191ec";
+const char *RC_APPBOY_KEY = "e372a4c1-6530-41fb-b9cb-94afc5c4b951";
+const char *PRODUCTION_APPBOY_KEY = "e372a4c1-6530-41fb-b9cb-94afc5c4b951";
 
 const char *DEV_KOCHAVA_KEY = "kostaging-aldar-darna-android-msb";
 const char *QA_KOCHAVA_KEY = "kostaging-aldar-darna-android-msb";
@@ -281,7 +281,7 @@ int Base64Encode(const char *input, char *output, int oplen);
 int encodeblock(char *input, char *output, int oplen);
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getCoreBaseUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getCoreBaseUrlOnline(JNIEnv *env, jobject /* this */,
                                                                             jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -299,8 +299,8 @@ Java_com_theentertainerme_adro_security_CLibController_getCoreBaseUrlOnline(JNIE
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getGMKey(JNIEnv *env, jobject /* this */,
-                                                                            jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getGMKey(JNIEnv *env, jobject /* this */,
+                                                                jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_GOOGLE_KEY);
@@ -317,7 +317,7 @@ Java_com_theentertainerme_adro_security_CLibController_getGMKey(JNIEnv *env, job
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getPromoCodeBaseUrlOnline(JNIEnv* env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getPromoCodeBaseUrlOnline(JNIEnv* env, jobject /* this */,
                                                                                  jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -335,8 +335,8 @@ Java_com_theentertainerme_adro_security_CLibController_getPromoCodeBaseUrlOnline
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getRedemptionBaseUrlOnline(JNIEnv* env, jobject /* this */,
-                                                                                 jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getRedemptionBaseUrlOnline(JNIEnv* env, jobject /* this */,
+                                                                                  jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_REDEMPTION_ADRO_BASE_URL);
@@ -354,8 +354,8 @@ Java_com_theentertainerme_adro_security_CLibController_getRedemptionBaseUrlOnlin
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getSavingBaseUrlOnline(JNIEnv* env, jobject /* this */,
-                                                                                  jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getSavingBaseUrlOnline(JNIEnv* env, jobject /* this */,
+                                                                              jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_SAVING_ADRO_BASE_URL);
@@ -373,7 +373,7 @@ Java_com_theentertainerme_adro_security_CLibController_getSavingBaseUrlOnline(JN
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAuthBaseUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getAuthBaseUrlOnline(JNIEnv *env, jobject /* this */,
                                                                             jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -392,7 +392,7 @@ Java_com_theentertainerme_adro_security_CLibController_getAuthBaseUrlOnline(JNIE
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getProfileBaseUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getProfileBaseUrlOnline(JNIEnv *env, jobject /* this */,
                                                                                jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -410,7 +410,7 @@ Java_com_theentertainerme_adro_security_CLibController_getProfileBaseUrlOnline(J
 }
 
 //extern "C" JNIEXPORT jstring JNICALL
-//Java_com_theentertainerme_adro_security_CLibController_getOfferTabBaseUrlOnline(JNIEnv *env, jobject /* this */,
+//Java_com_example_adro_security_CLibController_getOfferTabBaseUrlOnline(JNIEnv *env, jobject /* this */,
 //                                                                              jstring buildVarent) {
 //    const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
 //    if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -428,7 +428,7 @@ Java_com_theentertainerme_adro_security_CLibController_getProfileBaseUrlOnline(J
 //}
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getFilterBaseUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getFilterBaseUrlOnline(JNIEnv *env, jobject /* this */,
                                                                               jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -446,8 +446,8 @@ Java_com_theentertainerme_adro_security_CLibController_getFilterBaseUrlOnline(JN
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getOutletBaseUrlOnline(JNIEnv *env, jobject /* this */,
-                                                                            jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getOutletBaseUrlOnline(JNIEnv *env, jobject /* this */,
+                                                                              jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_OUTLET_BASE_URL);
@@ -464,8 +464,8 @@ Java_com_theentertainerme_adro_security_CLibController_getOutletBaseUrlOnline(JN
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getMerchantBaseUrlOnline(JNIEnv *env, jobject /* this */,
-                                                                              jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getMerchantBaseUrlOnline(JNIEnv *env, jobject /* this */,
+                                                                                jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_MERCHANT_BASE_URL);
@@ -482,8 +482,8 @@ Java_com_theentertainerme_adro_security_CLibController_getMerchantBaseUrlOnline(
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getENTBaseUrlOnline(JNIEnv *env, jobject /* this */,
-                                                                                jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getENTBaseUrlOnline(JNIEnv *env, jobject /* this */,
+                                                                           jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_ENT_BASE_URL);
@@ -503,7 +503,7 @@ Java_com_theentertainerme_adro_security_CLibController_getENTBaseUrlOnline(JNIEn
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getConfigBaseUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getConfigBaseUrlOnline(JNIEnv *env, jobject /* this */,
                                                                               jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -522,7 +522,7 @@ Java_com_theentertainerme_adro_security_CLibController_getConfigBaseUrlOnline(JN
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getBundleUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getBundleUrlOnline(JNIEnv *env, jobject /* this */,
                                                                           jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -540,7 +540,7 @@ Java_com_theentertainerme_adro_security_CLibController_getBundleUrlOnline(JNIEnv
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getPromoCodeBundleUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getPromoCodeBundleUrlOnline(JNIEnv *env, jobject /* this */,
                                                                                    jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -558,8 +558,8 @@ Java_com_theentertainerme_adro_security_CLibController_getPromoCodeBundleUrlOnli
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getRedemptionBundleUrlOnline(JNIEnv *env, jobject /* this */,
-                                                                                   jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getRedemptionBundleUrlOnline(JNIEnv *env, jobject /* this */,
+                                                                                    jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_REDEMPTION_BUNDLE_URL);
@@ -576,8 +576,8 @@ Java_com_theentertainerme_adro_security_CLibController_getRedemptionBundleUrlOnl
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAnalyticsBaseUrlOnline(JNIEnv* env, jobject /* this */,
-                                                                                jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getAnalyticsBaseUrlOnline(JNIEnv* env, jobject /* this */,
+                                                                                 jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_ANALYTICS_BASE_URL);
@@ -594,7 +594,7 @@ Java_com_theentertainerme_adro_security_CLibController_getAnalyticsBaseUrlOnline
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAnalyticsBundleUrlOnline(JNIEnv *env, jobject /* this */,
+Java_com_example_adro_security_CLibController_getAnalyticsBundleUrlOnline(JNIEnv *env, jobject /* this */,
                                                                                    jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
@@ -612,8 +612,8 @@ Java_com_theentertainerme_adro_security_CLibController_getAnalyticsBundleUrlOnli
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAnalyticsToken(JNIEnv *env, jobject /* this */,
-                                                                                  jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getAnalyticsToken(JNIEnv *env, jobject /* this */,
+                                                                         jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_ANALYTICS_TOKEN);
@@ -632,7 +632,7 @@ Java_com_theentertainerme_adro_security_CLibController_getAnalyticsToken(JNIEnv 
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getGTAKey(JNIEnv *env, jobject thiz, jstring key){
+Java_com_example_adro_security_CLibController_getGTAKey(JNIEnv *env, jobject thiz, jstring key){
     char *nativeString = "afr41olwerplk56d53hjqpas6yst7642shskasd7511";
 
     char xorOutput[BUFFFERLEN + 1] = "";
@@ -641,8 +641,8 @@ Java_com_theentertainerme_adro_security_CLibController_getGTAKey(JNIEnv *env, jo
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAppboyKey(JNIEnv *env, jobject /* this */,
-                                                                     jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getAppboyKey(JNIEnv *env, jobject /* this */,
+                                                                    jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_APPBOY_KEY);
@@ -659,8 +659,8 @@ Java_com_theentertainerme_adro_security_CLibController_getAppboyKey(JNIEnv *env,
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getKochavaKey(JNIEnv *env, jobject /* this */,
-                                                                   jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getKochavaKey(JNIEnv *env, jobject /* this */,
+                                                                     jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_KOCHAVA_KEY);
@@ -677,8 +677,8 @@ Java_com_theentertainerme_adro_security_CLibController_getKochavaKey(JNIEnv *env
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getRelicKey(JNIEnv *env, jobject /* this */,
-                                                            jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getRelicKey(JNIEnv *env, jobject /* this */,
+                                                                   jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_RELIC_KEY);
@@ -695,7 +695,7 @@ Java_com_theentertainerme_adro_security_CLibController_getRelicKey(JNIEnv *env, 
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getMallIQKey(JNIEnv *env, jobject /* this */,jstring buildVarent) {
+Java_com_example_adro_security_CLibController_getMallIQKey(JNIEnv *env, jobject /* this */,jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
         return env->NewStringUTF(PRODUCTION_MALLIQ_KEY);
@@ -713,7 +713,7 @@ Java_com_theentertainerme_adro_security_CLibController_getMallIQKey(JNIEnv *env,
 
 
 extern "C" JNIEXPORT jobjectArray JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getCPKeys(JNIEnv* env, jobject thiz,jstring buildVarent){
+Java_com_example_adro_security_CLibController_getCPKeys(JNIEnv* env, jobject thiz,jstring buildVarent){
     jobjectArray ret;
     int i;
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
@@ -723,7 +723,7 @@ Java_com_theentertainerme_adro_security_CLibController_getCPKeys(JNIEnv* env, jo
             "sha256/0ovBbqe9WhsuNP6Z+lstyovizChMupD4zZnb15qB8O4=", //Certificate of etenvbiz
             "sha256/wg0jwOWtsAcNzPNBXYSVscWLX5PuJWQbTKm5kTVuNM0=", //Certificate of Dev/Qa
             "sha256/dQOrVbsrB+UhnnJ2/JfUG08vNSl+d0cqaq5a+lgjUfI=", //Certificate of Uat/Rc/Production
-            };
+    };
     ret= (jobjectArray)env->NewObjectArray(size,env->FindClass("java/lang/String"),env->NewStringUTF(""));
     for(i=0;i<size;i++) {
         env->SetObjectArrayElement(ret,i,env->NewStringUTF(message[i]));
@@ -734,7 +734,7 @@ Java_com_theentertainerme_adro_security_CLibController_getCPKeys(JNIEnv* env, jo
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getCardUrl(JNIEnv* env, jobject /* this */, jstring buildVarent){
+Java_com_example_adro_security_CLibController_getCardUrl(JNIEnv* env, jobject /* this */, jstring buildVarent){
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if(strcmp(buildVarentStr,PRODUCTION)==0)
         return env->NewStringUTF(PRODUCTION_CARD_URL);
@@ -752,7 +752,7 @@ Java_com_theentertainerme_adro_security_CLibController_getCardUrl(JNIEnv* env, j
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getReCaptchaUrl(JNIEnv* env, jobject /* this */, jstring buildVarent){
+Java_com_example_adro_security_CLibController_getReCaptchaUrl(JNIEnv* env, jobject /* this */, jstring buildVarent){
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if(strcmp(buildVarentStr,PRODUCTION)==0)
         return env->NewStringUTF(PRODUCTION_CAPCTHA_URL);
@@ -770,14 +770,14 @@ Java_com_theentertainerme_adro_security_CLibController_getReCaptchaUrl(JNIEnv* e
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_stringFromJNI(
+Java_com_example_adro_security_CLibController_stringFromJNI(
         JNIEnv *env,
         jobject /* this */, jstring buildVarent) {
     return buildVarent;
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getU(JNIEnv *env, jobject, jstring key) {
+Java_com_example_adro_security_CLibController_getU(JNIEnv *env, jobject, jstring key) {
     const char *nativeString = "e1YuH1FyZ2JvdE4=";
     char xorOutput[BUFFFERLEN + 1] = "";
     decodeString(nativeString, xorOutput);
@@ -785,7 +785,7 @@ Java_com_theentertainerme_adro_security_CLibController_getU(JNIEnv *env, jobject
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getUP(JNIEnv *env, jobject, jstring key) {
+Java_com_example_adro_security_CLibController_getUP(JNIEnv *env, jobject, jstring key) {
     const char *nativeString = "KBV3cAkrOiMwKB8pJ00WZCZmXTJ4ZzE=";
     char xorOutput[BUFFFERLEN + 1] = "";
     decodeString(nativeString, xorOutput);
@@ -793,7 +793,7 @@ Java_com_theentertainerme_adro_security_CLibController_getUP(JNIEnv *env, jobjec
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getCR(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getCR(JNIEnv *env, jobject thiz, jstring key) {
     const char *nativeString = "fkdxIlUqZyAtex50f1QUZHBu";
     char xorOutput[BUFFFERLEN + 1] = "";
     decodeString(nativeString, xorOutput);
@@ -801,7 +801,7 @@ Java_com_theentertainerme_adro_security_CLibController_getCR(JNIEnv *env, jobjec
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getSKey(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getSKey(JNIEnv *env, jobject thiz, jstring key) {
     const char *nativeString = "BBFcVSpPBgkHQBUfEWgHA0dANUwCQgkLE1VQaFENF1MzUhtZ";
     char xorOutput[BUFFFERLEN + 1] = "";
     decodeString(nativeString, xorOutput);
@@ -809,55 +809,55 @@ Java_com_theentertainerme_adro_security_CLibController_getSKey(JNIEnv *env, jobj
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getApiToken(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getApiToken(JNIEnv *env, jobject thiz, jstring key) {
     const char *nativeString = "042a83f1-c2ec-40e6-a0e0-cadbfec8f125";
     return env->NewStringUTF(nativeString);
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getSRKey(JNIEnv *env, jobject thiz, jstring buildVaraint) {
+Java_com_example_adro_security_CLibController_getSRKey(JNIEnv *env, jobject thiz, jstring buildVaraint) {
     const char *nativeString = "!EyFde4#$%gYsRct54fy@#$5";
-   // return env->NewStringUTF(nativeString);
+    // return env->NewStringUTF(nativeString);
 
     const char *buildVarentStr = env->GetStringUTFChars(buildVaraint, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF(PRODUCTION_REDEMPTION_ADRO_BASE_URL);
+        return env->NewStringUTF("");
     else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF(QA_REDEMPTION_ADRO_BASE_URL);
+        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
     else if (strcmp(buildVarentStr, RCNODE) == 0)
         return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
     else if (strcmp(buildVarentStr, UATNODE) == 0)
         return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
     else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF(DEV_REDEMPTION_BASE_URL);
+        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
     else{
-        return env->NewStringUTF(PRODUCTION_REDEMPTION_ADRO_BASE_URL);
+        return env->NewStringUTF("");
     }
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getJApiToken(JNIEnv *env, jobject thiz, jstring buildVaraint) {
+Java_com_example_adro_security_CLibController_getJApiToken(JNIEnv *env, jobject thiz, jstring buildVaraint) {
     const char *nativeString = "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x";
     //return env->NewStringUTF(nativeString);
 
     const char *buildVarentStr = env->GetStringUTFChars(buildVaraint, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF(PRODUCTION_REDEMPTION_ADRO_BASE_URL);
+        return env->NewStringUTF("");
     else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF(QA_REDEMPTION_ADRO_BASE_URL);
+        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
     else if (strcmp(buildVarentStr, RCNODE) == 0)
         return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
     else if (strcmp(buildVarentStr, UATNODE) == 0)
         return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
     else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF(DEV_REDEMPTION_BASE_URL);
+        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
     else{
-        return env->NewStringUTF(PRODUCTION_REDEMPTION_ADRO_BASE_URL);
+        return env->NewStringUTF("");
     }
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getS(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getS(JNIEnv *env, jobject thiz, jstring key) {
     const char *nativeString = "";
     char xorOutput[BUFFFERLEN + 1] = "";
     decodeString(nativeString, xorOutput);
@@ -865,7 +865,7 @@ Java_com_theentertainerme_adro_security_CLibController_getS(JNIEnv *env, jobject
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_hide(JNIEnv *env, jobject thiz, jstring key, jstring value) {
+Java_com_example_adro_security_CLibController_hide(JNIEnv *env, jobject thiz, jstring key, jstring value) {
     const char *nativeString = env->GetStringUTFChars(value, 0);
 
     char xorOutput[BUFFFERLEN + 1] = "";
@@ -884,7 +884,7 @@ Java_com_theentertainerme_adro_security_CLibController_hide(JNIEnv *env, jobject
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAuSKey(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getAuSKey(JNIEnv *env, jobject thiz, jstring key) {
     const char *buildVarentStr = env->GetStringUTFChars(key, 0);
     if(strcmp(buildVarentStr,PRODUCTION)==0) {
         const char *nativeString = "VFFEFyNdClRUSlBCQjABAUQTc1pQB1EZB0IVNlNVRB4=";
@@ -905,7 +905,7 @@ Java_com_theentertainerme_adro_security_CLibController_getAuSKey(JNIEnv *env, jo
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getAuSaltKey(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getAuSaltKey(JNIEnv *env, jobject thiz, jstring key) {
     const char *buildVarentStr = env->GetStringUTFChars(key, 0);
     if(strcmp(buildVarentStr,PRODUCTION)==0) {
         const char *nativeString = "BQETFCZcXgJaS14XGjMUNA==";
@@ -927,7 +927,7 @@ Java_com_theentertainerme_adro_security_CLibController_getAuSaltKey(JNIEnv *env,
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getPromoAuSKey(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getPromoAuSKey(JNIEnv *env, jobject thiz, jstring key) {
     const char *buildVarentStr = env->GetStringUTFChars(key, 0);
     if(strcmp(buildVarentStr,PRODUCTION)==0) {
         const char *nativeString = "18b8c9ef473e2126c3c56ab0cb2b71cb";
@@ -944,7 +944,7 @@ Java_com_theentertainerme_adro_security_CLibController_getPromoAuSKey(JNIEnv *en
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getPromoAuSaltKey(JNIEnv *env, jobject thiz, jstring key) {
+Java_com_example_adro_security_CLibController_getPromoAuSaltKey(JNIEnv *env, jobject thiz, jstring key) {
     const char *buildVarentStr = env->GetStringUTFChars(key, 0);
     if(strcmp(buildVarentStr,PRODUCTION)==0) {
         const char *nativeString = "18b8c9ef473e2126";
@@ -962,7 +962,7 @@ Java_com_theentertainerme_adro_security_CLibController_getPromoAuSaltKey(JNIEnv 
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getX(JNIEnv *env, jobject thiz) {
+Java_com_example_adro_security_CLibController_getX(JNIEnv *env, jobject thiz) {
     char *nativeString = "E0FOByNdJAcG";
     char xorOutput[BUFFFERLEN + 1] = "";
     decodeString(nativeString, xorOutput);
@@ -971,13 +971,13 @@ Java_com_theentertainerme_adro_security_CLibController_getX(JNIEnv *env, jobject
 
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getUPY(JNIEnv *env, jobject thiz) {
+Java_com_example_adro_security_CLibController_getUPY(JNIEnv *env, jobject thiz) {
     const char *nativeString = "nfDlZWgVNJfOlofA";
     return env->NewStringUTF(nativeString);
 }
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getUPPY(JNIEnv *env, jobject thiz) {
+Java_com_example_adro_security_CLibController_getUPPY(JNIEnv *env, jobject thiz) {
     char *nativeString = "SF?e(3VdCMW%<t>&K+Jm!#b~Qj*}yA]P";
     return env->NewStringUTF(nativeString);
 }
