@@ -14,11 +14,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -30,6 +40,7 @@ import com.example.base.R
 import com.example.domain.models.Section
 import com.example.domain.models.SectionItem
 import com.example.home.vm.HomeViewModel
+import com.fasterxml.jackson.databind.type.TypeBindings
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
@@ -37,7 +48,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 @OptIn(ExperimentalPagerApi::class)
-@Preview
 @Composable
 fun HomeScreenPreview() {
 
@@ -101,7 +111,7 @@ fun HomeScreenPreview() {
                     )
                 ),
                 1,
-                ""
+                "", "", ""
             ),
             Section(
                 "categories",
@@ -185,7 +195,7 @@ fun HomeScreenPreview() {
                     )
                 ),
                 1,
-                "Categories"
+                "Categories", "", ""
             ),
             Section(
                 "exclusive_offers",
@@ -269,7 +279,7 @@ fun HomeScreenPreview() {
                     )
                 ),
                 1,
-                "Exclusive offers from partners"
+                "Exclusive offers from partners", "", ""
             ),
             Section(
                 "recommended_offers",
@@ -353,7 +363,7 @@ fun HomeScreenPreview() {
                     )
                 ),
                 1,
-                "Recommended offers"
+                "Recommended offers", "", ""
             )
         )
 
@@ -374,7 +384,7 @@ fun HomeScreenPreview() {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "login" -> LoginView()
+                    "login" -> LoginView(section)
 
                     "categories" -> Categories(section)
 
@@ -426,7 +436,7 @@ fun HomeScreen() {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "login" -> LoginView()
+                    "guest_user" -> LoginView(section)
 
                     "categories" -> Categories(section)
 
@@ -448,6 +458,156 @@ fun HomeScreen() {
 
 }
 
+class SampleUserProvider : PreviewParameterProvider<Section> {
+    override val values = sequenceOf(Section("Jens", listOf(), 1))
+}
+
+@Composable
+@Preview
+fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
+
+    Column {
+        Box(
+            modifier = Modifier
+                .height(250.dp)
+                .fillMaxWidth()
+        ) {
+            AsyncImage(
+                model = section?.image_url,
+                contentDescription = "",
+                modifier = Modifier
+                    .fillMaxSize(), contentScale = ContentScale.FillWidth
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        Brush.sweepGradient(
+                            listOf(
+                                Color.Black.copy(alpha = 0.7f),
+                                Color.Black.copy(alpha = 0f)
+                            )
+                        )
+                    )
+            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 16.dp),
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                Text(
+                    style = MaterialTheme.typography.body2,
+                    text = section?.title ?: "",
+                    color = Color.White,
+                    fontSize = 14.sp,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Text(
+                    style = MaterialTheme.typography.h1,
+                    text = section?.sub_title ?: "",
+                    color = Color.White,
+                    letterSpacing = 1.sp,
+                    lineHeight = 24.sp,
+                    modifier = Modifier
+                        .fillMaxWidth(.6f)
+                        .padding(bottom = 12.dp)
+                )
+
+                Button(
+                    onClick = { },
+                    contentPadding = PaddingValues(horizontal = 12.dp),
+                    modifier = Modifier
+                        .height(34.dp)
+                        .width(100.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = HexToJetpackColor.getColor(
+                            section?.button_bg_color ?: "acccbc"
+                        )
+                    )
+                ) {
+                    Text(
+                        text = section?.button_title ?: "",
+                        color = Color.White,
+                        style = MaterialTheme.typography.body2,
+                        fontSize = 12.sp
+                    )
+                }
+
+            }
+        }
+
+        Card(
+            shape = RoundedCornerShape(12.dp),
+            elevation = 4.dp,
+            border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(14.dp)
+                .wrapContentHeight()
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .width(IntrinsicSize.Max)
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_limited_offer_1),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .height(40.dp)
+                            .width(40.dp)
+                    )
+                    Text(
+                        text = "Login to enjoy discounts and offers",
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(.7f)
+                            .align(Alignment.CenterVertically),
+                        style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
+                    )
+
+                    Button(contentPadding = PaddingValues(horizontal = 4.dp),
+                        modifier = Modifier
+                            .height(34.dp)
+                            .align(Alignment.CenterVertically)
+                            .width(80.dp), onClick = { }) {
+                        Text(
+                            text = "Login",
+                            fontSize = 14.sp,
+                            fontWeight = Bold,
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
+
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
+                        .background(HexToJetpackColor.getColor("acccbc"))
+
+                ) {
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight()
+                            .padding(vertical = 8.dp, horizontal = 2.dp),
+                        text = "Thrive Club app is exclusively for Abu Dhabi Golden Visa holders",
+                        maxLines = 1,
+                        style = MaterialTheme.typography.body1,
+                        fontSize = 12.sp,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
+        }
+    }
+}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -520,68 +680,6 @@ fun MainCarousal(pagerState: PagerState, section: Section) {
 
             }
         }
-    }
-}
-
-@Composable
-fun LoginView() {
-    Card(
-        shape = RoundedCornerShape(12.dp),
-        elevation = 4.dp,
-        border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-            .wrapContentHeight()
-    ) {
-
-        Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = CenterHorizontally) {
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp),
-                Arrangement.SpaceAround,
-                Alignment.CenterVertically
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.ic_limited_offer_1),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .height(40.dp)
-                        .width(40.dp)
-                )
-
-                Text(
-                    text = "Login to enjoy \ndiscounts and offers",
-                    modifier = Modifier.wrapContentWidth(),
-                    fontSize = 16.sp,
-                    style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
-                )
-
-                Button(onClick = { }) {
-                    Text(text = "Login", fontSize = 14.sp, style = MaterialTheme.typography.body1)
-                }
-
-            }
-
-            Text(
-                text = "Thrive Club app is exclusively for Abu Dhabi Golden Visa holders",
-                maxLines = 1,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .align(CenterHorizontally)
-                    .wrapContentHeight()
-                    .background(HexToJetpackColor.getColor("acccbc"))
-                    .padding(vertical = 8.dp),
-                fontSize = 12.sp,
-                textAlign = TextAlign.Center
-            )
-
-        }
-
     }
 }
 

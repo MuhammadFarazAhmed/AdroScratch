@@ -21,6 +21,10 @@ class HomeViewModel @Inject constructor(
     AndroidViewModel(application) {
 
     init {
+        getHome(homeUseCase)
+    }
+
+    private fun getHome(homeUseCase: HomeUseCase) {
         viewModelScope.launch {
             homeUseCase.fetchHome().collect {
                 when (it.status) {
