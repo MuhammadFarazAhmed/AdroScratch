@@ -2,7 +2,6 @@ package com.example.home.vm
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.*
 import com.example.adro.base.ApiStatus
 import com.example.adro.common.CommonExtensions.handleErrors
@@ -21,12 +20,12 @@ class HomeViewModel @Inject constructor(
     AndroidViewModel(application) {
 
     init {
-        getHome(homeUseCase)
+        fetchHomeData(homeUseCase)
     }
 
-    private fun getHome(homeUseCase: HomeUseCase) {
+    private fun fetchHomeData(homeUseCase: HomeUseCase) {
         viewModelScope.launch {
-            homeUseCase.fetchHome().collect {
+            homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
                     ApiStatus.ERROR -> {

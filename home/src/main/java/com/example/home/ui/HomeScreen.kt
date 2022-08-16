@@ -36,6 +36,7 @@ import androidx.lifecycle.flowWithLifecycle
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonExtensions.rememberFlow
+import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
 import com.example.domain.models.Section
 import com.example.domain.models.SectionItem
@@ -49,21 +50,18 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
+@Preview
 fun HomeScreenPreview() {
 
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
 
-    val isLoggedIn by remember {
-        mutableStateOf(false)
-    }
-
     val homeList = remember {
 
         mutableStateListOf(
             Section(
-                "main_carousal",
+                "guest_user",
                 mutableListOf(
                     SectionItem(
                         "",
@@ -369,11 +367,6 @@ fun HomeScreenPreview() {
 
     }
 
-//    if (isLoggedIn) {
-//        homeList.add(1, Section("login", mutableListOf(), 1, ""))
-//    } else homeList.removeAt(1)
-
-
     Surface(modifier = Modifier.background(Color.White)) {
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
@@ -384,7 +377,7 @@ fun HomeScreenPreview() {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "login" -> LoginView(section)
+                    "guest_user" -> LoginView(section)
 
                     "categories" -> Categories(section)
 
@@ -416,15 +409,6 @@ fun HomeScreen() {
     val recommendedPagerState = rememberPagerState()
 
     val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
-
-    val isLoggedIn by remember {
-        mutableStateOf(true)
-    }
-
-//    if (!isLoggedIn) {
-//        homeList.value.get(1) = Section("login", mutableListOf(), 1, "")
-//    } else
-//        homeList.removeAt(1)
 
     Surface(modifier = Modifier.background(Color.White)) {
 
@@ -463,7 +447,6 @@ class SampleUserProvider : PreviewParameterProvider<Section> {
 }
 
 @Composable
-@Preview
 fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
 
     Column {
@@ -482,7 +465,7 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
-                        Brush.sweepGradient(
+                        Brush.linearGradient(
                             listOf(
                                 Color.Black.copy(alpha = 0.7f),
                                 Color.Black.copy(alpha = 0f)
@@ -689,7 +672,7 @@ fun Categories(section: Section) {
 
         Text(
             text = section.title,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.h1,
             color = MaterialTheme.colors.onBackground,
             modifier = Modifier.padding(start = 16.dp)
         )
@@ -752,7 +735,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
 
         Text(
             text = section.title,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.h1,
             color = Color.Black,
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 0.dp)
         )
@@ -835,7 +818,7 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
 
         Text(
             text = section.title,
-            style = MaterialTheme.typography.body2,
+            style = MaterialTheme.typography.h1,
             color = Color.Black,
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 0.dp)
         )
@@ -906,12 +889,5 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
             }
 
         }
-    }
-}
-
-
-object HexToJetpackColor {
-    fun getColor(colorString: String): Color {
-        return Color(android.graphics.Color.parseColor("#$colorString"))
     }
 }

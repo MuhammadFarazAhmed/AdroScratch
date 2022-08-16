@@ -7,9 +7,8 @@ import retrofit2.Response
 import retrofit2.http.*
 
 interface HomeApi {
-    @POST
+    @POST("/ets_api/v5/home")
     suspend fun home(
-        @Url baseUrl: String = "https://apircb2betentsrvpy.theentertainerme.com/ets_api/v5/home",
         @Body body: HashMap<String, String> = HashMap<String, String>().apply {
             put("__company", "ADO")
             put("__lng", "0")
