@@ -1,8 +1,11 @@
 package com.example.adro.di
 
 import com.example.domain.repos.HomeRepository
+import com.example.domain.repos.ProfileRepository
 import com.example.repositories.remote.api.HomeApi
+import com.example.repositories.remote.api.ProfileApi
 import com.example.repositories.repos.HomeRepositoryImp
+import com.example.repositories.repos.ProfileRepositoryImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,4 +24,12 @@ class RepositoryModule {
     @Provides
     @Singleton
     fun provideHomeRepository(homeApi: HomeApi): HomeRepository = HomeRepositoryImp(homeApi)
+
+    @Provides
+    @Singleton
+    fun provideProfileApi(retrofit: Retrofit): ProfileApi = retrofit.create(ProfileApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideProfileRepository(profileApi: ProfileApi): ProfileRepository = ProfileRepositoryImp(profileApi)
 }

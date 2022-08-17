@@ -1,4 +1,4 @@
-package com.example.adro.ui.profile
+package com.example.profile.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -9,10 +9,14 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.adro.Navigator
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.profile.vm.ProfileViewModel
 
 @Composable
-fun ProfileScreen(navigator: Navigator) {
+@Preview
+fun ProfileScreen() {
+    val vm = hiltViewModel<ProfileViewModel>()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -20,7 +24,7 @@ fun ProfileScreen(navigator: Navigator) {
     ) {
         Button(
             modifier = Modifier.captionBarPadding(),
-            onClick = { navigator.navigateTo(Navigator.NavTarget.Profile) }) {
+            onClick = { vm.fetchHomeData() }) {
             Text(text = "Go to detail")
         }
     }
