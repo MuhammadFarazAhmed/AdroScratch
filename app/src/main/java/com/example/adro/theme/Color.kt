@@ -1,4 +1,4 @@
-package com.example.adro.ui.theme
+package com.example.adro.theme
 
 import androidx.compose.ui.graphics.Color
 

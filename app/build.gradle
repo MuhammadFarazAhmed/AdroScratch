@@ -114,6 +114,7 @@ dependencies {
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
     api(project(':home'))
+    api(project(':offers'))
     api(project(':profile'))
     api(project(':repositories'))
     api(project(':domain'))

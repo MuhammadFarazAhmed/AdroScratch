@@ -9,6 +9,7 @@ import com.example.adro.BuildConfig
 import com.example.adro.common.PreferencesHelper
 import com.example.adro.security.CLibController
 import com.example.repositories.annotations.HomeApi
+import com.example.repositories.annotations.OffersApi
 import com.example.repositories.annotations.ProfileApi
 import com.fasterxml.jackson.annotation.JsonValue
 import com.google.gson.FieldNamingPolicy
@@ -76,6 +77,9 @@ class AppModule {
             }
             request.getAnnotation(ProfileApi::class.java) == ProfileApi() -> {
                 host = controller.getAuthBaseUrlOnline().toHttpUrl()
+            }
+            request.getAnnotation(OffersApi::class.java) == OffersApi() -> {
+                host = controller.getOutletBaseUrlOnline().toHttpUrl()
             }
         }
 

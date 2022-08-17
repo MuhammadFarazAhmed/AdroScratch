@@ -2,5 +2,5 @@ package com.example.repositories.annotations
 
 @Target(AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class ProfileApi
+annotation class OffersApi
 

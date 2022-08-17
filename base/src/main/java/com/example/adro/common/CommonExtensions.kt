@@ -11,11 +11,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.example.adro.base.ApiResult
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import retrofit2.Response
 import java.lang.Exception
+import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -27,6 +30,8 @@ object HexToJetpackColor {
 }
 
 object CommonExtensions {
+
+    @Inject private lateinit var gson:Gson
 
     fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Log.d("TAG", "handleErrors: ", e.fillInStackTrace()) }
@@ -79,4 +84,15 @@ object CommonExtensions {
     fun <T> StateFlow<T>.collectAsStateLifecycleAware(
         context: CoroutineContext = EmptyCoroutineContext
     ): State<T> = collectAsStateLifecycleAware(value, context)
+
+    //convert a map to a data class
+    inline fun <reified T> Map<String, Any>.toDataClass(): T {
+        return convert()
+    }
+
+    //convert an object of type I to type O
+    inline fun <I, reified O> I.convert(): O {
+        val json = gson.toJson(this)
+        return gson.fromJson(json, object : TypeToken<O>() {}.type)
+    }
 }

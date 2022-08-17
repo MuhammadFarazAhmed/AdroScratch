@@ -14,32 +14,34 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.adro.ui.favorite.FavoriteScreen
-import com.example.adro.ui.offers.OffersScreen
-import com.example.adro.ui.theme.AdroScratchTheme
+import com.example.adro.theme.AdroScratchTheme
 import com.example.home.ui.HomeScreen
+import com.example.offers.ui.OffersScreen
 import com.example.profile.ui.ProfileScreen
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint class MainActivity : ComponentActivity() {
-    
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
             val navigator = remember { Navigator() }
-            
+
             AdroScratchTheme {
                 Scaffold(topBar = { Toolbar() },
-                        content = { padding ->
-                    Box(modifier = Modifier.padding(padding)) {
-                        NavigationComponent(navController, navigator)
-                    }
-                }, bottomBar = { BottomNavigationBar(navController) })
+                    content = { padding ->
+                        Box(modifier = Modifier.padding(padding)) {
+                            NavigationComponent(navController, navigator)
+                        }
+                    }, bottomBar = { BottomNavigationBar(navController) })
             }
         }
     }
-    
-    @Composable fun NavigationComponent(navController: NavHostController, navigator: Navigator) {
+
+    @Composable
+    fun NavigationComponent(navController: NavHostController, navigator: Navigator) {
         NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
             composable(NavigationItem.Home.route) {
                 HomeScreen()

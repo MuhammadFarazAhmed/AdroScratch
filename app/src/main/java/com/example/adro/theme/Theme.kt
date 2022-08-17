@@ -1,12 +1,10 @@
-package com.example.adro.ui.theme
+package com.example.adro.theme
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.UiMode
 import com.example.adro.ToolbarPreview
 
 private val DarkColorPalette =

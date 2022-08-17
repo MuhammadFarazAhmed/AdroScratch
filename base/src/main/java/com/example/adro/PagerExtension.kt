@@ -1,4 +1,4 @@
-package com.example.adro.ui.offers.common
+package com.example.adro
 
 import androidx.compose.material.TabPosition
 import androidx.compose.ui.Modifier
