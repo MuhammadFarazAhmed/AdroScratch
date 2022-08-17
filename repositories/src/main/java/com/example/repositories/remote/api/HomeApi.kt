@@ -2,11 +2,14 @@ package com.example.repositories.remote.api
 
 import com.example.adro.base.ApiResult
 import com.example.domain.models.HomeResponse
+import com.example.repositories.annotations.HomeApi
 import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.*
 
 interface HomeApi {
+    
+    @HomeApi
     @POST("/ets_api/v5/home")
     suspend fun home(
         @Body body: HashMap<String, String> = HashMap<String, String>().apply {
