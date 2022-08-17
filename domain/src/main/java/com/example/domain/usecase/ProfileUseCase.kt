@@ -7,5 +7,5 @@ import retrofit2.Response
 
 interface ProfileUseCase {
     
-    fun fetchHome(): Flow<ApiResult<HomeResponse>>
+    fun fetchProfile(): Flow<ApiResult<HomeResponse>>
 }

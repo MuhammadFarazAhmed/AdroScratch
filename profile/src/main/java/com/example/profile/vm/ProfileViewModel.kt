@@ -6,7 +6,6 @@ import androidx.lifecycle.*
 import com.example.adro.base.ApiStatus
 import com.example.adro.common.CommonExtensions.handleErrors
 import com.example.domain.models.Section
-import com.example.domain.usecase.HomeUseCase
 import com.example.domain.usecase.ProfileUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -26,7 +25,7 @@ class ProfileViewModel @Inject constructor(
 
     fun fetchHomeData() {
         viewModelScope.launch {
-            profileUseCase.fetchHome().handleErrors().collect {
+            profileUseCase.fetchProfile().handleErrors().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
                     ApiStatus.ERROR -> {

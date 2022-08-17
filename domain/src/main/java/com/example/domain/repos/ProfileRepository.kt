@@ -8,6 +8,6 @@ import retrofit2.Response
 
 interface ProfileRepository {
 
-    fun fetchHome() : Flow<ApiResult<HomeResponse>>
+    fun fetchProfile() : Flow<ApiResult<HomeResponse>>
     
 }

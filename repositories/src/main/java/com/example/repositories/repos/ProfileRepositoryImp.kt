@@ -11,6 +11,6 @@ import kotlinx.coroutines.flow.Flow
 
 class ProfileRepositoryImp(private val profileApi: ProfileApi) : ProfileRepository {
 
-    override fun fetchHome(): Flow<ApiResult<HomeResponse>> = toResultFlow { profileApi.profile() }
+    override fun fetchProfile(): Flow<ApiResult<HomeResponse>> = toResultFlow { profileApi.profile() }
 
 }
