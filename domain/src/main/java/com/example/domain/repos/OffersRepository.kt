@@ -11,6 +11,6 @@ import retrofit2.Response
 interface OffersRepository {
 
     fun fetchTabs(): Flow<ApiResult<TabsResponse>>
-    fun fetchOffers(params: TabsResponse.Data.Tab.Params?): Flow<ApiResult<OffersResponse>>
+    suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet>
 
 }

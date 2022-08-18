@@ -6,12 +6,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
     flavorDimensions "default"
     defaultConfig {
         applicationId "com.example.adro"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -112,6 +112,10 @@ dependencies {
 
     debugApi "androidx.customview:customview:1.2.0-alpha01"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
+
+    debugApi("androidx.paging:paging-compose:1.0.0-alpha16")
+    def paging_version = "2.1.1"
+    debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
 
     api(project(':home'))
     api(project(':offers'))

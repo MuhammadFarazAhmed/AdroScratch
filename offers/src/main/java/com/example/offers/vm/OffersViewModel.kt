@@ -3,10 +3,13 @@ package com.example.offers.vm
 import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.adro.base.ApiStatus
-import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.usecase.OffersUseCase
+import com.example.repositories.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -37,22 +40,11 @@ class OffersViewModel @Inject constructor(
         }
     }
 
-    fun fetchOffers(tab: TabsResponse.Data.Tab) {
-        viewModelScope.launch {
-            offersUseCase.fetchOffers(tab.params).collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS -> offers.value = it.data?.data?.outlets
-                    ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it.message}: ")
-                    }
-                    ApiStatus.LOADING -> {}
-                }
-            }
-        }
-    }
+    val offers = Pager(PagingConfig(pageSize = 60)) { BasePagingSource { _, _ -> offersUseCase.fetchOffers(selectedTab.value!!.params) } }.flow.cachedIn(viewModelScope)
 
     val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = MutableStateFlow(emptyList())
 
-    val offers: MutableStateFlow<List<OffersResponse.Data.Outlet>?> = MutableStateFlow(emptyList())
+    val selectedTab = MutableLiveData<TabsResponse.Data.Tab>()
+
 
 }

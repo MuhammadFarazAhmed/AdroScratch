@@ -1,22 +1,40 @@
 package com.example.offers.ui
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
+import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
+import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
-import com.example.adro.common.CommonExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.domain.models.OffersResponse
+import com.example.domain.models.Section
 import com.example.domain.models.TabsResponse
+import com.example.offers.ErrorItem
+import com.example.offers.LoadingItem
+import com.example.offers.LoadingView
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
@@ -31,15 +49,20 @@ fun OffersScreen() {
     val coroutineScope = rememberCoroutineScope()
 
     val tabs by vm.tabs.collectAsStateLifecycleAware()
+
     val pagerState = rememberPagerState(initialPage = 0)
 
     Surface(modifier = Modifier.fillMaxSize()) {
+
         Column {
+
             Tabs(tabs, pagerState, coroutineScope) { tab ->
-                vm.fetchOffers(tab)
+                vm.selectedTab.value = tab
             }
-            Pager(tabs = tabs, pagerState = pagerState)
+
+            Pager(tabs = tabs, pagerState = pagerState, vm)
         }
+
     }
 }
 
@@ -57,6 +80,7 @@ fun Tabs(
     ScrollableTabRow(
         edgePadding = 0.dp,
         selectedTabIndex = tabIndex,
+        backgroundColor = Color.Black,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
@@ -83,38 +107,127 @@ fun Tabs(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun Pager(tabs: List<TabsResponse.Data.Tab?>?, pagerState: PagerState) {
+fun Pager(
+    tabs: List<TabsResponse.Data.Tab?>?,
+    pagerState: PagerState,
+    vm: OffersViewModel
+) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
             count = tabs?.size ?: 1
         ) { index ->
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = tabs?.get(index)?.name ?: "",
-                )
+
+            vm.selectedTab.value = tabs?.get(index)
+
+            val lazyOutlets = vm.offers.collectAsLazyPagingItems()
+
+            LazyColumn {
+
+                items(lazyOutlets) { outlet ->
+                    OutletItem(outlet)
+                }
+
+                lazyOutlets.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                        }
+                        loadState.append is LoadState.Loading -> {
+                            item { LoadingItem() }
+                        }
+                        loadState.refresh is LoadState.Error -> {
+                            val e = lazyOutlets.loadState.refresh as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = e.error.message,
+                                    modifier = Modifier.fillParentMaxSize(),
+                                    onClickRetry = { retry() }
+                                )
+                            }
+                        }
+                        loadState.append is LoadState.Error -> {
+                            val e = lazyOutlets.loadState.append as LoadState.Error
+                            item {
+                                ErrorItem(
+                                    message = e.error.message,
+                                    onClickRetry = { retry() }
+                                )
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
+class OutletProvider : PreviewParameterProvider<OffersResponse.Data.Outlet> {
+    override val values = sequenceOf(OffersResponse.Data.Outlet())
+}
+
+@Composable
+@Preview
+fun OutletItem(@PreviewParameter(OutletProvider::class) outlet: OffersResponse.Data.Outlet?) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentSize()
+            .drawBehind {
+                val strokeWidth = Stroke.DefaultMiter
+                val x = size.width - strokeWidth
+                val y = size.height - strokeWidth
+                drawLine(
+                    color = Color.LightGray,
+                    start = Offset(20f, 0f), //(0,0) at top-left point of the box
+                    end = Offset(x - 20, 0f), //top-right point of the box
+                    strokeWidth = strokeWidth
+                )
+            },
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Card(
+                modifier = Modifier
+                    .padding(12.dp)
+                    .height(75.dp)
+                    .width(75.dp),
+                border = BorderStroke(1.dp, Color.Gray),
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                AsyncImage(model = outlet?.merchantLogoUrl, contentDescription = "")
+            }
+            Column(
+                modifier = Modifier
+                    .padding(vertical = 12.dp).fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(text = outlet?.merchantName ?: "")
+                Text(text = outlet?.name ?: "", modifier = Modifier.padding(vertical = 6.dp))
+                Text(text = outlet?.humanLocation ?: "")
+            }
+        }
+
+    }
+}
+
 
 @OptIn(ExperimentalPagerApi::class)
-@Preview
 @Composable
 fun OffersScreenPreview() {
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(TabsResponse.Data.Tab("All Offers"))
+    val outlets = listOf<OffersResponse.Data.Outlet>()
     val pagerState = rememberPagerState(initialPage = 0)
     Surface(modifier = Modifier.fillMaxSize()) {
-        Tabs(tabs, pagerState, coroutineScope){
+        Tabs(tabs, pagerState, coroutineScope) {
 
         }
-        Pager(tabs = tabs, pagerState = pagerState)
+        //Pager(tabs = tabs, pagerState = pagerState)
     }
 }

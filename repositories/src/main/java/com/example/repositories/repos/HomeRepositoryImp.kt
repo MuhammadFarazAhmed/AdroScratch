@@ -1,7 +1,7 @@
 package com.example.repositories.repos
 
 import com.example.adro.base.ApiResult
-import com.example.adro.common.CommonExtensions.toResultFlow
+import com.example.adro.common.CommonFlowExtensions.toResultFlow
 import com.example.domain.models.HomeResponse
 import com.example.domain.repos.HomeRepository
 import com.example.repositories.remote.api.HomeApi

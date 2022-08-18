@@ -13,6 +13,6 @@ class OffersUseCaseImp @Inject constructor(private val offersRepository: OffersR
 
     override fun fetchTabs(): Flow<ApiResult<TabsResponse>> = offersRepository.fetchTabs()
 
-    override fun fetchOffers(params: TabsResponse.Data.Tab.Params?): Flow<ApiResult<OffersResponse>> = offersRepository.fetchOffers(params)
+    override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> = offersRepository.fetchOffers(params)
 }
 

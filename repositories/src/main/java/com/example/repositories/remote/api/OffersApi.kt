@@ -40,9 +40,9 @@ interface OffersApi {
         }
     ): Response<TabsResponse>
 
-    @POST("/outlets")
     @OffersApi
-    suspend fun offers(params: HashMap<String,String>,
+    @POST("/ets_api/v5/outlets")
+    suspend fun offers(
         @Body body: HashMap<String, String> = HashMap<String, String>().apply {
             put("__company", "ADO")
             put("__lng", "0")
