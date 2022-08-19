@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
             }
             composable(NavigationItem.Profile.route) {
                 ProfileScreen()
-                topAppBar.value = false
+                topAppBar.value = true
             }
         }
 

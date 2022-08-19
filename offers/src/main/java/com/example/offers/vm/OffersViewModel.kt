@@ -40,7 +40,7 @@ class OffersViewModel @Inject constructor(
         }
     }
 
-    val offers = Pager(PagingConfig(pageSize = 60)) { BasePagingSource { _, _ -> offersUseCase.fetchOffers(selectedTab.value!!.params) } }.flow.cachedIn(viewModelScope)
+    val offers = Pager(PagingConfig(pageSize = 60)) { BasePagingSource { offersUseCase.fetchOffers(selectedTab.value!!.params) } }.flow.cachedIn(viewModelScope)
 
     val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = MutableStateFlow(emptyList())
 

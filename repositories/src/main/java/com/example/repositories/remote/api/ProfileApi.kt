@@ -1,7 +1,7 @@
 package com.example.repositories.remote.api
 
 import com.example.adro.base.ApiResult
-import com.example.domain.models.HomeResponse
+import com.example.domain.models.ProfileResponse
 import com.example.repositories.annotations.HomeApi
 import com.example.repositories.annotations.ProfileApi
 import kotlinx.coroutines.Deferred
@@ -35,5 +35,5 @@ interface ProfileApi {
             put("wlcompany", "ADO")
             put("lat", "0")
         }
-    ): Response<HomeResponse>
+    ): Response<ProfileResponse>
 }

@@ -1,15 +1,13 @@
 package com.example.profile.vm
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.adro.base.ApiStatus
-import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.domain.models.Section
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
 import com.example.domain.usecase.ProfileUseCase
+import com.example.repositories.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,24 +17,10 @@ class ProfileViewModel @Inject constructor(
 ) :
     AndroidViewModel(application) {
 
-    init {
-        fetchHomeData()
-    }
+    val sections =
+        Pager(PagingConfig(pageSize = 60)) { BasePagingSource {  profileUseCase.fetchProfile() } }.flow.cachedIn(
+            viewModelScope
+        )
 
-    fun fetchHomeData() {
-        viewModelScope.launch {
-            profileUseCase.fetchProfile().handleErrors().collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
-                    ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it.message}: ")
-                    }
-                    ApiStatus.LOADING -> {}
-                }
-            }
-        }
-    }
-
-    val sections: MutableStateFlow<List<Section>> = MutableStateFlow(emptyList())
 
 }

@@ -5,7 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.example.adro.base.ApiStatus
 import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.domain.models.Section
+import com.example.domain.models.HomeResponse
 import com.example.domain.usecase.HomeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -37,6 +37,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val sections: MutableStateFlow<List<Section>> = MutableStateFlow(emptyList())
+    val sections: MutableStateFlow<List<HomeResponse.Data.Section>> = MutableStateFlow(emptyList())
 
 }

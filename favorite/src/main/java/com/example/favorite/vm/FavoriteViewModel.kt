@@ -16,7 +16,7 @@ class FavoriteViewModel @Inject constructor(application: Application, favUseCase
     AndroidViewModel(application) {
 
     val favoriteList =
-        Pager(PagingConfig(pageSize = 60)) { BasePagingSource { _, _ -> favUseCase.fetchFavorites() } }.flow.cachedIn(
+        Pager(PagingConfig(pageSize = 60)) { BasePagingSource { favUseCase.fetchFavorites() } }.flow.cachedIn(
             viewModelScope
         )
 

@@ -3,6 +3,7 @@ package com.example.adro.di
 import android.app.Application
 import android.content.Context
 import android.util.Base64
+import android.util.Log
 import com.example.adro.BuildConfig
 import com.example.adro.common.CommonUtilsExtension.getAnnotation
 import com.example.adro.common.PreferencesHelper
@@ -72,13 +73,21 @@ class AppModule {
             val decryptedResponse = apisEncryptionUtils.decryptString(originalJson)
 
             if (decryptedResponse != null) {
+
+                if (BuildConfig.DEBUG) Log.d(
+                    "okhttp.OkHttpClient",
+                    decryptedResponse
+                )
                 originalResponse.newBuilder()
                     .body(decryptedResponse.toResponseBody(originalResponse.body!!.contentType()))
                     .build()
+
             } else {
+
                 originalResponse.newBuilder()
                     .body(originalJson.toResponseBody(originalResponse.body!!.contentType()))
                     .build()
+
             }
         }
 
@@ -95,14 +104,14 @@ class AppModule {
             request.getAnnotation(HomeApi::class.java) == HomeApi() -> {
                 host = controller.getENTBaseUrlOnline().toHttpUrl()
             }
-            request.getAnnotation(ProfileApi::class.java) == ProfileApi() -> {
-                host = controller.getAuthBaseUrlOnline().toHttpUrl()
-            }
             request.getAnnotation(OffersApi::class.java) == OffersApi() -> {
                 host = controller.getOutletBaseUrlOnline().toHttpUrl()
             }
             request.getAnnotation(FavApi::class.java) == FavApi() -> {
                 host = controller.getOutletBaseUrlOnline().toHttpUrl()
+            }
+            request.getAnnotation(ProfileApi::class.java) == ProfileApi() -> {
+                host = controller.getAuthBaseUrlOnline().toHttpUrl()
             }
         }
 

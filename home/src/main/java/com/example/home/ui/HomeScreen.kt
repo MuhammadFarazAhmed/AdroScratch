@@ -26,8 +26,7 @@ import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
-import com.example.domain.models.Section
-import com.example.domain.models.SectionItem
+import com.example.domain.models.HomeResponse
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
 
@@ -40,323 +39,13 @@ fun HomeScreenPreview() {
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
 
-    val homeList = remember {
-
-        mutableStateListOf(
-            Section(
-                "guest_user",
-                mutableListOf(
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://merchantdetail?o_id=96714&m_id=55192",
-                        366,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/home_screen/1+Thrive_Banners_NoText_2.8.22_Air+Balloon+ENG+342x200.jpg",
-                        true,
-                        1,
-                        "",
-                        "Fly High!"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://merchantdetail?o_id=2002&m_id=1286",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/home_screen/2+Thrive_Banners_NoText_2.8.22_Beach+ENG+342x200.jpg",
-                        true,
-                        1,
-                        "",
-                        "Soak up the sun"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://merchantdetail?o_id=12529&m_id=1134",
-                        368,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/home_screen/3+Thrive_Banners_NoText_2.8.22_Desert+ENG+342x200.jpg",
-                        true,
-                        1,
-                        "",
-                        "Adventure is calling"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://merchantdetail?o_id=64045&m_id=37500",
-                        371,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/home_screen/4+Thrive_Banners_NoText_2.8.22_Family+ENG+342x200.jpg",
-                        true,
-                        1,
-                        "",
-                        "Experience more this weekend"
-                    )
-                ),
-                1,
-                "", "", ""
-            ),
-            Section(
-                "categories",
-                mutableListOf(
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Restaurants%20and%20bars",
-                        366,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Food_and_drink.png",
-                        true,
-                        1,
-                        "",
-                        "Food & Drink"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Beauty & Fitness"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Attraction & Leisure"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Beauty & Fitness"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Travel"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Fashion & Retail"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Everyday Services"
-                    )
-                ),
-                1,
-                "Categories", "", ""
-            ),
-            Section(
-                "exclusive_offers",
-                mutableListOf(
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Restaurants%20and%20bars",
-                        366,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Food_and_drink.png",
-                        true,
-                        1,
-                        "",
-                        "Food & Drink"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Beauty & Fitness"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Attraction & Leisure"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Beauty & Fitness"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Travel"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Fashion & Retail"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Everyday Services"
-                    )
-                ),
-                1,
-                "Exclusive offers from partners", "", ""
-            ),
-            Section(
-                "recommended_offers",
-                mutableListOf(
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Restaurants%20and%20bars",
-                        366,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Food_and_drink.png",
-                        true,
-                        1,
-                        "",
-                        "Food & Drink"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Beauty & Fitness"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Attraction & Leisure"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Beauty & Fitness"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Travel"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Fashion & Retail"
-                    ),
-                    SectionItem(
-                        "",
-                        "Learn More",
-                        "adoentertainer://offers?category=Body",
-                        367,
-                        "https://b2bapptilescdn.theentertainerme.com/new_featured/ADO/Beauty_and_fitness.png",
-                        true,
-                        1,
-                        "",
-                        "Everyday Services"
-                    )
-                ),
-                1,
-                "Recommended offers", "", ""
-            )
-        )
-
-    }
-
     Surface(modifier = Modifier.background(Color.White)) {
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-            items(homeList) { section ->
+            items(arrayListOf<HomeResponse.Data.Section>()) { section ->
 
-                when (section.section_identifier) {
+                when (section.sectionIdentifier) {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
@@ -399,7 +88,7 @@ fun HomeScreen() {
 
             items(homeSection) { section ->
 
-                when (section.section_identifier) {
+                when (section.sectionIdentifier) {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
@@ -425,12 +114,12 @@ fun HomeScreen() {
 
 }
 
-class SampleUserProvider : PreviewParameterProvider<Section> {
-    override val values = sequenceOf(Section("Jens", listOf(), 1))
+class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
+    override val values = sequenceOf(HomeResponse.Data.Section())
 }
 
 @Composable
-fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
+fun LoginView(@PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?) {
 
     Column {
         Box(
@@ -439,7 +128,7 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
                 .fillMaxWidth()
         ) {
             AsyncImage(
-                model = section?.image_url,
+                model = section?.imageUrl,
                 contentDescription = "",
                 modifier = Modifier
                     .fillMaxSize(), contentScale = ContentScale.FillWidth
@@ -473,7 +162,7 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
 
                 Text(
                     style = MaterialTheme.typography.h1,
-                    text = section?.sub_title ?: "",
+                    text = section?.subTitle ?: "",
                     color = Color.White,
                     letterSpacing = 1.sp,
                     lineHeight = 24.sp,
@@ -490,12 +179,12 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = HexToJetpackColor.getColor(
-                            section?.button_bg_color ?: "acccbc"
+                            section?.buttonBgColor ?: "acccbc"
                         )
                     )
                 ) {
                     Text(
-                        text = section?.button_title ?: "",
+                        text = section?.buttonTitle ?: "",
                         color = Color.White,
                         style = MaterialTheme.typography.body2,
                         fontSize = 12.sp
@@ -577,17 +266,17 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: Section?) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainCarousal(pagerState: PagerState, section: Section) {
+fun MainCarousal(pagerState: PagerState, section: HomeResponse.Data.Section) {
 
     HorizontalPager(
-        count = section.section_items.size,
+        count = section.sectionItems.size,
         state = pagerState,
         modifier = Modifier.height(250.dp),
         contentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 24.dp),
         itemSpacing = 8.dp
     ) { index ->
 
-        val item = section.section_items[index]
+        val item = section.sectionItems[index]
 
         Card(
             modifier = Modifier.fillMaxSize(),
@@ -596,7 +285,7 @@ fun MainCarousal(pagerState: PagerState, section: Section) {
         ) {
 
             AsyncImage(
-                model = item.image_url,
+                model = item.imageUrl,
                 contentScale = ContentScale.Crop,
                 contentDescription = ""
             )
@@ -622,7 +311,7 @@ fun MainCarousal(pagerState: PagerState, section: Section) {
             ) {
 
                 Text(
-                    text = item.title,
+                    text = item.title ?: "",
                     color = Color.White,
                     fontSize = 22.sp,
                     modifier = Modifier.fillMaxWidth(.8f),
@@ -641,7 +330,7 @@ fun MainCarousal(pagerState: PagerState, section: Section) {
                         )
                     )
                 ) {
-                    Text(text = item.button_title, color = Color.White, fontSize = 12.sp)
+                    Text(text = item.buttonTitle, color = Color.White, fontSize = 12.sp)
                 }
 
             }
@@ -650,7 +339,7 @@ fun MainCarousal(pagerState: PagerState, section: Section) {
 }
 
 @Composable
-fun Categories(section: Section) {
+fun Categories(section: HomeResponse.Data.Section) {
     Column {
 
         Text(
@@ -666,7 +355,7 @@ fun Categories(section: Section) {
                 .padding(16.dp)
         ) {
 
-            items(section.section_items) { item ->
+            items(section.sectionItems) { item ->
                 Card(
                     modifier = Modifier
                         .wrapContentHeight()
@@ -690,7 +379,7 @@ fun Categories(section: Section) {
                         ) {
 
                             AsyncImage(
-                                model = item.image_url,
+                                model = item.imageUrl,
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop,
                                 contentDescription = ""
@@ -698,7 +387,7 @@ fun Categories(section: Section) {
                         }
 
                         Text(
-                            text = item.title,
+                            text = item.title?:"",
                             modifier = Modifier.padding(vertical = 8.dp),
                             fontSize = 12.sp
                         )
@@ -712,7 +401,7 @@ fun Categories(section: Section) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ExclusiveItem(pagerState: PagerState, section: Section) {
+fun ExclusiveItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
 
     Column(modifier = Modifier.wrapContentHeight()) {
 
@@ -724,7 +413,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
         )
 
         HorizontalPager(
-            count = section.section_items.size,
+            count = section.sectionItems.size,
             state = pagerState,
             modifier = Modifier
                 .height(175.dp)
@@ -733,7 +422,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
             itemSpacing = 8.dp
         ) { index ->
 
-            val item = section.section_items[index]
+            val item = section.sectionItems[index]
 
             Card(
                 modifier = Modifier.fillMaxSize(),
@@ -742,7 +431,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
             ) {
 
                 AsyncImage(
-                    model = item.image_url,
+                    model = item.imageUrl,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                     contentDescription = ""
@@ -769,7 +458,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
                 ) {
 
                     Text(
-                        text = item.title,
+                        text = item.title?:"",
                         color = Color.White,
                         fontSize = 22.sp,
                         fontWeight = SemiBold,
@@ -777,7 +466,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
                     )
 
                     Text(
-                        text = item.subtitle,
+                        text = item.subtitle?:"",
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = SemiBold,
@@ -795,7 +484,7 @@ fun ExclusiveItem(pagerState: PagerState, section: Section) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun RecommendedItem(pagerState: PagerState, section: Section) {
+fun RecommendedItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
 
     Column(modifier = Modifier.wrapContentHeight()) {
 
@@ -807,7 +496,7 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
         )
 
         HorizontalPager(
-            count = section.section_items.size,
+            count = section.sectionItems.size,
             state = pagerState,
             modifier = Modifier
                 .height(200.dp)
@@ -816,7 +505,7 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
             itemSpacing = 8.dp
         ) { index ->
 
-            val item = section.section_items[index]
+            val item = section.sectionItems[index]
 
             Card(
                 modifier = Modifier.fillMaxSize(),
@@ -825,7 +514,7 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
             ) {
 
                 AsyncImage(
-                    model = item.image_url,
+                    model = item.imageUrl,
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
                     contentDescription = ""
@@ -852,7 +541,7 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
                 ) {
 
                     Text(
-                        text = item.title,
+                        text = item.title ?: "",
                         color = Color.White,
                         fontSize = 22.sp,
                         fontWeight = SemiBold,
@@ -860,7 +549,7 @@ fun RecommendedItem(pagerState: PagerState, section: Section) {
                     )
 
                     Text(
-                        text = item.subtitle,
+                        text = item.subtitle ?: "",
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = SemiBold,
