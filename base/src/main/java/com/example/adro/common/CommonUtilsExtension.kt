@@ -14,6 +14,8 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
+import okhttp3.Request
+import retrofit2.Invocation
 import retrofit2.Response
 import java.lang.Exception
 import javax.inject.Inject
@@ -33,5 +35,9 @@ object CommonUtilsExtension {
         val gson = Gson()
         val json = gson.toJson(this)
         return gson.fromJson(json, object : TypeToken<O>() {}.type)
+    }
+
+    fun <T : Annotation> Request.getAnnotation(annotationClass: Class<T>): T? {
+        return this.tag(Invocation::class.java)?.method()?.getAnnotation(annotationClass)
     }
 }

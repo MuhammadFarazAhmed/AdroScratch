@@ -3,21 +3,20 @@ package com.example.adro.di
 import android.app.Application
 import android.content.Context
 import android.util.Base64
-import android.util.Log
-import androidx.compose.ui.text.buildAnnotatedString
 import com.example.adro.BuildConfig
+import com.example.adro.common.CommonUtilsExtension.getAnnotation
 import com.example.adro.common.PreferencesHelper
+import com.example.adro.security.ApisEncryptionUtils
 import com.example.adro.security.CLibController
+import com.example.repositories.annotations.FavApi
 import com.example.repositories.annotations.HomeApi
 import com.example.repositories.annotations.OffersApi
 import com.example.repositories.annotations.ProfileApi
-import com.fasterxml.jackson.annotation.JsonValue
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
-import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.jsonwebtoken.JwsHeader
@@ -28,14 +27,14 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.ResponseBody.Companion.toResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Invocation
+import okio.Buffer
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.URISyntaxException
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
-import javax.inject.Scope
 import javax.inject.Singleton
 
 
@@ -59,9 +58,29 @@ class AppModule {
         chain.proceed(request)
     }
 
-    private fun <T : Annotation> Request.getAnnotation(annotationClass: Class<T>): T? {
-        return this.tag(Invocation::class.java)?.method()?.getAnnotation(annotationClass)
-    }
+    @Singleton
+    @Provides
+    @Named("decrypter")
+    fun provideDecryptionInterceptor(apisEncryptionUtils: ApisEncryptionUtils) =
+        Interceptor { chain ->
+            val encryptedRequest = chain.request()
+            val originalResponse = chain.proceed(encryptedRequest)
+
+            chain.proceed(encryptedRequest)
+
+            val originalJson = originalResponse.body!!.string()
+            val decryptedResponse = apisEncryptionUtils.decryptString(originalJson)
+
+            if (decryptedResponse != null) {
+                originalResponse.newBuilder()
+                    .body(decryptedResponse.toResponseBody(originalResponse.body!!.contentType()))
+                    .build()
+            } else {
+                originalResponse.newBuilder()
+                    .body(originalJson.toResponseBody(originalResponse.body!!.contentType()))
+                    .build()
+            }
+        }
 
     @Singleton
     @Provides
@@ -80,6 +99,9 @@ class AppModule {
                 host = controller.getAuthBaseUrlOnline().toHttpUrl()
             }
             request.getAnnotation(OffersApi::class.java) == OffersApi() -> {
+                host = controller.getOutletBaseUrlOnline().toHttpUrl()
+            }
+            request.getAnnotation(FavApi::class.java) == FavApi() -> {
                 host = controller.getOutletBaseUrlOnline().toHttpUrl()
             }
         }
@@ -101,11 +123,14 @@ class AppModule {
     @Singleton
     fun provideOkHttpClient(
         @Named("auth") authInterceptor: Interceptor,
-        @Named("baseurl") changeBaseUrlInterceptor: Interceptor
+        @Named("baseurl") changeBaseUrlInterceptor: Interceptor,
+        @Named("decrypter") decryptInterceptor: Interceptor
     ) =
         OkHttpClient.Builder().connectTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS).readTimeout(30, TimeUnit.SECONDS)
-            .addInterceptor(authInterceptor).addInterceptor(changeBaseUrlInterceptor)
+            .addInterceptor(authInterceptor)
+            .addInterceptor(changeBaseUrlInterceptor)
+            .addInterceptor(decryptInterceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
                 if (BuildConfig.DEBUG) this.level = HttpLoggingInterceptor.Level.BODY
             }).build()

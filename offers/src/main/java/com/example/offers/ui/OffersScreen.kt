@@ -12,11 +12,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
@@ -30,11 +27,10 @@ import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.domain.models.OffersResponse
-import com.example.domain.models.Section
 import com.example.domain.models.TabsResponse
-import com.example.offers.ErrorItem
-import com.example.offers.LoadingItem
-import com.example.offers.LoadingView
+import com.example.adro.ErrorItem
+import com.example.adro.LoadingItem
+import com.example.adro.LoadingView
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
@@ -204,7 +200,8 @@ fun OutletItem(@PreviewParameter(OutletProvider::class) outlet: OffersResponse.D
             }
             Column(
                 modifier = Modifier
-                    .padding(vertical = 12.dp).fillMaxHeight(),
+                    .padding(vertical = 12.dp)
+                    .fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
                 Text(text = outlet?.merchantName ?: "")

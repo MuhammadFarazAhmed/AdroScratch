@@ -1,11 +1,14 @@
 package com.example.adro.di
 
+import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
 import com.example.domain.repos.OffersRepository
 import com.example.domain.repos.ProfileRepository
+import com.example.repositories.remote.api.FavApi
 import com.example.repositories.remote.api.HomeApi
 import com.example.repositories.remote.api.OffersApi
 import com.example.repositories.remote.api.ProfileApi
+import com.example.repositories.repos.FavRepositoryImp
 import com.example.repositories.repos.HomeRepositoryImp
 import com.example.repositories.repos.OffersRepositoryImp
 import com.example.repositories.repos.ProfileRepositoryImp
@@ -43,6 +46,18 @@ class RepositoryModule {
     @Singleton
     fun provideOffersRepository(offersApi: OffersApi): OffersRepository =
         OffersRepositoryImp(offersApi)
+
+    /**
+     * Favorites
+     */
+    @Provides
+    @Singleton
+    fun provideFavoritesApi(retrofit: Retrofit): FavApi = retrofit.create(FavApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideFavoritesRepository(favApi: FavApi): FavoritesRepository =
+        FavRepositoryImp(favApi)
 
 
     /**

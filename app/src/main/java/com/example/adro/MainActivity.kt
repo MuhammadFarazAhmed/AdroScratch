@@ -16,8 +16,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.adro.ui.favorite.FavoriteScreen
 import com.example.adro.theme.AdroScratchTheme
+import com.example.favorite.ui.FavoriteScreen
 import com.example.home.ui.HomeScreen
 import com.example.offers.ui.OffersScreen
 import com.example.profile.ui.ProfileScreen
@@ -61,7 +61,7 @@ class MainActivity : ComponentActivity() {
                 topAppBar.value = false
             }
             composable(NavigationItem.Favorite.route) {
-                FavoriteScreen(navigator)
+                FavoriteScreen()
                 topAppBar.value = false
             }
             composable(NavigationItem.Profile.route) {

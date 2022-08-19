@@ -1,4 +1,4 @@
-package com.example.adro.profile
+package com.example.adro.offers
 
 import com.example.domain.repos.HomeRepository
 import com.example.domain.repos.OffersRepository

@@ -1,5 +1,5 @@
 
-package com.example.offers
+package com.example.adro
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.CircularProgressIndicator

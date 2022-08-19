@@ -119,6 +119,7 @@ dependencies {
 
     api(project(':home'))
     api(project(':offers'))
+    api(project(':favorite'))
     api(project(':profile'))
     api(project(':repositories'))
     api(project(':domain'))
