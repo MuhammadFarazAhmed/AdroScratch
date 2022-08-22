@@ -326,7 +326,7 @@ fun MainCarousal(pagerState: PagerState, section: HomeResponse.Data.Section) {
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = HexToJetpackColor.getColor(
-                            "e43338"
+                            item.buttonBgColor ?: "e4b333"
                         )
                     )
                 ) {
