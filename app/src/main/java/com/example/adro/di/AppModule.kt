@@ -69,7 +69,7 @@ class AppModule {
 
             chain.proceed(encryptedRequest)
 
-            val originalJson = originalResponse.body!!.string()
+            val originalJson = originalResponse.body?.string()
             val decryptedResponse = apisEncryptionUtils.decryptString(originalJson)
 
             if (decryptedResponse != null) {
@@ -79,13 +79,13 @@ class AppModule {
                     decryptedResponse
                 )
                 originalResponse.newBuilder()
-                    .body(decryptedResponse.toResponseBody(originalResponse.body!!.contentType()))
+                    .body(decryptedResponse.toResponseBody(originalResponse.body?.contentType()))
                     .build()
 
             } else {
 
                 originalResponse.newBuilder()
-                    .body(originalJson.toResponseBody(originalResponse.body!!.contentType()))
+                    .body(originalJson?.toResponseBody(originalResponse.body?.contentType()))
                     .build()
 
             }

@@ -31,6 +31,7 @@ import com.example.domain.models.TabsResponse
 import com.example.adro.ErrorItem
 import com.example.adro.LoadingItem
 import com.example.adro.LoadingView
+import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
@@ -124,37 +125,8 @@ fun Pager(
                 items(lazyOutlets) { outlet ->
                     OutletItem(outlet)
                 }
-
-                lazyOutlets.apply {
-                    when {
-                        loadState.refresh is LoadState.Loading -> {
-                            item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                        }
-                        loadState.append is LoadState.Loading -> {
-                            item { LoadingItem() }
-                        }
-                        loadState.refresh is LoadState.Error -> {
-                            val e = lazyOutlets.loadState.refresh as LoadState.Error
-                            item {
-                                ErrorItem(
-                                    message = e.error.message,
-                                    modifier = Modifier.fillParentMaxSize(),
-                                    onClickRetry = { retry() }
-                                )
-                            }
-                        }
-                        loadState.append is LoadState.Error -> {
-                            val e = lazyOutlets.loadState.append as LoadState.Error
-                            item {
-                                ErrorItem(
-                                    message = e.error.message,
-                                    onClickRetry = { retry() }
-                                )
-                            }
-                        }
-                    }
-                }
-
+    
+                applyPagination(lazyOutlets)
             }
         }
     }
@@ -174,7 +146,6 @@ fun OutletItem(@PreviewParameter(OutletProvider::class) outlet: OffersResponse.D
             .drawBehind {
                 val strokeWidth = Stroke.DefaultMiter
                 val x = size.width - strokeWidth
-                val y = size.height - strokeWidth
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(20f, 0f), //(0,0) at top-left point of the box
@@ -220,7 +191,6 @@ fun OutletItem(@PreviewParameter(OutletProvider::class) outlet: OffersResponse.D
 fun OffersScreenPreview() {
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(TabsResponse.Data.Tab("All Offers"))
-    val outlets = listOf<OffersResponse.Data.Outlet>()
     val pagerState = rememberPagerState(initialPage = 0)
     Surface(modifier = Modifier.fillMaxSize()) {
         Tabs(tabs, pagerState, coroutineScope) {

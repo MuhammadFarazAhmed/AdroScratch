@@ -26,6 +26,7 @@ import coil.compose.AsyncImage
 import com.example.adro.ErrorItem
 import com.example.adro.LoadingItem
 import com.example.adro.LoadingView
+import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.domain.models.FavoriteResponse
 import com.example.domain.models.OffersResponse
 import com.example.favorite.vm.FavoriteViewModel
@@ -44,36 +45,7 @@ fun FavoriteScreen() {
             items(lazyFavs) { fav ->
                 FavoriteItem(fav)
             }
-
-            lazyFavs.apply {
-                when {
-                    loadState.refresh is LoadState.Loading -> {
-                        item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                    }
-                    loadState.append is LoadState.Loading -> {
-                        item { LoadingItem() }
-                    }
-                    loadState.refresh is LoadState.Error -> {
-                        val e = lazyFavs.loadState.refresh as LoadState.Error
-                        item {
-                            ErrorItem(
-                                message = e.error.message,
-                                modifier = Modifier.fillParentMaxSize(),
-                                onClickRetry = { retry() }
-                            )
-                        }
-                    }
-                    loadState.append is LoadState.Error -> {
-                        val e = lazyFavs.loadState.append as LoadState.Error
-                        item {
-                            ErrorItem(
-                                message = e.error.message,
-                                onClickRetry = { retry() }
-                            )
-                        }
-                    }
-                }
-            }
+            applyPagination(lazyFavs)
         }
 
     }
@@ -93,7 +65,6 @@ fun FavoriteItem(@PreviewParameter(FavProvider::class) fav: FavoriteResponse.Dat
             .drawBehind {
                 val strokeWidth = Stroke.DefaultMiter
                 val x = size.width - strokeWidth
-                val y = size.height - strokeWidth
                 drawLine(
                     color = Color.LightGray,
                     start = Offset(20f, 0f), //(0,0) at top-left point of the box
