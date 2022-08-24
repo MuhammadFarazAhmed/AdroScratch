@@ -5,6 +5,8 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -12,21 +14,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.paint
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.Paint
-import androidx.compose.ui.graphics.drawscope.DrawStyle
-import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -35,6 +30,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import androidx.paging.compose.itemsIndexed
 import com.example.adro.ErrorItem
 import com.example.adro.LoadingItem
 import com.example.adro.LoadingView
@@ -50,7 +46,7 @@ enum class ProfileSections(val value: String) {
     SETTINGS("settings"),
     HELP_SUPPORT("help_support"),
     ABOUT("about"),
-    SIGN_OUT("sign_out"),
+    SIGN_OUT("signout"),
 }
 
 @Composable
@@ -59,65 +55,78 @@ fun ProfileScreen() {
 
     val lazySections = vm.sections.collectAsLazyPagingItems()
 
-    ProfileSectionSwitch()
+    LazyColumn {
 
-//    LazyColumn {
-//
-//        items(lazySections) { section ->
-//            when (section?.sectionIdentifier) {
-//                ProfileSections.PROFILE_HEADER.value -> ProfileSectionSwitch()
-//                ProfileSections.MY_ACCOUNT.value -> {}
-//                ProfileSections.REDEMPTIONS_DETAILS.value -> {}
-//                ProfileSections.SETTINGS.value -> {}
-//                ProfileSections.HELP_SUPPORT.value -> {}
-//                ProfileSections.ABOUT.value -> {}
-//                ProfileSections.SIGN_OUT.value -> ProfileSectionSignOut()
-//            }
-//        }
-//
-//        lazySections.apply {
-//            when {
-//                loadState.refresh is LoadState.Loading -> {
-//                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-//                }
-//                loadState.append is LoadState.Loading -> {
-//                    item { LoadingItem() }
-//                }
-//                loadState.refresh is LoadState.Error -> {
-//                    val e = lazySections.loadState.refresh as LoadState.Error
-//                    item {
-//                        ErrorItem(
-//                            message = e.error.message,
-//                            modifier = Modifier.fillParentMaxSize(),
-//                            onClickRetry = { }
-//                        )
-//                    }
-//                }
-//                loadState.append is LoadState.Error -> {
-//                    val e = lazySections.loadState.append as LoadState.Error
-//                    item {
-//                        ErrorItem(
-//                            message = e.error.message,
-//                            onClickRetry = { }
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//
-//    }
+        items(lazySections) { section ->
 
+            when (section?.sectionIdentifier) {
+
+                ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader()
+
+                ProfileSections.MY_ACCOUNT.value,
+                ProfileSections.REDEMPTIONS_DETAILS.value,
+                ProfileSections.SETTINGS.value,
+                ProfileSections.HELP_SUPPORT.value,
+                ProfileSections.ABOUT.value,
+                -> {
+                    ProfileSectionHeaderRow(section.sectionTitle)
+                    section.sectionData.forEach { item ->
+                        when (item.type) {
+                            "arrow" -> ProfileSectionArrow(item.title)
+                            "text" -> ProfileSectionText(item.title, item.desc)
+                            "switch" -> ProfileSectionSwitch(item.title, item.value)
+                            else -> ProfileSectionHeaderRow(section.sectionTitle)
+                        }
+                    }
+                }
+
+                ProfileSections.SIGN_OUT.value -> ProfileSectionSignOut()
+
+            }
+
+        }
+
+        lazySections.apply {
+            when {
+                loadState.refresh is LoadState.Loading -> {
+                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                }
+                loadState.append is LoadState.Loading -> {
+                    item { LoadingItem() }
+                }
+                loadState.refresh is LoadState.Error -> {
+                    val e = lazySections.loadState.refresh as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.message,
+                            modifier = Modifier.fillParentMaxSize(),
+                            onClickRetry = { }
+                        )
+                    }
+                }
+                loadState.append is LoadState.Error -> {
+                    val e = lazySections.loadState.append as LoadState.Error
+                    item {
+                        ErrorItem(
+                            message = e.error.message,
+                            onClickRetry = { }
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 
 @Composable
-fun ProfileHeaderView() {
+fun ProfileSectionHeader() {
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(Color.Black)
-            .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Text(
@@ -167,8 +176,27 @@ fun ProfileHeaderView() {
 
 }
 
+
 @Composable
-fun ProfileSectionArrow() {
+fun ProfileSectionHeaderRow(sectionTitle: String?) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ) {
+        Text(
+            text = sectionTitle ?: "",
+            modifier = Modifier.padding(vertical = 8.dp),
+            style = MaterialTheme.typography.h1,
+            color = Color.Black
+        )
+    }
+}
+
+@Composable
+fun ProfileSectionArrow(title: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -176,7 +204,7 @@ fun ProfileSectionArrow() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Profile Detail")
+        Text(text = title ?: "")
         Icon(
             modifier = Modifier.size(24.dp),
             tint = Color.LightGray,
@@ -187,7 +215,7 @@ fun ProfileSectionArrow() {
 }
 
 @Composable
-fun ProfileSectionText() {
+fun ProfileSectionText(title: String?, value: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -195,14 +223,13 @@ fun ProfileSectionText() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Profile Detail")
-        Text(text = "English")
+        Text(text = title ?: "")
+        Text(text = value ?: "")
     }
 }
 
-@Preview
 @Composable
-fun ProfileSectionSwitch() {
+fun ProfileSectionSwitch(title: String?, value: Int?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -211,12 +238,15 @@ fun ProfileSectionSwitch() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Profile Detail")
-        CustomSwitch(gapBetweenThumbAndTrackEdge = 0.dp)
+        Text(text = title ?: "")
+        CustomSwitch(initialValue = value == 1, gapBetweenThumbAndTrackEdge = 0.dp) { _ ->
+
+        }
     }
 }
 
 @Composable
+@Preview
 fun ProfileSectionSignOut() {
     Column(
         modifier = Modifier
@@ -247,18 +277,18 @@ fun ProfileSectionSignOut() {
 @Composable
 fun CustomSwitch(
     scale: Float = 1f,
-    width: Dp = 36.dp,
+    width: Dp = 38.dp,
     height: Dp = 20.dp,
     strokeWidth: Dp = 1.dp,
+    initialValue: Boolean = false,
     checkedFillThumbColor: Color = Color(0xFFFFFFFF),
-    uncheckedFillThumbColor: Color = Color(0xFF797474),
-    checkedTrackColor: Color = Color(0xFF4CAF50),
-    uncheckedTrackColor: Color = Color(0xFFFFFFFF),
-    gapBetweenThumbAndTrackEdge: Dp = 4.dp
+    checkedTrackColor: Color = Color(0xFFACCCBC),
+    uncheckedTrackColor: Color = Color(0xBABABABA),
+    gapBetweenThumbAndTrackEdge: Dp = 4.dp,
+    callback: (checked: Boolean) -> Unit = {}
 ) {
-
     val switchON = remember {
-        mutableStateOf(true) // Initially the switch is ON
+        mutableStateOf(initialValue) // Initially the switch is ON
     }
 
     val thumbRadius = (height / 2) - gapBetweenThumbAndTrackEdge
@@ -280,25 +310,43 @@ fun CustomSwitch(
                     onTap = {
                         // This is called when the user taps on the canvas
                         switchON.value = !switchON.value
+                        callback(switchON.value)
                     }
                 )
-            },
+            }
     ) {
         // Track
         drawRoundRect(
             color = if (switchON.value) checkedTrackColor else uncheckedTrackColor,
             cornerRadius = CornerRadius(x = 10.dp.toPx(), y = 10.dp.toPx()),
-            style = Stroke(strokeWidth.toPx())
+            style = Stroke(width = strokeWidth.toPx())
         )
 
-        // Thumb
+        // Track Fill Area
+        drawRoundRect(
+            color = if (switchON.value) checkedTrackColor else Color.White,
+            cornerRadius = CornerRadius(x = 10.dp.toPx(), y = 10.dp.toPx()),
+        )
+
+        // Thumb fill area
         drawCircle(
-            color = if (switchON.value) checkedFillThumbColor else uncheckedFillThumbColor,
+            color = if (switchON.value) checkedFillThumbColor else uncheckedTrackColor,
             radius = thumbRadius.toPx(),
             center = Offset(
                 x = animatePosition.value,
                 y = size.height / 2
             )
+        )
+
+        // Thumb track
+        drawCircle(
+            color = if (switchON.value) uncheckedTrackColor else uncheckedTrackColor,
+            radius = thumbRadius.toPx(),
+            center = Offset(
+                x = animatePosition.value,
+                y = size.height / 2
+            ),
+            style = Stroke(width = strokeWidth.toPx())
         )
     }
 }
