@@ -44,35 +44,35 @@ data class HomeResponse(
             @SerializedName("sort_order")
             val sortOrder: Int = 1,
             @SerializedName("title")
-            val title: String = "",
+            val title: String = "title",
             @SerializedName("image_url")
             val imageUrl: String = "",
             @SerializedName("button_title")
-            val buttonTitle: String = "",
+            val buttonTitle: String = "text",
             @SerializedName("button_bg_color")
-            val buttonBgColor: String = "",
+            val buttonBgColor: String = "FF343434",
             @SerializedName("sub_title")
             val subTitle: String = ""
         ) {
             data class SectionItem(
                 @SerializedName("button_bg_color")
-                val buttonBgColor: String? = null,
+                val buttonBgColor: String = "FF343434",
                 @SerializedName("button_title")
                 val buttonTitle: String = "",
                 @SerializedName("deeplink")
-                val deeplink: String? = null,
+                val deeplink: String = "",
                 @SerializedName("id")
-                val id: Int? = null,
+                val id: Int = -1,
                 @SerializedName("image_url")
-                val imageUrl: String? = null,
+                val imageUrl: String? = "",
                 @SerializedName("is_external_link")
-                val isExternalLink: Any? = null,
+                val isExternalLink: Any? = "",
                 @SerializedName("should_show_button")
-                val shouldShowButton: Int? = null,
+                val shouldShowButton: Int? = -1,
                 @SerializedName("subtitle")
-                val subtitle: String? = null,
+                val subtitle: String? = "",
                 @SerializedName("title")
-                val title: String? = null
+                val title: String? = ""
             )
         }
     }

@@ -38,33 +38,18 @@ fun HomeScreenPreview() {
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
+    val section = HomeResponse.Data.Section("")
 
-    Surface(modifier = Modifier.background(Color.White)) {
+    Column {
+        MainCarousal(pagerState, section)
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+        LoginView(section)
 
-            items(arrayListOf<HomeResponse.Data.Section>()) { section ->
+        Categories(section)
 
-                when (section.sectionIdentifier) {
+        ExclusiveItem(exclusivePagerState, section)
 
-                    "main_carousal" -> MainCarousal(pagerState, section)
-
-                    "guest_user" -> LoginView(section)
-
-                    "categories" -> Categories(section)
-
-                    "exclusive_offers" -> ExclusiveItem(pagerState = exclusivePagerState, section)
-
-                    "recommended_offers" -> RecommendedItem(
-                        pagerState = recommendedPagerState,
-                        section
-                    )
-
-                }
-
-            }
-
-        }
+        RecommendedItem(recommendedPagerState, section)
 
     }
 
@@ -266,7 +251,10 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: HomeResponse
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainCarousal(pagerState: PagerState, section: HomeResponse.Data.Section) {
+fun MainCarousal(
+    pagerState: PagerState,
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
+) {
 
     HorizontalPager(
         count = section.sectionItems.size,
@@ -326,7 +314,7 @@ fun MainCarousal(pagerState: PagerState, section: HomeResponse.Data.Section) {
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = HexToJetpackColor.getColor(
-                            item.buttonBgColor ?: "e4b333"
+                            item.buttonBgColor
                         )
                     )
                 ) {
@@ -339,7 +327,7 @@ fun MainCarousal(pagerState: PagerState, section: HomeResponse.Data.Section) {
 }
 
 @Composable
-fun Categories(section: HomeResponse.Data.Section) {
+fun Categories(@PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section) {
     Column {
 
         Text(
@@ -387,7 +375,7 @@ fun Categories(section: HomeResponse.Data.Section) {
                         }
 
                         Text(
-                            text = item.title?:"",
+                            text = item.title ?: "",
                             modifier = Modifier.padding(vertical = 8.dp),
                             fontSize = 12.sp
                         )
@@ -401,7 +389,10 @@ fun Categories(section: HomeResponse.Data.Section) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ExclusiveItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
+fun ExclusiveItem(
+    pagerState: PagerState,
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
+) {
 
     Column(modifier = Modifier.wrapContentHeight()) {
 
@@ -458,7 +449,7 @@ fun ExclusiveItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
                 ) {
 
                     Text(
-                        text = item.title?:"",
+                        text = item.title ?: "",
                         color = Color.White,
                         fontSize = 22.sp,
                         fontWeight = SemiBold,
@@ -466,7 +457,7 @@ fun ExclusiveItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
                     )
 
                     Text(
-                        text = item.subtitle?:"",
+                        text = item.subtitle ?: "",
                         color = Color.White,
                         fontSize = 12.sp,
                         fontWeight = SemiBold,
@@ -484,7 +475,10 @@ fun ExclusiveItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun RecommendedItem(pagerState: PagerState, section: HomeResponse.Data.Section) {
+fun RecommendedItem(
+    pagerState: PagerState,
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
+) {
 
     Column(modifier = Modifier.wrapContentHeight()) {
 
