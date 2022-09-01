@@ -25,6 +25,9 @@ android {
     kapt {
         correctErrorTypes true
     }
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjvm-default=compatibility']
+    }
     buildFeatures {
         compose true
     }
