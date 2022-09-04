@@ -74,6 +74,20 @@ dependencies {
     implementation "com.google.accompanist:accompanist-pager:0.23.1"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:$ktor_version")
+    implementation "io.ktor:ktor-gson:1.4.2"
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+    implementation ("io.ktor:ktor-client-cio:$ktor_version")
+    implementation ("io.ktor:ktor-client-okhttp:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-client-auth:$ktor_version")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
+
+
     implementation("io.coil-kt:coil-compose:2.1.0")
 
     debugApi "androidx.customview:customview:1.2.0-alpha01"

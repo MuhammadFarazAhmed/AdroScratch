@@ -17,6 +17,10 @@ import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
 import dagger.hilt.android.EntryPointAccessors
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.call.*
+import io.ktor.client.plugins.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -41,29 +45,31 @@ object CommonFlowExtensions {
 
     fun <T> Flow<T>.handleErrors(): Flow<T> =
         catch { e -> Log.d("TAG", "handleErrors: ", e.fillInStackTrace()) }
+    
+//    fun Exception.toCustomExceptions() = when (this) {
+//        is ServerResponseException -> Failure.HttpErrorInternalServerError(this)
+//        is ClientRequestException ->
+//            when (this.response.status.value) {
+//                400 -> HttpErrorBadRequest(this)
+//                401 -> Failure.HttpErrorUnauthorized(this)
+//                403 -> Failure.HttpErrorForbidden(this)
+//                404 -> Failure.HttpErrorNotFound(this)
+//                else -> Failure.HttpError(this)
+//            }
+//        is RedirectResponseException -> Failure.HttpError(this)
+//        else -> Failure.GenericError(this)
+//    }
 
-    fun <T> toResultFlow(call: suspend () -> Response<T>): Flow<ApiResult<T>> {
-        return flow<ApiResult<T>> {
+    inline fun <reified T> toResultFlow(crossinline call: suspend () -> HttpResponse): Flow<ApiResult<T>> =
+        flow<ApiResult<T>> {
             emit(ApiResult.Loading(true))
-
             try {
-                val result = call()
-                if (result.isSuccessful) {
-                    result.body()?.let {
-                        emit(ApiResult.Success(result.body()))
-                    }
-                } else {
-                    result.errorBody()?.let {
-                        val error = it.string()
-                        it.close()
-                        emit(ApiResult.Error(error))
-                    }
-                }
+                val response = call()
+                emit(ApiResult.Success(response.body()))
             } catch (e: Exception) {
-                emit(ApiResult.Error(e.toString()))
+                emit(ApiResult.Error(e.message.toString()))
             }
         }.flowOn(Dispatchers.IO)
-    }
 
     @Composable
     fun <T> rememberFlow(

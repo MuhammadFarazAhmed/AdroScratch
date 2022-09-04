@@ -8,12 +8,13 @@ import com.example.domain.models.TabsResponse
 import com.example.domain.repos.OffersRepository
 import com.example.repositories.remote.api.OffersApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class OffersRepositoryImp(
     private val offersApi: OffersApi
 ) : OffersRepository {
 
-    override fun fetchTabs(): Flow<ApiResult<TabsResponse>> = toResultFlow { offersApi.tabs() }
+    override fun fetchTabs(): Flow<ApiResult<TabsResponse>> = flow { }
 
     override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> =
         offersApi.offers(

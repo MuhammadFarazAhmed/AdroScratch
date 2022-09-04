@@ -9,6 +9,6 @@ import javax.inject.Inject
 
 class HomeUseCaseImp @Inject constructor(private val homeRepository: HomeRepository) : HomeUseCase {
     
-    override fun fetchHome() = homeRepository.fetchHome()
+    override suspend fun fetchHome() = homeRepository.fetchHome()
 }
 
