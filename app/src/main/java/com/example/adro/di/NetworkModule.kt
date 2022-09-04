@@ -1,45 +1,35 @@
 package com.example.adro.di
 
 import android.util.Log
-import androidx.paging.Config
 import com.example.adro.BuildConfig
 import com.example.adro.common.CommonUtilsExtension.getAnnotation
 import com.example.adro.security.ApisEncryptionUtils
 import com.example.adro.security.CLibController
 import com.example.repositories.annotations.*
-import com.google.android.gms.auth.api.Auth
 import com.google.gson.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
-import io.ktor.client.engine.*
 import io.ktor.client.engine.android.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
-import io.ktor.util.reflect.*
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.serializer
 import okhttp3.*
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.ResponseBody.Companion.toResponseBody
-import okhttp3.internal.connection.ConnectInterceptor.intercept
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.net.URISyntaxException
 import java.util.concurrent.TimeUnit
-import java.util.logging.Level
 import javax.inject.Named
 import javax.inject.Singleton
-import kotlin.jvm.internal.Intrinsics
 
 @Module @InstallIn(SingletonComponent::class) class NetworkModule {
     
@@ -145,8 +135,7 @@ import kotlin.jvm.internal.Intrinsics
     
     @Provides
     @Singleton
-    fun provideKtor(jwtToken: String,
-                    cLibController: CLibController): HttpClient =
+    fun provideKtor(jwtToken: String, cLibController: CLibController): HttpClient =
             HttpClient(Android) {
                 
                 defaultRequest {
@@ -175,12 +164,7 @@ import kotlin.jvm.internal.Intrinsics
                 plugin(HttpSend).intercept { request ->
                     when (request.bodyType?.kotlinType) {
                         HomeApi::class.java -> {
-                            config {
-                                defaultRequest {
-                                    host = "Yeaaahhhhhhh"
-                                    url { protocol = URLProtocol.HTTPS }
-                                }
-                            }
+                        
                         }
                     }
                     execute(request)
