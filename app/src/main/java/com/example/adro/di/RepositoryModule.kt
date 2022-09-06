@@ -20,53 +20,55 @@ import io.ktor.client.*
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-@Module @InstallIn(SingletonComponent::class) class RepositoryModule {
-    
+@Module
+@InstallIn(SingletonComponent::class)
+class RepositoryModule {
+
     /**
      * Home
      */
     @Provides
     @Singleton
     fun provideHomeApi(retrofit: Retrofit): HomeApi = retrofit.create(HomeApi::class.java)
-    
+
     @Provides
     @Singleton
     fun provideHomeRepository(client: HttpClient): HomeRepository = HomeRepositoryImp(client)
-    
-    
+
+
     /**
      * Offers
      */
     @Provides
     @Singleton
     fun provideOffersApi(retrofit: Retrofit): OffersApi = retrofit.create(OffersApi::class.java)
-    
+
     @Provides
     @Singleton
     fun provideOffersRepository(offersApi: OffersApi): OffersRepository =
-            OffersRepositoryImp(offersApi)
-    
+        OffersRepositoryImp(offersApi)
+
     /**
      * Favorites
      */
     @Provides
     @Singleton
     fun provideFavoritesApi(retrofit: Retrofit): FavApi = retrofit.create(FavApi::class.java)
-    
+
     @Provides
     @Singleton
     fun provideFavoritesRepository(favApi: FavApi): FavoritesRepository = FavRepositoryImp(favApi)
-    
-    
+
+
     /**
      * Profile
      */
     @Provides
     @Singleton
     fun provideProfileApi(retrofit: Retrofit): ProfileApi = retrofit.create(ProfileApi::class.java)
-    
+
     @Provides
     @Singleton
-    fun provideProfileRepository(profileApi: ProfileApi): ProfileRepository =
-            ProfileRepositoryImp(profileApi)
+    fun provideProfileRepository(client: HttpClient): ProfileRepository =
+        ProfileRepositoryImp(client)
 }
