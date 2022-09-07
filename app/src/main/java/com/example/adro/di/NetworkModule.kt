@@ -152,7 +152,7 @@ import javax.inject.Singleton
     @Singleton
     fun provideKtor(jwtToken: String,
                     cLibController: CLibController,
-                    apisEncryptionUtils: ApisEncryptionUtils): HttpClient =
+                    apisEncryption: ApisEncryptionUtils): HttpClient =
             
             HttpClient(Android) {
                 
@@ -183,17 +183,9 @@ import javax.inject.Singleton
                 install(ContentNegotiation) { gson { } }
                 
                 decryptResponse {
-                    this.apisEncryptionUtils = apisEncryptionUtils
+                    apisEncryptionUtils = apisEncryption
                 }
-    
-                HttpResponseValidator {
-                    validateResponse { response ->
-                        val body: HttpResponse = response.body()
-                        response.bodyAsChannel()
-                    }
-                }
-                
-                
+
             }.apply {
                 changeBaseUrlInterceptor(cLibController)
             }

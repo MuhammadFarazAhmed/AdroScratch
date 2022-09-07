@@ -124,7 +124,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
 
 
-    implementation "com.google.accompanist:accompanist-pager:0.25.0"
+    implementation "com.google.accompanist:accompanist-pager:0.23.1"
 
     implementation("io.coil-kt:coil-compose:2.1.0")
 
