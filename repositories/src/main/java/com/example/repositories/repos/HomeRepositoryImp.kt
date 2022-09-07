@@ -17,6 +17,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 
+//TODO change it to ENUM
 val MyAttributeKey = AttributeKey<String>("MyAttributeKey")
 
 class HomeRepositoryImp(private val client: HttpClient) : HomeRepository {

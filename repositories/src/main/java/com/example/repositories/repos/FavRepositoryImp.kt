@@ -10,38 +10,48 @@ import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.OffersRepository
 import com.example.repositories.remote.api.FavApi
 import com.example.repositories.remote.api.OffersApi
+import io.ktor.client.*
+import io.ktor.client.call.*
+import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 
 class FavRepositoryImp(
-    private val favApi: FavApi
+    private val client: HttpClient
 ) : FavoritesRepository {
-    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> =
-        favApi.favs(HashMap<String, String>().apply {
-            put("__company", "ADO")
-            put("__lng", "0")
-            put("device_key", "26525de9bd832a74")
-            put("app_version", "1.0")
-            put("lng", "0")
-            put("is_adro_listing", "1")
-            put("favourites", "1")
-            put("listing_type", "favourites")
-            put("redeemability", "all")
-            put("device_model", "samsung%20SM-F916B")
-            put("device_os_ver", "12")
-            put("language", "en")
-            put("build_no", "37")
-            put("time_zone", "Asia/Karachi")
-            put("device_os", "android")
-            put("location_id", "2")
-            put("device_uuid", "26525de9bd832a74")
-            put("__platform", "android")
-            put("device_uid", "26525de9bd832a74")
-            put("__lat", "0")
-            put("company", "ADO")
-            put("currency", "AED")
-            put("wlcompany", "ADO")
-            put("lat", "0")
-        }).body()?.data?.outlets!!
+    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> {
 
+        val response = client.post {
+            attributes.put(MyAttributeKey, "favApi")
+            url {
+                path("et_user/v5/user/profile")
+                setBody(
+                    mapOf(
+                        "__company" to "ADO",
+                        "__lng" to "0",
+                        "device_key" to "26525de9bd832a74",
+                        "app_version" to "1.0",
+                        "lng" to "0",
+                        "device_model" to "samsung%20SM-F916B",
+                        "device_os_ver" to "12",
+                        "language" to "en",
+                        "build_no" to "37",
+                        "time_zone" to "Asia/Karachi",
+                        "device_os" to "android",
+                        "location_id" to "2",
+                        "device_uuid" to "26525de9bd832a74",
+                        "__platform" to "android",
+                        "device_uid" to "26525de9bd832a74",
+                        "__lat" to "0",
+                        "company" to "ADO",
+                        "currency" to "AED",
+                        "wlcompany" to "ADO",
+                        "lat" to "0"
+                    )
+                )
+            }
+        }
+        return response.body()
+    }
 }
 

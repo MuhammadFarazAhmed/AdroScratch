@@ -29,43 +29,20 @@ class RepositoryModule {
      */
     @Provides
     @Singleton
-    fun provideHomeApi(retrofit: Retrofit): HomeApi = retrofit.create(HomeApi::class.java)
-
-    @Provides
-    @Singleton
     fun provideHomeRepository(client: HttpClient): HomeRepository = HomeRepositoryImp(client)
 
 
-    /**
-     * Offers
-     */
     @Provides
     @Singleton
-    fun provideOffersApi(retrofit: Retrofit): OffersApi = retrofit.create(OffersApi::class.java)
+    fun provideOffersRepository(client: HttpClient): OffersRepository =
+        OffersRepositoryImp(client)
 
-    @Provides
-    @Singleton
-    fun provideOffersRepository(offersApi: OffersApi): OffersRepository =
-        OffersRepositoryImp(offersApi)
-
-    /**
-     * Favorites
-     */
-    @Provides
-    @Singleton
-    fun provideFavoritesApi(retrofit: Retrofit): FavApi = retrofit.create(FavApi::class.java)
 
     @Provides
     @Singleton
-    fun provideFavoritesRepository(favApi: FavApi): FavoritesRepository = FavRepositoryImp(favApi)
+    fun provideFavoritesRepository(client: HttpClient): FavoritesRepository =
+        FavRepositoryImp(client)
 
-
-    /**
-     * Profile
-     */
-    @Provides
-    @Singleton
-    fun provideProfileApi(retrofit: Retrofit): ProfileApi = retrofit.create(ProfileApi::class.java)
 
     @Provides
     @Singleton
