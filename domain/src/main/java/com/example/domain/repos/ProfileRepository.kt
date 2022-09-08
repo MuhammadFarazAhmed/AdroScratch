@@ -8,6 +8,6 @@ import retrofit2.Response
 
 interface ProfileRepository {
 
-   suspend fun fetchProfile() : List<ProfileResponse.Data>
+    suspend fun fetchProfile(): List<ProfileResponse.Data>
 
 }

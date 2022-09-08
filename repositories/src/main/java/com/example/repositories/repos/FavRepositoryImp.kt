@@ -1,57 +1,32 @@
 package com.example.repositories.repos
 
-import com.example.adro.base.ApiResult
-import com.example.adro.common.CommonFlowExtensions.toResultFlow
-import com.example.adro.common.CommonUtilsExtension.convert
+import android.util.Log
+import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
+import com.example.adro.common.CommonUtilsExtension
+import com.example.adro.common.CommonUtilsExtension.setDefaultData
 import com.example.domain.models.FavoriteResponse
 import com.example.domain.models.OffersResponse
-import com.example.domain.models.TabsResponse
+import com.example.domain.models.ProfileResponse
+import com.example.domain.models.asList
 import com.example.domain.repos.FavoritesRepository
-import com.example.domain.repos.OffersRepository
-import com.example.repositories.remote.api.FavApi
-import com.example.repositories.remote.api.OffersApi
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
 
 class FavRepositoryImp(
     private val client: HttpClient
 ) : FavoritesRepository {
-    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> {
-
-        val response = client.post {
-            attributes.put(MyAttributeKey, "favApi")
-            url {
-                path("et_user/v5/user/profile")
-                setBody(
-                    mapOf(
-                        "__company" to "ADO",
-                        "__lng" to "0",
-                        "device_key" to "26525de9bd832a74",
-                        "app_version" to "1.0",
-                        "lng" to "0",
-                        "device_model" to "samsung%20SM-F916B",
-                        "device_os_ver" to "12",
-                        "language" to "en",
-                        "build_no" to "37",
-                        "time_zone" to "Asia/Karachi",
-                        "device_os" to "android",
-                        "location_id" to "2",
-                        "device_uuid" to "26525de9bd832a74",
-                        "__platform" to "android",
-                        "device_uid" to "26525de9bd832a74",
-                        "__lat" to "0",
-                        "company" to "ADO",
-                        "currency" to "AED",
-                        "wlcompany" to "ADO",
-                        "lat" to "0"
-                    )
-                )
+    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> =
+        try {
+            val response = client.post {
+                url { path("/ets_api/v5/outlets") }
+                setDefaultData(CommonUtilsExtension.API.FAV)
             }
+            (response.body() as FavoriteResponse).asList()
+        } catch (e: Exception) {
+            e.toCustomExceptions()
+            emptyList()
         }
-        return response.body()
-    }
 }
 

@@ -24,9 +24,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
 
-    /**
-     * Home
-     */
     @Provides
     @Singleton
     fun provideHomeRepository(client: HttpClient): HomeRepository = HomeRepositoryImp(client)
@@ -34,8 +31,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideOffersRepository(client: HttpClient): OffersRepository =
-        OffersRepositoryImp(client)
+    fun provideOffersRepository(client: HttpClient): OffersRepository = OffersRepositoryImp(client)
 
 
     @Provides

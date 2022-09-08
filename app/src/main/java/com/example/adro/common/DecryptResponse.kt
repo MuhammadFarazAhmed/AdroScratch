@@ -1,5 +1,6 @@
 package com.example.adro.common
 
+import android.util.Base64
 import android.util.Log
 import com.example.adro.security.ApisEncryptionUtils
 import com.example.domain.models.HomeResponse
@@ -16,6 +17,7 @@ import io.ktor.utils.io.copyTo
 import io.ktor.utils.io.jvm.nio.*
 import okhttp3.ResponseBody.Companion.toResponseBody
 import java.nio.ByteBuffer
+import java.nio.charset.Charset
 
 class DecryptResponse private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
@@ -32,7 +34,9 @@ class DecryptResponse private constructor(private val apisEncryptionUtils: ApisE
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptResponse = ByteReadChannel(apisEncryptionUtils.decryptString(original.readUTF8Line()))
+            val decryptString = apisEncryptionUtils.decryptString(String(original.toByteArray()))
+                .also { Log.d("decryptedResponse", it) }
+            val decryptResponse = ByteReadChannel(decryptString)
 
             val response = HttpResponseContainer(type, decryptResponse)
             proceedWith(response)
