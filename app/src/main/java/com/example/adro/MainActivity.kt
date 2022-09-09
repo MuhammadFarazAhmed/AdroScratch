@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
     ) {
         NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
             composable(NavigationItem.Home.route) {
-                HomeScreen()
+                HomeScreen(this)
                 topAppBar.value = true
             }
             composable(NavigationItem.Offers.route) {

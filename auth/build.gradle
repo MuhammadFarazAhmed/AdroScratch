@@ -1,38 +1,38 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
 }
 
 android {
-    compileSdk 33
-    flavorDimensions "default"
+    compileSdk 32
+
     defaultConfig {
-        applicationId "com.example.adro"
         minSdk 21
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        targetSdk 32
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary true
-        }
-        externalNativeBuild {
-            cmake {
-                version "3.18.1"
-                cppFlags ""
-            }
-        }
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            jniDebuggable false
         }
+    }
+    kapt {
+        correctErrorTypes true
+    }
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjvm-default=compatibility']
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion compose_version
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -41,43 +41,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    kotlinOptions {
-        freeCompilerArgs = ['-Xjvm-default=compatibility']
-    }
-    kapt {
-        correctErrorTypes true
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion compose_version
-    }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
-    externalNativeBuild {
-        cmake {
-            path file('../CMakeLists.txt')
-        }
-    }
-
-    productFlavors {
-        devnode {
-            manifestPlaceholders = [enableCrashReporting: "false"]
-        }
-        qanode {
-        }
-        uatnode {
-        }
-        rcnode {
-        }
-        production {
-        }
-    }
-    ndkVersion '21.4.7075529'
 }
 
 dependencies {
@@ -89,9 +52,6 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
-    implementation project(path: ':domain')
-    implementation project(path: ':repositories')
-    implementation 'com.google.android.gms:play-services-auth:20.2.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -110,10 +70,13 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logger_version"
 
+    implementation "com.google.accompanist:accompanist-pager:0.23.1"
+    implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
+
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
     implementation("io.ktor:ktor-client-serialization:$ktor_version")
-    implementation("io.ktor:ktor-serialization-gson:$ktor_version")
+    implementation "io.ktor:ktor-gson:1.4.2"
     implementation("io.ktor:ktor-client-logging:$ktor_version")
     implementation ("io.ktor:ktor-client-cio:$ktor_version")
     implementation ("io.ktor:ktor-client-okhttp:$ktor_version")
@@ -124,26 +87,18 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
 
 
-    implementation "com.google.accompanist:accompanist-pager:0.25.1"
-
     implementation("io.coil-kt:coil-compose:2.1.0")
 
     debugApi "androidx.customview:customview:1.2.0-alpha01"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
-    debugApi("androidx.paging:paging-compose:1.0.0-alpha16")
-    def paging_version = "2.1.1"
-    debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
-
-    api(project(':auth'))
-    api(project(':home'))
-    api(project(':offers'))
-    api(project(':favorite'))
-    api(project(':profile'))
-    api(project(':repositories'))
-    api(project(':domain'))
-    api(project(':base'))
+    implementation(project(':base'))
+    implementation(project(':domain'))
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }

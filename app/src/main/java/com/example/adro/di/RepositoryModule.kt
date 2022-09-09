@@ -1,28 +1,26 @@
 package com.example.adro.di
 
-import com.example.domain.repos.FavoritesRepository
-import com.example.domain.repos.HomeRepository
-import com.example.domain.repos.OffersRepository
-import com.example.domain.repos.ProfileRepository
-import com.example.repositories.remote.api.FavApi
-import com.example.repositories.remote.api.HomeApi
-import com.example.repositories.remote.api.OffersApi
-import com.example.repositories.remote.api.ProfileApi
+import com.example.domain.repos.*
 import com.example.repositories.repos.FavRepositoryImp
 import com.example.repositories.repos.HomeRepositoryImp
 import com.example.repositories.repos.OffersRepositoryImp
 import com.example.repositories.repos.ProfileRepositoryImp
+import com.example.repositories.usecases.AuthRepositoryImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.*
-import retrofit2.Retrofit
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 class RepositoryModule {
+
+
+    @Provides
+    @Singleton
+    fun provideAuthRepository(client: HttpClient): AuthRepository = AuthRepositoryImp(client)
 
     @Provides
     @Singleton

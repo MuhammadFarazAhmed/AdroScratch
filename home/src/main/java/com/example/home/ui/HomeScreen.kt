@@ -22,6 +22,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
@@ -43,7 +46,7 @@ fun HomeScreenPreview() {
     Column {
         MainCarousal(pagerState, section)
 
-        LoginView(section)
+        // LoginView(section, navControlle)
 
         Categories(section)
 
@@ -57,7 +60,7 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavGraphBuilder) {
 
     val vm = hiltViewModel<HomeViewModel>()
 
@@ -77,7 +80,7 @@ fun HomeScreen() {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "guest_user" -> LoginView(section)
+                    "guest_user" -> LoginView(section, navController)
 
                     "categories" -> Categories(section)
 
@@ -104,7 +107,10 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 }
 
 @Composable
-fun LoginView(@PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?) {
+fun LoginView(
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
+    navController: NavGraphBuilder
+) {
 
     Column {
         Box(
@@ -157,7 +163,7 @@ fun LoginView(@PreviewParameter(SampleUserProvider::class) section: HomeResponse
                 )
 
                 Button(
-                    onClick = { },
+                    onClick = { navController.composable("auth") { /*AuthScreen }*/ } },
                     contentPadding = PaddingValues(horizontal = 12.dp),
                     modifier = Modifier
                         .height(34.dp)
