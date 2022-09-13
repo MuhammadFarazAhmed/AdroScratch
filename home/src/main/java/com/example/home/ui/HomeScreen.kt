@@ -1,5 +1,7 @@
 package com.example.home.ui
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -60,7 +62,7 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(navController: NavGraphBuilder) {
+fun HomeScreen(context: MainActivity) {
 
     val vm = hiltViewModel<HomeViewModel>()
 
@@ -80,7 +82,7 @@ fun HomeScreen(navController: NavGraphBuilder) {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "guest_user" -> LoginView(section, navController)
+                    "guest_user" -> LoginView(section,context)
 
                     "categories" -> Categories(section)
 
@@ -109,7 +111,7 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 @Composable
 fun LoginView(
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
-    navController: NavGraphBuilder
+    context: Context
 ) {
 
     Column {
@@ -163,7 +165,7 @@ fun LoginView(
                 )
 
                 Button(
-                    onClick = { navController.composable("auth") { /*AuthScreen }*/ } },
+                    onClick = { context.startActivity(Intent(context, MainActivity::class.java)) },
                     contentPadding = PaddingValues(horizontal = 12.dp),
                     modifier = Modifier
                         .height(34.dp)

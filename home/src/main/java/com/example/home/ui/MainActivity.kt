@@ -1,4 +1,4 @@
-package com.example.adro
+package com.example.home.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,18 +9,16 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.adro.BottomNavigationBar
+import com.example.adro.NavigationItem
+import com.example.adro.Toolbar
 import com.example.adro.theme.AdroScratchTheme
-import com.example.favorite.ui.FavoriteScreen
-import com.example.home.ui.HomeScreen
-import com.example.offers.ui.OffersScreen
-import com.example.profile.ui.ProfileScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,15 +28,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            val navigator = remember { Navigator() }
-
-            var topBarState = rememberSaveable { (mutableStateOf(true)) }
+            val topBarState = rememberSaveable { (mutableStateOf(true)) }
 
             AdroScratchTheme {
                 Scaffold(topBar = { Toolbar(topBarState) },
                     content = { padding ->
                         Box(modifier = Modifier.padding(padding)) {
-                            NavigationComponent(navController, navigator, topBarState)
+                            NavigationComponent(navController, topBarState)
                         }
                     }, bottomBar = { BottomNavigationBar(navController) })
             }
@@ -48,24 +44,23 @@ class MainActivity : ComponentActivity() {
     @Composable
     fun NavigationComponent(
         navController: NavHostController,
-        navigator: Navigator,
         topAppBar: MutableState<Boolean>
     ) {
         NavHost(navController = navController, startDestination = NavigationItem.Home.route) {
             composable(NavigationItem.Home.route) {
-                HomeScreen(this)
+                HomeScreen(this@MainActivity)
                 topAppBar.value = true
             }
             composable(NavigationItem.Offers.route) {
-                OffersScreen()
+                //OffersScreen()
                 topAppBar.value = false
             }
             composable(NavigationItem.Favorite.route) {
-                FavoriteScreen()
+                //FavoriteScreen()
                 topAppBar.value = false
             }
             composable(NavigationItem.Profile.route) {
-                ProfileScreen()
+                // ProfileScreen()
                 topAppBar.value = false
             }
         }
