@@ -1,21 +1,11 @@
 package com.example.adro.common
 
-import android.util.Log
 import com.example.adro.security.ApisEncryptionUtils
-import com.example.domain.models.HomeResponse
-import com.google.gson.Gson
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
-import io.ktor.http.content.*
 import io.ktor.util.*
-import io.ktor.util.Identity.decode
 import io.ktor.utils.io.*
-import io.ktor.utils.io.copyTo
-import io.ktor.utils.io.jvm.nio.*
-import okhttp3.ResponseBody.Companion.toResponseBody
-import java.nio.ByteBuffer
 
 class DecryptResponse private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
