@@ -98,19 +98,19 @@ const char *QA_ANALYTICS_BUNDLE_URL = "";
 
 /*--------------------------------------------------------------------*/
 //NEW URL
-const char *UAT_OUTLET_BASE_URL = "https://apiutb2betotlsrvpy.theentertainerme.com/ets_api/v5/";
-const char *UAT_MERCHANT_BASE_URL = "https://apiutb2betmrchtsrvpy.theentertainerme.com/ets_api/v5/";
-const char *UAT_FILTER_BASE_URL = "https://apiutb2betcfgsrvpy.theentertainerme.com/ets_api/v5/";
-const char *UAT_ENT_BASE_URL = "https://apiutb2betentsrvpy.theentertainerme.com/ets_api/v5/";
-const char *UAT_REDEMPTION_ADRO_BASE_URL = "https://apiutb2betrdmpnsrvpy.theentertainerme.com/ets_api/v5/";
-const char *UAT_SAVING_ADRO_BASE_URL = "https://apiutb2betusrsrvpy.theentertainerme.com/et_user/v5/";
-const char *UAT_AUTH_BASE_URL = "https://apiutb2betusrsrvpy.theentertainerme.com/et_user/v5/";
-const char *UAT_PROFILE_ADRO_BASE_URL = "https://apiutb2cpyusrpref.theentertainerme.com/api_ets/v1/";
+const char *UAT_OUTLET_BASE_URL = "apiutb2betotlsrvpy.theentertainerme.com/ets_api/v5";
+const char *UAT_MERCHANT_BASE_URL = "apiutb2betmrchtsrvpy.theentertainerme.com/ets_api/v5/";
+const char *UAT_FILTER_BASE_URL = "apiutb2betcfgsrvpy.theentertainerme.com/ets_api/v5/";
+const char *UAT_ENT_BASE_URL = "apiutb2betentsrvpy.theentertainerme.com";
+const char *UAT_REDEMPTION_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com/ets_api/v5/";
+const char *UAT_SAVING_ADRO_BASE_URL = "apiutb2betusrsrvpy.theentertainerme.com";
+const char *UAT_AUTH_BASE_URL = "apiutb2betusrsrvpy.theentertainerme.com";
+const char *UAT_PROFILE_ADRO_BASE_URL = "apiutb2cpyusrpref.theentertainerme.com/api_ets/v1/";
 
 /*--------------------------------------------------------------------*/
 
 
-//const char *UAT_AUTH_BASE_URL = "https://apiutb2baldpy.theentertainerme.com/";
+//const char *UAT_AUTH_BASE_URL = "https://apiutb2baldpy.theentertainerme.com";
 const char *UAT_CORE_BASE_URL = "https://apiutb2baldpy.theentertainerme.com/";
 const char *UAT_CONFIG_BASE_URL = "https://apiutb2baldpy.theentertainerme.com/";
 const char *UAT_BUNDLE_URL = "api_adr/v2/";
@@ -140,13 +140,13 @@ apircb2betusrsrvpy.theentertainerme.com
 
 //**************************************************************************
 
-const char *RC_OUTLET_BASE_URL = "https://apircb2betotlsrvpy.theentertainerme.com/ets_api/v5/";
+const char *RC_OUTLET_BASE_URL = "apircb2betotlsrvpy.theentertainerme.com";
 const char *RC_MERCHANT_BASE_URL = "https://apircb2betmrchtsrvpy.theentertainerme.com/ets_api/v5/";
 const char *RC_FILTER_BASE_URL = "https://apircb2betcfgsrvpy.theentertainerme.com/ets_api/v5/";
-const char *RC_ENT_BASE_URL = "https://apircb2betentsrvpy.theentertainerme.com/ets_api/v5/";
+const char *RC_ENT_BASE_URL = "apircb2betentsrvpy.theentertainerme.com";
 const char *RC_REDEMPTION_ADRO_BASE_URL = "https://apircb2betrdmpnsrvpy.theentertainerme.com/ets_api/v5/";
 const char *RC_SAVING_ADRO_BASE_URL = "https://apircb2betusrsrvpy.theentertainerme.com/et_user/v5/";
-const char *RC_AUTH_BASE_URL = "https://apircb2betusrsrvpy.theentertainerme.com/et_user/v5/";
+const char *RC_AUTH_BASE_URL = "apircb2betusrsrvpy.theentertainerme.com";
 const char *RC_PROFILE_ADRO_BASE_URL = "https://apircb2cpyusrpref.theentertainerme.com/api_ets/v1/";
 
 
@@ -183,7 +183,7 @@ const char *RC_ANALYTICS_BUNDLE_URL = "PROD/v2/";
 const char *PRODUCTION_OUTLET_BASE_URL = "https://apiprdb2betotlsrvpy.theentertainerme.com/ets_api/v5/";
 const char *PRODUCTION_MERCHANT_BASE_URL = "https://apiprdb2betmrchtsrvpy.theentertainerme.com/ets_api/v5/";
 const char *PRODUCTION_FILTER_BASE_URL = "https://apiprdb2betcfgsrvpy.theentertainerme.com/ets_api/v5/";
-const char *PRODUCTION_ENT_BASE_URL = "https://apiprdb2betentsrvpy.theentertainerme.com/ets_api/v5/";
+const char *PRODUCTION_ENT_BASE_URL = "apiprdb2betentsrvpy.theentertainerme.com";
 const char *PRODUCTION_REDEMPTION_ADRO_BASE_URL = "https://apiprdb2betrdmpnsrvpy.theentertainerme.com/ets_api/v5/";
 const char *PRODUCTION_SAVING_ADRO_BASE_URL = "https://apiprdb2betusrsrvpy.theentertainerme.com/et_user/v5/";
 const char *PRODUCTION_AUTH_BASE_URL = "https://apiprdb2betusrsrvpy.theentertainerme.com/et_user/v5/";

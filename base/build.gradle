@@ -65,6 +65,15 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logger_version"
 
+    implementation("io.ktor:ktor-client-core:$ktor_version")
+    implementation("io.ktor:ktor-client-android:$ktor_version")
+    implementation("io.ktor:ktor-client-serialization:$ktor_version")
+    implementation("io.ktor:ktor-client-logging:$ktor_version")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
+    implementation("ch.qos.logback:logback-classic:1.2.3")
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
+
     implementation "com.google.accompanist:accompanist-pager:0.23.1"
 
     debugApi("androidx.paging:paging-compose:1.0.0-alpha16")

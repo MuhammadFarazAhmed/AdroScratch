@@ -20,7 +20,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
@@ -28,9 +27,6 @@ import com.example.adro.PagerExtension.pagerTabIndicatorOffset
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
-import com.example.adro.ErrorItem
-import com.example.adro.LoadingItem
-import com.example.adro.LoadingView
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*

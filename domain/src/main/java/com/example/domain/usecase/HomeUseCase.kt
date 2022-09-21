@@ -7,5 +7,5 @@ import retrofit2.Response
 
 interface HomeUseCase {
     
-    fun fetchHome(): Flow<ApiResult<HomeResponse>>
+    suspend fun fetchHome(): Flow<ApiResult<HomeResponse>>
 }

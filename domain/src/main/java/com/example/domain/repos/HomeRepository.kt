@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import retrofit2.Response
 
 interface HomeRepository {
-
-    fun fetchHome() : Flow<ApiResult<HomeResponse>>
+    
+    suspend fun fetchHome() : Flow<ApiResult<HomeResponse>>
     
 }

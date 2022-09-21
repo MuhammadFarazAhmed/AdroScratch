@@ -6,6 +6,7 @@ buildscript {
         retrofit_version = '2.9.0'
         okhttp_version = '4.9.3'
         okhttp_logger_version = '4.9.3'
+        ktor_version = '2.1.0'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {

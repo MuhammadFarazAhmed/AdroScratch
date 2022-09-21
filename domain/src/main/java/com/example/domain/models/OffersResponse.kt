@@ -9,7 +9,7 @@ data class OffersResponse(
     @SerializedName("code")
     val code: Int? = null,
     @SerializedName("data")
-    val `data`: Data ,
+    val `data`: Data,
     @SerializedName("http_response")
     val httpResponse: Int? = null,
     @SerializedName("message")
@@ -31,7 +31,7 @@ data class OffersResponse(
         @SerializedName("offset")
         val offset: Int? = null,
         @SerializedName("outlets")
-        val outlets: List<Outlet> ,
+        val outlets: List<Outlet>,
         @SerializedName("page_size")
         val pageSize: Int? = null,
         @SerializedName("ping_section")
@@ -144,3 +144,5 @@ data class OffersResponse(
         class PingSection
     }
 }
+
+fun OffersResponse.asList() = data.outlets
