@@ -9,7 +9,7 @@ data class ProfileResponse(
     @SerializedName("code")
     val code: Int? = null,
     @SerializedName("data")
-    val `data`: List<Data> ,
+    val `data`: List<Data>,
     @SerializedName("http_response")
     val httpResponse: Int? = null,
     @SerializedName("message")
@@ -19,7 +19,7 @@ data class ProfileResponse(
 ) {
     data class Data(
         @SerializedName("section_data")
-        val sectionData: List<SectionData> ,
+        val sectionData: List<SectionData>,
         @SerializedName("section_identifier")
         val sectionIdentifier: String = "",
         @SerializedName("section_title")
@@ -49,3 +49,5 @@ data class ProfileResponse(
         )
     }
 }
+
+fun ProfileResponse.asList() = data

@@ -9,7 +9,7 @@ data class FavoriteResponse(
     @SerializedName("code")
     val code: Int? = null,
     @SerializedName("data")
-    val `data`: Data? = null,
+    val `data`: Data,
     @SerializedName("http_response")
     val httpResponse: Int? = null,
     @SerializedName("message")
@@ -31,7 +31,7 @@ data class FavoriteResponse(
         @SerializedName("offset")
         val offset: Int? = null,
         @SerializedName("outlets")
-        val outlets: List<Outlet> ,
+        val outlets: List<Outlet>,
         @SerializedName("page_size")
         val pageSize: Int? = null,
         @SerializedName("ping_section")
@@ -144,3 +144,5 @@ data class FavoriteResponse(
         class PingSection
     }
 }
+
+fun FavoriteResponse.asList() = data.outlets

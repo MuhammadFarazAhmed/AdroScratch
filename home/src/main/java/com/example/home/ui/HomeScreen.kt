@@ -1,5 +1,7 @@
 package com.example.home.ui
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -22,6 +24,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
@@ -43,7 +48,7 @@ fun HomeScreenPreview() {
     Column {
         MainCarousal(pagerState, section)
 
-        LoginView(section)
+        // LoginView(section, navControlle)
 
         Categories(section)
 
@@ -104,7 +109,9 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 }
 
 @Composable
-fun LoginView(@PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?) {
+fun LoginView(
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?
+) {
 
     Column {
         Box(
