@@ -62,7 +62,7 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(context: MainActivity) {
+fun HomeScreen() {
 
     val vm = hiltViewModel<HomeViewModel>()
 
@@ -82,7 +82,7 @@ fun HomeScreen(context: MainActivity) {
 
                     "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "guest_user" -> LoginView(section,context)
+                    "guest_user" -> LoginView(section)
 
                     "categories" -> Categories(section)
 
@@ -110,8 +110,7 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 
 @Composable
 fun LoginView(
-    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
-    context: Context
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?
 ) {
 
     Column {
@@ -165,7 +164,7 @@ fun LoginView(
                 )
 
                 Button(
-                    onClick = { context.startActivity(Intent(context, MainActivity::class.java)) },
+                    onClick = { },
                     contentPadding = PaddingValues(horizontal = 12.dp),
                     modifier = Modifier
                         .height(34.dp)
