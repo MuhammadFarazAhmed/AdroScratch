@@ -1,4 +1,4 @@
-package com.example.favorite.vm
+package com.example.offers.vm
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

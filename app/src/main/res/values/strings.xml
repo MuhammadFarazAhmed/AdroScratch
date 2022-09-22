@@ -2,4 +2,7 @@
     <string name="app_name">Adro Scratch</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="offers">Offers</string>
+    <string name="Favorite">Favorite</string>
+    <string name="profile">Profile</string>
 </resources>

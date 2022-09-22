@@ -5,13 +5,15 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import com.example.adro.AdroNavigationDestination
 import com.example.home.nav.HomeDestination
 import com.example.home.nav.homeGraph
+import com.example.offers.nav.favGraph
+import com.example.offers.nav.merchantGraph
+import com.example.profile.nav.profileGraph
 
 @Composable
-fun NavHost(
+fun AdroNavHost(
     navController: NavHostController,
     onNavigateToDestination: (AdroNavigationDestination, String) -> Unit,
     onBackClick: () -> Unit,
@@ -26,17 +28,9 @@ fun NavHost(
     ) {
 
         homeGraph()
-//        composable(NavigationItem.Offers.route) {
-//            //OffersScreen()
-//            topAppBar.value = false
-//        }
-//        composable(NavigationItem.Favorite.route) {
-//            //FavoriteScreen()
-//            topAppBar.value = false
-//        }
-//        composable(NavigationItem.Profile.route) {
-//            // ProfileScreen()
-//            topAppBar.value = false
-//        }
+        merchantGraph()
+        favGraph()
+        profileGraph()
+
     }
 }
