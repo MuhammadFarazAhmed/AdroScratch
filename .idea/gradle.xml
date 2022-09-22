@@ -18,8 +18,8 @@
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/favorite" />
             <option value="$PROJECT_DIR$/home" />
+            <option value="$PROJECT_DIR$/merchant" />
             <option value="$PROJECT_DIR$/model" />
-            <option value="$PROJECT_DIR$/offers" />
             <option value="$PROJECT_DIR$/profile" />
             <option value="$PROJECT_DIR$/repositories" />
           </set>

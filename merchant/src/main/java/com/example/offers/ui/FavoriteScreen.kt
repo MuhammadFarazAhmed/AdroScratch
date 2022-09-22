@@ -1,4 +1,4 @@
-package com.example.favorite.ui
+package com.example.offers.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.*
@@ -24,7 +24,7 @@ import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.domain.models.FavoriteResponse
-import com.example.favorite.vm.FavoriteViewModel
+import com.example.offers.vm.FavoriteViewModel
 
 @Composable
 fun FavoriteScreen() {
