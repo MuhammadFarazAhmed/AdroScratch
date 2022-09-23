@@ -6,6 +6,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import com.example.adro.AdroNavigationDestination
+import com.example.auth.nav.AuthDestination
+import com.example.auth.nav.authGraph
 import com.example.home.nav.HomeDestination
 import com.example.home.nav.homeGraph
 import com.example.offers.nav.favGraph
@@ -27,7 +29,16 @@ fun AdroNavHost(
         modifier = modifier
     ) {
 
-        homeGraph()
+        homeGraph(
+            navigateToAuth = {
+                onNavigateToDestination(
+                    AuthDestination, AuthDestination.route
+                )
+            },
+            nestedGraphs = {
+                authGraph(onBackClick)
+            })
+
         merchantGraph()
         favGraph()
         profileGraph()

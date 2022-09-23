@@ -24,8 +24,8 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
                     AdroNavHost(
                         navController = appState.navController,
                         onBackClick = appState::onBackClick,
-                        onNavigateToDestination = appState::navigate
-                        , topAppBar = topBarState
+                        onNavigateToDestination = appState::navigate,
+                        topAppBar = topBarState
                     )
                 }
             }, bottomBar = {

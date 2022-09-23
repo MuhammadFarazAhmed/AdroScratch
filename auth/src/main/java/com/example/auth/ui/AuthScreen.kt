@@ -110,10 +110,15 @@ fun LoginScreen() {
 }
 
 @Composable
-fun AuthScreen() {
+fun AuthScreen(onBackClick: () -> Unit) {
     val vm = hiltViewModel<AuthViewModel>()
     Surface(modifier = Modifier.background(Color.White)) {
-
+        Image(
+            painter = painterResource(id = R.drawable.adro_image),
+            contentDescription = "",
+            modifier = Modifier.fillMaxSize()
+        )
+        LoginScreen()
     }
 
 }
