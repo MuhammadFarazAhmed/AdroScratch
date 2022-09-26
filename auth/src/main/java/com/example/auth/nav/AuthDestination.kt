@@ -1,5 +1,6 @@
 package com.example.auth.nav
 
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.adro.AdroNavigationDestination
@@ -10,10 +11,18 @@ object AuthDestination : AdroNavigationDestination {
     override val destination = "auth_destination"
 }
 
-fun NavGraphBuilder.authGraph(onBackClick: () -> Unit) {
+fun NavGraphBuilder.authGraph(
+    onBackClick: () -> Unit,
+    shouldShowNavRail: MutableState<Boolean>,
+    shouldShowBottomBar: MutableState<Boolean>
+) {
 
     composable(AuthDestination.route) {
-        AuthScreen(onBackClick = onBackClick)
+        AuthScreen(
+            onBackClick = onBackClick, shouldShowNavRail,
+            shouldShowBottomBar,
+        )
     }
 
 }
+

@@ -28,9 +28,7 @@ class HomeViewModel @Inject constructor(
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
-                    ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it.message}: ")
-                    }
+                    ApiStatus.ERROR -> Log.d("TAG", "${it.message}: ")
                     ApiStatus.LOADING -> {}
                 }
             }

@@ -3,7 +3,9 @@ package com.example.adro
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.os.trace
 import androidx.navigation.NavDestination
@@ -37,12 +39,8 @@ class AdroAppState(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-//    val shouldShowBottomBar: Boolean
-//        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
-//            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
-//    val shouldShowNavRail: Boolean
-//        get() = !shouldShowBottomBar
+    val shouldShowNavRail @Composable get() = rememberSaveable { mutableStateOf(true) }
+    val shouldShowBottomBar @Composable get() = rememberSaveable { mutableStateOf(true) }
 
     /**
      * Top level destinations to be used in the BottomBar and NavRail

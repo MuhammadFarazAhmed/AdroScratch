@@ -21,8 +21,10 @@ fun AdroNavHost(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = HomeDestination.route,
-    topAppBar: MutableState<Boolean>
+    shouldShowNavRail: MutableState<Boolean>,
+    shouldShowBottomBar: MutableState<Boolean>
 ) {
+
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -36,7 +38,7 @@ fun AdroNavHost(
                 )
             },
             nestedGraphs = {
-                authGraph(onBackClick)
+                authGraph(onBackClick, shouldShowNavRail, shouldShowBottomBar)
             })
 
         merchantGraph()
