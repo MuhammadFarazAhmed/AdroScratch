@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
+import androidx.paging.map
 import com.example.adro.ErrorItem
 import com.example.adro.LoadingItem
 import com.example.adro.LoadingView
@@ -35,6 +36,8 @@ import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
+import kotlinx.coroutines.flow.flatMap
+import kotlinx.coroutines.flow.map
 
 
 enum class ProfileSections(val value: String) {

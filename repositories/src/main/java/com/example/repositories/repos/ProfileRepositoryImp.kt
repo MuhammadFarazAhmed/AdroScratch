@@ -1,9 +1,8 @@
 package com.example.repositories.repos
 
-import android.util.Log
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension
-import com.example.adro.common.CommonUtilsExtension.setDefaultData
+import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.domain.models.ProfileResponse
 import com.example.domain.models.asList
 import com.example.domain.repos.ProfileRepository
@@ -18,7 +17,7 @@ class ProfileRepositoryImp(private val client: HttpClient) : ProfileRepository {
         return try {
             val response = client.post {
                 url { path("et_user/v5/user/profile") }
-                setDefaultData(CommonUtilsExtension.API.PROFILE)
+                setDefaultParams(CommonUtilsExtension.API.PROFILE)
             }
             (response.body() as ProfileResponse).asList()
         } catch (e: Exception) {
