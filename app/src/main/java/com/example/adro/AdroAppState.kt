@@ -1,9 +1,8 @@
 package com.example.adro
 
 import androidx.annotation.DrawableRes
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.core.os.trace
 import androidx.navigation.NavDestination
@@ -20,22 +19,23 @@ import com.example.offers.nav.MerchantDestination
 import com.example.profile.nav.ProfileDestination
 
 @Composable
-fun rememberAdroAppState(
-    navController: NavHostController = rememberNavController()
-): AdroAppState {
+fun rememberAdroAppState(navController: NavHostController = rememberNavController()): AdroAppState {
     NavigationTrackingSideEffect(navController)
     return remember(navController) {
         AdroAppState(navController)
     }
 }
 
-@Stable
-class AdroAppState(
-    val navController: NavHostController
-) {
+@Stable class AdroAppState(val navController: NavHostController) {
     val currentDestination: NavDestination?
-        @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination
+        @Composable get() = navController.currentBackStackEntryAsState().value?.destination
+    
+//    val topBarState: MutableState<Boolean>
+//        @Composable get() = rememberSaveable { (mutableStateOf(true)) }
+//
+//    val bottomBarState: MutableState<Boolean>
+//        @Composable get() = rememberSaveable { (mutableStateOf(true)) }
+
 
 //    val shouldShowBottomBar: Boolean
 //        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
@@ -43,41 +43,32 @@ class AdroAppState(
 
 //    val shouldShowNavRail: Boolean
 //        get() = !shouldShowBottomBar
-
+    
     /**
      * Top level destinations to be used in the BottomBar and NavRail
      */
-    val topLevelDestinations: List<TopLevelDestination> = listOf(
-        TopLevelDestination(
-            route = HomeDestination.route,
-            destination = HomeDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.home_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
-            iconTextId = R.string.home
-        ),
-        TopLevelDestination(
-            route = MerchantDestination.route,
-            destination = MerchantDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
-            iconTextId = com.example.adro.R.string.offers
-        ),
-        TopLevelDestination(
-            route = FavoriteDestination.route,
-            destination = FavoriteDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
-            iconTextId = com.example.adro.R.string.Favorite
-        ),
-        TopLevelDestination(
-            route = ProfileDestination.route,
-            destination = ProfileDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
-            iconTextId = com.example.adro.R.string.profile
-        )
-    )
-
+    val topLevelDestinations: List<TopLevelDestination> =
+            listOf(TopLevelDestination(route = HomeDestination.route,
+                    destination = HomeDestination.destination,
+                    selectedIcon = Icon.DrawableResourceIcon(R.drawable.home_select_icon),
+                    unselectedIcon = Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
+                    iconTextId = R.string.home),
+                    TopLevelDestination(route = MerchantDestination.route,
+                            destination = MerchantDestination.destination,
+                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
+                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
+                            iconTextId = com.example.adro.R.string.offers),
+                    TopLevelDestination(route = FavoriteDestination.route,
+                            destination = FavoriteDestination.destination,
+                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
+                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
+                            iconTextId = com.example.adro.R.string.Favorite),
+                    TopLevelDestination(route = ProfileDestination.route,
+                            destination = ProfileDestination.destination,
+                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
+                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
+                            iconTextId = com.example.adro.R.string.profile))
+    
     /**
      * UI logic for navigating to a particular destination in the app. The NavigationOptions to
      * navigate with are based on the type of destination, which could be a top level destination or
@@ -112,7 +103,7 @@ class AdroAppState(
             }
         }
     }
-
+    
     fun onBackClick() {
         navController.popBackStack()
     }

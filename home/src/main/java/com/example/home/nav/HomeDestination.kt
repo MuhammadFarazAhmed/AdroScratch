@@ -1,5 +1,6 @@
 package com.example.home.nav
 
+import androidx.compose.runtime.MutableState
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
@@ -13,15 +14,15 @@ object HomeDestination : AdroNavigationDestination {
 
 fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
-    nestedGraphs: NavGraphBuilder.() -> Unit
+//    nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
-    navigation(
-        route = HomeDestination.route,
-        startDestination = HomeDestination.destination
-    ) {
-        composable(HomeDestination.destination) {
+//    navigation(
+//        route = HomeDestination.route,
+//        startDestination = HomeDestination.destination
+//    ) {
+        composable(HomeDestination.route) {
             HomeScreen(navigateToAuth = navigateToAuth)
         }
-        nestedGraphs()
-    }
+//        nestedGraphs()
+//    }
 }

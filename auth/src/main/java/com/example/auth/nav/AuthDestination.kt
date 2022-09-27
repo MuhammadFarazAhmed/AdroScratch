@@ -11,9 +11,9 @@ object AuthDestination : AdroNavigationDestination {
 }
 
 fun NavGraphBuilder.authGraph(onBackClick: () -> Unit) {
-
+    
     composable(AuthDestination.route) {
         AuthScreen(onBackClick = onBackClick)
     }
-
+    
 }
