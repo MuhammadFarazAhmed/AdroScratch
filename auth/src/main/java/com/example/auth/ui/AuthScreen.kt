@@ -1,6 +1,7 @@
 package com.example.auth.ui
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -56,11 +57,11 @@ fun LoginScreen() {
         Image(painter = painterResource(id = R.drawable.ic_app_logo),
                 contentDescription = "",
                 modifier = Modifier
-                        .wrapContentSize()
-                        .constrainAs(logo) {
-                            centerHorizontallyTo(parent)
-                            linkTo(top = parent.top, bottom = parent.bottom, bias = 0.1f)
-                        })
+                    .wrapContentSize()
+                    .constrainAs(logo) {
+                        centerHorizontallyTo(parent)
+                        linkTo(top = parent.top, bottom = parent.bottom, bias = 0.1f)
+                    })
         
         Column(modifier = Modifier.constrainAs(loginContainer) {
             centerHorizontallyTo(parent)

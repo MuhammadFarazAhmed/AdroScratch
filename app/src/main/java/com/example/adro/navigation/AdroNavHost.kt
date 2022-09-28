@@ -1,5 +1,6 @@
 package com.example.adro.navigation
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
@@ -24,14 +25,12 @@ fun AdroNavHost(navController: NavHostController,
             modifier = modifier) {
         
         authGraph(onBackClick)
-        
         homeGraph(navigateToAuth = {
             onNavigateToDestination(AuthDestination, AuthDestination.route)
         })
-        
         merchantGraph()
         favGraph()
         profileGraph()
-        
+
     }
 }

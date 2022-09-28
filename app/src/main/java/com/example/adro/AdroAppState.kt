@@ -1,6 +1,7 @@
 package com.example.adro
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -17,7 +18,9 @@ import com.example.home.nav.HomeDestination
 import com.example.offers.nav.FavoriteDestination
 import com.example.offers.nav.MerchantDestination
 import com.example.profile.nav.ProfileDestination
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberAdroAppState(navController: NavHostController = rememberNavController()): AdroAppState {
     NavigationTrackingSideEffect(navController)
