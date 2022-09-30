@@ -138,6 +138,9 @@ dependencies {
     def paging_version = "2.1.1"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
 
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+
+
     api(project(':auth'))
     api(project(':home'))
     api api(project(':merchant',))

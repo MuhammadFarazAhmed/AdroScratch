@@ -1,12 +1,15 @@
 package com.example.adro
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.adro.navigation.*
@@ -30,13 +33,17 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
                 bottomBarState.value = true
                 topBarState.value = true
             }
+            "merchant_detail" -> {
+                bottomBarState.value = false
+                topBarState.value = false
+            }
             "profile_route" -> {
                 bottomBarState.value = true
                 topBarState.value = true
             }
             "merchant_route" -> {
-                bottomBarState.value = false
-                topBarState.value = false
+                bottomBarState.value = true
+                topBarState.value = true
             }
             "fav_route" -> {
                 bottomBarState.value = false
@@ -45,7 +52,7 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
         }
         
         Scaffold(topBar = { Toolbar(topBarState) }, content = { padding ->
-            Box(modifier = Modifier.padding(padding)) {
+            Box(modifier = Modifier.padding(padding).fillMaxHeight()) {
                 AdroNavHost(navController = appState.navController,
                         onBackClick = appState::onBackClick,
                         onNavigateToDestination = appState::navigate)

@@ -2,6 +2,7 @@ package com.example.offers.ui
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -36,7 +37,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OffersScreen() {
+fun OffersScreen(navigateToDetail: ()->Unit) {
     val vm = hiltViewModel<OffersViewModel>()
 
     val coroutineScope = rememberCoroutineScope()
@@ -53,7 +54,7 @@ fun OffersScreen() {
                 vm.selectedTab.value = tab
             }
 
-            Pager(tabs = tabs, pagerState = pagerState, vm)
+            Pager(tabs = tabs, pagerState = pagerState, vm,navigateToDetail)
         }
 
     }
@@ -103,7 +104,8 @@ fun Tabs(
 fun Pager(
     tabs: List<TabsResponse.Data.Tab?>?,
     pagerState: PagerState,
-    vm: OffersViewModel
+    vm: OffersViewModel,
+    navigateToDetail: () -> Unit
 ) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -119,9 +121,9 @@ fun Pager(
             LazyColumn {
 
                 items(lazyOutlets) { outlet ->
-                    OutletItem(outlet)
+                    OutletItem(outlet, navigateToDetail = navigateToDetail)
                 }
-    
+
                 applyPagination(lazyOutlets)
             }
         }
@@ -134,11 +136,17 @@ class OutletProvider : PreviewParameterProvider<OffersResponse.Data.Outlet> {
 
 @Composable
 @Preview
-fun OutletItem(@PreviewParameter(OutletProvider::class) outlet: OffersResponse.Data.Outlet?) {
+fun OutletItem(
+    @PreviewParameter(OutletProvider::class) outlet: OffersResponse.Data.Outlet?,
+    navigateToDetail: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize()
+            .clickable {
+                navigateToDetail()
+            }
             .drawBehind {
                 val strokeWidth = Stroke.DefaultMiter
                 val x = size.width - strokeWidth

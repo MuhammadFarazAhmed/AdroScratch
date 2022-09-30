@@ -24,7 +24,7 @@ import com.example.base.R
 @Composable
 fun Toolbar(visibility: MutableState<Boolean>) {
     AnimatedVisibility(visible = visibility.value,
-            enter = slideInVertically(initialOffsetY = { it }),
+            enter = slideInVertically(initialOffsetY = { -it }),
             exit = slideOutVertically(targetOffsetY = { -it }),
             content = {
                 Box(

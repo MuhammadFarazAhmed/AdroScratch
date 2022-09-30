@@ -3,7 +3,7 @@ package com.example.adro.di
 import com.example.domain.repos.*
 import com.example.repositories.repos.FavRepositoryImp
 import com.example.repositories.repos.HomeRepositoryImp
-import com.example.repositories.repos.OffersRepositoryImp
+import com.example.repositories.repos.MerchantRepositoryImp
 import com.example.repositories.repos.ProfileRepositoryImp
 import com.example.repositories.usecases.AuthRepositoryImp
 import dagger.Module
@@ -29,7 +29,7 @@ class RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideOffersRepository(client: HttpClient): OffersRepository = OffersRepositoryImp(client)
+    fun provideOffersRepository(client: HttpClient): MerchantRepository = MerchantRepositoryImp(client)
 
 
     @Provides

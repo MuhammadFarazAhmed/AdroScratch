@@ -34,7 +34,9 @@ class DecryptResponse private constructor(private val apisEncryptionUtils: ApisE
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptResponse = ByteReadChannel(apisEncryptionUtils.decryptString(original.readUTF8Line()))
+            val decryptString = apisEncryptionUtils.decryptString(String(original.toByteArray()))
+                .also { Log.d("decryptedResponse", it) }
+            val decryptResponse = ByteReadChannel(decryptString)
 
             val response = HttpResponseContainer(type, decryptResponse)
             proceedWith(response)

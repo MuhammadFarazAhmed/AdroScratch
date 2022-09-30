@@ -8,16 +8,16 @@ import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.models.asList
-import com.example.domain.repos.OffersRepository
+import com.example.domain.repos.MerchantRepository
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 
-class OffersRepositoryImp(
+class MerchantRepositoryImp(
     private val client: HttpClient
-) : OffersRepository {
+) : MerchantRepository {
 
     override fun fetchTabs(): Flow<ApiResult<TabsResponse>> =
         convertToFlow {
