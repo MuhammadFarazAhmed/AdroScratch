@@ -1,8 +1,8 @@
 package com.example.adro.di.offers
 
-import com.example.domain.repos.OffersRepository
-import com.example.domain.usecase.OffersUseCase
-import com.example.repositories.usecases.OffersUseCaseImp
+import com.example.domain.repos.MerchantRepository
+import com.example.domain.usecase.MerchantUseCase
+import com.example.repositories.usecases.MerchantUseCaseImp
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +15,7 @@ class OffersModule {
 
     @Provides
     @ViewModelScoped
-    fun provideOffersUseCase(offersRepository: OffersRepository): OffersUseCase =
-        OffersUseCaseImp(offersRepository)
+    fun provideOffersUseCase(offersRepository: MerchantRepository): MerchantUseCase =
+        MerchantUseCaseImp(offersRepository)
 
 }

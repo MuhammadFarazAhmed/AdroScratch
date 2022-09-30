@@ -1,41 +1,69 @@
 package com.example.adro
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import com.example.adro.navigation.BottomNavigationBar
-import com.example.adro.navigation.AdroNavHost
+import androidx.compose.ui.graphics.Color
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.currentBackStackEntryAsState
+import com.example.adro.navigation.*
 import com.example.adro.theme.AdroScratchTheme
 
 @Composable
 fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
-
+    
+    val topBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
+    
+    val bottomBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
+    
     AdroScratchTheme {
-
-        val topBarState = rememberSaveable { (mutableStateOf(true)) }
-
-        Scaffold(topBar = { Toolbar(topBarState) },
-            content = { padding ->
-                Box(modifier = Modifier.padding(padding)) {
-                    AdroNavHost(
-                        navController = appState.navController,
+        
+        when (appState.currentDestination?.route) {
+            "auth_route" -> {
+                bottomBarState.value = false
+                topBarState.value = false
+            }
+            "home_route" -> {
+                bottomBarState.value = true
+                topBarState.value = true
+            }
+            "merchant_detail" -> {
+                bottomBarState.value = false
+                topBarState.value = false
+            }
+            "profile_route" -> {
+                bottomBarState.value = true
+                topBarState.value = true
+            }
+            "merchant_route" -> {
+                bottomBarState.value = true
+                topBarState.value = true
+            }
+            "fav_route" -> {
+                bottomBarState.value = false
+                topBarState.value = false
+            }
+        }
+        
+        Scaffold(topBar = { Toolbar(topBarState) }, content = { padding ->
+            Box(modifier = Modifier.padding(padding).fillMaxHeight()) {
+                AdroNavHost(navController = appState.navController,
                         onBackClick = appState::onBackClick,
-                        onNavigateToDestination = appState::navigate
-                        , topAppBar = topBarState
-                    )
-                }
-            }, bottomBar = {
-                BottomNavigationBar(
+                        onNavigateToDestination = appState::navigate)
+            }
+        }, bottomBar = {
+            BottomNavigationBar(bottomBarState = bottomBarState,
                     destinations = appState.topLevelDestinations,
                     onNavigateToDestination = appState::navigate,
-                    currentDestination = appState.currentDestination
-                )
-            })
-
+                    currentDestination = appState.currentDestination)
+        })
+        
     }
-
+    
 }

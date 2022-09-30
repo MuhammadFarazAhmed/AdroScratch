@@ -1,12 +1,9 @@
 package com.example.repositories.repos
 
-import android.util.Log
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension
-import com.example.adro.common.CommonUtilsExtension.setDefaultData
+import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.domain.models.FavoriteResponse
-import com.example.domain.models.OffersResponse
-import com.example.domain.models.ProfileResponse
 import com.example.domain.models.asList
 import com.example.domain.repos.FavoritesRepository
 import io.ktor.client.*
@@ -21,7 +18,7 @@ class FavRepositoryImp(
         try {
             val response = client.post {
                 url { path("/ets_api/v5/outlets") }
-                setDefaultData(CommonUtilsExtension.API.FAV)
+                setDefaultParams(CommonUtilsExtension.API.FAV)
             }
             (response.body() as FavoriteResponse).asList()
         } catch (e: Exception) {

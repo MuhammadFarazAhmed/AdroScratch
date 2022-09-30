@@ -4,26 +4,26 @@ import com.example.adro.base.ApiResult
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonUtilsExtension
-import com.example.adro.common.CommonUtilsExtension.setDefaultData
+import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.models.asList
-import com.example.domain.repos.OffersRepository
+import com.example.domain.repos.MerchantRepository
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 
-class OffersRepositoryImp(
+class MerchantRepositoryImp(
     private val client: HttpClient
-) : OffersRepository {
+) : MerchantRepository {
 
     override fun fetchTabs(): Flow<ApiResult<TabsResponse>> =
         convertToFlow {
             client.post {
                 url { path("/ets_api/v5/offer/tabs") }
-                setDefaultData(CommonUtilsExtension.API.OFFER)
+                setDefaultParams(CommonUtilsExtension.API.OFFER)
             }
         }
 
@@ -31,7 +31,7 @@ class OffersRepositoryImp(
         return try {
             val response = client.post {
                 url { path("/ets_api/v5/outlets") }
-                setDefaultData(CommonUtilsExtension.API.OFFER)
+                setDefaultParams(CommonUtilsExtension.API.OFFER)
             }
             (response.body() as OffersResponse).asList()
         }catch (e:Exception){

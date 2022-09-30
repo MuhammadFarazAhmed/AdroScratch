@@ -1,34 +1,16 @@
 package com.example.adro.common
 
-import android.util.Log
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.example.adro.*
-import com.example.adro.base.ApiResult
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.request.*
 import io.ktor.util.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
 import okhttp3.Request
 import retrofit2.Invocation
-import retrofit2.Response
-import java.lang.Exception
-import javax.inject.Inject
-import javax.inject.Singleton
-import kotlin.coroutines.CoroutineContext
-import kotlin.coroutines.EmptyCoroutineContext
 
 object CommonUtilsExtension {
 
@@ -54,7 +36,7 @@ object CommonUtilsExtension {
 
     val Apikey = AttributeKey<API>("api")
 
-    fun HttpRequestBuilder.setDefaultData(api: API) {
+    fun HttpRequestBuilder.setDefaultParams(api: API) {
         attributes.put(Apikey, api)
         setBody(
             mapOf(

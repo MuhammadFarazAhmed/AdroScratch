@@ -1,5 +1,8 @@
 package com.example.auth.ui
 
+import android.icu.number.Scale
+import androidx.activity.compose.BackHandler
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -37,6 +40,24 @@ import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.HomeResponse
 
 @Composable
+fun AuthScreen(onBackClick: () -> Unit) {
+    val vm = hiltViewModel<AuthViewModel>()
+    BackHandler {
+        onBackClick()
+    }
+    Surface(modifier = Modifier.background(Color.White)) {
+        Image(
+            painter = painterResource(id = R.drawable.adro_image),
+            contentDescription = "",
+            contentScale = ContentScale.FillBounds,
+            modifier = Modifier.fillMaxSize()
+        )
+        EMIDScreen()
+    }
+
+}
+
+@Composable
 @Preview
 fun AuthScreenPreview() {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -45,25 +66,24 @@ fun AuthScreenPreview() {
             contentDescription = "",
             modifier = Modifier.fillMaxSize()
         )
-        LoginScreen()
+        EMIDScreen()
     }
 }
 
-@OptIn(ExperimentalUnitApi::class)
 @Composable
-fun LoginScreen() {
+fun EMIDScreen() {
+
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (logo, loginContainer) = createRefs()
-        Image(
-            painter = painterResource(id = R.drawable.ic_app_logo),
+
+        Image(painter = painterResource(id = R.drawable.ic_app_logo),
             contentDescription = "",
             modifier = Modifier
                 .wrapContentSize()
                 .constrainAs(logo) {
                     centerHorizontallyTo(parent)
                     linkTo(top = parent.top, bottom = parent.bottom, bias = 0.1f)
-                }
-        )
+                })
 
         Column(modifier = Modifier.constrainAs(loginContainer) {
             centerHorizontallyTo(parent)
@@ -72,8 +92,7 @@ fun LoginScreen() {
             Text(text = "Welcome")
             Text(text = "Abu dhabi visa holders")
             Text(text = "create account by entering email your emirates ID number")
-            TextField(
-                value = "",
+            TextField(value = "",
                 onValueChange = {},
                 placeholder = { "Enter your Emirates ID" },
                 trailingIcon = {
@@ -81,8 +100,7 @@ fun LoginScreen() {
                         painter = painterResource(id = R.drawable.barcode_scanner),
                         contentDescription = ""
                     )
-                }
-            )
+                })
             val string = buildAnnotatedString {
                 append("Have a account?")
                 withStyle(
@@ -95,27 +113,21 @@ fun LoginScreen() {
                 }
             }
             Text(text = string)
+
+
+            Divider(
+                color = Color.White,
+                thickness = 1.dp,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            Text(text = "continue as guest")
+
         }
 
-        Divider(
-            color = Color.White,
-            thickness = 1.dp,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
-
-        Text(text = "continue as guest")
 
 
     }
-}
-
-@Composable
-fun AuthScreen() {
-    val vm = hiltViewModel<AuthViewModel>()
-    Surface(modifier = Modifier.background(Color.White)) {
-
-    }
-
 }
 
 class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
