@@ -149,6 +149,8 @@ dependencies {
     api(project(':repositories'))
     api(project(':domain'))
     api(project(':base'))
+    implementation project(':kotlinmultiplatformsharedmodule')
+
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'

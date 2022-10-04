@@ -12,12 +12,12 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/app/auth" />
             <option value="$PROJECT_DIR$/auth" />
             <option value="$PROJECT_DIR$/base" />
             <option value="$PROJECT_DIR$/domain" />
             <option value="$PROJECT_DIR$/favorite" />
             <option value="$PROJECT_DIR$/home" />
+            <option value="$PROJECT_DIR$/kotlinmultiplatformsharedmodule" />
             <option value="$PROJECT_DIR$/merchant" />
             <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/profile" />
