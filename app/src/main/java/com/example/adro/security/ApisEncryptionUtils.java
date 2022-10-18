@@ -12,14 +12,9 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-@Singleton
 public class ApisEncryptionUtils {
     private CLibController controller;
 
-    @Inject
-    ApisEncryptionUtils(CLibController controller) {
-        this.controller = controller;
-    }
 
     private static ApisEncryptionUtils encryptionUtils;
     private Cipher cipherInstance;
@@ -27,7 +22,8 @@ public class ApisEncryptionUtils {
     private SecretKeySpec aesSecretKeySpec;
 
 
-    private ApisEncryptionUtils() {
+    public ApisEncryptionUtils(CLibController controller) {
+        this.controller = controller;
     }
 
     private Cipher getCipherInstance() {
