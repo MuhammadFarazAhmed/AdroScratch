@@ -140,6 +140,10 @@ dependencies {
 
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
+
+
 
     api(project(':auth'))
     api(project(':home'))

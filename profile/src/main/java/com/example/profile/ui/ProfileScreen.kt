@@ -38,6 +38,7 @@ import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
 import kotlinx.coroutines.flow.flatMap
 import kotlinx.coroutines.flow.map
+import org.koin.androidx.compose.getViewModel
 
 
 enum class ProfileSections(val value: String) {
@@ -48,8 +49,7 @@ enum class ProfileSections(val value: String) {
 }
 
 @Composable
-fun ProfileScreen() {
-    val vm = hiltViewModel<ProfileViewModel>()
+fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
 
     val lazySections = vm.sections.collectAsLazyPagingItems()
 
