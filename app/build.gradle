@@ -147,12 +147,13 @@ dependencies {
 
     api(project(':auth'))
     api(project(':home'))
-    api api(project(':merchant',))
+    api api(project(':merchant'))
     api(project(':favorite'))
     api(project(':profile'))
     api(project(':repositories'))
     api(project(':domain'))
     api(project(':base'))
+
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
