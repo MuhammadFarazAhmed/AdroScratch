@@ -81,13 +81,14 @@ val AppModule = module {
 
     }
 
-    singleOf<CLibController> { CLibController() }
+    singleOf(::CLibController)
 
     single { ApisEncryptionUtils(get()) }
 
 }
 
 val NetworkModule = module {
+
     single {
         HttpClient(Android) {
 
@@ -125,6 +126,7 @@ val NetworkModule = module {
             changeBaseUrlInterceptor(get())
         }
     }
+
 }
 
 val homeModule = module {
