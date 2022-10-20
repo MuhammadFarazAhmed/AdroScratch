@@ -71,6 +71,8 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-pager:0.23.1"
 
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
     debugApi("androidx.paging:paging-compose:1.0.0-alpha16")
     def paging_version = "3.1.1"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"

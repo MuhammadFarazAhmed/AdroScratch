@@ -21,7 +21,6 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
@@ -29,6 +28,7 @@ import com.example.base.R
 import com.example.domain.models.HomeResponse
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -57,9 +57,8 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(navigateToAuth: () -> Unit) {
+fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = getViewModel()) {
 
-    val vm = hiltViewModel<HomeViewModel>()
 
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()

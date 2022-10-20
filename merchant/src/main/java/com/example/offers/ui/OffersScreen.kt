@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
@@ -33,12 +34,12 @@ import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.getViewModel
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OffersScreen(navigateToDetail: ()->Unit) {
-    val vm = hiltViewModel<OffersViewModel>()
+fun OffersScreen(navigateToDetail: ()->Unit,vm: OffersViewModel = getViewModel()) {
 
     val coroutineScope = rememberCoroutineScope()
 

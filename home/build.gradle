@@ -87,9 +87,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
 
 
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.1")
 
-    debugApi "androidx.customview:customview:1.2.0-alpha01"
+    debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
     implementation(project(':base'))
@@ -97,6 +97,9 @@ dependencies {
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
+    implementation "io.insert-koin:koin-androidx-compose:$koin_version"
+
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

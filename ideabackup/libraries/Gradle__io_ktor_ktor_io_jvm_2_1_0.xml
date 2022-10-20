@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Gradle: io.ktor:ktor-io-jvm:2.1.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io-jvm/2.1.0/ccd958db554677538c21515a0acd62862bb6b2a0/ktor-io-jvm-2.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io-jvm/2.1.0/a595ca382b4d79f42d27d985f1e9569bfe20dbcf/ktor-io-jvm-2.1.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/io.ktor/ktor-io-jvm/2.1.0/320dd4b9dded752f8a61e749ef30ccbe5da76893/ktor-io-jvm-2.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

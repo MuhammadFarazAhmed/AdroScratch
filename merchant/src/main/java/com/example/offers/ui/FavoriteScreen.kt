@@ -25,10 +25,11 @@ import coil.compose.AsyncImage
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.domain.models.FavoriteResponse
 import com.example.offers.vm.FavoriteViewModel
+import com.example.offers.vm.OffersViewModel
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun FavoriteScreen() {
-    val vm = hiltViewModel<FavoriteViewModel>()
+fun FavoriteScreen(vm: FavoriteViewModel = getViewModel()) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
