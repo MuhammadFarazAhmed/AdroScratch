@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdk 32
-
+    flavorDimensions "appType"
     defaultConfig {
         minSdk 21
         targetSdk 32
@@ -40,6 +40,18 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    productFlavors {
+        devnode {
+        }
+        qanode {
+        }
+        uatnode {
+        }
+        rcnode {
+        }
+        production {
+        }
     }
 }
 
@@ -94,6 +106,7 @@ dependencies {
 
     implementation(project(':base'))
     implementation(project(':domain'))
+    implementation(project(':shared'))
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'

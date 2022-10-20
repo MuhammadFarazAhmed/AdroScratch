@@ -1,4 +1,4 @@
-package com.example.sharedcode.model
+package com.example.sharedcode.domain.domain_model
 
 
 

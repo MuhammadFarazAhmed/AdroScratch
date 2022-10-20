@@ -25,8 +25,8 @@ import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
-import com.example.domain.models.HomeResponse
-import com.example.home.vm.HomeViewModel
+import com.example.sharedcode.domain.domain_model.HomeResponse
+import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.getViewModel
 

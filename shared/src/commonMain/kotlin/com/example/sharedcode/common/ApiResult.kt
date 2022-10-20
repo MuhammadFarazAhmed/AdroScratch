@@ -1,4 +1,4 @@
-package com.example.adro.base
+package com.example.sharedcode.common
 
 enum class ApiStatus {
     SUCCESS,

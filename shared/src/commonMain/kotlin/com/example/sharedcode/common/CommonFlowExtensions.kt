@@ -1,6 +1,5 @@
 package com.example.sharedcode.common
 
-import com.example.adro.base.ApiResult
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
 import kotlinx.coroutines.Dispatchers

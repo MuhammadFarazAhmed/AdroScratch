@@ -5,6 +5,7 @@ plugins {
 }
 
 kotlin {
+    jvm()
     android()
     iosX64()
     iosArm64()

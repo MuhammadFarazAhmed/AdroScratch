@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import com.example.adro.base.ApiResult
+import com.example.sharedcode.common.ApiResult
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.EntryPoint

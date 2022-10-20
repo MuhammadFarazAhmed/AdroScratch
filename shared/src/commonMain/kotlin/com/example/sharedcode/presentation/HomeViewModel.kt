@@ -1,9 +1,11 @@
 package com.example.sharedcode.presentation
 
-import com.example.adro.base.ApiStatus
+import com.example.sharedcode.common.ApiStatus
 import com.example.sharedcode.common.CommonFlowExtensions.handleErrors
+import com.example.sharedcode.domain.domain_model.HomeResponse
 import com.example.sharedcode.domain.usecase.HomeUseCase
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
 
@@ -20,7 +22,7 @@ class HomeViewModel constructor(
         viewModelScope.launch {
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
-                    ApiStatus.SUCCESS ->{}// sections.value = it.data?.data?.sections!!
+                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
                     ApiStatus.ERROR ->{} //Log.d("TAG", "${it.message}: ")
                     ApiStatus.LOADING -> {}
                 }
@@ -28,6 +30,6 @@ class HomeViewModel constructor(
         }
     }
 
-    //val sections: MutableStateFlow<List<HomeResponse.Data.Section>> = MutableStateFlow(emptyList())
+    val sections: MutableStateFlow<List<HomeResponse.Data.Section>> = MutableStateFlow(emptyList())
 
 }
