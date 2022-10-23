@@ -24,84 +24,73 @@ import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 
-fun initKoin(
-    appDeclaration: KoinAppDeclaration = {}
-) =
-    startKoin {
-        appDeclaration()
-        modules(commonModule())
-    }
+fun initKoin(appDeclaration: KoinAppDeclaration = {}) =
+        startKoin {
+            appDeclaration()
+            modules(commonModule())
+        }
 
 // called by iOS etc
 fun initKoin(baseUrl: String) = initKoin {}
 
-fun commonModule() =
-    networkModule() + platformModule() + dataModule()
-
+fun commonModule() = platformModule() //+ networkModule() + dataModule()
 
 fun networkModule() = module {
-
-    single { ::CLibController }
-
+    
+    single { CLibController() }
+    
     single { ApisEncryptionUtils(get()) }
-
+    
     single {
-        createHttpClient(
-            httpClientEngine = get(),
-            cLibController = get(),
-            token = get(),
-            encryptionUtils = get()
-        )
+        createHttpClient(httpClientEngine = get(),
+                cLibController = get(),
+                token = get(),
+                encryptionUtils = get())
     }
-
 }
 
 fun dataModule() = module {
-
+    
     single<HomeRepository> { HomeRepositoryImp(get()) }
-
+    
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-
+    
 }
 
-
-fun createHttpClient(
-    httpClientEngine: HttpClientEngine,
-    cLibController: CLibController,
-    token: String,
-    encryptionUtils: ApisEncryptionUtils
-) =
-    HttpClient(httpClientEngine) {
-
-        defaultRequest {
-            url {
-                contentType(ContentType.Application.Json)
-                accept(ContentType.Application.Json)
-
-                protocol = URLProtocol.HTTPS
-                host = cLibController.getENTBaseUrlOnline()
-            }
+fun createHttpClient(httpClientEngine: HttpClientEngine,
+                     cLibController: CLibController,
+                     token: String,
+                     encryptionUtils: ApisEncryptionUtils) = HttpClient(httpClientEngine) {
+    
+    defaultRequest {
+        url {
+            contentType(ContentType.Application.Json)
+            accept(ContentType.Application.Json)
+            
+            protocol = URLProtocol.HTTPS
+            host = cLibController.getENTBaseUrlOnline()
         }
-
-        install(Auth) {
-            bearer {
-                loadTokens {
-                    BearerTokens(token, token)
-                }
-            }
-        }
-
-        install(Logging) { level = LogLevel.ALL }
-
-        install(ContentNegotiation) {
-            json()
-        }
-
-        decryptResponse {
-            apisEncryptionUtils = encryptionUtils
-        }
-
-    }.apply {
-        changeBaseUrlInterceptor(cLibController)
     }
+    
+    install(Auth) {
+        bearer {
+            loadTokens {
+                BearerTokens(token, token)
+            }
+        }
+    }
+    
+    install(Logging) { level = LogLevel.ALL }
+    
+    install(ContentNegotiation) {
+        json()
+    }
+    
+    decryptResponse {
+        apisEncryptionUtils = encryptionUtils
+    }
+    
+}.apply {
+    changeBaseUrlInterceptor(cLibController)
+}
 

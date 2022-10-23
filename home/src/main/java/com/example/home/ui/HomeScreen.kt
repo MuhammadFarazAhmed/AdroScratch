@@ -28,6 +28,7 @@ import com.example.base.R
 import com.example.sharedcode.domain.domain_model.HomeResponse
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -57,7 +58,7 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = getViewModel()) {
+fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = get()) {
 
 
     val pagerState = rememberPagerState()
@@ -111,8 +112,8 @@ fun LoginView(
     Column {
         Box(
             modifier = Modifier
-                .height(250.dp)
-                .fillMaxWidth()
+                    .height(250.dp)
+                    .fillMaxWidth()
         ) {
             AsyncImage(
                 model = section?.imageUrl,
@@ -122,15 +123,9 @@ fun LoginView(
             )
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.linearGradient(
-                            listOf(
-                                Color.Black.copy(alpha = 0.7f),
-                                Color.Black.copy(alpha = 0f)
-                            )
-                        )
-                    )
+                        .fillMaxSize()
+                        .background(Brush.linearGradient(listOf(Color.Black.copy(alpha = 0.7f),
+                                Color.Black.copy(alpha = 0f))))
             )
             Column(
                 modifier = Modifier

@@ -5,7 +5,6 @@ plugins {
 }
 
 kotlin {
-    jvm()
     android()
     iosX64()
     iosArm64()
@@ -55,7 +54,6 @@ kotlin {
                     implementation(auth)
                     implementation(random)
                 }
-                implementation("io.jsonwebtoken:jjwt:0.9.1")
             }
         }
         val commonTest by getting {
@@ -65,7 +63,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
-
+                //implementation("io.jsonwebtoken:jjwt:0.9.1")
                 implementation(Ktor.clientAndroid)
                 implementation(Koin.koinAndroid)
 
