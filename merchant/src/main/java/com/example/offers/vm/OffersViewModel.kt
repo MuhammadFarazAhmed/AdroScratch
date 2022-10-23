@@ -6,7 +6,7 @@ import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.example.adro.base.ApiStatus
+import com.example.adro.common.ApiStatus
 import com.example.domain.models.TabsResponse
 import com.example.domain.usecase.MerchantUseCase
 import com.example.repositories.paging.BasePagingSource

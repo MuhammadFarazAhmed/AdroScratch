@@ -22,13 +22,13 @@ class HomeViewModel constructor(
 
     private fun fetchHomeData(homeUseCase: HomeUseCase) {
         viewModelScope.launch {
-            homeUseCase.fetchHome().handleErrors().collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
-                    ApiStatus.ERROR -> Log.d("TAG", "${it.message}: ")
-                    ApiStatus.LOADING -> {}
-                }
-            }
+//            homeUseCase.fetchHome().handleErrors().collect {
+////                when (it.status) {
+////                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
+////                    ApiStatus.ERROR -> Log.d("TAG", "${it.message}: ")
+////                    ApiStatus.LOADING -> {}
+////                }
+//            }
         }
     }
 

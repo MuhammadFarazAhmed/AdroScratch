@@ -1,6 +1,7 @@
 package com.example.adro
 
 import android.app.Application
+import android.app.Service
 import com.example.adro.di.AppModule
 import com.example.adro.di.appModule
 import com.example.adro.di.featureModules
@@ -18,5 +19,6 @@ class AdroApplication : Application() {
             androidContext(this@AdroApplication)
             modules(appModule() + featureModules())
         }
+        
     }
 }

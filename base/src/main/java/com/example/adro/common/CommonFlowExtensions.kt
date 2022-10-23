@@ -1,40 +1,21 @@
 package com.example.adro.common
 
 import android.util.Log
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
-import com.example.sharedcode.common.ApiResult
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import androidx.lifecycle.*
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import org.json.JSONObject
-import retrofit2.Response
 import java.io.IOException
-import java.lang.Exception
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.coroutines.coroutineContext
 
 
 object HexToJetpackColor {

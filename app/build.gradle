@@ -148,7 +148,7 @@ dependencies {
 
     api(project(':auth'))
     api(project(':home'))
-    api api(project(':merchant'))
+    api(project(':merchant'))
     api(project(':favorite'))
     api(project(':profile'))
     api(project(':repositories'))
