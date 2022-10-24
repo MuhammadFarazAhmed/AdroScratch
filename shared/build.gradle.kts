@@ -52,7 +52,6 @@ kotlin {
                     implementation(contentNegotiation)
                     implementation(json)
                     implementation(auth)
-                    implementation(random)
                 }
             }
         }
@@ -66,6 +65,8 @@ kotlin {
                 //implementation("io.jsonwebtoken:jjwt:0.9.1")
                 implementation(Ktor.clientAndroid)
                 implementation(Koin.koinAndroid)
+
+                implementation("io.jsonwebtoken:jjwt:0.9.1")
 
             }
         }

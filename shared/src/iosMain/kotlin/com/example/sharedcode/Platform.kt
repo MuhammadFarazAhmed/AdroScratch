@@ -20,5 +20,3 @@ actual fun platformModule() = module {
 
     //single or factory can be used to get a view-model object for swiftui
 }
-
-actual interface CommonParcelable

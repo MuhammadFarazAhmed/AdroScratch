@@ -15,9 +15,6 @@ import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
-import com.example.offers.nav.FavoriteDestination
-import com.example.offers.nav.MerchantDestination
-import com.example.profile.nav.ProfileDestination
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
@@ -55,22 +52,22 @@ fun rememberAdroAppState(navController: NavHostController = rememberNavControlle
                     destination = HomeDestination.destination,
                     selectedIcon = Icon.DrawableResourceIcon(R.drawable.home_select_icon),
                     unselectedIcon = Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
-                    iconTextId = R.string.home),
-                    TopLevelDestination(route = MerchantDestination.route,
-                            destination = MerchantDestination.destination,
-                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
-                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
-                            iconTextId = com.example.adro.R.string.offers),
-                    TopLevelDestination(route = FavoriteDestination.route,
-                            destination = FavoriteDestination.destination,
-                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
-                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
-                            iconTextId = com.example.adro.R.string.Favorite),
-                    TopLevelDestination(route = ProfileDestination.route,
-                            destination = ProfileDestination.destination,
-                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
-                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
-                            iconTextId = com.example.adro.R.string.profile))
+                    iconTextId = R.string.home))
+//                , TopLevelDestination(route = MerchantDestination.route,
+//                            destination = MerchantDestination.destination,
+//                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
+//                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
+//                            iconTextId = com.example.adro.R.string.offers),
+//                    TopLevelDestination(route = FavoriteDestination.route,
+//                            destination = FavoriteDestination.destination,
+//                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
+//                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
+//                            iconTextId = com.example.adro.R.string.Favorite),
+//                    TopLevelDestination(route = ProfileDestination.route,
+//                            destination = ProfileDestination.destination,
+//                            selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
+//                            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
+//                            iconTextId = com.example.adro.R.string.profile))
     
     /**
      * UI logic for navigating to a particular destination in the app. The NavigationOptions to

@@ -3,8 +3,7 @@ package com.example.adro
 import android.app.Application
 import com.example.sharedcode.domain.di.initKoin
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.dsl.module
 
 class AdroApplication : Application() {
     
@@ -13,7 +12,7 @@ class AdroApplication : Application() {
         
         initKoin {
             androidContext(this@AdroApplication)
-            modules(listOf())
+           // modules(listOf(module {  }))
         }
         
     }

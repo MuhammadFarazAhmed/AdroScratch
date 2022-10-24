@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.text.style.TextAlign
@@ -22,14 +21,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
-import com.example.adro.common.HexToJetpackColor
-import com.example.base.R
+import com.example.adro.common.collectAsStateLifecycleAware
 import com.example.sharedcode.domain.domain_model.HomeResponse
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.get
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -160,9 +156,9 @@ fun LoginView(
                         .height(34.dp)
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = HexToJetpackColor.getColor(
-                            section?.buttonBgColor ?: "acccbc"
-                        )
+//                        backgroundColor = HexToJetpackColor.getColor(
+//                            section?.buttonBgColor ?: "acccbc"
+//                        )
                     )
                 ) {
                     Text(
@@ -179,7 +175,7 @@ fun LoginView(
         Card(
             shape = RoundedCornerShape(12.dp),
             elevation = 4.dp,
-            border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
+            //border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(14.dp)
@@ -191,14 +187,14 @@ fun LoginView(
                         .padding(16.dp)
                         .width(IntrinsicSize.Max)
                 ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_limited_offer_1),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                            .height(40.dp)
-                            .width(40.dp)
-                    )
+//                    Image(
+//                        //painter = painterResource(id = R.drawable.ic_limited_offer_1),
+//                        contentDescription = "",
+//                        modifier = Modifier
+//                            .align(Alignment.CenterVertically)
+//                            .height(40.dp)
+//                            .width(40.dp)
+//                    )
                     Text(
                         text = "Login to enjoy discounts and offers",
                         modifier = Modifier
@@ -228,7 +224,7 @@ fun LoginView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        .background(HexToJetpackColor.getColor("acccbc"))
+                        //.background(HexToJetpackColor.getColor("acccbc"))
 
                 ) {
                     Text(
@@ -312,9 +308,9 @@ fun MainCarousal(
                         .height(34.dp)
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = HexToJetpackColor.getColor(
-                            item.buttonBgColor
-                        )
+//                        backgroundColor = HexToJetpackColor.getColor(
+//                            item.buttonBgColor
+//                        )
                     )
                 ) {
                     Text(text = item.buttonTitle, color = Color.White, fontSize = 12.sp)
