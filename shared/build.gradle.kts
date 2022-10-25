@@ -9,15 +9,15 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-
+    
     kotlin.targets.withType(org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget::class.java) {
-
+        
         // export correct artifact to use all classes of library directly from Swift
-
+        
         binaries.withType(org.jetbrains.kotlin.gradle.plugin.mpp.Framework::class.java).all {
             export("dev.icerock.moko:mvvm-core:0.13.1")
         }
-
+        
         binaries.all {
             binaryOptions["memoryModel"] = "experimental"
         }
@@ -32,19 +32,22 @@ kotlin {
             baseName = "shared"
         }
     }
-
+    
     sourceSets {
         val commonMain by getting {
             dependencies {
                 with(Koin) {
-
+                    
                     implementation(koin)
+                }
+                with(Log) {
+                    implementation(napier)
                 }
                 with(Moko) {
                     api(mokoMVVMCore)
                 }
                 with(Ktor) {
-
+                    
                     implementation(clientCore)
                     implementation(clientJson)
                     implementation(clientLogging)
@@ -65,9 +68,13 @@ kotlin {
                 //implementation("io.jsonwebtoken:jjwt:0.9.1")
                 implementation(Ktor.clientAndroid)
                 implementation(Koin.koinAndroid)
-
+    
+                with(Log) {
+                    implementation(napier)
+                }
+                
                 implementation("io.jsonwebtoken:jjwt:0.9.1")
-
+                
             }
         }
         val androidTest by getting
@@ -104,19 +111,19 @@ android {
     }
     flavorDimensions("appType")
     productFlavors {
-        create("devnode"){
+        create("devnode") {
             dimension = "appType"
         }
-        create("qanode"){
+        create("qanode") {
             dimension = "appType"
         }
-        create("uatnode"){
+        create("uatnode") {
             dimension = "appType"
         }
-        create("rcnode"){
+        create("rcnode") {
             dimension = "appType"
         }
-        create("productionnode"){
+        create("productionnode") {
             dimension = "appType"
         }
     }

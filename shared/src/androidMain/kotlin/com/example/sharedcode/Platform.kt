@@ -50,7 +50,7 @@ actual fun platformModule() = module {
 
     single<String> {
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
-            .claim("company", "Adro")
+            .claim("company", "ADO")
             .claim("session_token", "")
             .claim("api_token", "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4\$x")
             .signWith(

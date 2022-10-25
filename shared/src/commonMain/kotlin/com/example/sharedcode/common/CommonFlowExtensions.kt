@@ -1,5 +1,6 @@
 package com.example.sharedcode.common
 
+import io.github.aakira.napier.Napier
 import io.ktor.client.call.*
 import io.ktor.client.network.sockets.*
 import io.ktor.client.plugins.*
@@ -15,7 +16,7 @@ import kotlinx.coroutines.flow.flowOn
 object CommonFlowExtensions {
     
     
-    fun <T> Flow<T>.handleErrors(): Flow<T> = catch { e ->  }
+    fun <T> Flow<T>.handleErrors(): Flow<T> = catch { e ->  Napier.e("Napier Error", e) }
     
     fun Exception.toCustomExceptions(): ApiResult<Error> = when (this) {
         is ClientRequestException -> {
@@ -47,6 +48,7 @@ object CommonFlowExtensions {
                     emit(ApiResult.Success(response.body()))
                 } catch (e: Exception) {
                    // emit(ApiResult.Loading(false))
+                    Napier.e("Napier Error", e)
                     when (e) {
                         is ClientRequestException -> {
                             emit(ApiResult.Error(e.message))
