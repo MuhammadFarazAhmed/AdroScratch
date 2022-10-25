@@ -35,7 +35,7 @@ class CLibController {
 //    external fun getFilterBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getOutletBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getMerchantBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
-     fun getENTBaseUrlOnline(buildVariant: String = "BuildConfig.FLAVOR"): String =""
+     fun getENTBaseUrlOnline(buildVariant: String = "BuildConfig.FLAVOR"): String= ""
 //    external fun getConfigBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getGMKey(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getAnalyticsBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String

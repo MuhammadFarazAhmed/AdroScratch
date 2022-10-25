@@ -50,13 +50,13 @@ actual fun platformModule() = module {
 
     single<String> {
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
-            .claim("company", "get<PreferencesHelper>().getCompany()")
-            .claim("session_token", "get<PreferencesHelper>().getSessionToken()")
-            .claim("api_token", "get<PreferencesHelper>().getApiToken()")
+            .claim("company", "Adro")
+            .claim("session_token", "")
+            .claim("api_token", "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4\$x")
             .signWith(
                 SignatureAlgorithm.HS256,
                 Base64.encodeToString(
-                    "get<PreferencesHelper>().getSRKey()".toByteArray(),
+                    "!EyFde4#\$%gYsRct54fy@#\$5".toByteArray(),
                     Base64.DEFAULT
                 )
             ).compact()
@@ -86,7 +86,7 @@ fun createHttpClient(
             accept(ContentType.Application.Json)
 
             protocol = URLProtocol.HTTPS
-            host = cLibController.getENTBaseUrlOnline()
+            host = "apiutb2betentsrvpy.theentertainerme.com"
         }
     }
 

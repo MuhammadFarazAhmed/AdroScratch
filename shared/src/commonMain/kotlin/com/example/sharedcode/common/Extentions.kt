@@ -8,7 +8,7 @@ fun HttpClient.changeBaseUrlInterceptor(cLibController: CLibController) {
     plugin(HttpSend).intercept { request ->
         when (request.attributes[CommonUtilsExtension.Apikey]) {
             CommonUtilsExtension.API.HOME -> request.url.host =
-                cLibController.getENTBaseUrlOnline()
+                "apiutb2betentsrvpy.theentertainerme.com"
             CommonUtilsExtension.API.PROFILE -> request.url.host =
                 "cLibController.getAuthBaseUrlOnline()"
             CommonUtilsExtension.API.FAV -> request.url.host =

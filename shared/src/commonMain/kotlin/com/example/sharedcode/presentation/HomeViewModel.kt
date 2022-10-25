@@ -20,7 +20,7 @@ class HomeViewModel constructor(
 
     private fun fetchHomeData(homeUseCase: HomeUseCase) {
         viewModelScope.launch {
-            homeUseCase.fetchHome().handleErrors().collect {
+            homeUseCase.fetchHome().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
                     ApiStatus.ERROR ->{} //Log.d("TAG", "${it.message}: ")
