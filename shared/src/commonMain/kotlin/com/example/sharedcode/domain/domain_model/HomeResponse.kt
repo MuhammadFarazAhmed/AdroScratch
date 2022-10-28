@@ -1,7 +1,9 @@
 package com.example.sharedcode.domain.domain_model
 
+import com.example.sharedcode.CommonParcelable
+import com.example.sharedcode.CommonParcelize
 
-
+@kotlinx.serialization.Serializable
 data class HomeResponse(
     val cmd: String? = null,
     val code: Int? = null,
@@ -10,18 +12,20 @@ data class HomeResponse(
     val message: String? = null,
     val success: Boolean? = null
 ) {
+    @kotlinx.serialization.Serializable
     data class Data(
         val bannerDetail: BannerDetail? = null,
         val pendingTransactionDeeplink: String? = null,
         val sections: List<Section>
     ) {
+        @kotlinx.serialization.Serializable
         data class BannerDetail(
             val bannerBgColor: String? = null,
             val bannerText: String? = null,
             val bannerTextColor: String? = null,
             val shouldShowCancelButton: Boolean? = null
         )
-
+        @kotlinx.serialization.Serializable
         data class Section(
             val sectionIdentifier: String = "1",
             val sectionItems: List<SectionItem> = arrayListOf(),
@@ -36,6 +40,7 @@ data class HomeResponse(
 
             val subTitle: String = ""
         ) {
+            @kotlinx.serialization.Serializable
             data class SectionItem(
 
                 val buttonBgColor: String = "FF343434",
@@ -48,7 +53,7 @@ data class HomeResponse(
 
                 val imageUrl: String? = "",
 
-                val isExternalLink: Any? = "",
+                val isExternalLink: String? = "",
 
                 val shouldShowButton: Int? = -1,
 

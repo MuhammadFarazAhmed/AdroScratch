@@ -2,6 +2,8 @@ plugins {
     kotlin("multiplatform")
     kotlin("native.cocoapods")
     id("com.android.library")
+    kotlin(KotlinPlugins.serialization) version "1.7.10"
+    id(KotlinPlugins.parcelize)
 }
 
 kotlin {
@@ -47,7 +49,6 @@ kotlin {
                     api(mokoMVVMCore)
                 }
                 with(Ktor) {
-                    
                     implementation(clientCore)
                     implementation(clientJson)
                     implementation(clientLogging)
@@ -56,6 +57,15 @@ kotlin {
                     implementation(json)
                     implementation(auth)
                 }
+                with(Kotlinx) {
+                    implementation(serializationCore)
+                    implementation(datetime)
+                }
+                with(Coroutines) {
+                    implementation(coroutines)
+                }
+                
+                implementation("io.jsonwebtoken:jjwt:0.9.1")
             }
         }
         val commonTest by getting {
@@ -72,9 +82,6 @@ kotlin {
                 with(Log) {
                     implementation(napier)
                 }
-                
-                implementation("io.jsonwebtoken:jjwt:0.9.1")
-                
             }
         }
         val androidTest by getting
