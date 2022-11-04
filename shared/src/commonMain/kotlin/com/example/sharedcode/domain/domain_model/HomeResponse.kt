@@ -1,16 +1,13 @@
 package com.example.sharedcode.domain.domain_model
 
-import com.example.sharedcode.CommonParcelable
-import com.example.sharedcode.CommonParcelize
-
 @kotlinx.serialization.Serializable
 data class HomeResponse(
     val cmd: String? = null,
-    val code: Int? = null,
-    val `data`: Data? = null,
-    val httpResponse: Int? = null,
-    val message: String? = null,
-    val success: Boolean? = null
+//    val code: Int? = null,
+//    val `data`: Data? = null,
+//    //val httpResponse: Int? = null,
+//    val message: String? = null,
+//    val success: Boolean? = null
 ) {
     @kotlinx.serialization.Serializable
     data class Data(

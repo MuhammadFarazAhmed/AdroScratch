@@ -24,7 +24,7 @@ class HomeViewModel constructor(homeUseCase: HomeUseCase) : ViewModel() {
                     is Result.Error -> {}
                     Result.Idle -> {}
                     Result.Loading -> {}
-                    is Result.Success -> sections.value = it.data.data?.sections!!
+                    is Result.Success -> {}//sections.value = //it.data.data?.sections!!
                 }
 //                        ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
 //                        ApiStatus.ERROR ->{} //Log.d("TAG", "${it.message}: ")

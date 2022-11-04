@@ -2,10 +2,9 @@ package com.example.sharedcode.data.repo
 
 
 import com.example.sharedcode.domain.domain_model.HomeResponse
-import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
     
-    suspend fun fetchHome() : Flow<HomeResponse>
-    
+    suspend fun fetchHome() : HomeResponse
+
 }
