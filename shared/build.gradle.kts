@@ -52,6 +52,7 @@ kotlin {
                     implementation(clientCore)
                     implementation(clientJson)
                     implementation(clientLogging)
+                    implementation(random)
                     implementation(clientSerialization)
                     implementation(contentNegotiation)
                     implementation(json)

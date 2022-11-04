@@ -2,11 +2,13 @@ package com.example.sharedcode.common
 
 
 import ApisEncryptionUtils
+import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import io.ktor.utils.io.charsets.*
 
 class DecryptResponse private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
@@ -23,8 +25,8 @@ class DecryptResponse private constructor(private val apisEncryptionUtils: ApisE
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptString = apisEncryptionUtils.decryptString(original.toByteArray().decodeToString())
-                .also { /*Log.d("decryptedResponse", it)*/ }
+            val decryptString = apisEncryptionUtils.decryptString(original.toByteArray().encodeBase64())
+                .also { Napier.e { "decryptedResponse :  $it" } }
             val decryptResponse = ByteReadChannel(decryptString)
 
             proceedWith(HttpResponseContainer(type, decryptResponse))
