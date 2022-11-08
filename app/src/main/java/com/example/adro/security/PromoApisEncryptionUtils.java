@@ -3,6 +3,8 @@ package com.example.adro.security;
 import android.util.Base64;
 
 
+import com.theentertainerme.adro.security.CLibController;
+
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 

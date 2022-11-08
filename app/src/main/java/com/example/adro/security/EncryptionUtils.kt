@@ -2,6 +2,7 @@ package com.example.adro.security
 
 import android.text.TextUtils
 import android.util.Base64
+import com.theentertainerme.adro.security.CLibController
 import java.io.UnsupportedEncodingException
 import java.security.NoSuchAlgorithmException
 import javax.crypto.Cipher

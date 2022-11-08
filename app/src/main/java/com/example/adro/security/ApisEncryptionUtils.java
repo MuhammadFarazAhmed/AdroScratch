@@ -2,7 +2,10 @@ package com.example.adro.security;
 
 import android.util.Base64;
 
+import com.theentertainerme.adro.security.CLibController;
+
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
@@ -13,7 +16,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 public class ApisEncryptionUtils {
-    private CLibController controller;
+    private final CLibController controller;
 
 
     private static ApisEncryptionUtils encryptionUtils;
@@ -30,33 +33,26 @@ public class ApisEncryptionUtils {
         if (cipherInstance == null)
             try {
                 cipherInstance = Cipher.getInstance("AES/CBC/PKCS7Padding");
-            } catch (NoSuchAlgorithmException ignore) {
-            } catch (NoSuchPaddingException ignore) {
+            } catch (NoSuchAlgorithmException | NoSuchPaddingException ignore) {
             }
 
         return cipherInstance;
     }
 
     private IvParameterSpec getIVSalt() {
-        try {
-            if (ivSalt == null) {
-                //String value = getValue();
-                ivSalt = new IvParameterSpec(controller.getAuSaltKey("").getBytes("UTF-8"));
-            }
-        } catch (UnsupportedEncodingException ignore) {
+        if (ivSalt == null) {
+            //String value = getValue();
+            ivSalt = new IvParameterSpec(controller.getAuSaltKey("").getBytes(StandardCharsets.UTF_8));
         }
         return ivSalt;
     }
 
     private SecretKeySpec getSecretKeySpec() {
-        try {
-            if (aesSecretKeySpec == null) {
-                // String value = getValue();
-                //ELog.INSTANCE.logDebug("getSecretKeySpec"+CLibController.Companion.getInstance().getAuSKey(""));
-                //ELog.INSTANCE.logDebug("getIVSalt"+CLibController.Companion.getInstance().getAuSaltKey(""));
-                aesSecretKeySpec = new SecretKeySpec(controller.getAuSKey("").getBytes("UTF-8"), "AES");
-            }
-        } catch (UnsupportedEncodingException ignore) {
+        if (aesSecretKeySpec == null) {
+            // String value = getValue();
+            //ELog.INSTANCE.logDebug("getSecretKeySpec"+CLibController.Companion.getInstance().getAuSKey(""));
+            //ELog.INSTANCE.logDebug("getIVSalt"+CLibController.Companion.getInstance().getAuSaltKey(""));
+            aesSecretKeySpec = new SecretKeySpec(controller.getAuSKey("").getBytes(StandardCharsets.UTF_8), "AES");
         }
         return aesSecretKeySpec;
     }
@@ -67,7 +63,7 @@ public class ApisEncryptionUtils {
             byte[] cipherText = Base64.decode(sirToDecrypt, Base64.DEFAULT);
             byte[] original = getCipherInstance().doFinal(cipherText);
 
-            return new String(original, "UTF-8");
+            return new String(original, StandardCharsets.UTF_8);
 
         } catch (Exception ignore) {
         }
@@ -78,7 +74,7 @@ public class ApisEncryptionUtils {
     public synchronized String encryptString(String sirToEncrypt) {
         try {
             getCipherInstance().init(Cipher.ENCRYPT_MODE, getSecretKeySpec(), getIVSalt());
-            byte[] cipherText = sirToEncrypt.getBytes("UTF-8");
+            byte[] cipherText = sirToEncrypt.getBytes(StandardCharsets.UTF_8);
             byte[] encryptedBytes = getCipherInstance().doFinal(cipherText);
 
             return Base64.encodeToString(encryptedBytes, Base64.DEFAULT);

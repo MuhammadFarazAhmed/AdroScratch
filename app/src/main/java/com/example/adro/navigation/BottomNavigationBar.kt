@@ -16,47 +16,56 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 
 @Composable
-fun BottomNavigationBar(bottomBarState: MutableState<Boolean>,
-                        destinations: List<TopLevelDestination>,
-                        onNavigateToDestination: (TopLevelDestination) -> Unit, currentDestination: NavDestination?) {
-    
+fun BottomNavigationBar(
+    bottomBarState: MutableState<Boolean>,
+    destinations: List<TopLevelDestination>,
+    onNavigateToDestination: (TopLevelDestination, String?, String?) -> Unit,
+    currentDestination: NavDestination?
+) {
+
     AnimatedVisibility(visible = bottomBarState.value,
-            enter = slideInVertically(initialOffsetY = { it }),
-            exit = slideOutVertically(targetOffsetY = { it }),
-            content = {
-                BottomNavigation(contentColor = Color.White) {
-                    destinations.forEach { destination ->
-                        val selected =
-                                currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                        BottomNavigationItem(modifier = Modifier.background(Color.White),
-                                icon = {
-                                    val icon = if (selected) {
-                                        destination.selectedIcon
-                                    } else {
-                                        destination.unselectedIcon
-                                    }
-                                    when (icon) {
-                                        is Icon.ImageVectorIcon -> {
-                                            Image(imageVector = icon.imageVector,
-                                                    contentDescription = null)
-                                        }
-                                        is Icon.DrawableResourceIcon -> {
-                                            Image(painter = painterResource(id = icon.id),
-                                                    contentDescription = null)
-                                        }
-                                    }
-                                },
-                                label = {
-                                    Text(stringResource(destination.iconTextId),
-                                            color = Color.Black)
-                                },
-                                alwaysShowLabel = true,
-                                selected = selected,
-                                onClick = { onNavigateToDestination(destination) })
-                    }
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+        content = {
+            BottomNavigation(contentColor = Color.White) {
+                destinations.forEach { destination ->
+                    val selected =
+                        currentDestination?.hierarchy?.any { it.route == destination.route } == true
+                    BottomNavigationItem(modifier = Modifier.background(Color.White),
+                        icon = {
+                            val icon = if (selected) {
+                                destination.selectedIcon
+                            } else {
+                                destination.unselectedIcon
+                            }
+                            when (icon) {
+                                is Icon.ImageVectorIcon -> {
+                                    Image(
+                                        imageVector = icon.imageVector,
+                                        contentDescription = null
+                                    )
+                                }
+                                is Icon.DrawableResourceIcon -> {
+                                    Image(
+                                        painter = painterResource(id = icon.id),
+                                        contentDescription = null
+                                    )
+                                }
+                            }
+                        },
+                        label = {
+                            Text(
+                                stringResource(destination.iconTextId),
+                                color = Color.Black
+                            )
+                        },
+                        alwaysShowLabel = true,
+                        selected = selected,
+                        onClick = { onNavigateToDestination(destination, null, null) })
                 }
-            })
-    
+            }
+        })
+
 }
 
 @Preview(showBackground = true)

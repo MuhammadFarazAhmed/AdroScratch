@@ -45,7 +45,9 @@ fun HomeScreenPreview() {
 
         // LoginView(section, navControlle)
 
-        Categories(section)
+        Categories(section) {
+
+        }
 
         ExclusiveItem(exclusivePagerState, section)
 
@@ -57,7 +59,11 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = getViewModel()) {
+fun HomeScreen(
+    navigateToAuth: () -> Unit,
+    navigateToOffers: (String) -> Unit,
+    vm: HomeViewModel = getViewModel()
+) {
 
 
     val pagerState = rememberPagerState()
@@ -78,7 +84,9 @@ fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = getViewModel()) {
 
                     "guest_user" -> LoginView(section, navigateToAuth)
 
-                    "categories" -> Categories(section)
+                    "categories" -> Categories(section) { deeplink ->
+                        navigateToOffers(deeplink)
+                    }
 
                     "exclusive_offers" -> ExclusiveItem(
                         pagerState = exclusivePagerState,
@@ -331,7 +339,10 @@ fun MainCarousal(
 }
 
 @Composable
-fun Categories(@PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section) {
+fun Categories(
+    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section,
+    handleDeeplink: (deepLink: String) -> Unit
+) {
     Column {
 
         Text(
@@ -352,7 +363,10 @@ fun Categories(@PreviewParameter(SampleUserProvider::class) section: HomeRespons
                     modifier = Modifier
                         .wrapContentHeight()
                         .padding(4.dp)
-                        .width(115.dp),
+                        .width(115.dp)
+                        .clickable {
+                            handleDeeplink(item.deeplink)
+                        },
                     elevation = 4.dp,
                     shape = RoundedCornerShape(8.dp)
                 ) {

@@ -1,6 +1,6 @@
 package com.example.adro.common
 
-import com.example.adro.security.CLibController
+import com.theentertainerme.adro.security.CLibController
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 

@@ -1,15 +1,10 @@
 package com.example.adro.di
 
-import android.app.Application
-import android.content.Context
 import android.util.Base64
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.adro.common.PreferencesHelper
 import com.example.adro.common.changeBaseUrlInterceptor
 import com.example.adro.common.decryptResponse
 import com.example.adro.security.ApisEncryptionUtils
-import com.example.adro.security.CLibController
-import com.example.domain.models.HomeResponse
 import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
 import com.example.domain.repos.MerchantRepository
@@ -30,10 +25,7 @@ import com.example.repositories.usecases.FavUseCaseImp
 import com.example.repositories.usecases.HomeUseCaseImp
 import com.example.repositories.usecases.MerchantUseCaseImp
 import com.example.repositories.usecases.ProfileUseCaseImp
-import dagger.Module
-import dagger.Provides
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
+import com.theentertainerme.adro.security.CLibController
 import io.jsonwebtoken.JwsHeader
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -48,12 +40,9 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
 import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.compose.get
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.module.dsl.singleOf
-import org.koin.core.scope.get
 import org.koin.dsl.module
-import javax.inject.Singleton
 
 
 fun appModule() = listOf(AppModule, NetworkModule)
