@@ -1,14 +1,13 @@
 package com.example.adro
 
+import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.core.os.trace
-import androidx.navigation.NavDestination
+import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navDeepLink
 import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
 import com.example.base.R
@@ -108,14 +107,6 @@ class AdroAppState(val navController: NavHostController) {
                     launchSingleTop = true
                     // Restore state when reselecting a previously selected item
                     restoreState = true
-
-                    deepLink?.let {
-                        if (it.contains("offers")) {
-                            navDeepLink {
-
-                            }
-                        }
-                    }
                 }
             } else {
                 navController.navigate(route ?: destination.route)

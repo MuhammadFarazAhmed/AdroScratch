@@ -1,5 +1,6 @@
 package com.example.offers.ui
 
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -20,8 +21,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
@@ -39,7 +38,14 @@ import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OffersScreen(navigateToDetail: ()->Unit,vm: OffersViewModel = getViewModel()) {
+fun OffersScreen(
+    navigateToDetail: () -> Unit,
+    categoryId: String?,
+    categoryName: String?,
+    vm: OffersViewModel = getViewModel()
+) {
+
+    Log.d("OffersScreen", "$categoryId , $categoryName")
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -55,7 +61,7 @@ fun OffersScreen(navigateToDetail: ()->Unit,vm: OffersViewModel = getViewModel()
                 vm.selectedTab.value = tab
             }
 
-            Pager(tabs = tabs, pagerState = pagerState, vm,navigateToDetail)
+            Pager(tabs = tabs, pagerState = pagerState, vm, navigateToDetail)
         }
 
     }
