@@ -32,52 +32,63 @@ actual typealias CommonParcelize = Parcelize
 
 actual typealias CommonParcelable = Parcelable
 
+actual fun getToken(): String =
+    Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE).claim("company", "ADO")
+        .claim("session_token", "")
+        .claim("api_token", "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4\$x").signWith(
+            SignatureAlgorithm.HS256,
+            Base64.encodeToString(
+                "!EyFde4#\$%gYsRct54fy@#\$5".toByteArray(),
+                Base64.DEFAULT
+            )
+        ).compact()
+
+
 actual fun platformModule() = module {
     single {
         Android.create()
     }
-    
+
     single { CLibController() }
-    
+
     single { ApisEncryptionUtils(get()) }
-    
-    single<String> {
-        Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE).claim("company", "ADO")
-                .claim("session_token", "")
-                .claim("api_token", "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4\$x").signWith(
-                        SignatureAlgorithm.HS256,
-                        Base64.encodeToString("!EyFde4#\$%gYsRct54fy@#\$5".toByteArray(),
-                                Base64.DEFAULT)).compact()
-    }
-    
-    single { createJson() }
-    
+
     single {
-        createHttpClient(httpClientEngine = get(),
-                cLibController = get(),
-                token = get(),
-                encryptionUtils = get(),
-                json = get())
+        getToken()
+    }
+
+    single { createJson() }
+
+    single {
+        createHttpClient(
+            httpClientEngine = get(),
+            cLibController = get(),
+            token = get(),
+            encryptionUtils = get(),
+            json = get()
+        )
     }
 }
 
 
-fun createHttpClient(httpClientEngine: HttpClientEngine,
-                     cLibController: CLibController,
-                     token: String,
-                     encryptionUtils: ApisEncryptionUtils,
-                     json: Json) = HttpClient(httpClientEngine) {
-    
+fun createHttpClient(
+    httpClientEngine: HttpClientEngine,
+    cLibController: CLibController,
+    token: String,
+    encryptionUtils: ApisEncryptionUtils,
+    json: Json
+) = HttpClient(httpClientEngine) {
+
     defaultRequest {
         url {
             contentType(ContentType.Application.Json)
             accept(ContentType.Application.Json)
-            
+
             protocol = URLProtocol.HTTPS
             host = "apiutb2betentsrvpy.theentertainerme.com"
         }
     }
-    
+
     install(Auth) {
         bearer {
             loadTokens {
@@ -85,17 +96,17 @@ fun createHttpClient(httpClientEngine: HttpClientEngine,
             }
         }
     }
-    
+
     install(Logging) { level = LogLevel.ALL }
-    
+
     install(ContentNegotiation) {
         json(json)
     }
-    
+
     decryptResponse {
         apisEncryptionUtils = encryptionUtils
     }
-    
+
 }.apply {
     changeBaseUrlInterceptor(cLibController)
 }

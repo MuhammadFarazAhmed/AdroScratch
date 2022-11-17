@@ -11,6 +11,8 @@ expect fun getPlatform(): Platform
 
 expect fun platformModule(): Module
 
+expect fun getToken(): String
+
 @OptIn(ExperimentalMultiplatform::class)
 @OptionalExpectation
 @Target(AnnotationTarget.CLASS)
