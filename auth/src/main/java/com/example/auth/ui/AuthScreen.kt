@@ -41,7 +41,6 @@ import com.example.domain.models.HomeResponse
 
 @Composable
 fun AuthScreen(onBackClick: () -> Unit) {
-    val vm = hiltViewModel<AuthViewModel>()
     BackHandler {
         onBackClick()
     }

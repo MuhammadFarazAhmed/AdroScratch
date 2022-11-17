@@ -1,6 +1,5 @@
 package com.example.adro
 
-import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.core.os.trace
@@ -29,20 +28,6 @@ fun rememberAdroAppState(navController: NavHostController = rememberNavControlle
 class AdroAppState(val navController: NavHostController) {
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
-
-//    val topBarState: MutableState<Boolean>
-//        @Composable get() = rememberSaveable { (mutableStateOf(true)) }
-//
-//    val bottomBarState: MutableState<Boolean>
-//        @Composable get() = rememberSaveable { (mutableStateOf(true)) }
-
-
-//    val shouldShowBottomBar: Boolean
-//        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact ||
-//            windowSizeClass.heightSizeClass == WindowHeightSizeClass.Compact
-
-//    val shouldShowNavRail: Boolean
-//        get() = !shouldShowBottomBar
 
     /**
      * Top level destinations to be used in the BottomBar and NavRail
@@ -92,7 +77,7 @@ class AdroAppState(val navController: NavHostController) {
      * @param destination: The [AdroNavigationDestination] the app needs to navigate to.
      * @param route: Optional route to navigate to in case the destination contains arguments.
      */
-    fun navigate(destination: AdroNavigationDestination, route: String? = null, deepLink: String?) {
+    fun navigate(destination: AdroNavigationDestination, route: String? = null) {
         trace("Navigation: $destination") {
             if (destination is TopLevelDestination) {
                 navController.navigate(route ?: destination.route) {

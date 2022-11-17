@@ -39,15 +39,15 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
             }
             "profile_route" -> {
                 bottomBarState.value = true
-                topBarState.value = true
+                topBarState.value = false
             }
             "merchant_route" -> {
                 bottomBarState.value = true
                 topBarState.value = true
             }
             "fav_route" -> {
-                bottomBarState.value = false
-                topBarState.value = false
+                bottomBarState.value = true
+                topBarState.value = true
             }
         }
         
