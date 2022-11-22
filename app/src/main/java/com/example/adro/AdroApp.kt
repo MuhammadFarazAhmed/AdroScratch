@@ -14,6 +14,7 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.adro.navigation.*
 import com.example.adro.theme.AdroScratchTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {

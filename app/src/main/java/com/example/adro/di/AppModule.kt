@@ -47,6 +47,8 @@ import org.koin.dsl.module
 
 fun appModule() = listOf(AppModule, NetworkModule)
 
+fun networkModule() = listOf(NetworkModule)
+
 fun featureModules() = listOf(homeModule, merchantModule, profileModule)
 
 val AppModule = module {
