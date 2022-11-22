@@ -1,34 +1,34 @@
 import com.example.sharedcode.security.CLibController
 
 class ApisEncryptionUtils(private val controller: CLibController) {
-//
-////    private var cipherInstance: Cipher? = null
-////        get() {
-////            if (field == null) try {
-////                field = Cipher.getInstance("AES/CBC/PKCS7Padding")
-////            } catch (ignore: java.security.NoSuchAlgorithmException) {
-////            } catch (ignore: NoSuchPaddingException) {
-////            }
-////            return field
-////        }
-////    private var ivSalt: spec.IvParameterSpec? = null
-////    private var aesSecretKeySpec: spec.SecretKeySpec? = null
-//
-//    //String value = getValue();
-//        // private val iVSalt: spec.IvParameterSpec?
-////        private get() {
-////            try {
-////                if (ivSalt == null) {
-////                    //String value = getValue();
-////                    ivSalt = spec.IvParameterSpec(
-////                        controller.getAuSaltKey("").getBytes("UTF-8")
-////                    )
-////                }
-////            } catch (ignore: java.io.UnsupportedEncodingException) {
-////            }
-//          //  return ivSalt
+
+//    private var cipherInstance: Cipher? = null
+//        get() {
+//            if (field == null) try {
+//                field = Cipher.getInstance("AES/CBC/PKCS7Padding")
+//            } catch (ignore: java.security.NoSuchAlgorithmException) {
+//            } catch (ignore: NoSuchPaddingException) {
+//            }
+//            return field
 //        }
+//    private var ivSalt: spec.IvParameterSpec? = null
+//    private var aesSecretKeySpec: spec.SecretKeySpec? = null
 //
+//    String value = getValue();
+//         private val iVSalt: spec.IvParameterSpec?
+//        private get() {
+//            try {
+//                if (ivSalt == null) {
+//                    //String value = getValue();
+//                    ivSalt = spec.IvParameterSpec(
+//                        controller.getAuSaltKey("").getBytes("UTF-8")
+//                    )
+//                }
+//            } catch (ignore: java.io.UnsupportedEncodingException) {
+//            }
+//            return ivSalt
+//        }
+
 //    // String value = getValue();
 //    //ELog.INSTANCE.logDebug("getSecretKeySpec"+CLibController.Companion.getInstance().getAuSKey(""));
 //    //ELog.INSTANCE.logDebug("getIVSalt"+CLibController.Companion.getInstance().getAuSaltKey(""));

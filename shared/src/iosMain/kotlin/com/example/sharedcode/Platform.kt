@@ -11,7 +11,11 @@ class IOSPlatform : Platform {
 
 actual fun getPlatform(): Platform = IOSPlatform()
 
-actual fun getToken(): String = Token.getToken()
+
+actual fun getToken(): String {
+    //TODO get the token from swift
+    return ""
+}
 
 
 actual fun platformModule() = module {
@@ -21,5 +25,3 @@ actual fun platformModule() = module {
 
     //single or factory can be used to get a view-model object for swiftui
 }
-
-actual interface CommonParcelable

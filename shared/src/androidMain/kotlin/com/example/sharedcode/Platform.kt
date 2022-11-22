@@ -28,10 +28,6 @@ class AndroidPlatform : Platform {
 
 actual fun getPlatform(): Platform = AndroidPlatform()
 
-actual typealias CommonParcelize = Parcelize
-
-actual typealias CommonParcelable = Parcelable
-
 actual fun getToken(): String =
     Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE).claim("company", "ADO")
         .claim("session_token", "")
@@ -49,66 +45,7 @@ actual fun platformModule() = module {
         Android.create()
     }
 
-    single { CLibController() }
-
-    single { ApisEncryptionUtils(get()) }
-
     single {
         getToken()
     }
-
-    single { createJson() }
-
-    single {
-        createHttpClient(
-            httpClientEngine = get(),
-            cLibController = get(),
-            token = get(),
-            encryptionUtils = get(),
-            json = get()
-        )
-    }
 }
-
-
-fun createHttpClient(
-    httpClientEngine: HttpClientEngine,
-    cLibController: CLibController,
-    token: String,
-    encryptionUtils: ApisEncryptionUtils,
-    json: Json
-) = HttpClient(httpClientEngine) {
-
-    defaultRequest {
-        url {
-            contentType(ContentType.Application.Json)
-            accept(ContentType.Application.Json)
-
-            protocol = URLProtocol.HTTPS
-            host = "apiutb2betentsrvpy.theentertainerme.com"
-        }
-    }
-
-    install(Auth) {
-        bearer {
-            loadTokens {
-                BearerTokens(token, token)
-            }
-        }
-    }
-
-    install(Logging) { level = LogLevel.ALL }
-
-    install(ContentNegotiation) {
-        json(json)
-    }
-
-    decryptResponse {
-        apisEncryptionUtils = encryptionUtils
-    }
-
-}.apply {
-    changeBaseUrlInterceptor(cLibController)
-}
-
-fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

@@ -13,10 +13,10 @@ expect fun platformModule(): Module
 
 expect fun getToken(): String
 
-@OptIn(ExperimentalMultiplatform::class)
-@OptionalExpectation
-@Target(AnnotationTarget.CLASS)
-@Retention(AnnotationRetention.BINARY)
-expect annotation class CommonParcelize()
-
-expect interface CommonParcelable
+//@OptIn(ExperimentalMultiplatform::class)
+//@OptionalExpectation
+//@Target(AnnotationTarget.CLASS)
+//@Retention(AnnotationRetention.BINARY)
+//expect annotation class CommonParcelize()
+//
+//expect interface CommonParcelable
