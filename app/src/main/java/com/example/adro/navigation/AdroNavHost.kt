@@ -17,7 +17,7 @@ import com.example.profile.nav.profileGraph
 @Composable
 fun AdroNavHost(
     navController: NavHostController,
-    onNavigateToDestination: (AdroNavigationDestination, String) -> Unit,
+    onNavigateToDestination: (AdroNavigationDestination, String?,String?) -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = HomeDestination.route
@@ -31,15 +31,15 @@ fun AdroNavHost(
         authGraph(onBackClick)
         homeGraph(
             navigateToAuth = {
-                onNavigateToDestination(AuthDestination, AuthDestination.route)
+                onNavigateToDestination(AuthDestination, AuthDestination.route, null)
             },
             navigateToOffers = { deeplink ->
-                onNavigateToDestination(MerchantDestination, MerchantDestination.route)
+                onNavigateToDestination(MerchantDestination, MerchantDestination.route,deeplink)
             }
         )
         merchantGraph(
             navigateToDetail = {
-                onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
+                onNavigateToDestination(MerchantDestination, MerchantDestination.detail,null)
             })
         favGraph()
         profileGraph()

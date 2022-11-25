@@ -77,10 +77,17 @@ class AdroAppState(val navController: NavHostController) {
      * @param destination: The [AdroNavigationDestination] the app needs to navigate to.
      * @param route: Optional route to navigate to in case the destination contains arguments.
      */
-    fun navigate(destination: AdroNavigationDestination, route: String? = null) {
+    fun navigate(
+        destination: AdroNavigationDestination,
+        route: String? = null,
+        deepLink: String? = null
+    ) {
         trace("Navigation: $destination") {
+
             if (destination is TopLevelDestination) {
-                navController.navigate(route ?: destination.route) {
+                navController.navigate(
+                     route ?: destination.route
+                ) {
                     // Pop up to the start destination of the graph to
                     // avoid building up a large stack of destinations
                     // on the back stack as users select items
@@ -94,7 +101,7 @@ class AdroAppState(val navController: NavHostController) {
                     restoreState = true
                 }
             } else {
-                navController.navigate(route ?: destination.route)
+                navController.navigate(deepLink?.let { "${route?.replace("{deeplink}",deepLink)}" } ?:route ?: destination.route)
             }
         }
     }
