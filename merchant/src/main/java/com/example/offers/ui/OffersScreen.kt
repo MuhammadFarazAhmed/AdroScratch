@@ -40,11 +40,15 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun OffersScreen(
     navigateToDetail: () -> Unit,
-    params: HashMap<String,String> = hashMapOf(),
+    params: HashMap<String, String> = hashMapOf(),
     vm: OffersViewModel = getViewModel()
 ) {
 
     Log.d("TAG", "OffersScreen: $params")
+
+    vm.params = params
+
+    vm.fetchTabs()
 
     val coroutineScope = rememberCoroutineScope()
 

@@ -22,11 +22,10 @@ class OffersViewModel @Inject constructor(
 ) :
     AndroidViewModel(application) {
 
-    init {
-        fetchTabs()
-    }
+    var params = hashMapOf<String, String>()
 
-    private fun fetchTabs() {
+
+    fun fetchTabs() {
         viewModelScope.launch {
             merchantUseCase.fetchTabs().collect {
                 when (it.status) {
@@ -40,7 +39,11 @@ class OffersViewModel @Inject constructor(
         }
     }
 
-    val offers = Pager(PagingConfig(pageSize = 60)) { BasePagingSource { merchantUseCase.fetchOffers(selectedTab.value!!.params) } }.flow.cachedIn(viewModelScope)
+    val offers = Pager(PagingConfig(pageSize = 60)) {
+        BasePagingSource {
+            merchantUseCase.fetchOffers(params)
+        }
+    }.flow.cachedIn(viewModelScope)
 
     val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = MutableStateFlow(emptyList())
 

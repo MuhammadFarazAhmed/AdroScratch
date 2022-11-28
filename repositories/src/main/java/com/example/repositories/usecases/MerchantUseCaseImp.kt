@@ -11,8 +11,8 @@ import javax.inject.Inject
 class MerchantUseCaseImp @Inject constructor(private val merchantRepository: MerchantRepository) :
     MerchantUseCase {
 
-    override fun fetchTabs(): Flow<ApiResult<TabsResponse>> = merchantRepository.fetchTabs()
+    override fun fetchTabs(params: HashMap<String,String>?): Flow<ApiResult<TabsResponse>> = merchantRepository.fetchTabs(params)
 
-    override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> = merchantRepository.fetchOffers(params)
+    override suspend fun fetchOffers(params: HashMap<String,String>?): List<OffersResponse.Data.Outlet> = merchantRepository.fetchOffers(params)
 }
 

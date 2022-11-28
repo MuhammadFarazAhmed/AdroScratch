@@ -1,5 +1,6 @@
 package com.example.adro
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -18,13 +19,12 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
-    
+
     val topBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
-    
+
     val bottomBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
-    
     AdroScratchTheme {
-        
+
         when (appState.currentDestination?.route) {
             "auth_route" -> {
                 bottomBarState.value = false
@@ -42,7 +42,7 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
                 bottomBarState.value = true
                 topBarState.value = false
             }
-            "merchant_route" -> {
+            "merchant_route?deeplink={deeplink}" -> {
                 bottomBarState.value = true
                 topBarState.value = true
             }
@@ -51,20 +51,29 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
                 topBarState.value = false
             }
         }
-        
+        Log.d("TAG", "AdroApp: ${appState.currentDestination?.route}")
+
         Scaffold(topBar = { Toolbar(topBarState) }, content = { padding ->
-            Box(modifier = Modifier.padding(padding).fillMaxHeight()) {
-                AdroNavHost(navController = appState.navController,
-                        onBackClick = appState::onBackClick,
-                        onNavigateToDestination = appState::navigate)
+            Box(
+                modifier = Modifier
+                    .padding(padding)
+                    .fillMaxHeight()
+            ) {
+                AdroNavHost(
+                    navController = appState.navController,
+                    onBackClick = appState::onBackClick,
+                    onNavigateToDestination = appState::navigate
+                )
             }
         }, bottomBar = {
-            BottomNavigationBar(bottomBarState = bottomBarState,
-                    destinations = appState.topLevelDestinations,
-                    onNavigateToDestination = appState::navigate,
-                    currentDestination = appState.currentDestination)
+            BottomNavigationBar(
+                bottomBarState = bottomBarState,
+                destinations = appState.topLevelDestinations,
+                onNavigateToDestination = appState::navigate,
+                currentDestination = appState.currentDestination
+            )
         })
-        
+
     }
-    
+
 }

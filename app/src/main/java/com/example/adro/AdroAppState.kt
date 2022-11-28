@@ -85,8 +85,9 @@ class AdroAppState(val navController: NavHostController) {
         trace("Navigation: $destination") {
 
             if (destination is TopLevelDestination) {
+                if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
                 navController.navigate(
-                     route ?: destination.route
+                    route ?: destination.route
                 ) {
                     // Pop up to the start destination of the graph to
                     // avoid building up a large stack of destinations
@@ -101,7 +102,8 @@ class AdroAppState(val navController: NavHostController) {
                     restoreState = true
                 }
             } else {
-                navController.navigate(deepLink?.let { "${route?.replace("{deeplink}",deepLink)}" } ?:route ?: destination.route)
+                navController.navigate(deepLink?.let { "${route?.replace("{deeplink}", deepLink)}" }
+                    ?: route ?: destination.route)
             }
         }
     }
