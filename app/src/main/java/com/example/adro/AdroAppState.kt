@@ -15,7 +15,6 @@ import com.example.offers.nav.FavoriteDestination
 import com.example.offers.nav.MerchantDestination
 import com.example.profile.nav.ProfileDestination
 
-@OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun rememberAdroAppState(navController: NavHostController = rememberNavController()): AdroAppState {
     NavigationTrackingSideEffect(navController)

@@ -3,6 +3,7 @@ package com.example.adro.navigation
 import androidx.compose.animation.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.Text
@@ -31,7 +32,7 @@ fun BottomNavigationBar(
                 destinations.forEach { destination ->
                     val selected =
                         currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                    BottomNavigationItem(modifier = Modifier.background(Color.White),
+                    BottomNavigationItem(modifier = Modifier.background(Color.White).navigationBarsPadding(),
                         icon = {
                             val icon = if (selected) {
                                 destination.selectedIcon
@@ -62,6 +63,7 @@ fun BottomNavigationBar(
                         alwaysShowLabel = true,
                         selected = selected,
                         onClick = { onNavigateToDestination(destination, destination.route, null) })
+
                 }
             }
         })

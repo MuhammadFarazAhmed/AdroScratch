@@ -1,42 +1,30 @@
 package com.example.auth.ui
 
-import android.icu.number.Scale
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material.Divider
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
-import androidx.compose.ui.unit.ExperimentalUnitApi
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import com.example.adro.common.HexToJetpackColor
+import com.example.adro.theme.Emad
 import com.example.auth.R
-import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.HomeResponse
 
 @Composable
@@ -72,7 +60,11 @@ fun AuthScreenPreview() {
 @Composable
 fun EMIDScreen() {
 
-    ConstraintLayout(modifier = Modifier.fillMaxSize()) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
         val (logo, loginContainer) = createRefs()
 
         Image(painter = painterResource(id = R.drawable.ic_app_logo),
@@ -88,11 +80,20 @@ fun EMIDScreen() {
             centerHorizontallyTo(parent)
             linkTo(top = logo.bottom, bottom = parent.bottom, bias = 0.6f)
         }) {
-            Text(text = "Welcome")
-            Text(text = "Abu dhabi visa holders")
-            Text(text = "create account by entering email your emirates ID number")
-            TextField(value = "",
-                onValueChange = {},
+            Text(text = "Welcome", color = Color.White)
+            Text(text = "Abu dhabi visa holders", color = Color.White)
+            Text(
+                text = "create account by entering email your emirates ID number",
+                color = Color.White,
+                fontFamily = Emad
+            )
+            TextField(
+                modifier = Modifier
+                    .wrapContentSize()
+                    .fillMaxWidth()
+                    .background(Color.White, shape = RoundedCornerShape(4.dp)),
+                value = "",
+                onValueChange = { it },
                 placeholder = { "Enter your Emirates ID" },
                 trailingIcon = {
                     Image(
@@ -100,6 +101,17 @@ fun EMIDScreen() {
                         contentDescription = ""
                     )
                 })
+
+            Button(
+                onClick = { },
+                modifier = Modifier
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = HexToJetpackColor.getColor("E41C38")
+                )
+            ) {
+                Text(text = "Validate", color = Color.White, fontSize = 18.sp)
+            }
             val string = buildAnnotatedString {
                 append("Have a account?")
                 withStyle(
@@ -111,7 +123,7 @@ fun EMIDScreen() {
                     append(" Login")
                 }
             }
-            Text(text = string)
+            Text(text = string, color = Color.White)
 
 
             Divider(
@@ -120,11 +132,9 @@ fun EMIDScreen() {
                 modifier = Modifier.padding(horizontal = 16.dp)
             )
 
-            Text(text = "continue as guest")
+            Text(text = "continue as guest", color = Color.White)
 
         }
-
-
 
     }
 }

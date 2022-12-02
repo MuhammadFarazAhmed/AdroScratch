@@ -9,8 +9,11 @@ import com.example.base.R
 // Set of Material typography styles to start with
 
 val Emad = FontFamily(
-    Font(R.font.emad_diana_extra_normal),
-    Font(R.font.emad_diana_extra_regular, FontWeight.W500)
+    Font(R.font.emad_diana_extra_normal, FontWeight.Normal),
+    Font(R.font.emad_diana_extra_normal, FontWeight.Bold),
+    Font(R.font.emad_diana_extra_normal, FontWeight.Light),
+    Font(R.font.emad_diana_extra_normal, FontWeight.Medium),
+    Font(R.font.emad_diana_extra_normal, FontWeight.SemiBold),
 )
 
 val Typography = Typography(
@@ -39,6 +42,10 @@ val Typography = Typography(
         fontWeight = FontWeight.W500,
         fontSize = 16.sp
     ),
+    button = TextStyle(
+        fontFamily = Emad,
+        fontWeight = FontWeight.Light, fontSize = 14.sp
+    )
 
     /* Other default text styles to override
     button = TextStyle(
