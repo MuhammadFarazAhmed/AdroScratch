@@ -20,7 +20,7 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 fun BottomNavigationBar(
     bottomBarState: MutableState<Boolean>,
     destinations: List<TopLevelDestination>,
-    onNavigateToDestination: (TopLevelDestination, String?, String?) -> Unit,
+    onNavigateToDestination: (TopLevelDestination, String?) -> Unit,
     currentDestination: NavDestination?
 ) {
 
@@ -62,7 +62,7 @@ fun BottomNavigationBar(
                         },
                         alwaysShowLabel = true,
                         selected = selected,
-                        onClick = { onNavigateToDestination(destination, destination.route, null) })
+                        onClick = { onNavigateToDestination(destination, destination.route) })
 
                 }
             }

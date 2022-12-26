@@ -16,7 +16,7 @@ object HomeDestination : AdroNavigationDestination {
 
 fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
-    navigateToOffers: (deepLink: String) -> Unit
+    navigateToOffers: () -> Unit
 //    nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
 //    navigation(
@@ -24,7 +24,7 @@ fun NavGraphBuilder.homeGraph(
 //        startDestination = HomeDestination.destination
 //    ) {
     composable(HomeDestination.route) {
-        HomeScreen(navigateToAuth = navigateToAuth, navigateToOffers = { navigateToOffers(it) })
+        HomeScreen(navigateToAuth = navigateToAuth, navigateToOffers = { navigateToOffers() })
     }
 //        nestedGraphs()
 //    }

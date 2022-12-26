@@ -18,11 +18,12 @@ import com.example.adro.theme.AdroScratchTheme
 import kotlinx.coroutines.delay
 
 @Composable
-fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
+fun AdroApp(appState: AdroAppState) {
 
     val topBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
 
     val bottomBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
+
     AdroScratchTheme {
 
         when (appState.currentDestination?.route) {
@@ -42,7 +43,7 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
                 bottomBarState.value = true
                 topBarState.value = false
             }
-            "merchant_route?deeplink={deeplink}" -> {
+            "merchant_route" -> {
                 bottomBarState.value = true
                 topBarState.value = true
             }
@@ -51,7 +52,6 @@ fun AdroApp(appState: AdroAppState = rememberAdroAppState()) {
                 topBarState.value = false
             }
         }
-        Log.d("TAG", "AdroApp: ${appState.currentDestination?.route}")
 
         Scaffold(topBar = { Toolbar(topBarState) }, content = { padding ->
             Box(

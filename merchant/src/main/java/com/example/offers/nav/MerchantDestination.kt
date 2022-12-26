@@ -17,7 +17,7 @@ import com.example.offers.ui.OffersScreen
 import java.util.Hashtable
 
 object MerchantDestination : AdroNavigationDestination {
-    override val route = "merchant_route?deeplink={deeplink}"
+    override val route = "merchant_route"
     override val destination = "offers_destination"
 
     const val detail = "merchant_detail"
@@ -31,18 +31,12 @@ fun NavGraphBuilder.merchantGraph(navigateToDetail: () -> Unit) {
         deepLinks = listOf(
             navDeepLink {
                 uriPattern = "adoentertainer://offers"
+                action = Intent.ACTION_VIEW
             }
-        ),
-        arguments = listOf(
-            navArgument("deeplink") {
-                type = NavType.StringType
-                defaultValue = ""
-            }
-        ),
+        )
     )
-    { entry ->
-        // check if the arguments is taken by deeplink or parameter
-        OffersScreen(navigateToDetail, fetchParamsFromDeeplink(entry))
+    {
+        OffersScreen(navigateToDetail, fetchParamsFromDeeplink())
     }
     composable(MerchantDestination.detail) {
         MerchantDetailScreen()
@@ -50,7 +44,7 @@ fun NavGraphBuilder.merchantGraph(navigateToDetail: () -> Unit) {
 }
 
 @Composable
-private fun fetchParamsFromDeeplink(entry: NavBackStackEntry): HashMap<String, String> {
+private fun fetchParamsFromDeeplink(): HashMap<String, String> {
 
     val params = hashMapOf<String, String>()
 
@@ -58,17 +52,12 @@ private fun fetchParamsFromDeeplink(entry: NavBackStackEntry): HashMap<String, S
     val activity = context.findActivity()
     val queryParamsKeys = activity?.intent?.data?.queryParameterNames
 
-    // GET ARGUMENTS FROM PARAMETER
-    entry.arguments?.getString("deeplink")?.let {
-        it.toUri().queryParameterNames.forEach { queryParamKey ->
-            params[queryParamKey] = it.toUri().getQueryParameter(queryParamKey) ?: ""
-        }
-    }
-
     // GET ARGUMENTS FROM DEEPLINK
     queryParamsKeys?.forEach { queryParamKey ->
         params[queryParamKey] = activity.intent?.data?.getQueryParameter(queryParamKey) ?: ""
     }
+
+    activity?.intent?.data = null
     return params
 }
 

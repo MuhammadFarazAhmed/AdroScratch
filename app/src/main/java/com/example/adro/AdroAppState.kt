@@ -78,13 +78,12 @@ class AdroAppState(val navController: NavHostController) {
      */
     fun navigate(
         destination: AdroNavigationDestination,
-        route: String? = null,
-        deepLink: String? = null
+        route: String? = null
     ) {
         trace("Navigation: $destination") {
 
             if (destination is TopLevelDestination) {
-                if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
+              //  if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
                 navController.navigate(
                     route ?: destination.route
                 ) {
@@ -101,8 +100,7 @@ class AdroAppState(val navController: NavHostController) {
                     restoreState = true
                 }
             } else {
-                navController.navigate(deepLink?.let { "${route?.replace("{deeplink}", deepLink)}" }
-                    ?: route ?: destination.route)
+                navController.navigate(route ?: destination.route)
             }
         }
     }

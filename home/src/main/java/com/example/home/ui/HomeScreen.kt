@@ -1,5 +1,10 @@
 package com.example.home.ui
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
@@ -12,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
@@ -28,6 +34,7 @@ import com.example.base.R
 import com.example.domain.models.HomeResponse
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
+import io.ktor.util.*
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -61,7 +68,7 @@ fun HomeScreenPreview() {
 @Composable
 fun HomeScreen(
     navigateToAuth: () -> Unit,
-    navigateToOffers: (String) -> Unit,
+    navigateToOffers: () -> Unit,
     vm: HomeViewModel = getViewModel()
 ) {
 
@@ -69,6 +76,8 @@ fun HomeScreen(
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
+
+    val context = LocalContext.current
 
     val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
 
@@ -85,7 +94,7 @@ fun HomeScreen(
                     "guest_user" -> LoginView(section, navigateToAuth)
 
                     "categories" -> Categories(section) { deeplink ->
-                        navigateToOffers(deeplink)
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(deeplink)))
                     }
 
                     "exclusive_offers" -> ExclusiveItem(
@@ -97,7 +106,6 @@ fun HomeScreen(
                         pagerState = recommendedPagerState,
                         section
                     )
-
                 }
 
             }
