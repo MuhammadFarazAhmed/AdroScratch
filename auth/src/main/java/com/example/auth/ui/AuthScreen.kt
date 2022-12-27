@@ -7,14 +7,17 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -65,7 +68,7 @@ fun EMIDScreen() {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        val (logo, loginContainer) = createRefs()
+        val (logo, loginContainer, tvLoginLabel, tvContinueAsGuest, divider) = createRefs()
 
         Image(painter = painterResource(id = R.drawable.ic_app_logo),
             contentDescription = "",
@@ -76,16 +79,23 @@ fun EMIDScreen() {
                     linkTo(top = parent.top, bottom = parent.bottom, bias = 0.1f)
                 })
 
+
         Column(modifier = Modifier.constrainAs(loginContainer) {
             centerHorizontallyTo(parent)
             linkTo(top = logo.bottom, bottom = parent.bottom, bias = 0.6f)
         }) {
-            Text(text = "Welcome", color = Color.White)
+
+            Text(
+                text = "Welcome",
+                color = Color.White,
+                modifier = Modifier.wrapContentSize(Alignment.Center)
+            )
             Text(text = "Abu dhabi visa holders", color = Color.White)
             Text(
                 text = "create account by entering email your emirates ID number",
                 color = Color.White,
-                fontFamily = Emad
+                fontFamily = Emad,
+                modifier = Modifier.padding(vertical = 16.dp)
             )
             TextField(
                 modifier = Modifier
@@ -94,7 +104,7 @@ fun EMIDScreen() {
                     .background(Color.White, shape = RoundedCornerShape(4.dp)),
                 value = "",
                 onValueChange = { it },
-                placeholder = { "Enter your Emirates ID" },
+                placeholder = { Text("Enter the EMID Number") },
                 trailingIcon = {
                     Image(
                         painter = painterResource(id = R.drawable.barcode_scanner),
@@ -105,36 +115,74 @@ fun EMIDScreen() {
             Button(
                 onClick = { },
                 modifier = Modifier
+                    .padding(vertical = 16.dp)
                     .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = HexToJetpackColor.getColor("E41C38")
+                    backgroundColor = HexToJetpackColor.getColor("e43338")
                 )
             ) {
-                Text(text = "Validate", color = Color.White, fontSize = 18.sp)
+                Text(
+                    text = "Validate",
+                    color = Color.White,
+                    fontFamily = Emad,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
-            val string = buildAnnotatedString {
-                append("Have a account?")
+
+        }
+
+        val string = buildAnnotatedString {
+            append("Have a account?")
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Bold,
+                    textDecoration = TextDecoration.Underline
+                )
+            ) {
+                append(" Login")
+            }
+        }
+
+        Text(text = string, color = Color.White, modifier =
+        Modifier
+            .padding(bottom = 8.dp)
+            .constrainAs(tvLoginLabel) {
+                centerHorizontallyTo(parent)
+                linkTo(start = parent.start, end = parent.end)
+                linkTo(top = loginContainer.bottom, bottom = parent.bottom, bias = 0f)
+            })
+
+        Divider(
+            color = Color.White,
+            thickness = 1.dp,
+            modifier = Modifier
+                .padding(16.dp)
+                .constrainAs(divider) {
+                    centerHorizontallyTo(parent)
+                    linkTo(start = parent.start, end = parent.end)
+                    linkTo(top = tvLoginLabel.bottom, bottom = tvContinueAsGuest.top)
+                })
+
+        Text(
+            text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        fontWeight = FontWeight.W500,
+                        fontWeight = FontWeight.Bold,
                         textDecoration = TextDecoration.Underline
                     )
                 ) {
-                    append(" Login")
+                    append("continue as guest")
                 }
-            }
-            Text(text = string, color = Color.White)
-
-
-            Divider(
-                color = Color.White,
-                thickness = 1.dp,
-                modifier = Modifier.padding(horizontal = 16.dp)
-            )
-
-            Text(text = "continue as guest", color = Color.White)
-
-        }
+            },
+            color = Color.White,
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .constrainAs(tvContinueAsGuest) {
+                    centerHorizontallyTo(parent)
+                    linkTo(start = parent.start, end = parent.end)
+                    linkTo(top = tvLoginLabel.bottom, bottom = parent.bottom, bias = 0f)
+                })
 
     }
 }

@@ -10,26 +10,23 @@ import com.example.base.R
 
 val Emad = FontFamily(
     Font(R.font.emad_diana_extra_normal, FontWeight.Normal),
-    Font(R.font.emad_diana_extra_normal, FontWeight.Bold),
-    Font(R.font.emad_diana_extra_normal, FontWeight.Light),
-    Font(R.font.emad_diana_extra_normal, FontWeight.Medium),
-    Font(R.font.emad_diana_extra_normal, FontWeight.SemiBold),
+    Font(R.font.emad_diana_extra_regular, FontWeight.Bold),
 )
 
 val Typography = Typography(
     h1 = TextStyle(
         fontFamily = Emad,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
     h2 = TextStyle(
         fontFamily = Emad,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     ),
     h3 = TextStyle(
         fontFamily = Emad,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
     body1 = TextStyle(
@@ -39,12 +36,13 @@ val Typography = Typography(
     ),
     body2 = TextStyle(
         fontFamily = Emad,
-        fontWeight = FontWeight.W500,
+        fontWeight = FontWeight.Light,
         fontSize = 16.sp
     ),
     button = TextStyle(
         fontFamily = Emad,
-        fontWeight = FontWeight.Light, fontSize = 14.sp
+        fontWeight = FontWeight.Light,
+        fontSize = 14.sp
     )
 
     /* Other default text styles to override
