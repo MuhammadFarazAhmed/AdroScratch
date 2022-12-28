@@ -90,7 +90,11 @@ fun EMIDScreen() {
                 color = Color.White,
                 modifier = Modifier.wrapContentSize(Alignment.Center)
             )
-            Text(text = "Abu dhabi visa holders", color = Color.White)
+            Text(
+                text = "Abu dhabi visa holders",
+                color = Color.White,
+                modifier = Modifier.padding(vertical = 16.dp)
+            )
             Text(
                 text = "create account by entering email your emirates ID number",
                 color = Color.White,
