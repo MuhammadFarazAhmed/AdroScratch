@@ -1,6 +1,11 @@
-package com.example.sharedcode.security
+package com.example.sharedcode
 
-class CLibController {
+import kotlin.jvm.JvmName
+import kotlin.jvm.JvmStatic
+
+
+
+object CLibController {
 
 //    init {
 //        System.loadLibrary("native-blue-lib")
@@ -11,8 +16,8 @@ class CLibController {
 //    external fun getRelicKey(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getMallIQKey(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getCPKeys(buildVariant: String = BuildConfig.FLAVOR): Array<String>
-//    external fun getAuSKey(buildVariant: String = BuildConfig.FLAVOR): String
-//    external fun getAuSaltKey(buildVariant: String = BuildConfig.FLAVOR): String
+     fun getAuSKey(): String = "18b8c9ef473e2126c3c56ab0cb2b71cb"
+     fun getAuSaltKey(): String = "18b8c9ef473e2126"
 //    external fun getPromoAuSKey(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getPromoAuSaltKey(buildVariant: String = BuildConfig.FLAVOR): String
 //
@@ -35,7 +40,7 @@ class CLibController {
 //    external fun getFilterBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getOutletBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getMerchantBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
-     fun getENTBaseUrlOnline(buildVariant: String = "BuildConfig.FLAVOR"): String= ""
+//     fun getENTBaseUrlOnline(buildVariant: String = "BuildConfig.FLAVOR"): String= ""
 //    external fun getConfigBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getGMKey(buildVariant: String = BuildConfig.FLAVOR): String
 //    external fun getAnalyticsBaseUrlOnline(buildVariant: String = BuildConfig.FLAVOR): String

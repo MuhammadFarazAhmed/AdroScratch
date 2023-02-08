@@ -22,6 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.adro.common.collectAsStateLifecycleAware
+import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.domain.domain_model.HomeResponse
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
@@ -35,7 +36,7 @@ fun HomeScreenPreview() {
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
-    val section = HomeResponse.Data.Section("")
+    val section = Home()
 
     Column {
         MainCarousal(pagerState, section)
@@ -54,7 +55,7 @@ fun HomeScreenPreview() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = get()) {
+fun HomeScreen(navigateToAuth: () -> Unit, vm: HomeViewModel = get()) {
 
 
     val pagerState = rememberPagerState()
@@ -95,21 +96,21 @@ fun HomeScreen(navigateToAuth: () -> Unit,vm: HomeViewModel = get()) {
 
 }
 
-class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
-    override val values = sequenceOf(HomeResponse.Data.Section())
+class SampleUserProvider : PreviewParameterProvider<Home> {
+    override val values = sequenceOf(Home())
 }
 
 @Composable
 fun LoginView(
-    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
+    @PreviewParameter(SampleUserProvider::class) section: Home?,
     navigateToAuth: () -> Unit
 ) {
 
     Column {
         Box(
             modifier = Modifier
-                    .height(250.dp)
-                    .fillMaxWidth()
+                .height(250.dp)
+                .fillMaxWidth()
         ) {
             AsyncImage(
                 model = section?.imageUrl,
@@ -119,9 +120,15 @@ fun LoginView(
             )
             Box(
                 modifier = Modifier
-                        .fillMaxSize()
-                        .background(Brush.linearGradient(listOf(Color.Black.copy(alpha = 0.7f),
-                                Color.Black.copy(alpha = 0f))))
+                    .fillMaxSize()
+                    .background(
+                        Brush.linearGradient(
+                            listOf(
+                                Color.Black.copy(alpha = 0.7f),
+                                Color.Black.copy(alpha = 0f)
+                            )
+                        )
+                    )
             )
             Column(
                 modifier = Modifier
@@ -224,7 +231,7 @@ fun LoginView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                        //.background(HexToJetpackColor.getColor("acccbc"))
+                    //.background(HexToJetpackColor.getColor("acccbc"))
 
                 ) {
                     Text(
@@ -248,7 +255,7 @@ fun LoginView(
 @Composable
 fun MainCarousal(
     pagerState: PagerState,
-    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
+    @PreviewParameter(SampleUserProvider::class) section: Home
 ) {
 
     HorizontalPager(
@@ -322,7 +329,7 @@ fun MainCarousal(
 }
 
 @Composable
-fun Categories(@PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section) {
+fun Categories(@PreviewParameter(SampleUserProvider::class) section: Home) {
     Column {
 
         Text(
@@ -386,7 +393,7 @@ fun Categories(@PreviewParameter(SampleUserProvider::class) section: HomeRespons
 @Composable
 fun ExclusiveItem(
     pagerState: PagerState,
-    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
+    @PreviewParameter(SampleUserProvider::class) section: Home
 ) {
 
     Column(modifier = Modifier.wrapContentHeight()) {
@@ -472,7 +479,7 @@ fun ExclusiveItem(
 @Composable
 fun RecommendedItem(
     pagerState: PagerState,
-    @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
+    @PreviewParameter(SampleUserProvider::class) section: Home
 ) {
 
     Column(modifier = Modifier.wrapContentHeight()) {

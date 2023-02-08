@@ -1,8 +1,9 @@
 package com.example.sharedcode.domain.di
 
-import ApisEncryptionUtils
+
 import com.example.sharedcode.common.changeBaseUrlInterceptor
-import com.example.sharedcode.common.decryptResponse
+import com.example.sharedcode.data.api.HomeApi
+import com.example.sharedcode.data.api.HomeApiImpl
 import com.example.sharedcode.data.repo.HomeRepository
 import com.example.sharedcode.data.repo.HomeRepositoryImp
 import com.example.sharedcode.domain.usecase.HomeUseCase
@@ -10,7 +11,7 @@ import com.example.sharedcode.domain.usecase.HomeUseCaseImp
 import com.example.sharedcode.getToken
 import com.example.sharedcode.platformModule
 import com.example.sharedcode.presentation.HomeViewModel
-import com.example.sharedcode.security.CLibController
+import com.example.sharedcode.security.decryptResponse
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
@@ -40,9 +41,6 @@ fun commonModule() =
 
 
 fun networkModule() = module {
-    single { CLibController() }
-
-    single { ApisEncryptionUtils(get()) }
 
     single { getToken() }
 
@@ -51,15 +49,14 @@ fun networkModule() = module {
     single {
         createHttpClient(
             httpClientEngine = get(),
-            cLibController = get(),
             token = get(),
-            encryptionUtils = get(),
             json = get()
         )
     }
 }
 
 fun dataModule() = module {
+    single<HomeApi> { HomeApiImpl(get()) }
     single<HomeRepository> { HomeRepositoryImp(get()) }
 }
 
@@ -73,9 +70,7 @@ fun viewModelModule() = module {
 
 fun createHttpClient(
     httpClientEngine: HttpClientEngine,
-    cLibController: CLibController,
     token: String,
-    encryptionUtils: ApisEncryptionUtils,
     json: Json
 ) = HttpClient(httpClientEngine) {
 
@@ -103,12 +98,11 @@ fun createHttpClient(
         json(json)
     }
 
-    decryptResponse {
-        apisEncryptionUtils = encryptionUtils
-    }
+    //TODO take byte array and return string from android and ios platform
+    decryptResponse()
 
 }.apply {
-    changeBaseUrlInterceptor(cLibController)
+    changeBaseUrlInterceptor()
 }
 
 fun createJson() = Json { isLenient = true; ignoreUnknownKeys = true }

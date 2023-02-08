@@ -76,6 +76,7 @@ kotlin {
         }
         val androidMain by getting {
             dependencies {
+//                implementation("clojure-interop:javax.crypto:1.0.2")
                 //implementation("io.jsonwebtoken:jjwt:0.9.1")
                 implementation(Ktor.clientAndroid)
                 implementation(Koin.koinAndroid)

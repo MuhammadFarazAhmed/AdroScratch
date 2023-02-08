@@ -1,10 +1,10 @@
 package com.example.sharedcode.common
 
-import com.example.sharedcode.security.CLibController
+
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 
-fun HttpClient.changeBaseUrlInterceptor(cLibController: CLibController) {
+fun HttpClient.changeBaseUrlInterceptor() {
     plugin(HttpSend).intercept { request ->
         when (request.attributes[CommonUtilsExtension.Apikey]) {
             CommonUtilsExtension.API.HOME -> request.url.host =

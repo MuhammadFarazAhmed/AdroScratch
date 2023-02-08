@@ -1,19 +1,18 @@
-package com.example.sharedcode.common
+package com.example.sharedcode.security
 
 
-import ApisEncryptionUtils
+import com.example.sharedcode.getOriginalResponse
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
-import io.ktor.utils.io.charsets.*
 
-class DecryptResponse private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
+class DecryptResponse private constructor() {
 
     class Config {
-        lateinit var apisEncryptionUtils: ApisEncryptionUtils
+
     }
 
     private fun decryptedResponse(client: HttpClient) {
@@ -25,9 +24,9 @@ class DecryptResponse private constructor(private val apisEncryptionUtils: ApisE
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptString = apisEncryptionUtils.decryptString(original.toByteArray().encodeBase64())
-                .also { Napier.e { "decryptedResponse :  $it" } }
-            val decryptResponse = ByteReadChannel(decryptString)
+            val decryptString = getOriginalResponse(original.toByteArray().encodeBase64())
+                .also { android.util.Log.d("TAG", "decryptedResponse: $it") }
+            val decryptResponse = ByteReadChannel(decryptString.toString())
 
             proceedWith(HttpResponseContainer(type, decryptResponse))
         }
@@ -42,8 +41,8 @@ class DecryptResponse private constructor(private val apisEncryptionUtils: ApisE
         }
 
         override fun prepare(block: Config.() -> Unit): DecryptResponse {
-            val config = Config().apply(block)
-            return DecryptResponse(config.apisEncryptionUtils)
+//            val config = Config().apply(block)
+            return DecryptResponse()
         }
     }
 }

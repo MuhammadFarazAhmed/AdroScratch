@@ -7,7 +7,7 @@ package com.example.adro.di
 //import com.example.adro.common.PreferencesHelper
 //import com.example.adro.common.changeBaseUrlInterceptor
 //import com.example.adro.common.decryptResponse
-//import com.example.adro.security.ApisEncryptionUtils
+//import com.example.adro.security.com.example.sharedcode.ApisEncryptionUtils
 //import com.example.adro.security.CLibController
 //import com.example.domain.models.HomeResponse
 //import com.example.domain.repos.FavoritesRepository
@@ -83,7 +83,7 @@ package com.example.adro.di
 //
 //    singleOf(::CLibController)
 //
-//    single { ApisEncryptionUtils(get()) }
+//    single { com.example.sharedcode.ApisEncryptionUtils(get()) }
 //
 //}
 //
