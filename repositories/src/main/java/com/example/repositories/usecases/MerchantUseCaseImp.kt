@@ -1,6 +1,6 @@
 package com.example.repositories.usecases
 
-import com.example.adro.base.ApiResult
+import com.example.adro.common.ApiResult
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.repos.MerchantRepository

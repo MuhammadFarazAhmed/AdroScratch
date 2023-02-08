@@ -1,0 +1,22 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'iosapp' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+    platform :ios, '14.1'
+    pod 'shared', :path => '../shared'
+
+  # Pods for iosapp
+
+  target 'iosappTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'iosappUITests' do
+    # Pods for testing
+  end
+
+end

@@ -1,6 +1,6 @@
 package com.example.repositories.repos
 
-import com.example.adro.base.ApiResult
+import com.example.adro.common.ApiResult
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
@@ -21,5 +21,4 @@ class HomeRepositoryImp(private val client: HttpClient) : HomeRepository {
                 setDefaultParams(CommonUtilsExtension.API.HOME)
             }
         }
-
 }

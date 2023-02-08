@@ -5,13 +5,7 @@ pluginManagement {
         mavenCentral()
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
     }
-    resolutionStrategy {
-        eachPlugin {
-            if( requested.id.id == 'dagger.hilt.android.plugin') {
-                useModule("com.google.dagger:hilt-android-gradle-plugin:2.43.1")
-            }
-        }
-    }
+
 }
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
@@ -22,13 +16,12 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Adro Scratch"
 include ':app'
-include ':repositories'
+//include ':repositories'
 include ':home'
 include ':base'
-include ':domain'
-include ':model'
-include ':profile'
-include ':merchant'
-include ':favorite'
-include ':auth'
+//include ':domain'
+//include ':profile'
+//include ':merchant'
+//include ':favorite'
+//include ':auth'
 include ':shared'

@@ -3,6 +3,7 @@ package com.example.domain.models
 
 import com.google.gson.annotations.SerializedName
 
+@kotlinx.serialization.Serializable
 data class HomeResponse(
     @SerializedName("cmd")
     val cmd: String? = null,
@@ -16,7 +17,8 @@ data class HomeResponse(
     val message: String? = null,
     @SerializedName("success")
     val success: Boolean? = null
-) {
+) : CommonParcelable {
+    @kotlinx.serialization.Serializable
     data class Data(
         @SerializedName("banner_detail")
         val bannerDetail: BannerDetail? = null,
@@ -25,6 +27,7 @@ data class HomeResponse(
         @SerializedName("sections")
         val sections: List<Section>
     ) {
+        @kotlinx.serialization.Serializable
         data class BannerDetail(
             @SerializedName("banner_bg_color")
             val bannerBgColor: String? = null,
@@ -35,7 +38,7 @@ data class HomeResponse(
             @SerializedName("should_show_cancel_button")
             val shouldShowCancelButton: Boolean? = null
         )
-
+        @kotlinx.serialization.Serializable
         data class Section(
             @SerializedName("section_identifier")
             val sectionIdentifier: String = "1",
@@ -53,7 +56,8 @@ data class HomeResponse(
             val buttonBgColor: String = "FF343434",
             @SerializedName("sub_title")
             val subTitle: String = ""
-        ) {
+        )
+            @kotlinx.serialization.Serializable
             data class SectionItem(
                 @SerializedName("button_bg_color")
                 val buttonBgColor: String = "FF343434",

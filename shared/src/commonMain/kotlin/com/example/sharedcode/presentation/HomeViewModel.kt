@@ -1,16 +1,16 @@
 package com.example.sharedcode.presentation
 
-import com.example.adro.base.ApiStatus
-import com.example.sharedcode.common.CommonFlowExtensions.handleErrors
+import com.example.sharedcode.common.Result
+import com.example.sharedcode.common.asResult
+import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.domain.usecase.HomeUseCase
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-class HomeViewModel constructor(
-    homeUseCase: HomeUseCase
-) :
-    ViewModel() {
+class HomeViewModel constructor(homeUseCase: HomeUseCase) : ViewModel() {
 
     init {
         fetchHomeData(homeUseCase)
@@ -18,16 +18,17 @@ class HomeViewModel constructor(
 
     private fun fetchHomeData(homeUseCase: HomeUseCase) {
         viewModelScope.launch {
-            homeUseCase.fetchHome().handleErrors().collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS ->{}// sections.value = it.data?.data?.sections!!
-                    ApiStatus.ERROR ->{} //Log.d("TAG", "${it.message}: ")
-                    ApiStatus.LOADING -> {}
+            homeUseCase.fetchHome().asResult().collectLatest {
+                when (it) {
+                    is Result.Success -> sections.value = it.data
+                    is Result.Error -> {}
+                    is Result.Idle -> {}
+                    is Result.Loading -> {}
                 }
             }
         }
     }
 
-    //val sections: MutableStateFlow<List<HomeResponse.Data.Section>> = MutableStateFlow(emptyList())
+    val sections: MutableStateFlow<List<Home>> = MutableStateFlow(emptyList())
 
 }
