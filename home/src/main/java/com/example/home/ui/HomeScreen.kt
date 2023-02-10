@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.adro.common.collectAsStateLifecycleAware
 import com.example.sharedcode.domain.domain_model.Home
-import com.example.sharedcode.domain.domain_model.HomeResponse
+import com.example.sharedcode.domain.domain_model.Section
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.get

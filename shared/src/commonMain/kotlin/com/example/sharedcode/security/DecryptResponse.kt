@@ -8,11 +8,14 @@ import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
+import android.util.Log
+import io.ktor.utils.io.charsets.*
+import io.ktor.utils.io.core.*
 
-class DecryptResponse private constructor() {
+class DecryptResponse private constructor(private val callback:  suspend (String) -> String?) {
 
     class Config {
-
+        lateinit var callback: suspend (String) -> String?
     }
 
     private fun decryptedResponse(client: HttpClient) {
@@ -24,9 +27,9 @@ class DecryptResponse private constructor() {
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptString = getOriginalResponse(original.toByteArray().encodeBase64())
-                .also { android.util.Log.d("TAG", "decryptedResponse: $it") }
-            val decryptResponse = ByteReadChannel(decryptString.toString())
+            val decryptString = callback(original.toByteArray().encodeBase64())
+            Log.d("TAG", "decryptedResponse: $decryptString")
+            val decryptResponse = ByteReadChannel(decryptString.orEmpty(),Charset.forName("UTF-8"))
 
             proceedWith(HttpResponseContainer(type, decryptResponse))
         }
@@ -41,8 +44,8 @@ class DecryptResponse private constructor() {
         }
 
         override fun prepare(block: Config.() -> Unit): DecryptResponse {
-//            val config = Config().apply(block)
-            return DecryptResponse()
+            val config = Config().apply(block)
+            return DecryptResponse(config.callback)
         }
     }
 }

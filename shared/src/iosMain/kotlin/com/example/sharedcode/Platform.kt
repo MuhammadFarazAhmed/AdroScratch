@@ -41,5 +41,5 @@ object ViewModels : KoinComponent {
     fun getHomeViewModel() = get<HomeViewModel>()
 }
 
-actual fun getOriginalResponse(response:String): String? = "" //TODO get the decrypted response from CryptoKit Swift
+actual fun getOriginalResponse(): suspend (response: String) -> String? = "" //TODO get the decrypted response from CryptoKit Swift
 

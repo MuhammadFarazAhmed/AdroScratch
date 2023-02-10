@@ -7,8 +7,11 @@ import com.example.sharedcode.CommonParcelize
 @CommonParcelize
 data class Home(
     val sectionIdentifier: String = "1",
-    val sectionItems: List<SectionItem> = arrayListOf(),
+
+    val sectionItems: List<HomeItem> = arrayListOf(),
+
     val sortOrder: Int = 1,
+
     val title: String = "title",
 
     val imageUrl: String = "",

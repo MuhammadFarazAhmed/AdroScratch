@@ -43,5 +43,5 @@ actual fun platformModule() = module {
 actual typealias CommonParcelize = Parcelize
 
 actual typealias CommonParcelable = Parcelable
-actual fun getOriginalResponse(response: String): String? =
-    ApisEncryptionUtils.getInstance(CLibController).decryptString(response)
+actual fun getOriginalResponse(): suspend (response: String) -> String? =
+    {it -> ApisEncryptionUtils.getInstance(CLibController).decryptString(it)}

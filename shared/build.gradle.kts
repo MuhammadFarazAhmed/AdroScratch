@@ -65,7 +65,8 @@ kotlin {
                 with(Coroutines) {
                     implementation(coroutines)
                 }
-                
+                implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
+
                 implementation("io.jsonwebtoken:jjwt:0.9.1")
             }
         }
@@ -118,6 +119,7 @@ android {
         minSdk = 21
         targetSdk = 33
     }
+    sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     flavorDimensions("appType")
     productFlavors {
         create("devnode") {

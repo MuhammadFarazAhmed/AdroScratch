@@ -8,6 +8,7 @@ import com.example.sharedcode.data.repo.HomeRepository
 import com.example.sharedcode.data.repo.HomeRepositoryImp
 import com.example.sharedcode.domain.usecase.HomeUseCase
 import com.example.sharedcode.domain.usecase.HomeUseCaseImp
+import com.example.sharedcode.getOriginalResponse
 import com.example.sharedcode.getToken
 import com.example.sharedcode.platformModule
 import com.example.sharedcode.presentation.HomeViewModel
@@ -18,6 +19,7 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.kotlinx.serializer.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -92,14 +94,20 @@ fun createHttpClient(
         }
     }
 
-    install(Logging) { level = LogLevel.ALL }
+    install(Logging) {
+        logger = Logger.SIMPLE
+       level = LogLevel.ALL }
 
     install(ContentNegotiation) {
         json(json)
     }
 
     //TODO take byte array and return string from android and ios platform
-    decryptResponse()
+    decryptResponse {
+        callback = getOriginalResponse()
+    }
+
+
 
 }.apply {
     changeBaseUrlInterceptor()

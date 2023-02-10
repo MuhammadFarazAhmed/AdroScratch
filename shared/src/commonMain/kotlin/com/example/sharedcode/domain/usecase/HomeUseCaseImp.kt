@@ -9,7 +9,8 @@ import kotlinx.coroutines.flow.flow
 class HomeUseCaseImp constructor(private val homeRepository: HomeRepository) : HomeUseCase {
 
     override suspend fun fetchHome(): Flow<List<Home>> = flow {
-        emit(homeRepository.fetchHome().asDomainModel())
+        val response = homeRepository.fetchHome().asDomainModel()
+        emit(response)
     }
 }
 

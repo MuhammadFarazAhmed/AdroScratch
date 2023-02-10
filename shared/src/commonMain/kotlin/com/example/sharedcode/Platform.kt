@@ -13,7 +13,7 @@ expect fun platformModule(): Module
 
 expect fun getToken(): String
 
-expect fun getOriginalResponse(response:String) : String?
+expect fun getOriginalResponse(): suspend (String) -> String?
 
 
 @OptIn(ExperimentalMultiplatform::class)
