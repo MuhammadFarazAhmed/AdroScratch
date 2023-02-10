@@ -24,6 +24,7 @@ import coil.compose.AsyncImage
 import com.example.adro.common.collectAsStateLifecycleAware
 import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.domain.domain_model.Section
+import com.example.sharedcode.domain.domain_model.SectionItem
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.get
@@ -259,14 +260,14 @@ fun MainCarousal(
 ) {
 
     HorizontalPager(
-        count = section.sectionItems.size,
+        count = section.sectionItems?.size ?: 0,
         state = pagerState,
         modifier = Modifier.height(250.dp),
         contentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 24.dp),
         itemSpacing = 8.dp
     ) { index ->
 
-        val item = section.sectionItems[index]
+        val item = section.sectionItems?.get(index)
 
         Card(
             modifier = Modifier.fillMaxSize(),
@@ -275,7 +276,7 @@ fun MainCarousal(
         ) {
 
             AsyncImage(
-                model = item.imageUrl,
+                model = item?.imageUrl,
                 contentScale = ContentScale.Crop,
                 contentDescription = ""
             )
@@ -301,7 +302,7 @@ fun MainCarousal(
             ) {
 
                 Text(
-                    text = item.title ?: "",
+                    text = item?.title ?: "",
                     color = Color.White,
                     fontSize = 22.sp,
                     modifier = Modifier.fillMaxWidth(.8f),
@@ -320,7 +321,7 @@ fun MainCarousal(
 //                        )
                     )
                 ) {
-                    Text(text = item.buttonTitle, color = Color.White, fontSize = 12.sp)
+                    Text(text = "", color = Color.White, fontSize = 12.sp)
                 }
 
             }
@@ -333,7 +334,7 @@ fun Categories(@PreviewParameter(SampleUserProvider::class) section: Home) {
     Column {
 
         Text(
-            text = section.title,
+            text = section.title.toString(),
             style = MaterialTheme.typography.h1,
             color = MaterialTheme.colors.onBackground,
             modifier = Modifier.padding(start = 16.dp)
@@ -399,75 +400,77 @@ fun ExclusiveItem(
     Column(modifier = Modifier.wrapContentHeight()) {
 
         Text(
-            text = section.title,
+            text = section.title.toString(),
             style = MaterialTheme.typography.h1,
             color = Color.Black,
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 0.dp)
         )
 
-        HorizontalPager(
-            count = section.sectionItems.size,
-            state = pagerState,
-            modifier = Modifier
-                .height(175.dp)
-                .fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-            itemSpacing = 8.dp
-        ) { index ->
+        section.sectionItems?.let {
+            HorizontalPager(
+                count = it.size,
+                state = pagerState,
+                modifier = Modifier
+                    .height(175.dp)
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp),
+                itemSpacing = 8.dp
+            ) { index ->
 
-            val item = section.sectionItems[index]
+                val item = section.sectionItems?.get(index)
 
-            Card(
-                modifier = Modifier.fillMaxSize(),
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
-            ) {
-
-                AsyncImage(
-                    model = item.imageUrl,
+                Card(
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = ""
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.horizontalGradient(
-                                listOf(
-                                    Color.Black.copy(alpha = 0.7f),
-                                    Color.Black.copy(alpha = 0f)
-                                )
-                            )
-                        )
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 16.dp),
-                    verticalArrangement = Arrangement.Center
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(8.dp)
                 ) {
 
-                    Text(
-                        text = item.title ?: "",
-                        color = Color.White,
-                        fontSize = 22.sp,
-                        fontWeight = SemiBold,
-                        modifier = Modifier.fillMaxWidth(.5f)
+                    AsyncImage(
+                        model = item?.imageUrl,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = ""
                     )
 
-                    Text(
-                        text = item.subtitle ?: "",
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontWeight = SemiBold,
-                        modifier = Modifier.padding(top = 12.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.horizontalGradient(
+                                    listOf(
+                                        Color.Black.copy(alpha = 0.7f),
+                                        Color.Black.copy(alpha = 0f)
+                                    )
+                                )
+                            )
                     )
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 16.dp),
+                        verticalArrangement = Arrangement.Center
+                    ) {
+
+                        Text(
+                            text = item?.title ?: "",
+                            color = Color.White,
+                            fontSize = 22.sp,
+                            fontWeight = SemiBold,
+                            modifier = Modifier.fillMaxWidth(.5f)
+                        )
+
+                        Text(
+                            text = item?.subtitle ?: "",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = SemiBold,
+                            modifier = Modifier.padding(top = 12.dp)
+                        )
+
+                    }
 
                 }
-
             }
         }
 
@@ -485,77 +488,79 @@ fun RecommendedItem(
     Column(modifier = Modifier.wrapContentHeight()) {
 
         Text(
-            text = section.title,
+            text = section.title?:"",
             style = MaterialTheme.typography.h1,
             color = Color.Black,
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 0.dp)
         )
 
-        HorizontalPager(
-            count = section.sectionItems.size,
-            state = pagerState,
-            modifier = Modifier
-                .height(200.dp)
-                .fillMaxWidth(),
-            contentPadding = PaddingValues(16.dp),
-            itemSpacing = 8.dp
-        ) { index ->
+        section.sectionItems?.size?.let {
+            HorizontalPager(
+                count = it,
+                state = pagerState,
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth(),
+                contentPadding = PaddingValues(16.dp),
+                itemSpacing = 8.dp
+            ) { index ->
 
-            val item = section.sectionItems[index]
+                val item = section.sectionItems?.get(index)
 
-            Card(
-                modifier = Modifier.fillMaxSize(),
-                elevation = 4.dp,
-                shape = RoundedCornerShape(8.dp)
-            ) {
-
-                AsyncImage(
-                    model = item.imageUrl,
+                Card(
                     modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                    contentDescription = ""
-                )
-
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(
-                            Brush.horizontalGradient(
-                                listOf(
-                                    Color.Black.copy(alpha = 0.7f),
-                                    Color.Black.copy(alpha = 0f)
-                                )
-                            )
-                        )
-                )
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(start = 16.dp),
-                    verticalArrangement = Arrangement.SpaceEvenly
+                    elevation = 4.dp,
+                    shape = RoundedCornerShape(8.dp)
                 ) {
 
-                    Text(
-                        text = item.title ?: "",
-                        color = Color.White,
-                        fontSize = 22.sp,
-                        fontWeight = SemiBold,
-                        modifier = Modifier.fillMaxWidth(.5f)
+                    AsyncImage(
+                        model = item?.imageUrl,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = ""
                     )
 
-                    Text(
-                        text = item.subtitle ?: "",
-                        color = Color.White,
-                        fontSize = 12.sp,
-                        fontWeight = SemiBold,
-                        modifier = Modifier.padding(top = 12.dp)
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(
+                                Brush.horizontalGradient(
+                                    listOf(
+                                        Color.Black.copy(alpha = 0.7f),
+                                        Color.Black.copy(alpha = 0f)
+                                    )
+                                )
+                            )
                     )
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(start = 16.dp),
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ) {
+
+                        Text(
+                            text = item?.title ?: "",
+                            color = Color.White,
+                            fontSize = 22.sp,
+                            fontWeight = SemiBold,
+                            modifier = Modifier.fillMaxWidth(.5f)
+                        )
+
+                        Text(
+                            text = item?.subtitle ?: "",
+                            color = Color.White,
+                            fontSize = 12.sp,
+                            fontWeight = SemiBold,
+                            modifier = Modifier.padding(top = 12.dp)
+                        )
+
+                    }
 
                 }
 
             }
-
         }
     }
 }

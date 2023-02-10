@@ -10,7 +10,7 @@ class HomeUseCaseImp constructor(private val homeRepository: HomeRepository) : H
 
     override suspend fun fetchHome(): Flow<List<Home>> = flow {
         val response = homeRepository.fetchHome().asDomainModel()
-        emit(response)
+        response?.let { emit(it) }
     }
 }
 

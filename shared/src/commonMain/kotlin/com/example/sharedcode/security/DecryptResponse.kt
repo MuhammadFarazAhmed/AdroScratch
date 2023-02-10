@@ -9,10 +9,11 @@ import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
 import android.util.Log
+import com.example.sharedcode.common.encodeBase64
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 
-class DecryptResponse private constructor(private val callback:  suspend (String) -> String?) {
+class DecryptResponse private constructor(private val callback: suspend (String) -> String?) {
 
     class Config {
         lateinit var callback: suspend (String) -> String?

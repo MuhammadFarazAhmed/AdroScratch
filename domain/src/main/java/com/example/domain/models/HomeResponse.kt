@@ -81,3 +81,18 @@ data class HomeResponse(
         }
     }
 }
+
+fun HomeResponse.asDomainModel(): List<Home>? {
+    return this.data?.sections?.map {
+        Home(
+            sectionIdentifier = it.section_identifier,
+            sectionItems = it.sections as List<HomeItem>,
+            sortOrder = it.sortOrder,
+            title = it.title,
+            imageUrl = it.image_url,
+            buttonTitle = it.button_title,
+            buttonBgColor = it.button_bg_color,
+            subTitle = it.sub_title
+        )
+    }
+}
