@@ -7,25 +7,25 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Section(
     @SerialName("section_identifier")
-    val sectionIdentifier: String? = null,
+    var sectionIdentifier: String? = null,
     @SerialName("title")
-    val title: String? = null,
+    var title: String? = null,
     @SerialName("section_title")
-    val sectionTitle: String? = null,
+    var sectionTitle: String? = null,
     @SerialName("sub_title")
-    val subTitle: String? = null,
+    var subTitle: String? = null,
     @SerialName("button_title")
-    val buttonTitle: String? = null,
+    var buttonTitle: String? = null,
     @SerialName("should_show_button")
-    val shouldShowButton: Int? = null,
+    var shouldShowButton: Int? = null,
     @SerialName("button_bg_color")
-    val buttonBgColor: String? = null,
+    var buttonBgColor: String? = null,
     @SerialName("image_url")
-    val imageUrl: String? = null,
+    var imageUrl: String? = null,
     @SerialName("deeplink")
-    val deeplink: String? = null,
+    var deeplink: String? = null,
     @SerialName("login_popup")
-    val loginPopup: LoginPopup? = null,
+    var loginPopup: LoginPopup? = null,
     @SerialName("section_items")
-    val sectionItems: List<SectionItem> = arrayListOf()
+    var sectionItems: List<SectionItem?>? = null
 )

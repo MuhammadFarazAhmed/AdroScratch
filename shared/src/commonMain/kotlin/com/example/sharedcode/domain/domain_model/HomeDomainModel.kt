@@ -21,14 +21,18 @@ data class Home(
     @SerialName("login_popup")
     val loginPopup:  LoginPopup? = null,
     @SerialName("section_items")
-    val sectionItems: List<SectionItem> = arrayListOf(),
+    val sectionItems: List<SectionItem>? = arrayListOf(),
     val buttonTitle: String? = null,
     @SerialName("should_show_button")
     val shouldShowButton: Int? = null,
     @SerialName("button_bg_color")
     val buttonBgColor: String? = null,
     @SerialName("sub_title")
-    val subTitle: String? = null
+    val subTitle: String? = null,
+@SerialName("id")
+var id: Int? = null,
+@SerialName("subtitle")
+var subtitle: String? = null
 
     ) : CommonParcelable
 

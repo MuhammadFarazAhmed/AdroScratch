@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import android.util.Log
 import com.example.sharedcode.domain.domain_model.Home
-import com.example.sharedcode.domain.domain_model.Section
 
 
 class HomeViewModel constructor(homeUseCase: HomeUseCase) : ViewModel() {

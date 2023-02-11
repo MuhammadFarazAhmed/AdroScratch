@@ -9,16 +9,16 @@ import kotlinx.serialization.Serializable
 @Serializable
 @CommonParcelize
 data class SectionItem(
-    @SerialName("is_external_link")
-    val isExternalLink: Int? = null,
+//    @SerialName("is_external_link")
+//    var isExternalLink: Any = null,
     @SerialName("title")
-    val title: String? = null,
+    var title: String? = null,
     @SerialName("image_url")
-    val imageUrl: String? = null,
+    var imageUrl: String? = null,
     @SerialName("deeplink")
-    val deeplink: String? = null,
+    var deeplink: String? = null,
     @SerialName("id")
-    val id: Int? = null,
+    var id: Int? = null,
     @SerialName("subtitle")
-    val subtitle: String? = null
-):CommonParcelable
+    var subtitle: String? = null
+) : CommonParcelable

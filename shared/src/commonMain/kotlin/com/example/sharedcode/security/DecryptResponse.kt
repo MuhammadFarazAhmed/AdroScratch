@@ -1,15 +1,13 @@
 package com.example.sharedcode.security
 
 
-import com.example.sharedcode.getOriginalResponse
-import io.github.aakira.napier.Napier
+import android.util.Log
+import com.example.sharedcode.common.encodeBase64
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
-import android.util.Log
-import com.example.sharedcode.common.encodeBase64
 import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 

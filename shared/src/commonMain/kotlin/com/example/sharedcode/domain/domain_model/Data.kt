@@ -7,9 +7,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Data(
     @SerialName("pending_transaction_deeplink")
-    val pendingTransactionDeeplink: String? = null,
+    var pendingTransactionDeeplink: String? = null,
     @SerialName("banner_detail")
-    val bannerDetail: BannerDetail? = null,
+    var bannerDetail: BannerDetail? = null,
     @SerialName("sections")
-    val sections: List<Section>? = null
+    var sections: List<Section>? = null
 )

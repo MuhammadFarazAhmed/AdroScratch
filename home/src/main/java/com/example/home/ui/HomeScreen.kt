@@ -23,8 +23,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.adro.common.collectAsStateLifecycleAware
 import com.example.sharedcode.domain.domain_model.Home
-import com.example.sharedcode.domain.domain_model.Section
-import com.example.sharedcode.domain.domain_model.SectionItem
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.get
@@ -117,7 +115,7 @@ fun LoginView(
                 model = section?.imageUrl,
                 contentDescription = "",
                 modifier = Modifier
-                    .fillMaxSize(), contentScale = ContentScale.FillWidth
+                    .fillMaxSize(), contentScale = ContentScale.FillBounds
             )
             Box(
                 modifier = Modifier
@@ -183,7 +181,7 @@ fun LoginView(
         Card(
             shape = RoundedCornerShape(12.dp),
             elevation = 4.dp,
-            //border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
+            border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(14.dp)
@@ -232,7 +230,7 @@ fun LoginView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                    //.background(HexToJetpackColor.getColor("acccbc"))
+                    .background(HexToJetpackColor.getColor("acccbc"))
 
                 ) {
                     Text(
@@ -259,8 +257,9 @@ fun MainCarousal(
     @PreviewParameter(SampleUserProvider::class) section: Home
 ) {
 
-    HorizontalPager(
-        count = section.sectionItems?.size ?: 0,
+    section.sectionItems?.size?.let {
+        HorizontalPager(
+        count = it,
         state = pagerState,
         modifier = Modifier.height(250.dp),
         contentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 24.dp),
@@ -277,7 +276,7 @@ fun MainCarousal(
 
             AsyncImage(
                 model = item?.imageUrl,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillBounds,
                 contentDescription = ""
             )
 
@@ -327,6 +326,7 @@ fun MainCarousal(
             }
         }
     }
+    }
 }
 
 @Composable
@@ -346,44 +346,46 @@ fun Categories(@PreviewParameter(SampleUserProvider::class) section: Home) {
                 .padding(16.dp)
         ) {
 
-            items(section.sectionItems) { item ->
-                Card(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .padding(4.dp)
-                        .width(115.dp),
-                    elevation = 4.dp,
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-
-                    Column(
+            section.sectionItems?.let {
+                items(it) { item ->
+                    Card(
                         modifier = Modifier
                             .wrapContentHeight()
-                            .fillMaxWidth(),
-                        horizontalAlignment = CenterHorizontally
+                            .padding(4.dp)
+                            .width(115.dp),
+                        elevation = 4.dp,
+                        shape = RoundedCornerShape(8.dp)
                     ) {
 
-                        Box(
+                        Column(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .height(109.dp)
+                                .wrapContentHeight()
+                                .fillMaxWidth(),
+                            horizontalAlignment = CenterHorizontally
                         ) {
 
-                            AsyncImage(
-                                model = item.imageUrl,
-                                modifier = Modifier.fillMaxSize(),
-                                contentScale = ContentScale.Crop,
-                                contentDescription = ""
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(109.dp)
+                            ) {
+
+                                AsyncImage(
+                                    model = item.imageUrl,
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop,
+                                    contentDescription = ""
+                                )
+                            }
+
+                            Text(
+                                text = item.title ?: "",
+                                modifier = Modifier.padding(vertical = 8.dp),
+                                fontSize = 12.sp
                             )
                         }
 
-                        Text(
-                            text = item.title ?: "",
-                            modifier = Modifier.padding(vertical = 8.dp),
-                            fontSize = 12.sp
-                        )
                     }
-
                 }
             }
         }
@@ -406,9 +408,9 @@ fun ExclusiveItem(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 0.dp)
         )
 
-        section.sectionItems?.let {
+        section.sectionItems?.size?.let {
             HorizontalPager(
-                count = it.size,
+                count = it,
                 state = pagerState,
                 modifier = Modifier
                     .height(175.dp)

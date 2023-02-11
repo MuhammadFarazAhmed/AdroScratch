@@ -10,9 +10,9 @@ import kotlinx.serialization.Serializable
 @CommonParcelize
 data class LoginPopup(
     @SerialName("title")
-    val title: String? = null,
+    var title: String? = null,
     @SerialName("message")
-    val message: String? = null,
+    var message: String? = null,
     @SerialName("button_title")
-    val buttonTitle: String? = null
+    var buttonTitle: String? = null
 ) : CommonParcelable
