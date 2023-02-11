@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.text.style.TextAlign
@@ -21,7 +22,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.example.adro.common.HexToJetpackColor
 import com.example.adro.common.collectAsStateLifecycleAware
+import com.example.home.R
 import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.presentation.HomeViewModel
 import com.google.accompanist.pager.*
@@ -162,9 +165,9 @@ fun LoginView(
                         .height(34.dp)
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
-//                        backgroundColor = HexToJetpackColor.getColor(
-//                            section?.buttonBgColor ?: "acccbc"
-//                        )
+                        backgroundColor = HexToJetpackColor.getColor(
+                            section?.buttonBgColor ?: "acccbc"
+                        )
                     )
                 ) {
                     Text(
@@ -193,14 +196,14 @@ fun LoginView(
                         .padding(16.dp)
                         .width(IntrinsicSize.Max)
                 ) {
-//                    Image(
-//                        //painter = painterResource(id = R.drawable.ic_limited_offer_1),
-//                        contentDescription = "",
-//                        modifier = Modifier
-//                            .align(Alignment.CenterVertically)
-//                            .height(40.dp)
-//                            .width(40.dp)
-//                    )
+                    AsyncImage(
+                        painter = painterResource(id = R.drawable.ic_limited_offer_1),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .align(Alignment.CenterVertically)
+                            .height(40.dp)
+                            .width(40.dp)
+                    )
                     Text(
                         text = "Login to enjoy discounts and offers",
                         modifier = Modifier
@@ -230,7 +233,7 @@ fun LoginView(
                     modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight()
-                    .background(HexToJetpackColor.getColor("acccbc"))
+                        .background(HexToJetpackColor.getColor("acccbc"))
 
                 ) {
                     Text(
@@ -259,73 +262,73 @@ fun MainCarousal(
 
     section.sectionItems?.size?.let {
         HorizontalPager(
-        count = it,
-        state = pagerState,
-        modifier = Modifier.height(250.dp),
-        contentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 24.dp),
-        itemSpacing = 8.dp
-    ) { index ->
+            count = it,
+            state = pagerState,
+            modifier = Modifier.height(250.dp),
+            contentPadding = PaddingValues(start = 16.dp, top = 20.dp, end = 16.dp, bottom = 24.dp),
+            itemSpacing = 8.dp
+        ) { index ->
 
-        val item = section.sectionItems?.get(index)
+            val item = section.sectionItems?.get(index)
 
-        Card(
-            modifier = Modifier.fillMaxSize(),
-            elevation = 4.dp,
-            shape = RoundedCornerShape(8.dp)
-        ) {
-
-            AsyncImage(
-                model = item?.imageUrl,
-                contentScale = ContentScale.FillBounds,
-                contentDescription = ""
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.horizontalGradient(
-                            listOf(
-                                Color.Black.copy(alpha = 0.7f),
-                                Color.Black.copy(alpha = 0f)
-                            )
-                        )
-                    )
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 16.dp),
-                verticalArrangement = Arrangement.SpaceEvenly
+            Card(
+                modifier = Modifier.fillMaxSize(),
+                elevation = 4.dp,
+                shape = RoundedCornerShape(8.dp)
             ) {
 
-                Text(
-                    text = item?.title ?: "",
-                    color = Color.White,
-                    fontSize = 22.sp,
-                    modifier = Modifier.fillMaxWidth(.8f),
-                    fontWeight = SemiBold
+                AsyncImage(
+                    model = item?.imageUrl,
+                    contentScale = ContentScale.FillBounds,
+                    contentDescription = ""
                 )
 
-                Button(
-                    onClick = { },
-                    contentPadding = PaddingValues(horizontal = 12.dp),
+                Box(
                     modifier = Modifier
-                        .height(34.dp)
-                        .width(100.dp),
-                    colors = ButtonDefaults.buttonColors(
+                        .fillMaxSize()
+                        .background(
+                            Brush.horizontalGradient(
+                                listOf(
+                                    Color.Black.copy(alpha = 0.7f),
+                                    Color.Black.copy(alpha = 0f)
+                                )
+                            )
+                        )
+                )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 16.dp),
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+
+                    Text(
+                        text = item?.title ?: "",
+                        color = Color.White,
+                        fontSize = 22.sp,
+                        modifier = Modifier.fillMaxWidth(.8f),
+                        fontWeight = SemiBold
+                    )
+
+                    Button(
+                        onClick = { },
+                        contentPadding = PaddingValues(horizontal = 12.dp),
+                        modifier = Modifier
+                            .height(34.dp)
+                            .width(100.dp),
+                        colors = ButtonDefaults.buttonColors(
 //                        backgroundColor = HexToJetpackColor.getColor(
 //                            item.buttonBgColor
 //                        )
-                    )
-                ) {
-                    Text(text = "", color = Color.White, fontSize = 12.sp)
-                }
+                        )
+                    ) {
+                        Text(text = "", color = Color.White, fontSize = 12.sp)
+                    }
 
+                }
             }
         }
-    }
     }
 }
 
@@ -490,7 +493,7 @@ fun RecommendedItem(
     Column(modifier = Modifier.wrapContentHeight()) {
 
         Text(
-            text = section.title?:"",
+            text = section.title ?: "",
             style = MaterialTheme.typography.h1,
             color = Color.Black,
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 0.dp)
