@@ -3,7 +3,6 @@ package com.example.offers.nav
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.adro.AdroNavigationDestination
-import com.example.offers.ui.FavoriteScreen
 import com.example.offers.ui.OffersScreen
 
 object FavoriteDestination : AdroNavigationDestination {
@@ -13,6 +12,6 @@ object FavoriteDestination : AdroNavigationDestination {
 
 fun NavGraphBuilder.favGraph() {
     composable(FavoriteDestination.route) {
-        FavoriteScreen()
+        //FavoriteScreen()
     }
 }

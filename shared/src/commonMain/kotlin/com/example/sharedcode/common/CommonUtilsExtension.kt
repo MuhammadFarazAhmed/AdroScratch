@@ -54,35 +54,4 @@ object CommonUtilsExtension {
             )
         )
     }
-//
-//    fun <T : Any> LazyListScope.applyPagination(
-//        lazyLayout: LazyPagingItems<T>
-//    ) {
-//        lazyLayout.apply {
-//            when {
-//                loadState.refresh is LoadState.Loading -> {
-//                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-//                }
-//                loadState.append is LoadState.Loading -> {
-//                    item { LoadingItem() }
-//                }
-//                loadState.refresh is LoadState.Error -> {
-//                    val e = lazyLayout.loadState.refresh as LoadState.Error
-//                    item {
-//                        ErrorItem(message = e.error.message,
-//                            modifier = Modifier.fillParentMaxSize(),
-//                            onClickRetry = { })
-//                    }
-//                }
-//                loadState.append is LoadState.Error -> {
-//                    val e = lazyLayout.loadState.append as LoadState.Error
-//                    item {
-//                        ErrorItem(
-//                            message = e.error.message, onClickRetry = {}
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

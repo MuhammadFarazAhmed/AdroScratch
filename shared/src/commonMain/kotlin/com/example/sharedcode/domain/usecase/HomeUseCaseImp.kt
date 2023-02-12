@@ -1,6 +1,6 @@
 package com.example.sharedcode.domain.usecase
 
-import com.example.sharedcode.data.repo.HomeRepository
+import com.example.sharedcode.home.data.repo.HomeRepository
 import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.domain.domain_model.asDomainModel
 import kotlinx.coroutines.flow.Flow

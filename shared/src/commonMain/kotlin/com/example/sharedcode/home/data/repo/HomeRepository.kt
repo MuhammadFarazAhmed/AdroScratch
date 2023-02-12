@@ -1,4 +1,4 @@
-package com.example.sharedcode.data.repo
+package com.example.sharedcode.home.data.repo
 
 
 import com.example.sharedcode.domain.domain_model.HomeResponse

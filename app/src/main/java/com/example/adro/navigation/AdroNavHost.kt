@@ -8,6 +8,8 @@ import androidx.navigation.compose.NavHost
 import com.example.adro.AdroNavigationDestination
 import com.example.home.nav.HomeDestination
 import com.example.home.nav.homeGraph
+import com.example.offers.nav.MerchantDestination
+import com.example.offers.nav.merchantGraph
 
 @Composable
 fun AdroNavHost(
@@ -28,10 +30,10 @@ fun AdroNavHost(
             navigateToAuth = {
               //  onNavigateToDestination(AuthDestination, AuthDestination.route)
             })
-//        merchantGraph(
-//            navigateToDetail = {
-//               // onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
-//            })
+        merchantGraph(
+            navigateToDetail = {
+                onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
+            })
 //        favGraph()
 //        profileGraph()
 

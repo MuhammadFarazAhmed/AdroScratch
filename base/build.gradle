@@ -75,13 +75,13 @@ dependencies {
 //    implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
 //    implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
-    implementation "com.google.accompanist:accompanist-pager:0.23.1"
+    implementation "com.google.accompanist:accompanist-pager:0.25.1"
 
-    debugApi("androidx.paging:paging-compose:1.0.0-alpha16")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha18")
 
 
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
 }

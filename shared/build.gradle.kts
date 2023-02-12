@@ -39,7 +39,6 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 with(Koin) {
-                    
                     implementation(koin)
                 }
                 with(Log) {
@@ -65,7 +64,6 @@ kotlin {
                 with(Coroutines) {
                     implementation(coroutines)
                 }
-                implementation("org.jetbrains.kotlin:kotlin-reflect:1.7.21")
 
                 implementation("io.jsonwebtoken:jjwt:0.9.1")
             }
@@ -81,7 +79,7 @@ kotlin {
                 //implementation("io.jsonwebtoken:jjwt:0.9.1")
                 implementation(Ktor.clientAndroid)
                 implementation(Koin.koinAndroid)
-    
+
                 with(Log) {
                     implementation(napier)
                 }

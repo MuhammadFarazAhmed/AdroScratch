@@ -6,10 +6,10 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Data(
-    @SerialName("pending_transaction_deeplink")
+        @SerialName("pending_transaction_deeplink")
     var pendingTransactionDeeplink: String? = null,
-    @SerialName("banner_detail")
+        @SerialName("banner_detail")
     var bannerDetail: BannerDetail? = null,
-    @SerialName("sections")
+        @SerialName("sections")
     var sections: List<Section>? = null
 )

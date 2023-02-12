@@ -26,7 +26,7 @@ fun HomeResponse.asDomainModel(): List<Home>? {
             sectionIdentifier = it.sectionIdentifier,
             sectionItems = it.sectionItems as ArrayList<SectionItem>?,
             sortOrder = 1,
-            title = it.title,
+            title = it.sectionTitle,
             imageUrl = it.imageUrl,
             buttonTitle = it.buttonTitle,
             buttonBgColor = it.buttonBgColor,

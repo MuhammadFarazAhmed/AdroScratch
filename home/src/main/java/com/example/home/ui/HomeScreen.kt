@@ -24,9 +24,8 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.common.collectAsStateLifecycleAware
-import com.example.home.R
 import com.example.sharedcode.domain.domain_model.Home
-import com.example.sharedcode.presentation.HomeViewModel
+import com.example.sharedcode.home.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.get
 
@@ -196,8 +195,8 @@ fun LoginView(
                         .padding(16.dp)
                         .width(IntrinsicSize.Max)
                 ) {
-                    AsyncImage(
-                        painter = painterResource(id = R.drawable.ic_limited_offer_1),
+                    Image(
+                        painter = painterResource(id = com.example.base.R.drawable.ic_limited_offer_1),
                         contentDescription = "",
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
@@ -452,8 +451,7 @@ fun ExclusiveItem(
 
                     Column(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(start = 16.dp),
+                            .fillMaxSize(),
                         verticalArrangement = Arrangement.Center
                     ) {
 
@@ -462,7 +460,7 @@ fun ExclusiveItem(
                             color = Color.White,
                             fontSize = 22.sp,
                             fontWeight = SemiBold,
-                            modifier = Modifier.fillMaxWidth(.5f)
+                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
                         )
 
                         Text(
@@ -470,7 +468,7 @@ fun ExclusiveItem(
                             color = Color.White,
                             fontSize = 12.sp,
                             fontWeight = SemiBold,
-                            modifier = Modifier.padding(top = 12.dp)
+                            modifier = Modifier.padding(top = 12.dp).padding(horizontal = 16.dp)
                         )
 
                     }
@@ -542,7 +540,7 @@ fun RecommendedItem(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(start = 16.dp),
-                        verticalArrangement = Arrangement.SpaceEvenly
+                        verticalArrangement = Arrangement.Center
                     ) {
 
                         Text(
@@ -550,7 +548,7 @@ fun RecommendedItem(
                             color = Color.White,
                             fontSize = 22.sp,
                             fontWeight = SemiBold,
-                            modifier = Modifier.fillMaxWidth(.5f)
+                            modifier = Modifier.fillMaxWidth()
                         )
 
                         Text(
@@ -568,4 +566,5 @@ fun RecommendedItem(
             }
         }
     }
+
 }

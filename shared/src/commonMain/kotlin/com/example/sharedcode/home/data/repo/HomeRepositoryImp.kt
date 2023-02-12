@@ -1,6 +1,6 @@
-package com.example.sharedcode.data.repo
+package com.example.sharedcode.home.data.repo
 
-import com.example.sharedcode.data.api.HomeApi
+import com.example.sharedcode.home.data.api.HomeApi
 import com.example.sharedcode.domain.domain_model.HomeResponse
 
 

@@ -20,26 +20,24 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
-import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
-import com.example.domain.models.OffersResponse
-import com.example.domain.models.TabsResponse
-import com.example.adro.common.CommonUtilsExtension.applyPagination
+import com.example.adro.common.applyPagination
+import com.example.adro.common.collectAsStateLifecycleAware
+import com.example.sharedcode.domain.domain_model.OffersResponse
+import com.example.sharedcode.domain.domain_model.TabsResponse
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.get
 
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun OffersScreen(navigateToDetail: ()->Unit,vm: OffersViewModel = getViewModel()) {
+fun OffersScreen(navigateToDetail: ()->Unit,vm: OffersViewModel = get()) {
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -115,7 +113,7 @@ fun Pager(
             count = tabs?.size ?: 1
         ) { index ->
 
-            vm.selectedTab.value = tabs?.get(index)
+            vm.selectedTab.value = tabs?.get(index)!!
 
             val lazyOutlets = vm.offers.collectAsLazyPagingItems()
 

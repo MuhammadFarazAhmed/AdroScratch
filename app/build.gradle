@@ -83,6 +83,12 @@ android {
 dependencies {
 
     implementation 'androidx.core:core-ktx:1.9.0'
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.10") {
+        because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.10") {
+        because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
+    }
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
@@ -120,12 +126,12 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-material:0.25.1"
 
 
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
-    debugApi("androidx.paging:paging-compose:1.0.0-alpha16")
+    debugApi("androidx.paging:paging-compose:1.0.0-alpha18")
 
     implementation 'androidx.core:core-splashscreen:1.0.0'
 
@@ -135,7 +141,7 @@ dependencies {
 
 //    api(project(':auth'))
     api(project(':home'))
-//    api(project(':merchant'))
+    implementation(project(':merchant'))
 //    api(project(':favorite'))
 //    api(project(':profile'))
 //    api(project(':repositories'))

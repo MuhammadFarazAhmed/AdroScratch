@@ -1,50 +1,36 @@
 package com.example.offers.vm
 
-import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
-import com.example.adro.common.ApiStatus
-import com.example.domain.models.TabsResponse
-import com.example.domain.usecase.MerchantUseCase
-import com.example.repositories.paging.BasePagingSource
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import javax.inject.Inject
+import com.example.offers.common.BasePagingSource
+import com.example.sharedcode.domain.domain_model.TabsResponse
+import com.example.sharedcode.offers.presentation.OffersSharedViewModel
+import dev.icerock.moko.mvvm.viewmodel.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 
-@HiltViewModel
-class OffersViewModel @Inject constructor(
-    application: Application,
-    private val merchantUseCase: MerchantUseCase
-) :
-    AndroidViewModel(application) {
+
+class OffersViewModel constructor(
+    private val sharedViewModel: OffersSharedViewModel
+) : ViewModel() {
 
     init {
         fetchTabs()
     }
 
     private fun fetchTabs() {
-        viewModelScope.launch {
-            merchantUseCase.fetchTabs().collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS -> tabs.value = it.data?.data?.tabs
-                    ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it.message}: ")
-                    }
-                    ApiStatus.LOADING -> {}
-                }
-            }
-        }
+        sharedViewModel.fetchTabs()
     }
 
-    val offers = Pager(PagingConfig(pageSize = 60)) { BasePagingSource { merchantUseCase.fetchOffers(selectedTab.value!!.params) } }.flow.cachedIn(viewModelScope)
+    val offers = Pager(PagingConfig(pageSize = 60)) {
+        BasePagingSource {
+            sharedViewModel.offers.value
+        }
+    }.flow.cachedIn(viewModelScope)
 
-    val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = MutableStateFlow(emptyList())
+    val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = sharedViewModel.tabs
 
-    val selectedTab = MutableLiveData<TabsResponse.Data.Tab>()
+    val selectedTab = sharedViewModel.selectedTab
 
 
 }

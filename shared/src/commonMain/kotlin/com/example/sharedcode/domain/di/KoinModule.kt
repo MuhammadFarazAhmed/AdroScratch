@@ -2,16 +2,21 @@ package com.example.sharedcode.domain.di
 
 
 import com.example.sharedcode.common.changeBaseUrlInterceptor
-import com.example.sharedcode.data.api.HomeApi
-import com.example.sharedcode.data.api.HomeApiImpl
-import com.example.sharedcode.data.repo.HomeRepository
-import com.example.sharedcode.data.repo.HomeRepositoryImp
+import com.example.sharedcode.home.data.api.HomeApi
+import com.example.sharedcode.home.data.api.HomeApiImpl
+import com.example.sharedcode.home.data.repo.HomeRepository
+import com.example.sharedcode.home.data.repo.HomeRepositoryImp
 import com.example.sharedcode.domain.usecase.HomeUseCase
 import com.example.sharedcode.domain.usecase.HomeUseCaseImp
+import com.example.sharedcode.domain.usecase.MerchantUseCase
+import com.example.sharedcode.domain.usecase.MerchantUseCaseImp
 import com.example.sharedcode.getOriginalResponse
 import com.example.sharedcode.getToken
 import com.example.sharedcode.platformModule
-import com.example.sharedcode.presentation.HomeViewModel
+import com.example.sharedcode.home.presentation.HomeViewModel
+import com.example.sharedcode.offers.data.repo.MerchantRepository
+import com.example.sharedcode.offers.data.repo.MerchantRepositoryImp
+import com.example.sharedcode.offers.presentation.OffersSharedViewModel
 import com.example.sharedcode.security.decryptResponse
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -60,14 +65,17 @@ fun networkModule() = module {
 fun dataModule() = module {
     single<HomeApi> { HomeApiImpl(get()) }
     single<HomeRepository> { HomeRepositoryImp(get()) }
+    single<MerchantRepository> { MerchantRepositoryImp(get()) }
 }
 
 fun useCaseModule() = module {
     single<HomeUseCase> { HomeUseCaseImp(get()) }
+    single<MerchantUseCase> { MerchantUseCaseImp(get()) }
 }
 
 fun viewModelModule() = module {
     single { HomeViewModel(get()) }
+    single { OffersSharedViewModel(get()) }
 }
 
 fun createHttpClient(

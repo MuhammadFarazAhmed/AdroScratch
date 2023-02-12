@@ -14,7 +14,7 @@ fun HttpClient.changeBaseUrlInterceptor() {
             CommonUtilsExtension.API.FAV -> request.url.host =
                 "cLibController.getOutletBaseUrlOnline()"
             CommonUtilsExtension.API.OFFER -> request.url.host =
-               " cLibController.getOutletBaseUrlOnline()"
+               "apiutb2betotlsrvpy.theentertainerme.com"
         }
 
         execute(request)

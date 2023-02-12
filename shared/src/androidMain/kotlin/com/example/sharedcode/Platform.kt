@@ -2,9 +2,12 @@ package com.example.sharedcode
 
 import android.os.Parcelable
 import android.util.Base64
+import com.example.sharedcode.offers.presentation.OffersSharedViewModel
 import io.jsonwebtoken.*
 import io.ktor.client.engine.android.*
 import kotlinx.parcelize.Parcelize
+import org.koin.core.context.GlobalContext.get
+import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 class AndroidPlatform : Platform {
@@ -43,5 +46,6 @@ actual fun platformModule() = module {
 actual typealias CommonParcelize = Parcelize
 
 actual typealias CommonParcelable = Parcelable
+
 actual fun getOriginalResponse(): suspend (response: String) -> String? =
-    {it -> ApisEncryptionUtils.getInstance(CLibController).decryptString(it)}
+    { it -> ApisEncryptionUtils.getInstance(CLibController).decryptString(it) }

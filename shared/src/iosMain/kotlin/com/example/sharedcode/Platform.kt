@@ -1,6 +1,7 @@
 package com.example.sharedcode
 
-import com.example.sharedcode.presentation.HomeViewModel
+import com.example.sharedcode.home.presentation.HomeViewModel
+import com.example.sharedcode.offers.presentation.OffersSharedViewModel
 import io.ktor.client.engine.darwin.*
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
@@ -30,8 +31,6 @@ actual fun platformModule() = module {
         HomeViewModel(get())
     }
 
-    single { CLibController }
-
     //single or factory can be used to get a view-model object for swiftui
 }
 
@@ -39,7 +38,8 @@ actual interface CommonParcelable
 
 object ViewModels : KoinComponent {
     fun getHomeViewModel() = get<HomeViewModel>()
+    fun getOfferSharedViewModel() = get<OffersSharedViewModel>()
 }
 
-actual fun getOriginalResponse(): suspend (response: String) -> String? = "" //TODO get the decrypted response from CryptoKit Swift
+actual fun getOriginalResponse(): suspend (response: String) -> String? = {""} //TODO get the decrypted response from CryptoKit Swift
 

@@ -13,6 +13,7 @@ data class Home(
     @SerialName("section_title")
     val sectionTitle: String? = null,
     val sortOrder: Int? = 1,
+    @SerialName("title")
     val title: String? = "",
     @SerialName("image_url")
     val imageUrl: String? = null,
@@ -29,9 +30,9 @@ data class Home(
     val buttonBgColor: String? = null,
     @SerialName("sub_title")
     val subTitle: String? = null,
-@SerialName("id")
+    @SerialName("id")
 var id: Int? = null,
-@SerialName("subtitle")
+    @SerialName("subtitle")
 var subtitle: String? = null
 
     ) : CommonParcelable
