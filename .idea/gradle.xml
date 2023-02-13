@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/buildSrc" />
             <option value="$PROJECT_DIR$/home" />
             <option value="$PROJECT_DIR$/merchant" />
+            <option value="$PROJECT_DIR$/profile" />
             <option value="$PROJECT_DIR$/shared" />
           </set>
         </option>

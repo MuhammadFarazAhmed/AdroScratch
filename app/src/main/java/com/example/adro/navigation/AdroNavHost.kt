@@ -10,6 +10,7 @@ import com.example.home.nav.HomeDestination
 import com.example.home.nav.homeGraph
 import com.example.offers.nav.MerchantDestination
 import com.example.offers.nav.merchantGraph
+import com.example.profile.nav.profileGraph
 
 @Composable
 fun AdroNavHost(
@@ -35,7 +36,7 @@ fun AdroNavHost(
                 onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
             })
 //        favGraph()
-//        profileGraph()
+        profileGraph()
 
     }
 }

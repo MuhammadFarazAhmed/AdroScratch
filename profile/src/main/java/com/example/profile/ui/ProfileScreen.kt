@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,24 +22,14 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.items
-import androidx.paging.map
-import com.example.adro.ErrorItem
-import com.example.adro.LoadingItem
-import com.example.adro.LoadingView
-import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.common.collectAsStateLifecycleAware
 import com.example.base.R
-import com.example.profile.vm.ProfileViewModel
-import kotlinx.coroutines.flow.flatMap
-import kotlinx.coroutines.flow.map
-import org.koin.androidx.compose.getViewModel
+import com.example.sharedcode.profile.presentation.ProfileViewModel
+import org.koin.androidx.compose.get
 
 
 enum class ProfileSections(val value: String) {
@@ -49,15 +40,15 @@ enum class ProfileSections(val value: String) {
 }
 
 @Composable
-fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
+fun ProfileScreen(vm: ProfileViewModel = get()) {
 
-    val lazySections = vm.sections.collectAsLazyPagingItems()
+    val lazySections by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
 
     LazyColumn(Modifier.background(HexToJetpackColor.getColor("F1F1F1"))) {
 
         items(lazySections) { section ->
 
-            when (section?.sectionIdentifier) {
+            when (section.sectionIdentifier) {
 
                 ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader()
 
@@ -80,32 +71,6 @@ fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
 
                 ProfileSections.SIGN_OUT.value -> ProfileSectionSignOut()
 
-            }
-        }
-        lazySections.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                }
-                loadState.append is LoadState.Loading -> {
-                    item { LoadingItem() }
-                }
-                loadState.refresh is LoadState.Error -> {
-                    val e = lazySections.loadState.refresh as LoadState.Error
-                    item {
-                        ErrorItem(message = e.error.message,
-                            modifier = Modifier.fillParentMaxSize(),
-                            onClickRetry = { })
-                    }
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = lazySections.loadState.append as LoadState.Error
-                    item {
-                        ErrorItem(
-                            message = e.error.message, onClickRetry = { vm.sections }
-                        )
-                    }
-                }
             }
         }
     }

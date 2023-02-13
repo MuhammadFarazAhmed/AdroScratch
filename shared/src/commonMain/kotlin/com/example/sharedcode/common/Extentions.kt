@@ -10,9 +10,9 @@ fun HttpClient.changeBaseUrlInterceptor() {
             CommonUtilsExtension.API.HOME -> request.url.host =
                 "apiutb2betentsrvpy.theentertainerme.com"
             CommonUtilsExtension.API.PROFILE -> request.url.host =
-                "cLibController.getAuthBaseUrlOnline()"
+                "apiutb2betusrsrvpy.theentertainerme.com"
             CommonUtilsExtension.API.FAV -> request.url.host =
-                "cLibController.getOutletBaseUrlOnline()"
+                "apiutb2betmrchtsrvpy.theentertainerme.com"
             CommonUtilsExtension.API.OFFER -> request.url.host =
                "apiutb2betotlsrvpy.theentertainerme.com"
         }

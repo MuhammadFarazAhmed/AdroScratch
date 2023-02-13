@@ -143,7 +143,7 @@ dependencies {
     api(project(':home'))
     implementation(project(':merchant'))
 //    api(project(':favorite'))
-//    api(project(':profile'))
+    api(project(':profile'))
 //    api(project(':repositories'))
 //    api(project(':domain'))
     api(project(':base'))
