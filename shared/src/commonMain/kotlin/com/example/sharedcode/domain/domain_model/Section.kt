@@ -27,5 +27,5 @@ data class Section(
         @SerialName("login_popup")
     var loginPopup: LoginPopup? = null,
         @SerialName("section_items")
-    var sectionItems: List<SectionItem?>? = null
+    var sectionItems: List<SectionItem>? = null
 )
