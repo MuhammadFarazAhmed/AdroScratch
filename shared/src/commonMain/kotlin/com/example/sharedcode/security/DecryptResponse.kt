@@ -1,15 +1,14 @@
 package com.example.sharedcode.security
 
 
-import android.util.Log
 import com.example.sharedcode.common.encodeBase64
+import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.charsets.*
-import io.ktor.utils.io.core.*
 
 class DecryptResponse private constructor(private val callback: suspend (String) -> String?) {
 
@@ -27,8 +26,8 @@ class DecryptResponse private constructor(private val callback: suspend (String)
             val original = ByteReadChannel(byteArray)
 
             val decryptString = callback(original.toByteArray().encodeBase64())
-            Log.d("TAG", "decryptedResponse: $decryptString")
-            val decryptResponse = ByteReadChannel(decryptString.orEmpty(),Charset.forName("UTF-8"))
+            Napier.d { decryptString.toString() }
+            val decryptResponse = ByteReadChannel(decryptString.orEmpty(), Charset.forName("UTF-8"))
 
             proceedWith(HttpResponseContainer(type, decryptResponse))
         }

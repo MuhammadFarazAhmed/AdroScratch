@@ -11,6 +11,8 @@ import com.example.sharedcode.getOriginalResponse
 import com.example.sharedcode.getToken
 import com.example.sharedcode.platformModule
 import com.example.sharedcode.home.presentation.HomeViewModel
+import com.example.sharedcode.offers.data.api.MerchantApi
+import com.example.sharedcode.offers.data.api.MerchantApiImpl
 import com.example.sharedcode.offers.data.repo.MerchantRepository
 import com.example.sharedcode.offers.data.repo.MerchantRepositoryImp
 import com.example.sharedcode.offers.presentation.OffersSharedViewModel
@@ -64,8 +66,11 @@ fun networkModule() = module {
 
 fun dataModule() = module {
     single<HomeApi> { HomeApiImpl(get()) }
+    single<MerchantApi> { MerchantApiImpl(get()) }
+
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<MerchantRepository> { MerchantRepositoryImp(get()) }
+
     single<ProfileRepository> { ProfileRepositoryImp(get()) }
 }
 

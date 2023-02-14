@@ -6,10 +6,8 @@ import com.example.sharedcode.domain.domain_model.OffersResponse
 import com.example.sharedcode.domain.domain_model.TabsResponse
 import com.example.sharedcode.domain.usecase.MerchantUseCase
 import dev.icerock.moko.mvvm.viewmodel.ViewModel
-import io.ktor.http.*
-import android.util.Log
+import io.github.aakira.napier.Napier
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
@@ -18,15 +16,16 @@ class OffersSharedViewModel constructor(
 ) :
     ViewModel() {
 
-    fun fetchTabs() {
+
+    fun fetchTabs(callback: () -> Unit) {
         viewModelScope.launch {
             merchantUseCase.fetchTabs().asResult().collect {
                 when (it) {
                     is Result.Success -> {
                         tabs.value = it.data.data?.tabs
-                        fetchOffers()
+                        callback()
                     }
-                    is Result.Error -> Log.d("TAG", "fetchHomeData: ${it.exception.message}")
+                    is Result.Error -> Napier.d { it.exception.message }
                     is Result.Idle -> {}
                     is Result.Loading -> {}
                 }
@@ -34,22 +33,13 @@ class OffersSharedViewModel constructor(
         }
     }
 
-    private suspend fun fetchOffers() {
-        merchantUseCase.fetchOffers(selectedTab.value.params).asResult()
-            .collectLatest { offerResponse ->
-                when (offerResponse) {
-                    is Result.Success -> offers.value = offerResponse.data
-                    is Result.Error -> {}
-                    Result.Idle -> {}
-                    Result.Loading -> {}
-                }
-            }
-    }
+    suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?) = merchantUseCase.fetchOffers(params)
 
 
     val offers = MutableStateFlow<List<OffersResponse.Data.Outlet>>(emptyList())
 
-    val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = MutableStateFlow(emptyList())
+    val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> =
+        MutableStateFlow(emptyList())
 
     val selectedTab = MutableStateFlow(TabsResponse.Data.Tab())
 

@@ -9,6 +9,6 @@ interface MerchantRepository {
 
     suspend fun fetchTabs(): TabsResponse
 
-    suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet>
+    suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): OffersResponse
 
 }

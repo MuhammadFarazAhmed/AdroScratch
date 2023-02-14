@@ -49,7 +49,7 @@ fun OffersScreen(navigateToDetail: ()->Unit,vm: OffersViewModel = get()) {
 
         Column {
 
-            Tabs(tabs, pagerState, coroutineScope) { tab ->
+            Tabs(tabs, pagerState, coroutineScope) {  tab ->
                 vm.selectedTab.value = tab
             }
 

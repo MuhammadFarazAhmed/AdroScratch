@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.flow
 class MerchantUseCaseImp constructor(private val merchantRepository: MerchantRepository) :
     MerchantUseCase {
 
-    override fun fetchTabs(): Flow<TabsResponse> = flow { merchantRepository.fetchTabs() }
+    override fun fetchTabs(): Flow<TabsResponse> = flow { emit(merchantRepository.fetchTabs()) }
 
     override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): Flow<List<OffersResponse.Data.Outlet>> = flow {
-        merchantRepository.fetchOffers(params)
+        merchantRepository.fetchOffers(params).data?.let { emit(it.outlets as List<OffersResponse.Data.Outlet>) }
     }
 }
 

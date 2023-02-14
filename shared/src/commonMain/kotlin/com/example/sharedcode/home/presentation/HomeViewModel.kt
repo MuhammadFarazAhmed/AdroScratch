@@ -6,9 +6,9 @@ import dev.icerock.moko.mvvm.viewmodel.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import android.util.Log
 import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.domain.usecase.HomeUseCase
+import io.github.aakira.napier.Napier
 
 
 class HomeViewModel constructor(homeUseCase: HomeUseCase) : ViewModel() {
@@ -23,7 +23,8 @@ class HomeViewModel constructor(homeUseCase: HomeUseCase) : ViewModel() {
                 when (it) {
                     is Result.Success -> sections.value = it.data
                     is Result.Error -> {
-                        Log.d("TAG", "fetchHomeData: ${it.exception.message}")}
+                        Napier.d { it.exception.message }
+                    }
                     is Result.Idle -> {}
                     is Result.Loading -> {}
                 }
