@@ -9,24 +9,52 @@ import kotlinx.coroutines.launch
 import com.example.sharedcode.domain.domain_model.Home
 import com.example.sharedcode.domain.usecase.HomeUseCase
 import io.github.aakira.napier.Napier
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 
 
-class HomeViewModel constructor(homeUseCase: HomeUseCase) : ViewModel() {
+class HomeViewModel constructor(private val homeUseCase: HomeUseCase) : ViewModel() {
 
-    init {
-        fetchHomeData(homeUseCase)
+    private val _state = MutableStateFlow<HomeScreenState>(HomeScreenState.Idle)
+    var state = _state.asStateFlow()
+
+
+    fun onIntent(intent: HomeScreenSideEvent) {
+
+        when (intent) {
+            is HomeScreenSideEvent.getHome -> {
+                fetchHomeData()
+            }
+        }
     }
 
-    private fun fetchHomeData(homeUseCase: HomeUseCase) {
+    private fun fetchHomeData() {
         viewModelScope.launch {
-            homeUseCase.fetchHome().asResult().collectLatest {
-                when (it) {
-                    is Result.Success -> sections.value = it.data
-                    is Result.Error -> {
-                        Napier.d { it.exception.message }
+            homeUseCase.fetchHome().asResult().collectLatest { result ->
+                when (result) {
+                    is Result.Success -> {
+                        _state.update {
+                            HomeScreenState.Success(result.data)
+                        }
                     }
-                    is Result.Idle -> {}
-                    is Result.Loading -> {}
+
+                    is Result.Error -> {
+                        _state.update {
+                            HomeScreenState.Error(result.exception.message)
+                        }
+                    }
+
+                    is Result.Idle -> {
+                        _state.update {
+                            HomeScreenState.Idle
+                        }
+                    }
+
+                    is Result.Loading -> {
+                        _state.update {
+                            HomeScreenState.Loading
+                        }
+                    }
                 }
             }
         }

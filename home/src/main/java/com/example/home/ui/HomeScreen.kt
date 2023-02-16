@@ -25,6 +25,8 @@ import coil.compose.AsyncImage
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.common.collectAsStateLifecycleAware
 import com.example.sharedcode.domain.domain_model.Home
+import com.example.sharedcode.home.presentation.HomeScreenSideEvent
+import com.example.sharedcode.home.presentation.HomeScreenState
 import com.example.sharedcode.home.presentation.HomeViewModel
 import com.google.accompanist.pager.*
 import org.koin.androidx.compose.get
@@ -63,39 +65,63 @@ fun HomeScreen(navigateToAuth: () -> Unit, vm: HomeViewModel = get()) {
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
 
-    val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
+    LaunchedEffect(key1 = Unit) {
+        vm.onIntent(HomeScreenSideEvent.getHome)
+    }
+
+    val state by vm.state.collectAsState()
 
     Surface(modifier = Modifier.background(Color.White)) {
 
         LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-            items(homeSection) { section ->
 
-                when (section.sectionIdentifier) {
-
-                    "main_carousal" -> MainCarousal(pagerState, section)
-
-                    "guest_user" -> LoginView(section, navigateToAuth)
-
-                    "categories" -> Categories(section)
-
-                    "exclusive_offers" -> ExclusiveItem(
-                        pagerState = exclusivePagerState,
-                        section
-                    )
-
-                    "recommended_offers" -> RecommendedItem(
-                        pagerState = recommendedPagerState,
-                        section
-                    )
+            when (state) {
+                is HomeScreenState.Error -> {
+                    item {
+                        Text(
+                            text = (state as HomeScreenState.Error).errorMessage,
+                            style = MaterialTheme.typography.body2
+                        )
+                    }
 
                 }
+                HomeScreenState.Idle -> {
+                }
+                HomeScreenState.Loading -> {
+                    // placeholder()
 
+                }
+                is HomeScreenState.Success -> {
+                    items((state as HomeScreenState.Success).headlines) { section ->
+                        when (section.sectionIdentifier) {
+
+                            "main_carousal" -> MainCarousal(pagerState, section)
+
+                            "guest_user" -> LoginView(section, navigateToAuth)
+
+                            "categories" -> Categories(section)
+
+                            "exclusive_offers" -> ExclusiveItem(
+                                pagerState = exclusivePagerState,
+                                section
+                            )
+
+                            "recommended_offers" -> RecommendedItem(
+                                pagerState = recommendedPagerState,
+                                section
+                            )
+
+                        }
+                    }
+
+                }
             }
+
         }
     }
-
 }
+
 
 class SampleUserProvider : PreviewParameterProvider<Home> {
     override val values = sequenceOf(Home())
@@ -460,7 +486,9 @@ fun ExclusiveItem(
                             color = Color.White,
                             fontSize = 22.sp,
                             fontWeight = SemiBold,
-                            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp)
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
                         )
 
                         Text(
@@ -468,7 +496,9 @@ fun ExclusiveItem(
                             color = Color.White,
                             fontSize = 12.sp,
                             fontWeight = SemiBold,
-                            modifier = Modifier.padding(top = 12.dp).padding(horizontal = 16.dp)
+                            modifier = Modifier
+                                .padding(top = 12.dp)
+                                .padding(horizontal = 16.dp)
                         )
 
                     }
