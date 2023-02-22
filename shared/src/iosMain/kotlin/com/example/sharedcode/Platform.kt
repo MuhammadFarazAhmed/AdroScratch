@@ -18,7 +18,7 @@ class IOSPlatform : Platform {
 actual fun getPlatform(): Platform = IOSPlatform()
 
 
-actual fun getToken(): String = ""
+actual fun getToken(): String = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJjb21wYW55IjoiQURPIiwic2Vzc2lvbl90b2tlbiI6IiIsImFwaV90b2tlbiI6ImsyMjlybi1qIzVXOS1KOEQjNi1BNk0wKG8tITcjOSY0JHgifQ.a7bh0HsSHslpv_hcloCTvADStDVbNvK0zUZ9Gn5sSMw"
 
 
 actual fun platformModule() = module {
@@ -45,65 +45,12 @@ actual fun getOriginalResponse(): suspend (String) -> String? = { "" } //TODO ge
 actual class AesCipher actual constructor() {
     @ExportForCppRuntime
     actual fun encrypt(plainText: String, key: ByteArray, iv: ByteArray): ByteArray {
-      return  memScoped {
-            val plainData = NSData.dataWithBytes(plainText.refTo(0), plainText.size.convert())
-            val keyData = NSData.dataWithBytes(key.refTo(0), key.size.convert())
-            val ivData = NSData.dataWithBytes(iv.refTo(0), iv.size.convert())
-
-            val encryptedData = AesCipherSwift().encrypt(plainText = plainData, key = keyData, iv = ivData)
-
-             encryptedData?.let { encrypted ->
-                ByteArray(encrypted.length).also { encrypted.toByteArray(it, encrypted.length) }
-            }
-        }
+        return byteArrayOf()
     }
 
     @ExportForCppRuntime
     actual fun decrypt(cipherText: ByteArray, key: ByteArray, iv: ByteArray): String {
-       return memScoped {
-            val cipherData = NSData.dataWithBytes(cipherText.refTo(0), cipherText.size.convert())
-            val keyData = NSData.dataWithBytes(key.refTo(0), key.size.convert())
-            val ivData = NSData.dataWithBytes(iv.refTo(0), iv.size.convert())
-
-            val decryptedData = AesCipherSwift().decrypt(cipherText = cipherData, key = keyData, iv = ivData)
-
-             decryptedData?.let { decrypted ->
-                ByteArray(decrypted.length).also { decrypted.toByteArray(it, decrypted.length) }
-            }
-        }
+        return ""
     }
-
-    private class AesCipherSwift {
-
-        fun encrypt(plainText: NSData, key: NSData, iv: NSData): NSData? {
-            return AesCipherImpl.encrypt(plainText, key, iv)
-        }
-
-        fun decrypt(cipherText: NSData, key: NSData, iv: NSData): NSData? {
-            return AesCipherImpl.decrypt(cipherText, key, iv)
-        }
-
-        private object AesCipherImpl {
-
-            fun encrypt(plainText: NSData, key: NSData, iv: NSData): NSData? {
-                try {
-                    val plainBuffer = plainText.bytes!!.readBytes(plainText.length.toInt())
-                    val keyBuffer = key.bytes!!.readBytes(key.length.toInt())
-                    val ivBuffer = iv.bytes!!.readBytes(iv.length.toInt())
-                    val cipher = AesCipherImpl.createCipher(keyBuffer, ivBuffer, Cipher.ENCRYPT_MODE)
-                    val encryptedBuffer = cipher.doFinal(plainBuffer)
-                    return NSData.dataWithBytes(encryptedBuffer.refTo(0), encryptedBuffer.size.convert())
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    return null
-                }
-            }
-
-            fun decrypt(cipherText: NSData, key: NSData, iv: NSData): NSData? {
-                try {
-                    val cipherBuffer = cipherText.bytes!!.readBytes(cipherText.length.toInt())
-                    val keyBuffer = key.bytes!!.readBytes(key.length.toInt())
-                    val ivBuffer = iv.bytes!!.readBytes(iv.length.toInt())
-                    val cipher = AesCipherImpl.createCipher(keyBuffer, ivBuffer, Cipher.DECRYPT_MODE)
-                    val decryptedBuffer = cipher.doFinal(cipherBuffer)
 }
+
