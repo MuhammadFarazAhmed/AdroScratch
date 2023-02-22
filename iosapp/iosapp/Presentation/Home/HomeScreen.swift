@@ -5,8 +5,6 @@ struct HomeScreen: View {
     
     @ObservedObject var state = ViewModels().getHomeViewModel().asObserveableObject()
     
-    @State var news: HeadlineDomainModel = HeadlineDomainModel(author: "", content: "", description: "", publishedAt: "", source: "", title: "", url: "", urlToImage: "")
-    
     @State var moveToWebView = false
     
     var body: some View {
@@ -30,15 +28,7 @@ struct HomeScreen: View {
                 case is HomeScreenStateSuccess:
                     
                     List{
-                        
                         ForEach((state.state as! HomeScreenStateSuccess).headlines , id: \.title){ item in
-                            HeadlineRow( headline: item,onclick: {
-                                 self.news = item
-                                 moveToWebView.toggle()
-                            }).background( NavigationLink(destination: NewsDetails(headline: item), isActive: $moveToWebView) {
-                                EmptyView()
-                            }.buttonStyle(PlainButtonStyle()))
-                           
                         }
                         
                     }.frame( maxWidth: .infinity)
@@ -57,7 +47,7 @@ struct HomeScreen: View {
                     
                 }
             }.onAppear(perform: {
-                state.viewModel.onIntent(intent: HomeScreenSideEvent.GetHeadlines())
+                state.viewModel.onIntent(intent: HomeScreenSideEvent.getHome())
             }).navigationBarTitleDisplayMode(.large)
                 .toolbar {
                     ToolbarItem(placement: .principal) {
@@ -68,10 +58,10 @@ struct HomeScreen: View {
                     }
                     
                     ToolbarItem(placement: .primaryAction) {
-                     NavigationLink(destination: ReadLaterScreen()) {
-                            Image(systemName: "bookmark.circle.fill")
-                        }.buttonStyle(PlainButtonStyle())
-                        
+//                     NavigationLink(destination: ReadLaterScreen()) {
+//                            Image(systemName: "bookmark.circle.fill")
+//                        }.buttonStyle(PlainButtonStyle())
+//                        
                     }
                 }
         }

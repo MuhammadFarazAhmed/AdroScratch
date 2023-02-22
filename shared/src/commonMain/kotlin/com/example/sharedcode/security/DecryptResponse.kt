@@ -1,6 +1,7 @@
 package com.example.sharedcode.security
 
 
+import com.example.sharedcode.AesCipher
 import com.example.sharedcode.common.encodeBase64
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
@@ -9,11 +10,14 @@ import io.ktor.client.statement.*
 import io.ktor.util.*
 import io.ktor.utils.io.*
 import io.ktor.utils.io.charsets.*
+import io.ktor.utils.io.core.*
 
-class DecryptResponse private constructor(private val callback: suspend (String) -> String?) {
+class DecryptResponse private constructor(
+    private val cipher: AesCipher
+) {
 
     class Config {
-        lateinit var callback: suspend (String) -> String?
+        lateinit var cipher: AesCipher
     }
 
     private fun decryptedResponse(client: HttpClient) {
@@ -25,9 +29,15 @@ class DecryptResponse private constructor(private val callback: suspend (String)
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptString = callback(original.toByteArray().encodeBase64())
-            Napier.d { decryptString.toString() }
-            val decryptResponse = ByteReadChannel(decryptString.orEmpty(), Charset.forName("UTF-8"))
+            val decryptString = cipher.decrypt(
+                original.toByteArray(), "18b8c9ef473e2126c3c56ab0cb2b71cb".toByteArray(
+                    Charset.forName("UTF-8")
+                ), "18b8c9ef473e2126".toByteArray(
+                    Charset.forName("UTF-8")
+                )
+            )
+            Napier.d { decryptString }
+            val decryptResponse = ByteReadChannel(decryptString, Charset.forName("UTF-8"))
 
             proceedWith(HttpResponseContainer(type, decryptResponse))
         }
@@ -43,7 +53,7 @@ class DecryptResponse private constructor(private val callback: suspend (String)
 
         override fun prepare(block: Config.() -> Unit): DecryptResponse {
             val config = Config().apply(block)
-            return DecryptResponse(config.callback)
+            return DecryptResponse(config.cipher)
         }
     }
 }

@@ -1,10 +1,13 @@
 package com.example.sharedcode.domain.domain_model
 
 
+import com.example.sharedcode.CommonParcelable
+import com.example.sharedcode.CommonParcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@CommonParcelize
 data class Section(
         @SerialName("section_identifier")
     var sectionIdentifier: String? = null,
@@ -28,4 +31,4 @@ data class Section(
     var loginPopup: LoginPopup? = null,
         @SerialName("section_items")
     var sectionItems: List<SectionItem>? = null
-)
+) : CommonParcelable

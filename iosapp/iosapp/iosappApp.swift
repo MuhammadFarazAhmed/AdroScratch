@@ -6,12 +6,24 @@
 //
 
 import SwiftUI
+import shared
+import CryptoKit
 
 @main
 struct iosappApp: App {
+    
+    init(){
+        KoinModuleKt.doInitKoin()
+    }
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
     }
+    
+
+    
 }
+
+

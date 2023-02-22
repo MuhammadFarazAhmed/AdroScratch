@@ -1,15 +1,13 @@
 package com.example.sharedcode.domain.di
 
 
+import com.example.sharedcode.*
 import com.example.sharedcode.common.changeBaseUrlInterceptor
 import com.example.sharedcode.domain.usecase.*
 import com.example.sharedcode.home.data.api.HomeApi
 import com.example.sharedcode.home.data.api.HomeApiImpl
 import com.example.sharedcode.home.data.repo.HomeRepository
 import com.example.sharedcode.home.data.repo.HomeRepositoryImp
-import com.example.sharedcode.getOriginalResponse
-import com.example.sharedcode.getToken
-import com.example.sharedcode.platformModule
 import com.example.sharedcode.home.presentation.HomeViewModel
 import com.example.sharedcode.offers.data.api.MerchantApi
 import com.example.sharedcode.offers.data.api.MerchantApiImpl
@@ -26,7 +24,6 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.auth.*
 import io.ktor.client.plugins.auth.providers.*
 import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.kotlinx.serializer.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -55,11 +52,14 @@ fun networkModule() = module {
 
     single { createJson() }
 
+    single { AesCipher() }
+
     single {
         createHttpClient(
             httpClientEngine = get(),
             token = get(),
-            json = get()
+            json = get(),
+            aesCipher = get()
         )
     }
 }
@@ -89,7 +89,8 @@ fun viewModelModule() = module {
 fun createHttpClient(
     httpClientEngine: HttpClientEngine,
     token: String,
-    json: Json
+    json: Json,
+    aesCipher: AesCipher
 ) = HttpClient(httpClientEngine) {
 
     defaultRequest {
@@ -112,17 +113,17 @@ fun createHttpClient(
 
     install(Logging) {
         logger = Logger.SIMPLE
-       level = LogLevel.ALL }
+        level = LogLevel.ALL
+    }
 
     install(ContentNegotiation) {
         json(json)
     }
 
-    //TODO take byte array and return string from android and ios platform
+    // take byte array and return string from android and ios platform
     decryptResponse {
-        callback = getOriginalResponse()
+        cipher = aesCipher
     }
-
 
 
 }.apply {

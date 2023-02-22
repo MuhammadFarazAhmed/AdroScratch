@@ -1,10 +1,13 @@
 package com.example.sharedcode.domain.domain_model
 
 
+import com.example.sharedcode.CommonParcelable
+import com.example.sharedcode.CommonParcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@CommonParcelize
 data class HomeResponse(
     @SerialName("data")
     var `data`: Data? = null,
@@ -18,7 +21,7 @@ data class HomeResponse(
     var httpResponse: Int? = null,
     @SerialName("code")
     var code: Int? = null
-)
+) : CommonParcelable
 
 fun HomeResponse.asDomainModel(): List<Home>? {
     return this.data?.sections?.map {
@@ -34,3 +37,4 @@ fun HomeResponse.asDomainModel(): List<Home>? {
         )
     }
 }
+
