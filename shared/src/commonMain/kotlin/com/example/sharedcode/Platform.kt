@@ -15,7 +15,7 @@ expect fun getToken(): String
 
 expect fun getOriginalResponse(): suspend (String) -> String?
 
-expect class AesCipher() {
+expect class CryptoService() {
     fun encrypt(plainText: String, key: ByteArray, iv: ByteArray): ByteArray
     fun decrypt(cipherText: ByteArray, key: ByteArray, iv: ByteArray): String
 }

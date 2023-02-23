@@ -50,7 +50,7 @@ actual typealias CommonParcelable = Parcelable
 actual fun getOriginalResponse(): suspend (response: String) -> String? =
     { it -> ApisEncryptionUtils.getInstance(CLibController).decryptString(it) }
 
-actual class AesCipher actual constructor() {
+actual class CryptoService actual constructor() {
     actual fun encrypt(plainText: String, key: ByteArray, iv: ByteArray): ByteArray {
         val cipher = Cipher.getInstance("AES/CBC/PKCS7Padding")
         val secretKey = SecretKeySpec(key, "AES")

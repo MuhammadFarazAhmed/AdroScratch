@@ -52,7 +52,7 @@ fun networkModule() = module {
 
     single { createJson() }
 
-    single { AesCipher() }
+    single { CryptoService() }
 
     single {
         createHttpClient(
@@ -90,7 +90,7 @@ fun createHttpClient(
     httpClientEngine: HttpClientEngine,
     token: String,
     json: Json,
-    aesCipher: AesCipher
+    aesCipher: CryptoService
 ) = HttpClient(httpClientEngine) {
 
     defaultRequest {

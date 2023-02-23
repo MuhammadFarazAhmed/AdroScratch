@@ -3,12 +3,12 @@ package com.example.sharedcode
 import com.example.sharedcode.home.presentation.HomeViewModel
 import com.example.sharedcode.offers.presentation.OffersSharedViewModel
 import io.ktor.client.engine.darwin.*
+import io.ktor.utils.io.core.*
 import kotlinx.cinterop.usePinned
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import org.koin.dsl.module
 import platform.UIKit.UIDevice
-import kotlin.native.internal.ExportForCppRuntime
 
 class IOSPlatform : Platform {
     override val name: String =
@@ -42,15 +42,13 @@ object ViewModels : KoinComponent {
 
 actual fun getOriginalResponse(): suspend (String) -> String? = { "" } //TODO get the decrypted response from CryptoKit Swift
 
-actual class AesCipher actual constructor() {
-    @ExportForCppRuntime
+actual class CryptoService actual constructor() {
     actual fun encrypt(plainText: String, key: ByteArray, iv: ByteArray): ByteArray {
         return byteArrayOf()
     }
 
-    @ExportForCppRuntime
     actual fun decrypt(cipherText: ByteArray, key: ByteArray, iv: ByteArray): String {
-        return ""
+       return ""
     }
 }
 

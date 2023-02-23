@@ -1,8 +1,7 @@
 package com.example.sharedcode.security
 
 
-import com.example.sharedcode.AesCipher
-import com.example.sharedcode.common.encodeBase64
+import com.example.sharedcode.CryptoService
 import io.github.aakira.napier.Napier
 import io.ktor.client.*
 import io.ktor.client.plugins.*
@@ -13,11 +12,11 @@ import io.ktor.utils.io.charsets.*
 import io.ktor.utils.io.core.*
 
 class DecryptResponse private constructor(
-    private val cipher: AesCipher
+    private val cipher: CryptoService
 ) {
 
     class Config {
-        lateinit var cipher: AesCipher
+        lateinit var cipher: CryptoService
     }
 
     private fun decryptedResponse(client: HttpClient) {

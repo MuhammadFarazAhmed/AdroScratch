@@ -1,0 +1,38 @@
+Index: iosApp/Adro/Pods/Pods.xcodeproj/xcuserdata/macbook.xcuserdatad/xcschemes/xcschememanagement.plist
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<!DOCTYPE plist PUBLIC \"-//Apple//DTD PLIST 1.0//EN\" \"http://www.apple.com/DTDs/PropertyList-1.0.dtd\">\n<plist version=\"1.0\">\n<dict>\n\t<key>SchemeUserState</key>\n\t<dict>\n\t\t<key>Pods-Adro-AdroUITests.xcscheme</key>\n\t\t<dict>\n\t\t\t<key>isShown</key>\n\t\t\t<false/>\n\t\t\t<key>orderHint</key>\n\t\t\t<integer>1</integer>\n\t\t</dict>\n\t\t<key>Pods-Adro.xcscheme</key>\n\t\t<dict>\n\t\t\t<key>isShown</key>\n\t\t\t<false/>\n\t\t\t<key>orderHint</key>\n\t\t\t<integer>0</integer>\n\t\t</dict>\n\t\t<key>Pods-AdroTests.xcscheme</key>\n\t\t<dict>\n\t\t\t<key>isShown</key>\n\t\t\t<false/>\n\t\t\t<key>orderHint</key>\n\t\t\t<integer>2</integer>\n\t\t</dict>\n\t\t<key>shared.xcscheme</key>\n\t\t<dict>\n\t\t\t<key>isShown</key>\n\t\t\t<false/>\n\t\t\t<key>orderHint</key>\n\t\t\t<integer>3</integer>\n\t\t</dict>\n\t</dict>\n\t<key>SuppressBuildableAutocreation</key>\n\t<dict/>\n</dict>\n</plist>\n
+===================================================================
+diff --git a/iosApp/Adro/Pods/Pods.xcodeproj/xcuserdata/macbook.xcuserdatad/xcschemes/xcschememanagement.plist b/iosApp/Adro/Pods/Pods.xcodeproj/xcuserdata/macbook.xcuserdatad/xcschemes/xcschememanagement.plist
+--- a/iosApp/Adro/Pods/Pods.xcodeproj/xcuserdata/macbook.xcuserdatad/xcschemes/xcschememanagement.plist	
++++ b/iosApp/Adro/Pods/Pods.xcodeproj/xcuserdata/macbook.xcuserdatad/xcschemes/xcschememanagement.plist	
+@@ -8,29 +8,21 @@
+ 		<dict>
+ 			<key>isShown</key>
+ 			<false/>
+-			<key>orderHint</key>
+-			<integer>1</integer>
+ 		</dict>
+ 		<key>Pods-Adro.xcscheme</key>
+ 		<dict>
+ 			<key>isShown</key>
+ 			<false/>
+-			<key>orderHint</key>
+-			<integer>0</integer>
+ 		</dict>
+ 		<key>Pods-AdroTests.xcscheme</key>
+ 		<dict>
+ 			<key>isShown</key>
+ 			<false/>
+-			<key>orderHint</key>
+-			<integer>2</integer>
+ 		</dict>
+ 		<key>shared.xcscheme</key>
+ 		<dict>
+ 			<key>isShown</key>
+ 			<false/>
+-			<key>orderHint</key>
+-			<integer>3</integer>
+ 		</dict>
+ 	</dict>
+ 	<key>SuppressBuildableAutocreation</key>
