@@ -14,9 +14,11 @@ import com.example.home.nav.HomeDestination
 import com.example.offers.nav.FavoriteDestination
 import com.example.offers.nav.MerchantDestination
 import com.example.profile.nav.ProfileDestination
+import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun rememberAdroAppState(navController: NavHostController = rememberNavController()): AdroAppState {
+fun rememberAdroAppState(navController: NavHostController = rememberAnimatedNavController()): AdroAppState {
     NavigationTrackingSideEffect(navController)
     return remember(navController) {
         AdroAppState(navController)

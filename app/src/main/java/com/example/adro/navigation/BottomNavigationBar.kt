@@ -1,6 +1,7 @@
 package com.example.adro.navigation
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -24,51 +25,50 @@ fun BottomNavigationBar(
     currentDestination: NavDestination?
 ) {
 
-    AnimatedVisibility(visible = bottomBarState.value,
-        enter = slideInVertically(initialOffsetY = { it }),
-        exit = slideOutVertically(targetOffsetY = { it }),
-        content = {
-            BottomNavigation(contentColor = Color.White) {
-                destinations.forEach { destination ->
-                    val selected =
-                        currentDestination?.hierarchy?.any { it.route == destination.route } == true
-                    BottomNavigationItem(modifier = Modifier.background(Color.White).navigationBarsPadding(),
-                        icon = {
-                            val icon = if (selected) {
-                                destination.selectedIcon
-                            } else {
-                                destination.unselectedIcon
+    if (bottomBarState.value)
+        BottomNavigation(contentColor = Color.White) {
+            destinations.forEach { destination ->
+                val selected =
+                    currentDestination?.hierarchy?.any { it.route == destination.route } == true
+                BottomNavigationItem(modifier = Modifier
+                    .background(Color.White)
+                    .navigationBarsPadding(),
+                    icon = {
+                        val icon = if (selected) {
+                            destination.selectedIcon
+                        } else {
+                            destination.unselectedIcon
+                        }
+                        when (icon) {
+                            is Icon.ImageVectorIcon -> {
+                                Image(
+                                    imageVector = icon.imageVector,
+                                    contentDescription = null
+                                )
                             }
-                            when (icon) {
-                                is Icon.ImageVectorIcon -> {
-                                    Image(
-                                        imageVector = icon.imageVector,
-                                        contentDescription = null
-                                    )
-                                }
-                                is Icon.DrawableResourceIcon -> {
-                                    Image(
-                                        painter = painterResource(id = icon.id),
-                                        contentDescription = null
-                                    )
-                                }
-                            }
-                        },
-                        label = {
-                            Text(
-                                stringResource(destination.iconTextId),
-                                color = Color.Black
-                            )
-                        },
-                        alwaysShowLabel = true,
-                        selected = selected,
-                        onClick = { onNavigateToDestination(destination, destination.route) })
 
-                }
+                            is Icon.DrawableResourceIcon -> {
+                                Image(
+                                    painter = painterResource(id = icon.id),
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    },
+                    label = {
+                        Text(
+                            stringResource(destination.iconTextId),
+                            color = Color.Black
+                        )
+                    },
+                    alwaysShowLabel = true,
+                    selected = selected,
+                    onClick = { onNavigateToDestination(destination, destination.route) })
+
             }
-        })
-
+        }
 }
+
 
 @Preview(showBackground = true)
 @Composable

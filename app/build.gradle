@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'com.google.relay' version '0.3.02'
 }
 
 android {
@@ -128,7 +129,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-material:0.25.1"
 
 
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
     debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
@@ -137,16 +138,17 @@ dependencies {
     def paging_version = "2.1.1"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
 
-    implementation 'androidx.core:core-splashscreen:1.0.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
 
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
+    api "com.google.accompanist:accompanist-navigation-animation:0.25.1"
 
 
 
     api(project(':auth'))
     api(project(':home'))
-    api api(project(':merchant',))
+    api(project(':merchant'))
     api(project(':favorite'))
     api(project(':profile'))
     api(project(':repositories'))

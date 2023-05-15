@@ -1,0 +1,4 @@
+{
+  "preview-theme": "androidx.compose.material.MaterialTheme",
+  "ambient-translations-path": "auth/src/main/ui-package-resources/style-mappings/m2_design_kit.json"
+}

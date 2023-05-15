@@ -2,7 +2,12 @@ package com.example.adro
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,52 +28,60 @@ import com.example.base.R
 
 @Composable
 fun Toolbar(visibility: MutableState<Boolean>) {
-    AnimatedVisibility(visible = visibility.value,
-            enter = slideInVertically(initialOffsetY = { -it }),
-            exit = slideOutVertically(targetOffsetY = { -it }),
-            content = {
-                Box(
+    if (visibility.value)
+        Box(
+            modifier = Modifier
+                .background(Color.Black)
+                .height(67.dp)
+                .fillMaxWidth(),
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp)
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Card(
+                        shape = CircleShape,
                         modifier = Modifier
-                                .background(Color.Black)
-                                .height(67.dp)
-                                .fillMaxWidth(),
-                   ) {
-                    Row(verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(horizontal = 16.dp)) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            Card(shape = CircleShape,
-                                    modifier = Modifier
-                                            .width(40.dp)
-                                            .align(Alignment.CenterVertically)
-                                            .height(40.dp)) {
-                                Image(painter = painterResource(id = R.drawable.hot_ballon),
-                                        contentScale = ContentScale.Crop,
-                                        contentDescription = "")
-                            }
-                            Text(text = "Faraz Ahmed",
-                                    color = Color.White,
-                                    modifier = Modifier.padding(start = 12.dp))
-                        }
-                        
-                        Row {
-                            Image(painter = painterResource(id = R.drawable.ic_search),
-                                    contentScale = ContentScale.Inside,
-                                    contentDescription = "")
-                            
-                            Spacer(modifier = Modifier.padding(4.dp))
-                            
-                            Image(painter = painterResource(id = R.drawable.ic_notification),
-                                    contentScale = ContentScale.Inside,
-                                    contentDescription = "")
-                        }
-                        
-                        
+                            .width(40.dp)
+                            .align(Alignment.CenterVertically)
+                            .height(40.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.hot_ballon),
+                            contentScale = ContentScale.Crop,
+                            contentDescription = ""
+                        )
                     }
+                    Text(
+                        text = "Faraz Ahmed",
+                        color = Color.White,
+                        modifier = Modifier.padding(start = 12.dp)
+                    )
                 }
-            })
+
+                Row {
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_search),
+                        contentScale = ContentScale.Inside,
+                        contentDescription = ""
+                    )
+
+                    Spacer(modifier = Modifier.padding(4.dp))
+
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_notification),
+                        contentScale = ContentScale.Inside,
+                        contentDescription = ""
+                    )
+                }
+
+
+            }
+        }
 }
 
 @Preview(uiMode = UI_MODE_NIGHT_NO)

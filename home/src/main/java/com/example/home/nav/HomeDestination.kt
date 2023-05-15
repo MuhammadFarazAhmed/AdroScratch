@@ -1,19 +1,18 @@
 package com.example.home.nav
 
-import android.content.Intent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavType
-import androidx.navigation.compose.composable
-import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
+import com.google.accompanist.navigation.animation.composable
 import com.example.adro.AdroNavigationDestination
 import com.example.home.ui.HomeScreen
+
 
 object HomeDestination : AdroNavigationDestination {
     override val route = "home_route"
     override val destination = "home_destination"
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit
