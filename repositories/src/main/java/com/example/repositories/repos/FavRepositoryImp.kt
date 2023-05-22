@@ -18,7 +18,7 @@ class FavRepositoryImp(
         try {
             val response = client.post {
                 url { path("/ets_api/v5/outlets") }
-                setDefaultParams(CommonUtilsExtension.API.FAV)
+                setDefaultParams(CommonUtilsExtension.API.OUTLET)
             }
             (response.body() as FavoriteResponse).asList()
         } catch (e: Exception) {

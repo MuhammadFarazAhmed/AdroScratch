@@ -100,15 +100,15 @@ const char *QA_ANALYTICS_BUNDLE_URL = "";
 
 /*--------------------------------------------------------------------*/
 //NEW URL
-const char *UAT_OUTLET_BASE_URL = "apiutb2betotlsrvpy.theentertainerme.com";
-const char *UAT_MERCHANT_BASE_URL = "apiutb2betmrchtsrvpy.theentertainerme.com";
-const char *UAT_FILTER_BASE_URL = "apiutb2betcfgsrvpy.theentertainerme.com";
-const char *UAT_ENT_BASE_URL = "apiutb2betentsrvpy.theentertainerme.com";
-const char *UAT_REDEMPTION_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com";
-const char *UAT_SAVING_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com";
-const char *UAT_AUTH_BASE_URL = "apiutb2betusrsrvpy.theentertainerme.com";
-const char *UAT_PROFILE_ADRO_BASE_URL = "apiutb2cpyusrpref.theentertainerme.com";
-const char *UAT_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
+const char *UAT_OUTLET_BASE_URL = "https://apiutb2betotlsrvpy.theentertainerme.com/";
+const char *UAT_MERCHANT_BASE_URL = "https://apiutb2betmrchtsrvpy.theentertainerme.com/";
+const char *UAT_FILTER_BASE_URL = "https://apiutb2betcfgsrvpy.theentertainerme.com/";
+const char *UAT_ENT_BASE_URL = "https://apiutb2betentsrvpy.theentertainerme.com/";
+const char *UAT_REDEMPTION_ADRO_BASE_URL = "https://apiutb2betrdmpnsrvpy.theentertainerme.com/";
+const char *UAT_SAVING_ADRO_BASE_URL = "https://apiutb2betrdmpnsrvpy.theentertainerme.com/";
+const char *UAT_AUTH_BASE_URL = "https://apiutb2betusrsrvpy.theentertainerme.com/et_user/v5/";
+const char *UAT_PROFILE_ADRO_BASE_URL = "https://apiutb2cpyusrpref.theentertainerme.com/";
+const char *UAT_ADRO_RECENT_SEARCH_URL = "https://apidvb2betmrchtsrvpy.etenvbiz.com/";
 
 /*--------------------------------------------------------------------*/
 

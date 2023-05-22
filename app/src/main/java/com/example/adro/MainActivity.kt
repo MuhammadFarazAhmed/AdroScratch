@@ -2,31 +2,24 @@ package com.example.adro
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
-import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.example.adro.vm.CommonViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
-    private val isLoading = MutableLiveData(true)
 
     private lateinit var navController: NavController
+
+    private val commonViewModel: CommonViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                lifecycleScope.launch {
-                    delay(2000)
-                    isLoading.value = false
-                }
-                isLoading.value!!
+                commonViewModel.getConfig()
+                commonViewModel.isConfigSuccess.value!!
             }
 
         }

@@ -5,10 +5,13 @@ import com.example.adro.common.PreferencesHelper
 import com.example.adro.common.changeBaseUrlInterceptor
 import com.example.adro.common.decryptResponse
 import com.example.adro.security.ApisEncryptionUtils
+import com.example.adro.vm.CommonViewModel
+import com.example.domain.repos.CommonRepository
 import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
 import com.example.domain.repos.MerchantRepository
 import com.example.domain.repos.ProfileRepository
+import com.example.domain.usecase.CommonUseCase
 import com.example.domain.usecase.FavUseCase
 import com.example.domain.usecase.HomeUseCase
 import com.example.domain.usecase.MerchantUseCase
@@ -17,10 +20,12 @@ import com.example.home.vm.HomeViewModel
 import com.example.offers.vm.FavoriteViewModel
 import com.example.offers.vm.OffersViewModel
 import com.example.profile.vm.ProfileViewModel
+import com.example.repositories.repos.CommonRepositoryImp
 import com.example.repositories.repos.FavRepositoryImp
 import com.example.repositories.repos.HomeRepositoryImp
 import com.example.repositories.repos.MerchantRepositoryImp
 import com.example.repositories.repos.ProfileRepositoryImp
+import com.example.repositories.usecases.CommonUseCaseImp
 import com.example.repositories.usecases.FavUseCaseImp
 import com.example.repositories.usecases.HomeUseCaseImp
 import com.example.repositories.usecases.MerchantUseCaseImp
@@ -49,7 +54,7 @@ fun appModule() = listOf(AppModule, NetworkModule)
 
 fun networkModule() = listOf(NetworkModule)
 
-fun featureModules() = listOf(homeModule, merchantModule, profileModule)
+fun featureModules() = listOf(commonModule, homeModule, merchantModule, profileModule)
 
 val AppModule = module {
 
@@ -72,7 +77,7 @@ val AppModule = module {
 
     }
 
-    singleOf<CLibController> { CLibController() }
+    single { CLibController() }
 
     single { ApisEncryptionUtils(get()) }
 
@@ -116,6 +121,12 @@ val NetworkModule = module {
             changeBaseUrlInterceptor(get())
         }
     }
+}
+
+val commonModule = module {
+    single<CommonRepository> { CommonRepositoryImp(get()) }
+    single<CommonUseCase> { CommonUseCaseImp(get()) }
+    viewModel { CommonViewModel(get(), get()) }
 }
 
 val homeModule = module {

@@ -24,8 +24,7 @@ fun BottomNavigationBar(
     onNavigateToDestination: (TopLevelDestination, String?) -> Unit,
     currentDestination: NavDestination?
 ) {
-
-    if (bottomBarState.value)
+    AnimatedVisibility(visible = bottomBarState.value) {
         BottomNavigation(contentColor = Color.White) {
             destinations.forEach { destination ->
                 val selected =
@@ -67,6 +66,7 @@ fun BottomNavigationBar(
 
             }
         }
+    }
 }
 
 

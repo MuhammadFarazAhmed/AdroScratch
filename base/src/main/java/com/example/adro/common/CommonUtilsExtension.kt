@@ -31,7 +31,7 @@ object CommonUtilsExtension {
     }
 
     enum class API {
-        HOME, PROFILE, FAV, OFFER
+        CORE, AUTH, MERCHANT , PROFILE , OUTLET , REDEMPTION
     }
 
     val Apikey = AttributeKey<API>("api")

@@ -24,7 +24,7 @@ class MerchantRepositoryImp(
         convertToFlow {
             client.post {
                 url { path("/ets_api/v5/offer/tabs") }
-                setDefaultParams(CommonUtilsExtension.API.OFFER)
+                setDefaultParams(CommonUtilsExtension.API.OUTLET)
             }
         }
 
@@ -33,7 +33,7 @@ class MerchantRepositoryImp(
             val response = client.post {
                 url { path("/ets_api/v5/outlets") }
                 setBody(params)
-                setDefaultParams(CommonUtilsExtension.API.OFFER)
+                setDefaultParams(CommonUtilsExtension.API.OUTLET)
             }
             (response.body() as OffersResponse).asList()
         } catch (e: Exception) {

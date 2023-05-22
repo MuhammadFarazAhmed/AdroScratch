@@ -84,10 +84,10 @@ fun AuthScreenPreview() {
         )
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier.verticalScroll(rememberScrollState()),
         ) {
             AppLogo()
-            RegisterScreen()
+            EMIDScreen()
         }
 
     }

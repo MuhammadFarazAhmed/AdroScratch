@@ -28,7 +28,7 @@ import com.example.base.R
 
 @Composable
 fun Toolbar(visibility: MutableState<Boolean>) {
-    if (visibility.value)
+    AnimatedVisibility(visible = visibility.value) {
         Box(
             modifier = Modifier
                 .background(Color.Black)
@@ -82,6 +82,7 @@ fun Toolbar(visibility: MutableState<Boolean>) {
 
             }
         }
+    }
 }
 
 @Preview(uiMode = UI_MODE_NIGHT_NO)
