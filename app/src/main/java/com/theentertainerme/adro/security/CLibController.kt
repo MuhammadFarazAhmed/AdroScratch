@@ -41,7 +41,6 @@ class CLibController {
     external fun getAuthBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String
     external fun getProfileBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String
     //    external fun getOfferTabBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String
-    external fun getFilterBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String
     external fun getOutletBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String
     external fun getMerchantBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String
     external fun getRecentSearchBaseUrlOnline(buildVariant:String = BuildConfig.BUILD_TYPE): String

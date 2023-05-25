@@ -18,7 +18,7 @@ class CommonRepositoryImp(private val client: HttpClient) : CommonRepository {
         convertToFlow {
             client.post {
                 url { path("/ets_api/v5/configs") }
-                setDefaultParams(CommonUtilsExtension.API.CORE)
+                setDefaultParams(CommonUtilsExtension.API.CONFIG)
             }
         }
 

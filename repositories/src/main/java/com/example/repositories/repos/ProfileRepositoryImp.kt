@@ -17,7 +17,7 @@ class ProfileRepositoryImp(private val client: HttpClient) : ProfileRepository {
         return try {
             val response = client.post {
                 url { path("et_user/v5/user/profile") }
-                setDefaultParams(CommonUtilsExtension.API.PROFILE)
+                setDefaultParams(CommonUtilsExtension.API.USER)
             }
             (response.body() as ProfileResponse).asList()
         } catch (e: Exception) {

@@ -27,33 +27,33 @@ static const char *PRODUCTION = "production";
  *    Redemption: apidvb2betrdmpnsrvpy.etenvbiz.com
  *    ENT : apidvb2betentsrvpy.etenvbiz.com  ->DEV_ENT_BASE_URL aka HOME
  * */
-//https://apidvb2betotlsrvpy.etenvbiz.com/ets_api/v3/outlets
+//apidvb2betotlsrvpy.etenvbiz.com/ets_api/v3/outlets
 /*------------------------NEW URLS----------------------------------*/
 const char *DEV_OUTLET_BASE_URL = "apidvb2betotlsrvpy.etenvbiz.com";
 const char *DEV_MERCHANT_BASE_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 const char *DEV_FILTER_BASE_URL = "apidvb2betcfgsrvpy.etenvbiz.com";
 const char *DEV_ENT_BASE_URL = "apidvb2betentsrvpy.etenvbiz.com";
 const char *DEV_REDEMPTION_ADRO_BASE_URL = "apidvb2betrdmpnsrvpy.etenvbiz.com";
-const char *DEV_AUTH_BASE_URL = "apidvb2betusrsrvpy.etenvbiz.com";
-const char *DEV_PROFILE_ADRO_BASE_URL = "apiqab2cpyusrpref.etenvbiz.com";
+const char *DEV_AUTH_BASE_URL = "apidvb2betusrsrvpy.etenvbiz.com/";
+const char *DEV_PROFILE_ADRO_BASE_URL = "apiqab2cpyusrpref.etenvbiz.com/api_ets/v1/";
 const char *DEV_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 
 /*------------------------NEW URLS----------------------------------*/
 
 
-const char *DEV_CORE_BASE_URL = "https://apidvb2baldpy.etenvbiz.com/";
-//const char *DEV_CONFIG_BASE_URL = "https://apidvb2betcfgsrvpy.etenvbiz.com/";
+const char *DEV_CORE_BASE_URL = "apidvb2baldpy.etenvbiz.com/";
+//const char *DEV_CONFIG_BASE_URL = "apidvb2betcfgsrvpy.etenvbiz.com/";
 
 /*Config base url and bundle is old*/
-const char *DEV_CONFIG_BASE_URL = "https://apidvb2baldpy.etenvbiz.com/";
+const char *DEV_CONFIG_BASE_URL = "apidvb2baldpy.etenvbiz.com/";
 const char *DEV_BUNDLE_URL = "api_adr/v2/";
 
-//const char *DEV_BUNDLE_URL = "et_user/v5/";
+//const char *DEV_BUNDLE_URL = "";
 
-const char *DEV_REDEMPTION_BASE_URL = "https://redemptiondvsvr.etenvbiz.com/";
+const char *DEV_REDEMPTION_BASE_URL = "redemptiondvsvr.etenvbiz.com/";
 const char *DEV_REDEMPTION_BUNDLE_URL = "api_ets/v1/";
 
-const char *DEV_ANALYTICS_BASE_URL = "https://apidvb2baldpy.etenvbiz.com/";
+const char *DEV_ANALYTICS_BASE_URL = "apidvb2baldpy.etenvbiz.com/";
 const char *DEV_ANALYTICS_BUNDLE_URL = "";
 
 /**************************************************************************************/
@@ -64,22 +64,22 @@ const char *QA_MERCHANT_BASE_URL = "apiqab2betmrchtsrvpy.etenvbiz.com";
 const char *QA_FILTER_BASE_URL = "apiqab2betcfgsrvpy.etenvbiz.com";
 const char *QA_ENT_BASE_URL = "apiqab2betentsrvpy.etenvbiz.com";
 const char *QA_REDEMPTION_ADRO_BASE_URL = "apiqab2betrdmpnsrvpy.etenvbiz.com";
-const char *QA_SAVING_ADRO_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com";
-const char *QA_AUTH_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com";
-const char *QA_PROFILE_ADRO_BASE_URL = "apiqab2cpyusrpref.etenvbiz.com";
+const char *QA_SAVING_ADRO_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com/";
+const char *QA_AUTH_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com/";
+const char *QA_PROFILE_ADRO_BASE_URL = "apiqab2cpyusrpref.etenvbiz.com/api_ets/v1/";
 const char *QA_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 
 
 
 /*------------------------NEW URLS----------------------------------*/
 
-//const char *QA_AUTH_BASE_URL = "https://apiqab2baldpy.etenvbiz.com/";
-const char *QA_CORE_BASE_URL = "https://apiqab2baldpy.etenvbiz.com/";
-const char *QA_CONFIG_BASE_URL = "https://apiqab2baldpy.etenvbiz.com/";
+//const char *QA_AUTH_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
+const char *QA_CORE_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
+const char *QA_CONFIG_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
 const char *QA_BUNDLE_URL = "api_adr/v2/";
-const char *QA_REDEMPTION_BASE_URL = "https://redemptionqasvr.etenvbiz.com/";
+const char *QA_REDEMPTION_BASE_URL = "redemptionqasvr.etenvbiz.com/";
 const char *QA_REDEMPTION_BUNDLE_URL = "api_ets/v1/";
-const char *QA_ANALYTICS_BASE_URL = "https://apiqab2baldpy.etenvbiz.com/";
+const char *QA_ANALYTICS_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
 const char *QA_ANALYTICS_BUNDLE_URL = "";
 
 
@@ -100,26 +100,25 @@ const char *QA_ANALYTICS_BUNDLE_URL = "";
 
 /*--------------------------------------------------------------------*/
 //NEW URL
-const char *UAT_OUTLET_BASE_URL = "https://apiutb2betotlsrvpy.theentertainerme.com/";
-const char *UAT_MERCHANT_BASE_URL = "https://apiutb2betmrchtsrvpy.theentertainerme.com/";
-const char *UAT_FILTER_BASE_URL = "https://apiutb2betcfgsrvpy.theentertainerme.com/";
-const char *UAT_ENT_BASE_URL = "https://apiutb2betentsrvpy.theentertainerme.com/";
-const char *UAT_REDEMPTION_ADRO_BASE_URL = "https://apiutb2betrdmpnsrvpy.theentertainerme.com/";
-const char *UAT_SAVING_ADRO_BASE_URL = "https://apiutb2betrdmpnsrvpy.theentertainerme.com/";
-const char *UAT_AUTH_BASE_URL = "https://apiutb2betusrsrvpy.theentertainerme.com/et_user/v5/";
-const char *UAT_PROFILE_ADRO_BASE_URL = "https://apiutb2cpyusrpref.theentertainerme.com/";
-const char *UAT_ADRO_RECENT_SEARCH_URL = "https://apidvb2betmrchtsrvpy.etenvbiz.com/";
+const char *UAT_OUTLET_BASE_URL = "apiutb2betotlsrvpy.theentertainerme.com";
+const char *UAT_MERCHANT_BASE_URL = "apiutb2betmrchtsrvpy.theentertainerme.com";
+const char *UAT_CONFIG_BASE_URL = "apiutb2betcfgsrvpy.theentertainerme.com";
+const char *UAT_ENT_BASE_URL = "apiutb2betentsrvpy.theentertainerme.com";
+const char *UAT_REDEMPTION_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com";
+const char *UAT_SAVING_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com";
+const char *UAT_AUTH_BASE_URL = "apiutb2betusrsrvpy.theentertainerme.com/";
+const char *UAT_PROFILE_ADRO_BASE_URL = "apiutb2cpyusrpref.theentertainerme.com/api_ets/v1/";
+const char *UAT_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
+const char *UAT_CORE_BASE_URL = "apiutb2baldpy.theentertainerme.com/";
 
 /*--------------------------------------------------------------------*/
 
 
-//const char *UAT_AUTH_BASE_URL = "https://apiutb2baldpy.theentertainerme.com/";
-const char *UAT_CORE_BASE_URL = "https://apiutb2baldpy.theentertainerme.com/";
-const char *UAT_CONFIG_BASE_URL = "https://apiutb2baldpy.theentertainerme.com/";
+//const char *UAT_AUTH_BASE_URL = "apiutb2baldpy.theentertainerme.com/";
 const char *UAT_BUNDLE_URL = "api_adr/v2/";
-const char *UAT_REDEMPTION_BASE_URL = "https://apiutb2brdmsrvrpy.theentertainerme.com/";
+const char *UAT_REDEMPTION_BASE_URL = "apiutb2brdmsrvrpy.theentertainerme.com/";
 const char *UAT_REDEMPTION_BUNDLE_URL = "api_ets/v1/";
-const char *UAT_ANALYTICS_BASE_URL = "https://391802pmmf.execute-api.eu-west-1.amazonaws.com/";
+const char *UAT_ANALYTICS_BASE_URL = "391802pmmf.execute-api.eu-west-1.amazonaws.com/";
 const char *UAT_ANALYTICS_BUNDLE_URL = "UAT/v2/";
 
 //**************************RC URL******************************************
@@ -145,27 +144,21 @@ apircb2betusrsrvpy.theentertainerme.com
 
 const char *RC_OUTLET_BASE_URL = "apircb2betotlsrvpy.theentertainerme.com";
 const char *RC_MERCHANT_BASE_URL = "apircb2betmrchtsrvpy.theentertainerme.com";
-const char *RC_FILTER_BASE_URL = "apircb2betcfgsrvpy.theentertainerme.com";
+const char *RC_CONFIG_BASE_URL = "apircb2betcfgsrvpy.theentertainerme.com";
 const char *RC_ENT_BASE_URL = "apircb2betentsrvpy.theentertainerme.com";
 const char *RC_REDEMPTION_ADRO_BASE_URL = "apircb2betrdmpnsrvpy.theentertainerme.com";
 const char *RC_SAVING_ADRO_BASE_URL = "apircb2betrdmpnsrvpy.theentertainerme.com";
-const char *RC_AUTH_BASE_URL = "apircb2betusrsrvpy.theentertainerme.com";
-const char *RC_PROFILE_ADRO_BASE_URL = "apircb2cpyusrpref.theentertainerme.com";
+const char *RC_AUTH_BASE_URL = "apircb2betusrsrvpy.theentertainerme.com/";
+const char *RC_PROFILE_ADRO_BASE_URL = "apircb2cpyusrpref.theentertainerme.com/api_ets/v1/";
 const char *RC_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
+const char *RC_CORE_BASE_URL = "apircb2baldpy.theentertainerme.com/";
 
 
 //**************************RC URL***************************************
 
-
-
-//const char *RC_AUTH_BASE_URL = "https://apircb2baldpy.theentertainerme.com/";
-const char *RC_CORE_BASE_URL = "https://apircb2baldpy.theentertainerme.com/";
-//const char *RC_PROFILE_ADRO_BASE_URL = "https://apiqab2cpyusrpref.etenvbiz.com/api_ets/v1/";
-const char *RC_CONFIG_BASE_URL = "https://apircb2baldpy.theentertainerme.com/";
 const char *RC_BUNDLE_URL = "api_adr/v2/";
-const char *RC_REDEMPTION_BASE_URL = "https://apipdb2balftpy.theentertainerme.com/";
 const char *RC_REDEMPTION_BUNDLE_URL = "redemption/v2/";
-const char *RC_ANALYTICS_BASE_URL = "https://jb0auve5he.execute-api.eu-west-1.amazonaws.com/";
+const char *RC_ANALYTICS_BASE_URL = "jb0auve5he.execute-api.eu-west-1.amazonaws.com/";
 const char *RC_ANALYTICS_BUNDLE_URL = "PROD/v2/";
 
 
@@ -188,68 +181,63 @@ const char *RC_ANALYTICS_BUNDLE_URL = "PROD/v2/";
 //apiprdb2betcfgsrvpy.theentertainerme.com. ==> config service
 //
 //apiprdb2betentsrvpy.theentertainerme.com. ==>. et_ent service
-//https://apiprdb2betentsrvpygreen.theentertainerme.com/ ==>. et_ent service GREEN
+//apiprdb2betentsrvpygreen.theentertainerme.com/ ==>. et_ent service GREEN
 //
 //apiprdb2betmrchtsrvpy.theentertainerme.com. ==> merchant service
-//https://apiprdb2betmrchtsrvpygreen.theentertainerme.com/ ==> merchant service GREEN
+//apiprdb2betmrchtsrvpygreen.theentertainerme.com/ ==> merchant service GREEN
 //
 //apiprdb2betotlsrvpy.theentertainerme.com. ==> outlet service
-//https://apiprdb2betotlsrvpygreen.theentertainerme.com/ ==> outlet service GREEN
+//apiprdb2betotlsrvpygreen.theentertainerme.com/ ==> outlet service GREEN
 //
 //apiprdb2betrdmpnsrvpy.theentertainerme.com. ==> redemption service
 //
 //apiprdb2betusrsrvpy.theentertainerme.com. ==> user service
-//https://apiprdb2betusrsrvpygreen.theentertainerme.com/ ==> user service GREEN
+//apiprdb2betusrsrvpygreen.theentertainerme.com/ ==> user service GREEN
 //*************************LIVE**********************************************
-//const char *PRODUCTION_OUTLET_BASE_URL = "https://apiprdb2betotlsrvpygreen.theentertainerme.com/ets_api/v5/"; /*GREEN  URLS */
-//const char *PRODUCTION_MERCHANT_BASE_URL =  "https://apiprdb2betmrchtsrvpygreen.theentertainerme.com/ets_api/v5/";/*GREEN  URLS */
-//const char *PRODUCTION_ENT_BASE_URL = "https://apiprdb2betentsrvpygreen.theentertainerme.com/ets_api/v5/"; /*GREEN  URLS */
-//const char *PRODUCTION_AUTH_BASE_URL = "https://apiprdb2betusrsrvpygreen.theentertainerme.com/et_user/v5/"; /*GREEN  URLS */
+//const char *PRODUCTION_OUTLET_BASE_URL = "apiprdb2betotlsrvpygreen.theentertainerme.com"; /*GREEN  URLS */
+//const char *PRODUCTION_MERCHANT_BASE_URL =  "apiprdb2betmrchtsrvpygreen.theentertainerme.com";/*GREEN  URLS */
+//const char *PRODUCTION_ENT_BASE_URL = "apiprdb2betentsrvpygreen.theentertainerme.com"; /*GREEN  URLS */
+//const char *PRODUCTION_AUTH_BASE_URL = "apiprdb2betusrsrvpygreen.theentertainerme.com/"; /*GREEN  URLS */
 
 //*************************LIVE**********************************************
 
 const char *PRODUCTION_OUTLET_BASE_URL = "apiprdb2betotlsrvpy.theentertainerme.com";
 const char *PRODUCTION_MERCHANT_BASE_URL = "apiprdb2betmrchtsrvpy.theentertainerme.com";
-const char *PRODUCTION_FILTER_BASE_URL = "apiprdb2betcfgsrvpy.theentertainerme.com";
+const char *PRODUCTION_CONFIG_BASE_URL = "apiprdb2betcfgsrvpy.theentertainerme.com";
 const char *PRODUCTION_ENT_BASE_URL = "apiprdb2betentsrvpy.theentertainerme.com";
 const char *PRODUCTION_REDEMPTION_ADRO_BASE_URL = "apiprdb2betrdmpnsrvpy.theentertainerme.com";
 const char *PRODUCTION_SAVING_ADRO_BASE_URL = "apiprdb2betrdmpnsrvpy.theentertainerme.com";
-const char *PRODUCTION_AUTH_BASE_URL = "apiprdb2betusrsrvpy.theentertainerme.com";
-const char *PRODUCTION_PROFILE_ADRO_BASE_URL = "apipdb2cpyusrpref.theentertainerme.com";
+const char *PRODUCTION_AUTH_BASE_URL = "apiprdb2betusrsrvpy.theentertainerme.com/";
+const char *PRODUCTION_PROFILE_ADRO_BASE_URL = "apipdb2cpyusrpref.theentertainerme.com/";
 const char *PRODUCTION_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
-
+const char *PRODUCTION_CORE_BASE_URL = "apipdb2baldpy.theentertainerme.com/";
 //*************************LIVE**********************************************
 
-
-//const char *PRODUCTION_AUTH_BASE_URL = "https://apipdb2baldpy.theentertainerme.com/";
-const char *PRODUCTION_CORE_BASE_URL = "https://apipdb2baldpy.theentertainerme.com/";
-//const char *PRODUCTION_PROFILE_ADRO_BASE_URL = "https://apiqab2cpyusrpref.etenvbiz.com/api_ets/v1/";
-const char *PRODUCTION_CONFIG_BASE_URL = "https://apipdb2baldpy.theentertainerme.com/";
 const char *PRODUCTION_BUNDLE_URL = "api_adr/v2/";
-const char *PRODUCTION_REDEMPTION_BASE_URL = "https://apipdb2balftpy.theentertainerme.com/";
+const char *PRODUCTION_REDEMPTION_BASE_URL = "apipdb2balftpy.theentertainerme.com/";
 const char *PRODUCTION_REDEMPTION_BUNDLE_URL = "redemption/v2/";
-const char *PRODUCTION_ANALYTICS_BASE_URL = "https://jb0auve5he.execute-api.eu-west-1.amazonaws.com/";
+const char *PRODUCTION_ANALYTICS_BASE_URL = "jb0auve5he.execute-api.eu-west-1.amazonaws.com/";
 const char *PRODUCTION_ANALYTICS_BUNDLE_URL = "PROD/v2/";
 
 
-const char *DEV_CAPCTHA_URL = "https://dventcart.etenvbiz.com/captcha/b2b-captcha.php";
-const char *QA_CAPCTHA_URL = "https://entqacart.etenvbiz.com/captcha/b2b-captcha.php";
-const char *UAT_CAPCTHA_URL = "https://entcartut.theentertainerme.com/b2b-captcha";
-const char *RC_CAPCTHA_URL = "https://rcenter.theentertainerme.com/b2b-captcha";
-const char *PRODUCTION_CAPCTHA_URL = "https://www.theentertainerme.com/b2b-captcha";
+const char *DEV_CAPCTHA_URL = "dventcart.etenvbiz.com/captcha/b2b-captcha.php";
+const char *QA_CAPCTHA_URL = "entqacart.etenvbiz.com/b2b-captcha";
+const char *UAT_CAPCTHA_URL = "entcartut.theentertainerme.com/b2b-captcha";
+const char *RC_CAPCTHA_URL = "rcenter.theentertainerme.com/b2b-captcha";
+const char *PRODUCTION_CAPCTHA_URL = "www.theentertainerme.com/b2b-captcha";
 
 
 const char *DEV_CARD_URL = "";
-const char *QA_CARD_URL = "https://entaldarweb.etenvbiz.com/cards-webview";
-const char *UAT_CARD_URL = "https://eutaldrweb.theentertainerme.com/cards-webview";
-const char *RC_CARD_URL = "https://etrcaldrweb.theentertainerme.com/cards-webview";
-const char *PRODUCTION_CARD_URL = "https://www.darnarewards.com/cards-webview";
+const char *QA_CARD_URL = "entaldarweb.etenvbiz.com/cards-webview";
+const char *UAT_CARD_URL = "eutaldrweb.theentertainerme.com/cards-webview";
+const char *RC_CARD_URL = "etrcaldrweb.theentertainerme.com/cards-webview";
+const char *PRODUCTION_CARD_URL = "www.darnarewards.com/cards-webview";
 
-const char *DEV_PROMO_CODE_BASE_URL = "https://dventapi.etenvbiz.com/";
-const char *QA_PROMO_CODE_BASE_URL = "https://entqaapi.etenvbiz.com/";
-const char *UAT_PROMO_CODE_BASE_URL = "https://entutapi.theentertainerme.com/";
-const char *RC_PROMO_CODE_BASE_URL = "https://rcapi.theentertainerme.com/";
-const char *PRODUCTION_PROMO_CODE_BASE_URL = "https://api.theentertainerme.com/";
+const char *DEV_PROMO_CODE_BASE_URL = "dventapi.etenvbiz.com/";
+const char *QA_PROMO_CODE_BASE_URL = "entqaapi.etenvbiz.com/";
+const char *UAT_PROMO_CODE_BASE_URL = "entutapi.theentertainerme.com/";
+const char *RC_PROMO_CODE_BASE_URL = "rcapi.theentertainerme.com/";
+const char *PRODUCTION_PROMO_CODE_BASE_URL = "api.theentertainerme.com/";
 
 const char *DEV_PROMO_CODE_BUNDLE_URL = "et_rs_prd/web/v70/wl/";
 const char *QA_PROMO_CODE_BUNDLE_URL = "et_rs_prd/web/v70/wl/";
@@ -282,11 +270,11 @@ const char *UAT_ANALYTICS_TOKEN = "6ab7e131543a37ac89f7ce8993c9b3ce";
 const char *RC_ANALYTICS_TOKEN = "d44335434557f59bf52e55bfa4b77708";
 const char *PRODUCTION_ANALYTICS_TOKEN = "d44335434557f59bf52e55bfa4b77708";
 
-const char *DEV_RELIC_KEY = "AA6b2e04d5e512dfab56a0d16120becad4cf25b4a3-NRMA";
-const char *QA_RELIC_KEY = "AA6b2e04d5e512dfab56a0d16120becad4cf25b4a3-NRMA";
-const char *UAT_RELIC_KEY = "AA6b2e04d5e512dfab56a0d16120becad4cf25b4a3-NRMA";
-const char *RC_RELIC_KEY = "AA6b2e04d5e512dfab56a0d16120becad4cf25b4a3-NRMA";
-const char *PRODUCTION_RELIC_KEY = "AAb61f7e91f3bdcd87a174616bc0901968c088d2b9-NRMA";
+const char *DEV_RELIC_KEY = "AA1772add917bb52a0a0a2861585ee56d914e3a068-NRMA";
+const char *QA_RELIC_KEY = "AA1772add917bb52a0a0a2861585ee56d914e3a068-NRMA";
+const char *UAT_RELIC_KEY = "AA1772add917bb52a0a0a2861585ee56d914e3a068-NRMA";
+const char *RC_RELIC_KEY = "AA1772add917bb52a0a0a2861585ee56d914e3a068-NRMA";
+const char *PRODUCTION_RELIC_KEY = "AA6ab6e6728c50709f7b0fe565c62813f9efa9db5f-NRMA";
 
 /* SAME KEY IS ADDED FOR EVERY VARAINT*/
 const char *DEV_GOOGLE_KEY = "AIzaSyC3C6-250Ht5zsiGkR0gg2lZpdEuTzBwoM";
@@ -456,23 +444,23 @@ Java_com_theentertainerme_adro_security_CLibController_getProfileBaseUrlOnline(J
 //        return env->NewStringUTF("");
 //}
 
-extern "C" JNIEXPORT jstring JNICALL
-Java_com_theentertainerme_adro_security_CLibController_getFilterBaseUrlOnline(JNIEnv *env, jobject /* this */,
-                                                                              jstring buildVarent) {
-    const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
-    if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF(PRODUCTION_FILTER_BASE_URL);
-    else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF(QA_FILTER_BASE_URL);
-    else if (strcmp(buildVarentStr, RCNODE) == 0)
-        return env->NewStringUTF(RC_FILTER_BASE_URL);
-    else if (strcmp(buildVarentStr, UATNODE) == 0)
-        return env->NewStringUTF(UAT_FILTER_BASE_URL);
-    else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF(DEV_FILTER_BASE_URL);
-    else
-        return env->NewStringUTF(PRODUCTION_FILTER_BASE_URL);
-}
+//extern "C" JNIEXPORT jstring JNICALL
+//Java_com_theentertainerme_adro_security_CLibController_getFilterBaseUrlOnline(JNIEnv *env, jobject /* this */,
+//                                                                              jstring buildVarent) {
+//    const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
+//    if (strcmp(buildVarentStr, PRODUCTION) == 0)
+//        return env->NewStringUTF(PRODUCTION_FILTER_BASE_URL);
+//    else if (strcmp(buildVarentStr, QANODE) == 0)
+//        return env->NewStringUTF(QA_FILTER_BASE_URL);
+//    else if (strcmp(buildVarentStr, RCNODE) == 0)
+//        return env->NewStringUTF(RC_FILTER_BASE_URL);
+//    else if (strcmp(buildVarentStr, UATNODE) == 0)
+//        return env->NewStringUTF(UAT_FILTER_BASE_URL);
+//    else if (strcmp(buildVarentStr, DEVNODE) == 0)
+//        return env->NewStringUTF(DEV_FILTER_BASE_URL);
+//    else
+//        return env->NewStringUTF(PRODUCTION_FILTER_BASE_URL);
+//}
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_theentertainerme_adro_security_CLibController_getOutletBaseUrlOnline(JNIEnv *env, jobject /* this */,
@@ -863,43 +851,91 @@ Java_com_theentertainerme_adro_security_CLibController_getApiToken(JNIEnv *env, 
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_theentertainerme_adro_security_CLibController_getSRKey(JNIEnv *env, jobject thiz, jstring buildVaraint) {
-    const char *nativeString = "!EyFde4#$%gYsRct54fy@#$5";
-    // return env->NewStringUTF(nativeString);
-
     const char *buildVarentStr = env->GetStringUTFChars(buildVaraint, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
+    {
+        char *nativeString = "O2M+BlR5NzMkOE1JNStDc3ZiAioJcSIB";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
     else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
+    {
+        char *nativeString = "O2M+BlR5NzMkOE1JNStDc3ZiAioJcSIB";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
     else if (strcmp(buildVarentStr, RCNODE) == 0)
-        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
-    else if (strcmp(buildVarentStr, UATNODE) == 0)
-        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
+    {
+        char *nativeString = "O2M+BlR5NzMkOE1JNStDc3ZiAioJcSIB";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
+    else if (strcmp(buildVarentStr, UATNODE) == 0){
+        char *nativeString = "O2M+BlR5NzMkOE1JNStDc3ZiAioJcSIB";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
     else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
+    {
+        char *nativeString = "O2M+BlR5NzMkOE1JNStDc3ZiAioJcSIB";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
     else{
-        return env->NewStringUTF("!EyFde4#$%gYsRct54fy@#$5");
+        char *nativeString = "O2M+BlR5NzMkOE1JNStDc3ZiAioJcSIB";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
     }
 }
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_theentertainerme_adro_security_CLibController_getJApiToken(JNIEnv *env, jobject thiz, jstring buildVaraint) {
-    const char *nativeString = "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x";
-    //return env->NewStringUTF(nativeString);
 
     const char *buildVarentStr = env->GetStringUTFChars(buildVaraint, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
+    {
+        char *nativeString = "cRR1eUJyLnojKH0pazMYQ2BgSRJ/HzYcP257dCI6czYPYQ==";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
     else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
-    else if (strcmp(buildVarentStr, RCNODE) == 0)
-        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
-    else if (strcmp(buildVarentStr, UATNODE) == 0)
-        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
-    else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
+    {
+        char *nativeString = "cRR1eUJyLnojKH0pazMYQ2BgSRJ/HzYcP257dCI6czYPYQ==";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
+    else if (strcmp(buildVarentStr, RCNODE) == 0) {
+
+        char *nativeString = "cRR1eUJyLnojKH0pazMYQ2BgSRJ/HzYcP257dCI6czYPYQ==";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
+    else if (strcmp(buildVarentStr, UATNODE) == 0){
+        char *nativeString = "cRR1eUJyLnojKH0pazMYQ2BgSRJ/HzYcP257dCI6czYPYQ==";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
+    else if (strcmp(buildVarentStr, DEVNODE) == 0) {
+        char *nativeString = "cRR1eUJyLnojKH0pazMYQ2BgSRJ/HzYcP257dCI6czYPYQ==";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
+    }
     else{
-        return env->NewStringUTF("k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4$x");
+        char *nativeString = "cRR1eUJyLnojKH0pazMYQ2BgSRJ/HzYcP257dCI6czYPYQ==";
+        char xorOutput[BUFFFERLEN + 1] = "";
+        decodeString(nativeString, xorOutput);
+        return env->NewStringUTF(xorOutput);
     }
 }
 
@@ -929,6 +965,7 @@ Java_com_theentertainerme_adro_security_CLibController_hide(JNIEnv *env, jobject
     return env->NewStringUTF(encodedoutput);
 
 }
+
 //secret key
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_theentertainerme_adro_security_CLibController_getAuSKey(JNIEnv *env, jobject thiz, jstring key) {
@@ -1012,6 +1049,14 @@ Java_com_theentertainerme_adro_security_CLibController_getX(JNIEnv *env, jobject
     return env->NewStringUTF(xorOutput);
 }
 
+
+extern "C" JNIEXPORT jstring JNICALL
+Java_com_theentertainerme_adro_security_CLibController_getNewKey(JNIEnv *env, jobject thiz) {
+    char *nativeString = "CFcXHzJWRVtATTEfDkpbIQYQbXlefFNQCQsCN0BcAxJkQA==";
+    char xorOutput[BUFFFERLEN + 1] = "";
+    decodeString(nativeString, xorOutput);
+    return env->NewStringUTF(xorOutput);
+}
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_theentertainerme_adro_security_CLibController_getUPY(JNIEnv *env, jobject thiz) {
