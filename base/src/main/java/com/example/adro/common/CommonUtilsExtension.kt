@@ -31,7 +31,7 @@ object CommonUtilsExtension {
     }
 
     enum class API {
-        CORE, AUTH, MERCHANT , PROFILE , OUTLET , REDEMPTION
+        CORE, CONFIG, USER, MERCHANT, OUTLET, ACCOUNT, REDEMPTION
     }
 
     val Apikey = AttributeKey<API>("api")
@@ -72,9 +72,11 @@ object CommonUtilsExtension {
                 loadState.refresh is LoadState.Loading -> {
                     item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
                 }
+
                 loadState.append is LoadState.Loading -> {
                     item { LoadingItem() }
                 }
+
                 loadState.refresh is LoadState.Error -> {
                     val e = lazyLayout.loadState.refresh as LoadState.Error
                     item {
@@ -83,6 +85,7 @@ object CommonUtilsExtension {
                             onClickRetry = { })
                     }
                 }
+
                 loadState.append is LoadState.Error -> {
                     val e = lazyLayout.loadState.append as LoadState.Error
                     item {
