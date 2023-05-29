@@ -1,6 +1,10 @@
 package com.example.adro.di
 
+import android.content.Context
 import android.util.Base64
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.adro.common.PreferencesHelper
 import com.example.adro.common.changeBaseUrlInterceptor
 import com.example.adro.common.decryptResponse
@@ -59,7 +63,7 @@ fun featureModules() = listOf(commonModule, homeModule, merchantModule, profileM
 val AppModule = module {
 
     single {
-        PreferencesHelper(androidContext())
+        PreferencesHelper(get())
     }
 
     single<String> {
@@ -80,6 +84,12 @@ val AppModule = module {
     single { CLibController() }
 
     single { ApisEncryptionUtils(get()) }
+
+    single {  }
+
+}
+
+val preferencesModule = module {
 
 }
 

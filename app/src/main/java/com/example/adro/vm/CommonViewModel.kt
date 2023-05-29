@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class CommonViewModel(application: Application, private val commonRepository: CommonRepository) :
     AndroidViewModel(application) {
 
-    val config = MutableStateFlow(ConfigModel())
+    private val configResponse = MutableStateFlow(ConfigModel())
     val isConfigSuccess = MutableLiveData(false)
 
     fun getConfig() {
@@ -24,7 +24,7 @@ class CommonViewModel(application: Application, private val commonRepository: Co
                     is ApiResult.Loading -> {}
                     is ApiResult.Success -> {
                         isConfigSuccess.value = true
-                        config.value = it.data!!
+                        configResponse.value = it.data!!
                     }
                 }
             }

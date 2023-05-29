@@ -146,6 +146,9 @@ dependencies {
 
     implementation "io.insert-koin:koin-core:$koin_version"
 
+    implementation "androidx.datastore:datastore-preferences:1.0.0-beta01"
+
+
 
 
 
