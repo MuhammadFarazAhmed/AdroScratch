@@ -1,6 +1,7 @@
 buildscript {
     ext {
-        compose_version = '1.3.1'
+        compose_kotlin_version = '1.4.7'
+        compose_version = '1.4.3'
         nav_version = '2.5.3'
         compose_hilt_navigation_version='1.0.0'
         retrofit_version = '2.9.0'
@@ -13,7 +14,7 @@ buildscript {
 plugins {
     id 'com.android.application' version '7.4.2' apply false
     id 'com.android.library' version '7.4.2' apply false
-    id 'org.jetbrains.kotlin.android' version '1.7.10' apply false
+    id 'org.jetbrains.kotlin.android' version '1.8.21' apply false
     id("dagger.hilt.android.plugin") version('2.43.1') apply false
 }
 
