@@ -24,6 +24,9 @@ class OffersViewModel @Inject constructor(
 
     var params = hashMapOf<String, String>()
 
+    init {
+        fetchTabs()
+    }
 
     fun fetchTabs() {
         viewModelScope.launch {

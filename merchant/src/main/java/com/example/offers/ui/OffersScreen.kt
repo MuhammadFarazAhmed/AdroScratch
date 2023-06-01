@@ -6,8 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -22,6 +25,8 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
@@ -36,7 +41,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun OffersScreen(
     navigateToDetail: () -> Unit,
@@ -48,7 +53,9 @@ fun OffersScreen(
 
     vm.params = params
 
-    vm.fetchTabs()
+    PullRefreshIndicator(refreshing = true, state = rememberPullRefreshState(
+        refreshing = true,
+        onRefresh = { vm.fetchTabs() }))
 
     val coroutineScope = rememberCoroutineScope()
 
@@ -130,8 +137,14 @@ fun Pager(
 
             LazyColumn {
 
-                items(lazyOutlets) { outlet ->
-                    OutletItem(outlet, navigateToDetail = navigateToDetail)
+                items(
+                    count = lazyOutlets.itemCount,
+                    key = lazyOutlets.itemKey(),
+                    contentType = lazyOutlets.itemContentType(
+                    )
+                ) { index ->
+                    val item = lazyOutlets[index]
+                    OutletItem(item, navigateToDetail = navigateToDetail)
                 }
 
                 applyPagination(lazyOutlets)
@@ -202,14 +215,15 @@ fun OutletItem(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
+@Preview
 fun OffersScreenPreview() {
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(TabsResponse.Data.Tab("All Offers"))
     val pagerState = rememberPagerState(initialPage = 0)
     Surface(modifier = Modifier.fillMaxSize()) {
         Tabs(tabs, pagerState, coroutineScope) {
+//            Pager(tabs = tabs, pagerState = pagerState)
 
         }
-        //Pager(tabs = tabs, pagerState = pagerState)
     }
 }
