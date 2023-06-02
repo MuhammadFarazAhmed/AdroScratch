@@ -6,10 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,13 +27,12 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
-import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
@@ -53,26 +52,34 @@ fun OffersScreen(
 
     vm.params = params
 
-    PullRefreshIndicator(refreshing = true, state = rememberPullRefreshState(
-        refreshing = true,
-        onRefresh = { vm.fetchTabs() }))
-
+    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
     val coroutineScope = rememberCoroutineScope()
-
+    val pagerState = rememberPagerState(initialPage = 0)
     val tabs by vm.tabs.collectAsStateLifecycleAware()
 
-    val pagerState = rememberPagerState(initialPage = 0)
+    Box(
+        Modifier
+            .pullRefresh(pullRefreshState)
+    ) {
 
-    Surface(modifier = Modifier.fillMaxSize()) {
+        Surface(modifier = Modifier.fillMaxSize()) {
 
-        Column {
+            Column {
 
-            Tabs(tabs, pagerState, coroutineScope) { tab ->
-                vm.selectedTab.value = tab
+                Tabs(tabs, pagerState, coroutineScope) { tab ->
+                    vm.selectedTab.value = tab
+                }
+
+                Pager(tabs = tabs, pagerState = pagerState, vm, navigateToDetail)
             }
-
-            Pager(tabs = tabs, pagerState = pagerState, vm, navigateToDetail)
         }
+
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            Modifier.align(Alignment.TopCenter)
+        )
 
     }
 }

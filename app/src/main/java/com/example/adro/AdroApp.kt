@@ -49,7 +49,7 @@ fun AdroApp(appState: AdroAppState) {
             }
             "fav_route" -> {
                 bottomBarState.value = true
-                topBarState.value = false
+                topBarState.value = true
             }
         }
 

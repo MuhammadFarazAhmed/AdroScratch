@@ -22,29 +22,40 @@ class OffersViewModel @Inject constructor(
 ) :
     AndroidViewModel(application) {
 
+    val isRefreshing = MutableStateFlow(false)
     var params = hashMapOf<String, String>()
 
     init {
         fetchTabs()
     }
 
-    fun fetchTabs() {
+    private fun fetchTabs() {
         viewModelScope.launch {
             merchantUseCase.fetchTabs().collect {
                 when (it.status) {
-                    ApiStatus.SUCCESS -> tabs.value = it.data?.data?.tabs
+                    ApiStatus.SUCCESS -> {
+                        isRefreshing.emit(false)
+                        tabs.value = it.data?.data?.tabs
+                    }
+
                     ApiStatus.ERROR -> {
+                        isRefreshing.emit(false)
                         Log.d("TAG", "${it.message}: ")
                     }
-                    ApiStatus.LOADING -> {}
+
+                    ApiStatus.LOADING -> isRefreshing.emit(true)
                 }
             }
         }
     }
 
+    fun refresh() {
+        fetchTabs()
+    }
+
     val offers = Pager(PagingConfig(pageSize = 60)) {
         BasePagingSource {
-            merchantUseCase.fetchOffers(params)
+            merchantUseCase.fetchOffers(selectedTab.value!!.params)
         }
     }.flow.cachedIn(viewModelScope)
 

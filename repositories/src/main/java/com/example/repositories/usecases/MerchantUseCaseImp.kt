@@ -13,6 +13,6 @@ class MerchantUseCaseImp @Inject constructor(private val merchantRepository: Mer
 
     override fun fetchTabs(params: HashMap<String,String>?): Flow<ApiResult<TabsResponse>> = merchantRepository.fetchTabs(params)
 
-    override suspend fun fetchOffers(params: HashMap<String,String>?): List<OffersResponse.Data.Outlet> = merchantRepository.fetchOffers(params)
+    override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> = merchantRepository.fetchOffers(params)
 }
 

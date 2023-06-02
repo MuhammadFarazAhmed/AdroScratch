@@ -1,6 +1,5 @@
 package com.example.repositories.repos
 
-import android.util.Log
 import com.example.adro.base.ApiResult
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
@@ -28,7 +27,7 @@ class MerchantRepositoryImp(
             }
         }
 
-    override suspend fun fetchOffers(params: HashMap<String, String>?): List<OffersResponse.Data.Outlet> {
+    override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> {
         return try {
             val response = client.post {
                 url { path("/ets_api/v5/outlets") }
