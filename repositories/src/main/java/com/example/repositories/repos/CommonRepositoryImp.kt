@@ -2,14 +2,14 @@ package com.example.repositories.repos
 
 import com.example.adro.base.ApiResult
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
-import com.example.adro.common.CommonUtilsExtension
+import com.example.adro.common.CommonUtilsExtension.API.CONFIG
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.domain.models.ConfigModel
 import com.example.domain.repos.CommonRepository
-import io.ktor.client.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import kotlinx.coroutines.flow.*
+import io.ktor.client.HttpClient
+import io.ktor.client.request.post
+import io.ktor.http.path
+import kotlinx.coroutines.flow.Flow
 
 
 class CommonRepositoryImp(private val client: HttpClient) : CommonRepository {
@@ -18,7 +18,7 @@ class CommonRepositoryImp(private val client: HttpClient) : CommonRepository {
         convertToFlow {
             client.post {
                 url { path("/ets_api/v5/configs") }
-                setDefaultParams(CommonUtilsExtension.API.CONFIG)
+                setDefaultParams(CONFIG)
             }
         }
 

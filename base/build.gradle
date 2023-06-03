@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdk 33
-
+    flavorDimensions "default"
     defaultConfig {
         minSdk 21
         targetSdk 33
@@ -34,6 +34,20 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_kotlin_version
+    }
+
+    productFlavors {
+        devnode {
+            manifestPlaceholders = [enableCrashReporting: "false"]
+        }
+        qanode {
+        }
+        uatnode {
+        }
+        rcnode {
+        }
+        production {
+        }
     }
 }
 

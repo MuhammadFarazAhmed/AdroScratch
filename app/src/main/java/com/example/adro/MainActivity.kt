@@ -28,9 +28,9 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            val adroAppState = rememberAdroAppState()
-            navController = adroAppState.navController
-            AdroApp(adroAppState)
+            val appstate = rememberAdroAppState()
+            navController = appstate.navController
+            AdroApp(appstate)
         }
 
     }

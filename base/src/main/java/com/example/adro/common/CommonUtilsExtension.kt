@@ -36,32 +36,33 @@ object CommonUtilsExtension {
 
     val Apikey = AttributeKey<API>("api")
 
-    fun HttpRequestBuilder.setDefaultParams(api: API) {
+    fun HttpRequestBuilder.setDefaultParams(api: API, convert: HashMap<String, String>? = hashMapOf()) {
         attributes.put(Apikey, api)
-        setBody(
-            mapOf(
-                "__company" to "ADO",
-                "__lng" to "0",
-                "device_key" to "26525de9bd832a74",
-                "app_version" to "1.0",
-                "lng" to "0",
-                "device_model" to "samsung%20SM-F916B",
-                "device_os_ver" to "12",
-                "language" to "en",
-                "build_no" to "37",
-                "time_zone" to "Asia/Karachi",
-                "device_os" to "android",
-                "location_id" to "2",
-                "device_uuid" to "26525de9bd832a74",
-                "__platform" to "android",
-                "device_uid" to "26525de9bd832a74",
-                "__lat" to "0",
-                "company" to "ADO",
-                "currency" to "AED",
-                "wlcompany" to "ADO",
-                "lat" to "0"
-            )
+        val defaultParams = hashMapOf(
+            "__company" to "ADO",
+            "__lng" to "0",
+            "device_key" to "26525de9bd832a74",
+            "app_version" to "1.0",
+            "lng" to "0",
+            "device_model" to "samsung%20SM-F916B",
+            "device_os_ver" to "12",
+            "language" to "en",
+            "build_no" to "37",
+            "time_zone" to "Asia/Karachi",
+            "device_os" to "android",
+            "location_id" to "2",
+            "device_uuid" to "26525de9bd832a74",
+            "__platform" to "android",
+            "device_uid" to "26525de9bd832a74",
+            "__lat" to "0",
+            "company" to "ADO",
+            "currency" to "AED",
+            "wlcompany" to "ADO",
+            "lat" to "0"
         )
+
+        convert?.let { defaultParams.putAll(it) }
+        setBody(defaultParams)
     }
 
     fun <T : Any> LazyListScope.applyPagination(

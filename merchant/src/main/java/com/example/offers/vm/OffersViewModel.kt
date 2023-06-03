@@ -2,11 +2,14 @@ package com.example.offers.vm
 
 import android.app.Application
 import android.util.Log
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.adro.base.ApiStatus
+import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.usecase.MerchantUseCase
 import com.example.repositories.paging.BasePagingSource
@@ -31,11 +34,12 @@ class OffersViewModel @Inject constructor(
 
     private fun fetchTabs() {
         viewModelScope.launch {
-            merchantUseCase.fetchTabs().collect {
+            merchantUseCase.fetchTabs(params).collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> {
                         isRefreshing.emit(false)
                         tabs.value = it.data?.data?.tabs
+                        getOutlets()
                     }
 
                     ApiStatus.ERROR -> {
@@ -53,13 +57,22 @@ class OffersViewModel @Inject constructor(
         fetchTabs()
     }
 
-    val offers = Pager(PagingConfig(pageSize = 60)) {
-        BasePagingSource {
-            merchantUseCase.fetchOffers(selectedTab.value!!.params)
+    private fun getOutlets() {
+        viewModelScope.launch {
+            Pager(PagingConfig(pageSize = 60)) {
+                BasePagingSource(MutableStateFlow(false)) {
+                    merchantUseCase.fetchOffers(selectedTab.value!!.params)
+                }
+            }.flow.cachedIn(viewModelScope).collectLatest {
+                offers.value = it
+            }
         }
-    }.flow.cachedIn(viewModelScope)
+    }
 
     val tabs: MutableStateFlow<List<TabsResponse.Data.Tab?>?> = MutableStateFlow(emptyList())
+    val offers: MutableStateFlow<PagingData<OffersResponse.Data.Outlet>> = MutableStateFlow(
+        PagingData.empty()
+    )
 
     val selectedTab = MutableLiveData<TabsResponse.Data.Tab>()
 

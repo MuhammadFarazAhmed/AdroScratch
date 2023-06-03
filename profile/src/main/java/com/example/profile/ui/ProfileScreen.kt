@@ -7,7 +7,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,14 +31,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import androidx.paging.compose.items
 import androidx.paging.map
 import com.example.adro.ErrorItem
 import com.example.adro.LoadingItem
 import com.example.adro.LoadingView
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
+import com.example.domain.models.ProfileResponse
 import com.example.profile.vm.ProfileViewModel
 import kotlinx.coroutines.flow.flatMap
 import kotlinx.coroutines.flow.map
@@ -48,66 +56,89 @@ enum class ProfileSections(val value: String) {
     HELP_SUPPORT("help_support"), ABOUT("about"), SIGN_OUT("signout"),
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
 
     val lazySections = vm.sections.collectAsLazyPagingItems()
+    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
 
-    LazyColumn(Modifier.background(HexToJetpackColor.getColor("F1F1F1"))) {
+    Box(
+        Modifier
+            .pullRefresh(pullRefreshState)
+    ) {
 
-        items(lazySections) { section ->
+        LazyColumn(Modifier.background(HexToJetpackColor.getColor("F1F1F1"))) {
 
-            when (section?.sectionIdentifier) {
+            items(
+                count = lazySections.itemCount,
+                key = lazySections.itemKey(),
+                contentType = lazySections.itemContentType(
+                )
+            ) { index ->
+                val item = lazySections[index]
+                when (item?.sectionIdentifier) {
 
-                ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader()
+                    ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader()
 
-                ProfileSections.MY_ACCOUNT.value,
-                ProfileSections.REDEMPTIONS_DETAILS.value,
-                ProfileSections.SETTINGS.value,
-                ProfileSections.HELP_SUPPORT.value,
-                ProfileSections.ABOUT.value,
-                -> {
-                    ProfileSectionHeaderRow(section.sectionTitle)
-                    section.sectionData.forEach { item ->
-                        when (item.type) {
-                            "arrow" -> ProfileSectionArrow(item.title)
-                            "text" -> ProfileSectionText(item.title, item.desc)
-                            "switch" -> ProfileSectionSwitch(item.title, item.value)
-                            else -> ProfileSectionHeaderRow(section.sectionTitle)
+                    ProfileSections.MY_ACCOUNT.value,
+                    ProfileSections.REDEMPTIONS_DETAILS.value,
+                    ProfileSections.SETTINGS.value,
+                    ProfileSections.HELP_SUPPORT.value,
+                    ProfileSections.ABOUT.value,
+                    -> {
+                        ProfileSectionHeaderRow(item.sectionTitle)
+                        item.sectionData.forEach { item ->
+                            when (item.type) {
+                                "arrow" -> ProfileSectionArrow(item.title)
+                                "text" -> ProfileSectionText(item.title, item.desc)
+                                "switch" -> ProfileSectionSwitch(item.title, item.value)
+                                else -> ProfileSectionHeaderRow(item.title)
+                            }
+                        }
+                    }
+
+                    ProfileSections.SIGN_OUT.value -> ProfileSectionSignOut()
+
+                }
+            }
+            lazySections.apply {
+                when {
+                    loadState.refresh is LoadState.Loading -> {
+                        item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                    }
+
+                    loadState.append is LoadState.Loading -> {
+                        item { LoadingItem() }
+                    }
+
+                    loadState.refresh is LoadState.Error -> {
+                        val e = lazySections.loadState.refresh as LoadState.Error
+                        item {
+                            ErrorItem(message = e.error.message,
+                                modifier = Modifier.fillParentMaxSize(),
+                                onClickRetry = { })
+                        }
+                    }
+
+                    loadState.append is LoadState.Error -> {
+                        val e = lazySections.loadState.append as LoadState.Error
+                        item {
+                            ErrorItem(
+                                message = e.error.message, onClickRetry = { vm.sections }
+                            )
                         }
                     }
                 }
-
-                ProfileSections.SIGN_OUT.value -> ProfileSectionSignOut()
-
             }
         }
-        lazySections.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                }
-                loadState.append is LoadState.Loading -> {
-                    item { LoadingItem() }
-                }
-                loadState.refresh is LoadState.Error -> {
-                    val e = lazySections.loadState.refresh as LoadState.Error
-                    item {
-                        ErrorItem(message = e.error.message,
-                            modifier = Modifier.fillParentMaxSize(),
-                            onClickRetry = { })
-                    }
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = lazySections.loadState.append as LoadState.Error
-                    item {
-                        ErrorItem(
-                            message = e.error.message, onClickRetry = { vm.sections }
-                        )
-                    }
-                }
-            }
-        }
+
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            Modifier.align(Alignment.TopCenter)
+        )
     }
 }
 

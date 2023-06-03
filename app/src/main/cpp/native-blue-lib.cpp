@@ -23,7 +23,7 @@ static const char *PRODUCTION = "production";
  *    Outlet: apidvb2betotlsrvpy.etenvbiz.com
  *    Config: apidvb2betcfgsrvpy.etenvbiz.com
  *    Merchant: apidvb2betmrchtsrvpy.etenvbiz.com
- *    User : apidvb2betusrsrvpy.etenvbiz.com     -> DEV_AUTH_BASE_URL aka AUthentication , profile
+ *    User : apidvb2betusrsrvpy.etenvbiz.com     -> DEV_USER_BASE_URL aka AUthentication , profile
  *    Redemption: apidvb2betrdmpnsrvpy.etenvbiz.com
  *    ENT : apidvb2betentsrvpy.etenvbiz.com  ->DEV_ENT_BASE_URL aka HOME
  * */
@@ -34,8 +34,7 @@ const char *DEV_MERCHANT_BASE_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 const char *DEV_FILTER_BASE_URL = "apidvb2betcfgsrvpy.etenvbiz.com";
 const char *DEV_ENT_BASE_URL = "apidvb2betentsrvpy.etenvbiz.com";
 const char *DEV_REDEMPTION_ADRO_BASE_URL = "apidvb2betrdmpnsrvpy.etenvbiz.com";
-const char *DEV_AUTH_BASE_URL = "apidvb2betusrsrvpy.etenvbiz.com/";
-const char *DEV_PROFILE_ADRO_BASE_URL = "apiqab2cpyusrpref.etenvbiz.com/api_ets/v1/";
+const char *DEV_USER_BASE_URL = "apidvb2betusrsrvpy.etenvbiz.com/";
 const char *DEV_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 
 /*------------------------NEW URLS----------------------------------*/
@@ -65,15 +64,14 @@ const char *QA_FILTER_BASE_URL = "apiqab2betcfgsrvpy.etenvbiz.com";
 const char *QA_ENT_BASE_URL = "apiqab2betentsrvpy.etenvbiz.com";
 const char *QA_REDEMPTION_ADRO_BASE_URL = "apiqab2betrdmpnsrvpy.etenvbiz.com";
 const char *QA_SAVING_ADRO_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com/";
-const char *QA_AUTH_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com/";
-const char *QA_PROFILE_ADRO_BASE_URL = "apiqab2cpyusrpref.etenvbiz.com/api_ets/v1/";
+const char *QA_USER_BASE_URL = "apiqab2betusrsrvpy.etenvbiz.com/";
 const char *QA_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 
 
 
 /*------------------------NEW URLS----------------------------------*/
 
-//const char *QA_AUTH_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
+//const char *QA_USER_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
 const char *QA_CORE_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
 const char *QA_CONFIG_BASE_URL = "apiqab2baldpy.etenvbiz.com/";
 const char *QA_BUNDLE_URL = "api_adr/v2/";
@@ -106,15 +104,14 @@ const char *UAT_CONFIG_BASE_URL = "apiutb2betcfgsrvpy.theentertainerme.com";
 const char *UAT_ENT_BASE_URL = "apiutb2betentsrvpy.theentertainerme.com";
 const char *UAT_REDEMPTION_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com";
 const char *UAT_SAVING_ADRO_BASE_URL = "apiutb2betrdmpnsrvpy.theentertainerme.com";
-const char *UAT_AUTH_BASE_URL = "apiutb2betusrsrvpy.theentertainerme.com/";
-const char *UAT_PROFILE_ADRO_BASE_URL = "apiutb2cpyusrpref.theentertainerme.com/api_ets/v1/";
+const char *UAT_USER_BASE_URL = "apiutb2betusrsrvpy.theentertainerme.com";
 const char *UAT_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
-const char *UAT_CORE_BASE_URL = "apiutb2baldpy.theentertainerme.com/";
+const char *UAT_CORE_BASE_URL = "apiutb2baldpy.theentertainerme.com";
 
 /*--------------------------------------------------------------------*/
 
 
-//const char *UAT_AUTH_BASE_URL = "apiutb2baldpy.theentertainerme.com/";
+//const char *UAT_USER_BASE_URL = "apiutb2baldpy.theentertainerme.com/";
 const char *UAT_BUNDLE_URL = "api_adr/v2/";
 const char *UAT_REDEMPTION_BASE_URL = "apiutb2brdmsrvrpy.theentertainerme.com/";
 const char *UAT_REDEMPTION_BUNDLE_URL = "api_ets/v1/";
@@ -148,8 +145,7 @@ const char *RC_CONFIG_BASE_URL = "apircb2betcfgsrvpy.theentertainerme.com";
 const char *RC_ENT_BASE_URL = "apircb2betentsrvpy.theentertainerme.com";
 const char *RC_REDEMPTION_ADRO_BASE_URL = "apircb2betrdmpnsrvpy.theentertainerme.com";
 const char *RC_SAVING_ADRO_BASE_URL = "apircb2betrdmpnsrvpy.theentertainerme.com";
-const char *RC_AUTH_BASE_URL = "apircb2betusrsrvpy.theentertainerme.com/";
-const char *RC_PROFILE_ADRO_BASE_URL = "apircb2cpyusrpref.theentertainerme.com/api_ets/v1/";
+const char *RC_USER_BASE_URL = "apircb2betusrsrvpy.theentertainerme.com/";
 const char *RC_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
 const char *RC_CORE_BASE_URL = "apircb2baldpy.theentertainerme.com/";
 
@@ -197,7 +193,7 @@ const char *RC_ANALYTICS_BUNDLE_URL = "PROD/v2/";
 //const char *PRODUCTION_OUTLET_BASE_URL = "apiprdb2betotlsrvpygreen.theentertainerme.com"; /*GREEN  URLS */
 //const char *PRODUCTION_MERCHANT_BASE_URL =  "apiprdb2betmrchtsrvpygreen.theentertainerme.com";/*GREEN  URLS */
 //const char *PRODUCTION_ENT_BASE_URL = "apiprdb2betentsrvpygreen.theentertainerme.com"; /*GREEN  URLS */
-//const char *PRODUCTION_AUTH_BASE_URL = "apiprdb2betusrsrvpygreen.theentertainerme.com/"; /*GREEN  URLS */
+//const char *PRODUCTION_USER_BASE_URL = "apiprdb2betusrsrvpygreen.theentertainerme.com/"; /*GREEN  URLS */
 
 //*************************LIVE**********************************************
 
@@ -207,10 +203,9 @@ const char *PRODUCTION_CONFIG_BASE_URL = "apiprdb2betcfgsrvpy.theentertainerme.c
 const char *PRODUCTION_ENT_BASE_URL = "apiprdb2betentsrvpy.theentertainerme.com";
 const char *PRODUCTION_REDEMPTION_ADRO_BASE_URL = "apiprdb2betrdmpnsrvpy.theentertainerme.com";
 const char *PRODUCTION_SAVING_ADRO_BASE_URL = "apiprdb2betrdmpnsrvpy.theentertainerme.com";
-const char *PRODUCTION_AUTH_BASE_URL = "apiprdb2betusrsrvpy.theentertainerme.com/";
-const char *PRODUCTION_PROFILE_ADRO_BASE_URL = "apipdb2cpyusrpref.theentertainerme.com/";
+const char *PRODUCTION_USER_BASE_URL = "apiprdb2betusrsrvpy.theentertainerme.com";
 const char *PRODUCTION_ADRO_RECENT_SEARCH_URL = "apidvb2betmrchtsrvpy.etenvbiz.com";
-const char *PRODUCTION_CORE_BASE_URL = "apipdb2baldpy.theentertainerme.com/";
+const char *PRODUCTION_CORE_BASE_URL = "apipdb2baldpy.theentertainerme.com";
 //*************************LIVE**********************************************
 
 const char *PRODUCTION_BUNDLE_URL = "api_adr/v2/";
@@ -394,17 +389,17 @@ Java_com_theentertainerme_adro_security_CLibController_getAuthBaseUrlOnline(JNIE
                                                                             jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF(PRODUCTION_AUTH_BASE_URL);
+        return env->NewStringUTF(PRODUCTION_USER_BASE_URL);
     else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF(QA_AUTH_BASE_URL);
+        return env->NewStringUTF(QA_USER_BASE_URL);
     else if (strcmp(buildVarentStr, RCNODE) == 0)
-        return env->NewStringUTF(RC_AUTH_BASE_URL);
+        return env->NewStringUTF(RC_USER_BASE_URL);
     else if (strcmp(buildVarentStr, UATNODE) == 0)
-        return env->NewStringUTF(UAT_AUTH_BASE_URL);
+        return env->NewStringUTF(UAT_USER_BASE_URL);
     else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF(DEV_AUTH_BASE_URL);
+        return env->NewStringUTF(DEV_USER_BASE_URL);
     else
-        return env->NewStringUTF(PRODUCTION_AUTH_BASE_URL);
+        return env->NewStringUTF(PRODUCTION_USER_BASE_URL);
 }
 
 
@@ -413,17 +408,17 @@ Java_com_theentertainerme_adro_security_CLibController_getProfileBaseUrlOnline(J
                                                                                jstring buildVarent) {
     const char *buildVarentStr = env->GetStringUTFChars(buildVarent, 0);
     if (strcmp(buildVarentStr, PRODUCTION) == 0)
-        return env->NewStringUTF(PRODUCTION_PROFILE_ADRO_BASE_URL);
+        return env->NewStringUTF(PRODUCTION_USER_BASE_URL);
     else if (strcmp(buildVarentStr, QANODE) == 0)
-        return env->NewStringUTF(QA_PROFILE_ADRO_BASE_URL);
+        return env->NewStringUTF(QA_USER_BASE_URL);
     else if (strcmp(buildVarentStr, RCNODE) == 0)
-        return env->NewStringUTF(RC_PROFILE_ADRO_BASE_URL);
+        return env->NewStringUTF(RC_USER_BASE_URL);
     else if (strcmp(buildVarentStr, UATNODE) == 0)
-        return env->NewStringUTF(UAT_PROFILE_ADRO_BASE_URL);
+        return env->NewStringUTF(UAT_USER_BASE_URL);
     else if (strcmp(buildVarentStr, DEVNODE) == 0)
-        return env->NewStringUTF(DEV_PROFILE_ADRO_BASE_URL);
+        return env->NewStringUTF(DEV_USER_BASE_URL);
     else
-        return env->NewStringUTF(PRODUCTION_PROFILE_ADRO_BASE_URL);
+        return env->NewStringUTF(PRODUCTION_USER_BASE_URL);
 }
 
 //extern "C" JNIEXPORT jstring JNICALL

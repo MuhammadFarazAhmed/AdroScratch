@@ -1,10 +1,6 @@
 package com.example.adro.di
 
-import android.content.Context
 import android.util.Base64
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import com.example.adro.common.PreferencesHelper
 import com.example.adro.common.changeBaseUrlInterceptor
 import com.example.adro.common.decryptResponse
@@ -48,9 +44,7 @@ import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.serialization.gson.*
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 
@@ -81,11 +75,11 @@ val AppModule = module {
 
     }
 
-    single { CLibController() }
+    single { CLibController }
 
     single { ApisEncryptionUtils(get()) }
 
-    single {  }
+    single { }
 
 }
 
@@ -123,12 +117,12 @@ val NetworkModule = module {
                 }
             }
 
+            changeBaseUrlInterceptor()
+
             decryptResponse {
                 apisEncryptionUtils = get()
             }
 
-        }.apply {
-            changeBaseUrlInterceptor(get())
         }
     }
 }

@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    compileSdk 32
-
+    compileSdk 33
+    flavorDimensions "default"
     defaultConfig {
         minSdk 21
-        targetSdk 32
+        targetSdk 33
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
@@ -37,6 +37,19 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+    productFlavors {
+        devnode {
+            manifestPlaceholders = [enableCrashReporting: "false"]
+        }
+        qanode {
+        }
+        uatnode {
+        }
+        rcnode {
+        }
+        production {
+        }
     }
 }
 

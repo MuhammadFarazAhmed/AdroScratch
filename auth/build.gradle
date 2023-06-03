@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdk 33
-
+    flavorDimensions "default"
     defaultConfig {
         minSdk 21
         targetSdk 33
@@ -40,6 +40,20 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    productFlavors {
+        devnode {
+            manifestPlaceholders = [enableCrashReporting: "false"]
+        }
+        qanode {
+        }
+        uatnode {
+        }
+        rcnode {
+        }
+        production {
+        }
     }
 }
 

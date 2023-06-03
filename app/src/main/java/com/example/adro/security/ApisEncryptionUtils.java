@@ -4,7 +4,6 @@ import android.util.Base64;
 
 import com.theentertainerme.adro.security.CLibController;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 
@@ -12,8 +11,6 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 public class ApisEncryptionUtils {
     private final CLibController controller;

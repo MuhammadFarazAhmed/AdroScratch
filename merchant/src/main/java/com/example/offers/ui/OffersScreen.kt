@@ -52,11 +52,12 @@ fun OffersScreen(
 
     vm.params = params
 
-    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState(initialPage = 0)
     val tabs by vm.tabs.collectAsStateLifecycleAware()
+
+    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
 
     Box(
         Modifier
@@ -72,6 +73,7 @@ fun OffersScreen(
                 }
 
                 Pager(tabs = tabs, pagerState = pagerState, vm, navigateToDetail)
+
             }
         }
 
@@ -80,7 +82,6 @@ fun OffersScreen(
             state = pullRefreshState,
             Modifier.align(Alignment.TopCenter)
         )
-
     }
 }
 
@@ -123,7 +124,7 @@ fun Tabs(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun Pager(
     tabs: List<TabsResponse.Data.Tab?>?,
@@ -131,7 +132,6 @@ fun Pager(
     vm: OffersViewModel,
     navigateToDetail: () -> Unit
 ) {
-
     Surface(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
