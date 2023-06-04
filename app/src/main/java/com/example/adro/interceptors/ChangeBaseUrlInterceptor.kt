@@ -1,6 +1,6 @@
-package com.example.adro.common
+package com.example.adro.interceptors
 
-import android.util.Log
+import com.example.adro.common.CommonUtilsExtension
 import com.theentertainerme.adro.security.CLibController
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -8,16 +8,11 @@ import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.plugins.HttpSend
 import io.ktor.client.plugins.plugin
 import io.ktor.client.request.HttpRequestBuilder
-import io.ktor.client.request.HttpRequestPipeline
 import io.ktor.client.request.host
-import io.ktor.client.request.request
-import io.ktor.client.statement.HttpResponsePipeline
-import io.ktor.client.utils.HttpRequestCreated
 import io.ktor.http.HttpMethod
 import io.ktor.util.AttributeKey
-import io.ktor.utils.io.ByteReadChannel
 
-class ChangeBaseUrl private constructor() {
+class ChangeBaseUrlInterceptor private constructor() {
 
     class Config
 
@@ -40,21 +35,21 @@ class ChangeBaseUrl private constructor() {
         }
     }
 
-    companion object : HttpClientPlugin<Config, ChangeBaseUrl> {
-        override val key: AttributeKey<ChangeBaseUrl>
+    companion object : HttpClientPlugin<Config, ChangeBaseUrlInterceptor> {
+        override val key: AttributeKey<ChangeBaseUrlInterceptor>
             get() = AttributeKey("ChangeBaseUrl")
 
-        override fun install(plugin: ChangeBaseUrl, scope: HttpClient) {
+        override fun install(plugin: ChangeBaseUrlInterceptor, scope: HttpClient) {
             plugin.changeBaseUrl(scope)
         }
 
-        override fun prepare(block: Config.() -> Unit): ChangeBaseUrl {
-            return ChangeBaseUrl()
+        override fun prepare(block: Config.() -> Unit): ChangeBaseUrlInterceptor {
+            return ChangeBaseUrlInterceptor()
         }
     }
 
 }
 
-fun HttpClientConfig<*>.changeBaseUrlInterceptor(block: ChangeBaseUrl.Config.() -> Unit = {}) {
-    install(ChangeBaseUrl, block)
+fun HttpClientConfig<*>.changeBaseUrlInterceptor(block: ChangeBaseUrlInterceptor.Config.() -> Unit = {}) {
+    install(ChangeBaseUrlInterceptor, block)
 }

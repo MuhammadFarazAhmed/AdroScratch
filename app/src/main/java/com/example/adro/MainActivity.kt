@@ -7,8 +7,11 @@ import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.adro.vm.CommonViewModel
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -25,14 +28,21 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        //setupPreDrawListener()
+
         super.onCreate(savedInstanceState)
 
-        setContent {
-            val appstate = rememberAdroAppState()
-            navController = appstate.navController
-            AdroApp(appstate)
+        lifecycleScope.launch {
+            vm.keepOnSplashScreenOn.collect {
+                if (!it) {
+                    setContent {
+                        val appstate = rememberAdroAppState()
+                        navController = appstate.navController
+                        AdroApp(appstate)
+                    }
+                }
+            }
         }
-
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -48,7 +58,7 @@ class MainActivity : ComponentActivity() {
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
                     // Check if the initial data is ready.
-                    return if (vm.keepOnSplashScreenOn.value) {
+                    return if (!vm.keepOnSplashScreenOn.value) {
                         // The content is ready; start drawing.
                         content.viewTreeObserver.removeOnPreDrawListener(this)
                         true

@@ -1,11 +1,17 @@
 package com.example.adro.di
 
 import android.util.Base64
-import com.example.adro.common.PreferencesHelper
-import com.example.adro.common.changeBaseUrlInterceptor
-import com.example.adro.common.decryptResponse
+import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.dataStoreFile
+import com.example.adro.interceptors.changeBaseUrlInterceptor
+import com.example.adro.interceptors.decryptResponse
+import com.example.adro.prefs.ConfigPreferencesHelper
+import com.example.adro.prefs.ConfigPreferencesSerializer
+import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.security.ApisEncryptionUtils
 import com.example.adro.vm.CommonViewModel
+import com.example.domain.models.ConfigModel
 import com.example.domain.repos.CommonRepository
 import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
@@ -34,16 +40,25 @@ import com.theentertainerme.adro.security.CLibController
 import io.jsonwebtoken.JwsHeader
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.plugins.*
-import io.ktor.client.plugins.auth.*
-import io.ktor.client.plugins.auth.providers.*
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.serialization.gson.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
+import io.ktor.client.plugins.auth.providers.bearer
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.accept
+import io.ktor.http.ContentType
+import io.ktor.http.URLProtocol
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.serialization.json.Json
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
@@ -56,8 +71,32 @@ fun featureModules() = listOf(commonModule, homeModule, merchantModule, profileM
 
 val AppModule = module {
 
+//    single {
+//        PreferenceDataStoreFactory.create(
+//            corruptionHandler = ReplaceFileCorruptionHandler(
+//                produceNewData = { emptyPreferences() }),
+//            produceFile = { androidContext().preferencesDataStoreFile("intamiDataStore") },
+//            scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+//        )
+//    }
+
+    single<DataStore<ConfigModel>> {
+        DataStoreFactory.create(
+            serializer = ConfigPreferencesSerializer,
+            corruptionHandler = null,
+            produceFile = { androidContext().dataStoreFile("configDataStore.json") },
+            scope = CoroutineScope(
+                Dispatchers.IO + SupervisorJob()
+            )
+        )
+    }
+
     single {
-        PreferencesHelper(get())
+        PreferencesHelper()
+    }
+
+    single {
+        ConfigPreferencesHelper(get())
     }
 
     single<String> {
@@ -72,20 +111,14 @@ val AppModule = module {
                     Base64.DEFAULT
                 )
             ).compact()
-
     }
 
     single { CLibController }
 
     single { ApisEncryptionUtils(get()) }
 
-    single { }
-
 }
 
-val preferencesModule = module {
-
-}
 
 val NetworkModule = module {
     single {
@@ -112,9 +145,11 @@ val NetworkModule = module {
             install(Logging) { level = LogLevel.ALL }
 
             install(ContentNegotiation) {
-                gson {
-                    serializeNulls()
-                }
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                    ignoreUnknownKeys = true
+                })
             }
 
             changeBaseUrlInterceptor()
@@ -130,13 +165,13 @@ val NetworkModule = module {
 val commonModule = module {
     single<CommonRepository> { CommonRepositoryImp(get()) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
-    viewModel { CommonViewModel(get(), get()) }
+    viewModel { CommonViewModel(get(), get(), get(), get()) }
 }
 
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
 }
 
 val merchantModule = module {

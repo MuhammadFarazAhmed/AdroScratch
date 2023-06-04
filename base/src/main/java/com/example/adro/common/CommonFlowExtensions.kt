@@ -10,31 +10,19 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import com.example.adro.base.ApiResult
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import dagger.hilt.EntryPoint
-import dagger.hilt.InstallIn
-import dagger.hilt.android.EntryPointAccessors
-import dagger.hilt.components.SingletonComponent
+import com.example.domain.models.ApiResult
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
-import org.json.JSONObject
-import retrofit2.Response
 import java.io.IOException
 import java.lang.Exception
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
-import kotlin.coroutines.coroutineContext
 
 
 object HexToJetpackColor {
@@ -42,7 +30,6 @@ object HexToJetpackColor {
         return Color(android.graphics.Color.parseColor("#$colorString"))
     }
 }
-
 
 object CommonFlowExtensions {
 

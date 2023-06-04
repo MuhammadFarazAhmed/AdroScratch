@@ -3,6 +3,7 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url "https://kotlin.bintray.com/kotlinx" }
         maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
     }
     resolutionStrategy {
@@ -10,6 +11,9 @@ pluginManagement {
             if( requested.id.id == 'dagger.hilt.android.plugin') {
                 useModule("com.google.dagger:hilt-android-gradle-plugin:2.43.1")
             }
+//            if( requested.id.id =="kotlinx-serialization") {
+//                useModule("org.jetbrains.kotlinx:kotlinx-gradle-serialization-plugin:${requested.version}")
+//            }
         }
     }
 }

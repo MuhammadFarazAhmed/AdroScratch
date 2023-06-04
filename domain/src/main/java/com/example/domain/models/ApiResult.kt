@@ -1,4 +1,4 @@
-package com.example.adro.base
+package com.example.domain.models
 
 enum class ApiStatus {
     SUCCESS,

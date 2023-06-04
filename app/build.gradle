@@ -116,10 +116,12 @@ dependencies {
     implementation("io.ktor:ktor-serialization-gson:$ktor_version")
     implementation("io.ktor:ktor-client-logging:$ktor_version")
     implementation ("io.ktor:ktor-client-cio:$ktor_version")
+
     implementation ("io.ktor:ktor-client-okhttp:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-client-auth:$ktor_version")
     implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
 
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
 
@@ -145,9 +147,6 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_version"
 
     implementation "androidx.datastore:datastore-preferences:1.0.0-beta01"
-
-
-
 
 
     api(project(':auth'))

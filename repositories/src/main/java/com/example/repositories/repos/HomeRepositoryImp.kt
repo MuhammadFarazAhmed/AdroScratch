@@ -1,6 +1,6 @@
 package com.example.repositories.repos
 
-import com.example.adro.base.ApiResult
+import com.example.domain.models.ApiResult
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonUtilsExtension.API.CORE
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams

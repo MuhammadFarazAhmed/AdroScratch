@@ -107,8 +107,11 @@ dependencies {
     debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
-    implementation(project(':base'))
-    implementation(project(':domain'))
+    implementation "androidx.datastore:datastore-preferences:1.0.0-beta01"
+
+
+    api(project(':base'))
+    api(project(':domain'))
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'

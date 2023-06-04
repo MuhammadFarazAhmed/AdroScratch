@@ -2,19 +2,23 @@ package com.example.home.vm
 
 import android.app.Application
 import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.*
-import com.example.adro.base.ApiStatus
+import com.example.domain.models.ApiStatus
 import com.example.adro.common.CommonFlowExtensions.handleErrors
+import com.example.adro.prefs.ConfigPreferencesHelper
+import com.example.domain.models.ConfigModel
 import com.example.domain.models.HomeResponse
 import com.example.domain.usecase.HomeUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class HomeViewModel constructor(
-    application: Application,
-    homeUseCase: HomeUseCase
+    private val application: Application,
+    homeUseCase: HomeUseCase,
+    private val configDataStore: DataStore<ConfigModel>,
+    private val configPreferencesHelper: ConfigPreferencesHelper
 ) :
     AndroidViewModel(application) {
 
@@ -23,10 +27,16 @@ class HomeViewModel constructor(
     }
 
     private fun fetchHomeData(homeUseCase: HomeUseCase) {
+
         viewModelScope.launch {
+            configDataStore.data.collectLatest { Log.d("TAG", "fetchHomeData: ${it.message}") }
+
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
-                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
+                    ApiStatus.SUCCESS -> {
+                        sections.value = it.data?.data?.sections!!
+                    }
+
                     ApiStatus.ERROR -> Log.d("TAG", "${it.message}: ")
                     ApiStatus.LOADING -> {}
                 }

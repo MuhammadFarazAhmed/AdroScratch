@@ -1,25 +1,14 @@
-package com.example.adro.common
+package com.example.adro.interceptors
 
-import android.util.Base64
 import android.util.Log
 import com.example.adro.security.ApisEncryptionUtils
-import com.example.domain.models.HomeResponse
-import com.google.gson.Gson
 import io.ktor.client.*
-import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
-import io.ktor.http.content.*
 import io.ktor.util.*
-import io.ktor.util.Identity.decode
 import io.ktor.utils.io.*
-import io.ktor.utils.io.copyTo
-import io.ktor.utils.io.jvm.nio.*
-import okhttp3.ResponseBody.Companion.toResponseBody
-import java.nio.ByteBuffer
-import java.nio.charset.Charset
 
-class DecryptResponse private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
+class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
     class Config {
         lateinit var apisEncryptionUtils: ApisEncryptionUtils
@@ -43,21 +32,21 @@ class DecryptResponse private constructor(private val apisEncryptionUtils: ApisE
         }
     }
 
-    companion object : HttpClientPlugin<Config, DecryptResponse> {
-        override val key: AttributeKey<DecryptResponse>
+    companion object : HttpClientPlugin<Config, DecryptResponseInterceptor> {
+        override val key: AttributeKey<DecryptResponseInterceptor>
             get() = AttributeKey("DecryptedResponse")
 
-        override fun install(plugin: DecryptResponse, scope: HttpClient) {
+        override fun install(plugin: DecryptResponseInterceptor, scope: HttpClient) {
             plugin.decryptedResponse(scope)
         }
 
-        override fun prepare(block: Config.() -> Unit): DecryptResponse {
+        override fun prepare(block: Config.() -> Unit): DecryptResponseInterceptor {
             val config = Config().apply(block)
-            return DecryptResponse(config.apisEncryptionUtils)
+            return DecryptResponseInterceptor(config.apisEncryptionUtils)
         }
     }
 }
 
-fun HttpClientConfig<*>.decryptResponse(block: DecryptResponse.Config.() -> Unit = {}) {
-    install(DecryptResponse, block)
+fun HttpClientConfig<*>.decryptResponse(block: DecryptResponseInterceptor.Config.() -> Unit = {}) {
+    install(DecryptResponseInterceptor, block)
 }
