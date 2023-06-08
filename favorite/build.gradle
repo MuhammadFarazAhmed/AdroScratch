@@ -7,7 +7,7 @@ plugins {
 
 android {
     compileSdk 33
-    flavorDimensions "default"
+    flavorDimensions = ["default"]
     defaultConfig {
         minSdk 21
         targetSdk 33
@@ -58,13 +58,10 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.5.1"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation project(path: ':repositories')
     implementation 'androidx.paging:paging-common-ktx:3.1.1'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
@@ -80,18 +77,18 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logger_version"
 
-    implementation "com.google.accompanist:accompanist-pager:0.23.1"
+    implementation "com.google.accompanist:accompanist-pager:0.25.1"
     implementation "androidx.constraintlayout:constraintlayout-compose:1.0.1"
 
-    implementation("io.coil-kt:coil-compose:2.1.0")
+    implementation("io.coil-kt:coil-compose:2.2.2")
 
-    debugApi "androidx.customview:customview:1.2.0-alpha01"
+    debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
     implementation(project(':base'))
     implementation(project(':domain'))
 
-    debugApi("androidx.paging:paging-compose:1.0.0-alpha16")
+    debugApi("androidx.paging:paging-compose:3.2.0-beta01")
     def paging_version = "3.1.1"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
 
@@ -101,6 +98,6 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

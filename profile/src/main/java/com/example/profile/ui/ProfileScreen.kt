@@ -1,12 +1,26 @@
 package com.example.profile.ui
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -25,27 +39,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import androidx.paging.compose.items
-import androidx.paging.map
 import com.example.adro.ErrorItem
 import com.example.adro.LoadingItem
 import com.example.adro.LoadingView
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
-import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
-import com.example.domain.models.ProfileResponse
 import com.example.profile.vm.ProfileViewModel
-import kotlinx.coroutines.flow.flatMap
-import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.getViewModel
 
 
@@ -74,8 +80,7 @@ fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
             items(
                 count = lazySections.itemCount,
                 key = lazySections.itemKey(),
-                contentType = lazySections.itemContentType(
-                )
+                contentType = lazySections.itemContentType()
             ) { index ->
                 val item = lazySections[index]
                 when (item?.sectionIdentifier) {

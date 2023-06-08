@@ -2,10 +2,10 @@ buildscript {
     ext {
         compose_kotlin_version = '1.4.7'
         compose_version = '1.4.3'
-        nav_version = '2.5.3'
+        nav_version = '2.6.0'
         compose_hilt_navigation_version='1.0.0'
         retrofit_version = '2.9.0'
-        okhttp_version = '4.9.3'
+        okhttp_version = '4.10.0'
         okhttp_logger_version = '4.9.3'
         ktor_version = '2.1.0'
         koin_version = '3.4.0'
@@ -16,8 +16,4 @@ plugins {
     id 'com.android.library' version '8.0.2' apply false
     id 'org.jetbrains.kotlin.android' version '1.8.21' apply false
     id("dagger.hilt.android.plugin") version('2.43.1') apply false
-}
-
-task clean(type: Delete) {
-    delete rootProject.buildDir
 }

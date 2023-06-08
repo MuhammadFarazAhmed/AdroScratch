@@ -8,7 +8,7 @@ plugins {
 
 android {
     compileSdk 33
-    flavorDimensions "default"
+    flavorDimensions = ["default"]
     defaultConfig {
         applicationId "com.example.adro"
         minSdk 21
@@ -132,8 +132,8 @@ dependencies {
     debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
-    debugApi("androidx.paging:paging-compose:1.0.0-alpha20")
-    def paging_version = "2.1.1"
+    debugApi("androidx.paging:paging-compose:3.2.0-beta01")
+    def paging_version = "3.2.0-beta01"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
 
     implementation 'androidx.core:core-splashscreen:1.0.1'
@@ -144,7 +144,7 @@ dependencies {
 
     implementation "io.insert-koin:koin-core:$koin_version"
 
-    implementation "androidx.datastore:datastore-preferences:1.0.0-beta01"
+    implementation "androidx.datastore:datastore-preferences:1.1.0-alpha04"
 
 
     api(project(':auth'))
