@@ -23,8 +23,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kapt {
         correctErrorTypes true
@@ -34,9 +34,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion compose_kotlin_version
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
     }
     productFlavors {
         devnode {
@@ -51,6 +48,7 @@ android {
         production {
         }
     }
+    namespace 'com.example.favorite'
 }
 
 dependencies {

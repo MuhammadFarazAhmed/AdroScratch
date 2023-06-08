@@ -36,11 +36,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
         freeCompilerArgs = ['-Xjvm-default=compatibility']
@@ -79,6 +76,7 @@ android {
         }
     }
     ndkVersion '21.4.7075529'
+    namespace 'com.example.adro'
 }
 
 dependencies {
