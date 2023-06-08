@@ -1,57 +1,63 @@
 package com.example.domain.models
 
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class TabsResponse(
-    @SerializedName("cmd")
+    @SerialName("cmd")
     val cmd: String? = null,
-    @SerializedName("code")
+    @SerialName("code")
     val code: Int? = null,
-    @SerializedName("data")
+    @SerialName("data")
     val `data`: Data? = null,
-    @SerializedName("http_response")
+    @SerialName("http_response")
     val httpResponse: Int? = null,
-    @SerializedName("message")
+    @SerialName("message")
     val message: String? = null,
-    @SerializedName("success")
+    @SerialName("success")
     val success: Boolean? = null
 ) {
+    @Serializable
     data class Data(
-        @SerializedName("limit")
+        @SerialName("limit")
         val limit: Int? = null,
-        @SerializedName("tabs")
+        @SerialName("tabs")
         val tabs: List<Tab?>? = null
     ) {
+        @Serializable
         data class Tab(
-            @SerializedName("name")
+            @SerialName("name")
             val name: String? = null,
-            @SerializedName("order")
+            @SerialName("order")
             val order: Int? = null,
-            @SerializedName("params")
+            @SerialName("params")
             val params: Params? = null,
-            @SerializedName("params_list")
+            @SerialName("params_list")
             val paramsList: List<ParamsList?>? = null,
-            @SerializedName("section_type")
+            @SerialName("section_type")
             val sectionType: Int? = null,
-            @SerializedName("uid")
+            @SerialName("uid")
             val uid: String? = null
         ) {
+            @Serializable
             data class Params(
-                @SerializedName("category")
+                @SerialName("category")
                 val category: String? = null,
-                @SerializedName("product_sku")
+                @SerialName("product_sku")
                 val productSku: String? = null,
-                @SerializedName("redeemability")
+                @SerialName("redeemability")
                 val redeemability: String? = null,
-                @SerializedName("tid")
+                @SerialName("tid")
                 val tid: Int? = null
             )
 
+            @Serializable
             data class ParamsList(
-                @SerializedName("key")
+                @SerialName("key")
                 val key: String? = null,
-                @SerializedName("value")
+                @SerialName("value")
                 val value: String? = null
             )
         }
