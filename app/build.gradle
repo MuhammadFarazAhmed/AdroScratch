@@ -64,7 +64,6 @@ android {
 
     productFlavors {
         devnode {
-            manifestPlaceholders = [enableCrashReporting: "false"]
         }
         qanode {
         }
