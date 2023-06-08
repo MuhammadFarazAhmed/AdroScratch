@@ -1,50 +1,54 @@
 package com.example.domain.models
 
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class ProfileResponse(
-    @SerializedName("cmd")
+    @SerialName("cmd")
     val cmd: String? = null,
-    @SerializedName("code")
+    @SerialName("code")
     val code: Int? = null,
-    @SerializedName("data")
+    @SerialName("data")
     val `data`: List<Data>,
-    @SerializedName("http_response")
+    @SerialName("http_response")
     val httpResponse: Int? = null,
-    @SerializedName("message")
+    @SerialName("message")
     val message: String? = null,
-    @SerializedName("success")
+    @SerialName("success")
     val success: Boolean? = null
 ) {
+    @Serializable
     data class Data(
-        @SerializedName("section_data")
+        @SerialName("section_data")
         val sectionData: List<SectionData>,
-        @SerializedName("section_identifier")
+        @SerialName("section_identifier")
         val sectionIdentifier: String = "",
-        @SerializedName("section_title")
+        @SerialName("section_title")
         val sectionTitle: String? = null
     ) {
+        @Serializable
         data class SectionData(
-            @SerializedName("appVersion")
+            @SerialName("appVersion")
             val appVersion: String? = null,
-            @SerializedName("createAcc")
+            @SerialName("createAcc")
             val createAcc: String? = null,
-            @SerializedName("desc")
+            @SerialName("desc")
             val desc: String? = null,
-            @SerializedName("image")
+            @SerialName("image")
             val image: String? = null,
-            @SerializedName("key")
+            @SerialName("key")
             val key: String? = null,
-            @SerializedName("name")
+            @SerialName("name")
             val name: String? = null,
-            @SerializedName("signInBtn")
+            @SerialName("signInBtn")
             val signInBtn: String? = null,
-            @SerializedName("title")
+            @SerialName("title")
             val title: String? = null,
-            @SerializedName("type")
+            @SerialName("type")
             val type: String? = null,
-            @SerializedName("value")
+            @SerialName("value")
             val value: Int? = null
         )
     }

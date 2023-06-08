@@ -1,12 +1,15 @@
 package com.example.adro.prefs
 
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.domain.models.ConfigModel
 
 
-class PreferencesHelper  constructor()  {
+class PreferencesHelper constructor(private val dataSource: DataStore<ConfigModel>) {
 
     fun getSessionToken() = ""
     fun getCompany() = "ADO"

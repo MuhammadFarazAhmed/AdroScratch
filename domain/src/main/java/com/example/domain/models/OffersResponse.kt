@@ -1,146 +1,154 @@
 package com.example.domain.models
 
 
-import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class OffersResponse(
-    @SerializedName("cmd")
+    @SerialName("cmd")
     val cmd: String? = null,
-    @SerializedName("code")
+    @SerialName("code")
     val code: Int? = null,
-    @SerializedName("data")
+    @SerialName("data")
     val `data`: Data,
-    @SerializedName("http_response")
+    @SerialName("http_response")
     val httpResponse: Int? = null,
-    @SerializedName("message")
+    @SerialName("message")
     val message: String? = null,
-    @SerializedName("success")
+    @SerialName("success")
     val success: Boolean? = null
 ) {
+    @Serializable
+
     data class Data(
-        @SerializedName("favourite_merchant")
+        @SerialName("favourite_merchant")
         val favouriteMerchant: Int? = null,
-        @SerializedName("featured_merchants")
-        val featuredMerchants: List<Any?>? = null,
-        @SerializedName("is_elastic_search_results")
+        @SerialName("featured_merchants")
+        val featuredMerchants: List<String?>? = null,
+        @SerialName("is_elastic_search_results")
         val isElasticSearchResults: Boolean? = null,
-        @SerializedName("is_elastic_search_server_down")
+        @SerialName("is_elastic_search_server_down")
         val isElasticSearchServerDown: Boolean? = null,
-        @SerializedName("map_zoom_level")
+        @SerialName("map_zoom_level")
         val mapZoomLevel: Double? = null,
-        @SerializedName("offset")
+        @SerialName("offset")
         val offset: Int? = null,
-        @SerializedName("outlets")
+        @SerialName("outlets")
         val outlets: List<Outlet>,
-        @SerializedName("page_size")
+        @SerialName("page_size")
         val pageSize: Int? = null,
-        @SerializedName("ping_section")
+        @SerialName("ping_section")
         val pingSection: PingSection? = null,
-        @SerializedName("print_query")
+        @SerialName("print_query")
         val printQuery: String? = null,
-        @SerializedName("records_in_current_page")
+        @SerialName("records_in_current_page")
         val recordsInCurrentPage: Int? = null,
-        @SerializedName("search_results")
-        val searchResults: List<Any?>? = null,
-        @SerializedName("show_delivery_purchase_view")
+        @SerialName("search_results")
+        val searchResults: List<String?>? = null,
+        @SerialName("show_delivery_purchase_view")
         val showDeliveryPurchaseView: Boolean? = null,
-        @SerializedName("total_records")
+        @SerialName("total_records")
         val totalRecords: Int? = null
     ) {
+        @Serializable
+
         data class Outlet(
-            @SerializedName("attributes")
+            @SerialName("attributes")
             val attributes: List<Attribute?>? = null,
-            @SerializedName("concept_id")
+            @SerialName("concept_id")
             val conceptId: String? = null,
-            @SerializedName("distance")
+            @SerialName("distance")
             val distance: Int? = null,
-            @SerializedName("email")
+            @SerialName("email")
             val email: String? = null,
-            @SerializedName("fuzzy_relevance")
+            @SerialName("fuzzy_relevance")
             val fuzzyRelevance: Int? = null,
-            @SerializedName("human_location")
+            @SerialName("human_location")
             val humanLocation: String? = null,
-            @SerializedName("id")
+            @SerialName("id")
             val id: Int? = null,
-            @SerializedName("is_favourite")
+            @SerialName("is_favourite")
             val isFavourite: Boolean? = null,
-            @SerializedName("is_purchased")
+            @SerialName("is_purchased")
             val isPurchased: Boolean? = null,
-            @SerializedName("is_redeemable")
+            @SerialName("is_redeemable")
             val isRedeemable: Boolean? = null,
-            @SerializedName("lat")
+            @SerialName("lat")
             val lat: Double? = null,
-            @SerializedName("lng")
+            @SerialName("lng")
             val lng: Double? = null,
-            @SerializedName("locked_image_url")
+            @SerialName("locked_image_url")
             val lockedImageUrl: String? = null,
-            @SerializedName("merchant")
+            @SerialName("merchant")
             val merchant: Merchant? = null,
-            @SerializedName("merchant_logo_small_url")
+            @SerialName("merchant_logo_small_url")
             val merchantLogoSmallUrl: String? = null,
-            @SerializedName("merchant_logo_url")
+            @SerialName("merchant_logo_url")
             val merchantLogoUrl: String? = null,
-            @SerializedName("merchant_name")
+            @SerialName("merchant_name")
             val merchantName: String? = null,
-            @SerializedName("merchant_photo_small_url")
+            @SerialName("merchant_photo_small_url")
             val merchantPhotoSmallUrl: String? = null,
-            @SerializedName("merchant_photo_url")
+            @SerialName("merchant_photo_url")
             val merchantPhotoUrl: String? = null,
-            @SerializedName("name")
+            @SerialName("name")
             val name: String? = null,
-            @SerializedName("product_id")
+            @SerialName("product_id")
             val productId: List<Int?>? = null,
-            @SerializedName("product_sku")
+            @SerialName("product_sku")
             val productSku: List<String?>? = null,
-            @SerializedName("sfId")
+            @SerialName("sfId")
             val sfId: String? = null,
-            @SerializedName("tag_type_points")
+            @SerialName("tag_type_points")
             val tagTypePoints: Boolean? = null,
-            @SerializedName("tag_type_rewards")
+            @SerialName("tag_type_rewards")
             val tagTypeRewards: Boolean? = null,
-            @SerializedName("tag_type_show_n_go")
+            @SerialName("tag_type_show_n_go")
             val tagTypeShowNGo: Boolean? = null,
-            @SerializedName("tags")
+            @SerialName("tags")
             val tags: List<Tag?>? = null,
-            @SerializedName("top_offer_redeemability")
+            @SerialName("top_offer_redeemability")
             val topOfferRedeemability: Int? = null
         ) {
+            @Serializable
             data class Attribute(
-                @SerializedName("type")
+                @SerialName("type")
                 val type: String? = null,
-                @SerializedName("value")
+                @SerialName("value")
                 val value: String? = null
             )
-
+            @Serializable
             data class Merchant(
-                @SerializedName("id")
+                @SerialName("id")
                 val id: Int? = null,
-                @SerializedName("name")
+                @SerialName("name")
                 val name: String? = null,
-                @SerializedName("name_for_outlet")
+                @SerialName("name_for_outlet")
                 val nameForOutlet: String? = null
             )
 
+            @Serializable
             data class Tag(
-                @SerializedName("abbreviated_text")
+                @SerialName("abbreviated_text")
                 val abbreviatedText: String? = null,
-                @SerializedName("bg_color")
+                @SerialName("bg_color")
                 val bgColor: String? = null,
-                @SerializedName("icon")
+                @SerialName("icon")
                 val icon: String? = null,
-                @SerializedName("identifier")
+                @SerialName("identifier")
                 val identifier: String? = null,
-                @SerializedName("order_id")
+                @SerialName("order_id")
                 val orderId: Int? = null,
-                @SerializedName("title")
+                @SerialName("title")
                 val title: String? = null,
-                @SerializedName("title_color")
+                @SerialName("title_color")
                 val titleColor: String? = null,
-                @SerializedName("uid")
+                @SerialName("uid")
                 val uid: String? = null
             )
         }
-
+        @Serializable
         class PingSection
     }
 }

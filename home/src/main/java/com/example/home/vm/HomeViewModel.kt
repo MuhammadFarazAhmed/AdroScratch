@@ -11,8 +11,10 @@ import com.example.adro.prefs.ConfigPreferencesHelper
 import com.example.domain.models.ConfigModel
 import com.example.domain.models.HomeResponse
 import com.example.domain.usecase.HomeUseCase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel constructor(
     private val application: Application,
@@ -24,16 +26,22 @@ class HomeViewModel constructor(
 
     init {
         fetchHomeData(homeUseCase)
+        viewModelScope.launch {
+
+        }
     }
 
     private fun fetchHomeData(homeUseCase: HomeUseCase) {
 
         viewModelScope.launch {
-            configDataStore.data.collectLatest { Log.d("TAG", "fetchHomeData: ${it.message}") }
-
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> {
+                        viewModelScope.launch {
+                            configDataStore.data.collectLatest {
+                                Log.d("TAG", "fetchHomeData: ${it.message}")
+                            }
+                        }
                         sections.value = it.data?.data?.sections!!
                     }
 

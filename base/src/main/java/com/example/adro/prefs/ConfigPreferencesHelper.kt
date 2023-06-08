@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 import javax.inject.Inject
 
-class ConfigPreferencesHelper @Inject constructor(private val dataSource: DataStore<Preferences>) :
+class ConfigPreferencesHelper  constructor(private val dataSource: DataStore<Preferences>) :
     IPreferenceDataStoreAPI {
 
     val dataStore = dataSource

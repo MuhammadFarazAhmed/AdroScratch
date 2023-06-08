@@ -3,7 +3,12 @@ package com.example.adro.di
 import android.util.Base64
 import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.adro.interceptors.changeBaseUrlInterceptor
 import com.example.adro.interceptors.decryptResponse
 import com.example.adro.prefs.ConfigPreferencesHelper
@@ -71,14 +76,14 @@ fun featureModules() = listOf(commonModule, homeModule, merchantModule, profileM
 
 val AppModule = module {
 
-//    single {
-//        PreferenceDataStoreFactory.create(
-//            corruptionHandler = ReplaceFileCorruptionHandler(
-//                produceNewData = { emptyPreferences() }),
-//            produceFile = { androidContext().preferencesDataStoreFile("intamiDataStore") },
-//            scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
-//        )
-//    }
+    single<DataStore<Preferences>> {
+        PreferenceDataStoreFactory.create(
+            corruptionHandler = ReplaceFileCorruptionHandler(
+                produceNewData = { emptyPreferences() }),
+            produceFile = { androidContext().preferencesDataStoreFile("intamiDataStore") },
+            scope = CoroutineScope(Dispatchers.IO + SupervisorJob())
+        )
+    }
 
     single<DataStore<ConfigModel>> {
         DataStoreFactory.create(
@@ -92,7 +97,7 @@ val AppModule = module {
     }
 
     single {
-        PreferencesHelper()
+        PreferencesHelper(get())
     }
 
     single {
