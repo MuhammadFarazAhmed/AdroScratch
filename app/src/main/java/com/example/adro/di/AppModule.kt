@@ -1,22 +1,18 @@
 package com.example.adro.di
 
 import android.util.Base64
-import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.adro.interceptors.changeBaseUrlInterceptor
 import com.example.adro.interceptors.decryptResponse
-import com.example.adro.prefs.ConfigPreferencesHelper
 import com.example.adro.prefs.ConfigPreferencesSerializer
 import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.security.ApisEncryptionUtils
 import com.example.adro.vm.CommonViewModel
-import com.example.domain.models.ConfigModel
 import com.example.domain.repos.CommonRepository
 import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
@@ -76,7 +72,7 @@ fun featureModules() = listOf(commonModule, homeModule, merchantModule, profileM
 
 val AppModule = module {
 
-    single<DataStore<Preferences>> {
+    single {
         PreferenceDataStoreFactory.create(
             corruptionHandler = ReplaceFileCorruptionHandler(
                 produceNewData = { emptyPreferences() }),
@@ -85,7 +81,7 @@ val AppModule = module {
         )
     }
 
-    single<DataStore<ConfigModel>> {
+    single {
         DataStoreFactory.create(
             serializer = ConfigPreferencesSerializer,
             corruptionHandler = null,
@@ -98,10 +94,6 @@ val AppModule = module {
 
     single {
         PreferencesHelper(get())
-    }
-
-    single {
-        ConfigPreferencesHelper(get())
     }
 
     single<String> {
@@ -168,15 +160,15 @@ val NetworkModule = module {
 }
 
 val commonModule = module {
-    single<CommonRepository> { CommonRepositoryImp(get()) }
+    single<CommonRepository> { CommonRepositoryImp(get(), get()) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
-    viewModel { CommonViewModel(get(), get(), get(), get()) }
+    viewModel { CommonViewModel(get(), get()) }
 }
 
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get()) }
 }
 
 val merchantModule = module {
@@ -189,6 +181,7 @@ val merchantModule = module {
 
     viewModel { OffersViewModel(get(), get()) }
     viewModel { FavoriteViewModel(get(), get()) }
+
 }
 
 val profileModule = module {

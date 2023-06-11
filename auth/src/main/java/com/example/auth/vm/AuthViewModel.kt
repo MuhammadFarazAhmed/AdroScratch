@@ -20,11 +20,7 @@ class AuthViewModel @Inject constructor(
 ) :
     AndroidViewModel(application) {
 
-    init {
-        //fetchHomeData(homeUseCase)
-    }
-
-    private fun fetchHomeData(homeUseCase: HomeUseCase) {
+    private fun login(homeUseCase: HomeUseCase) {
         viewModelScope.launch {
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
