@@ -10,11 +10,14 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
+import com.example.adro.common.CommonFlowExtensions.handleErrors
 import com.example.domain.models.ApiResult
+import com.example.domain.models.ErrorResponse
 import io.ktor.client.call.*
 import io.ktor.client.plugins.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import java.io.IOException
@@ -39,27 +42,27 @@ object CommonFlowExtensions {
 
     fun Exception.toCustomExceptions(): ApiResult<Error> = when (this) {
         is ClientRequestException -> {
-            ApiResult.Error(message)
+            ApiResult.Error(ErrorResponse(message = message))
         }
 
         is ServerResponseException -> {
-            ApiResult.Error(message)
+            ApiResult.Error(ErrorResponse(message = message))
         }
 
         is SocketTimeoutException -> {
-            ApiResult.Error(message.toString())
+            ApiResult.Error(ErrorResponse(message = message))
         }
 
         is UnknownHostException -> {
-            ApiResult.Error(message.toString())
+            ApiResult.Error(ErrorResponse(message = message))
         }
 
         is IOException -> {
-            ApiResult.Error(message.toString())
+            ApiResult.Error(ErrorResponse(message = message))
         }
 
         else -> {
-            ApiResult.Error(message.toString())
+            ApiResult.Error(ErrorResponse(message = message))
         }
     }
 
@@ -73,36 +76,24 @@ object CommonFlowExtensions {
             try {
                 val response = call()
                 emit(ApiResult.Loading(false))
-                emit(ApiResult.Success(response.body()))
+                when (response.status) {
+                    HttpStatusCode.OK ->  emit(ApiResult.Success(response.body()))
+                    HttpStatusCode.Unauthorized -> {}
+                    HttpStatusCode.UnprocessableEntity -> emit(ApiResult.Error(ErrorResponse(message = response.status.value.toString())))
+                    HttpStatusCode.BadGateway -> {}
+                    HttpStatusCode.BadRequest -> {}
+                    HttpStatusCode.InternalServerError -> {}
+                    HttpStatusCode.MethodNotAllowed -> {}
+                    HttpStatusCode.Forbidden -> {}
+                    HttpStatusCode.NotFound -> {}
+                    HttpStatusCode.RequestTimeout -> {}
+                    else -> {}
+                }
                 success(response.body())
             } catch (e: Exception) {
                 emit(ApiResult.Loading(false))
+                emit(ApiResult.Error(ErrorResponse(message = e.message)))
                 failure()
-                when (e) {
-                    is ClientRequestException -> {
-                        emit(ApiResult.Error(e.message))
-                    }
-
-                    is ServerResponseException -> {
-                        emit(ApiResult.Error(e.message))
-                    }
-
-                    is SocketTimeoutException -> {
-                        emit(ApiResult.Error(e.message.toString()))
-                    }
-
-                    is UnknownHostException -> {
-                        emit(ApiResult.Error(e.message.toString()))
-                    }
-
-                    is IOException -> {
-                        emit(ApiResult.Error(e.message.toString()))
-                    }
-
-                    else -> {
-                        emit(ApiResult.Error(e.message.toString()))
-                    }
-                }
             }
         }.flowOn(Dispatchers.IO)
 

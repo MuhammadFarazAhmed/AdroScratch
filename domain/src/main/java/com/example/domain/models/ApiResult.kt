@@ -14,13 +14,13 @@ sealed class ApiResult<out T>(val status: ApiStatus, val data: T?, val message: 
         message = null
     )
 
-    data class Error(val exception: String) : ApiResult<Nothing>(
+    data class Error(val exception: ErrorResponse) : ApiResult<Nothing>(
         status = ApiStatus.ERROR,
         data = null,
-        message = exception
+        message = exception.message
     )
 
-    data class Loading<out R>(val isLoading: Boolean) : ApiResult<R>(
+    data class Loading(val isLoading: Boolean) : ApiResult<Nothing>(
         status = ApiStatus.LOADING,
         data = null,
         message = null

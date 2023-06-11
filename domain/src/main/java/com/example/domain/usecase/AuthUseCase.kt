@@ -6,14 +6,14 @@ import kotlinx.coroutines.flow.Flow
 
 interface AuthUseCase {
 
-     suspend fun login(): Flow<ApiResult<LoginResponse>>
+    suspend fun login(phone: String, password: String): Flow<ApiResult<LoginResponse>>
 
-    suspend  fun signup()
+    suspend fun signup()
 
-    suspend  fun forgotPassword()
+    suspend fun forgotPassword()
 
-    suspend  fun validateEMID()
+    suspend fun validateEMID()
 
-    suspend  fun resetPassword()
+    suspend fun resetPassword()
 
 }

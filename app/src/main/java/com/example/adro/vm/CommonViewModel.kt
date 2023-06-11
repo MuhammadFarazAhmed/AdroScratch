@@ -31,7 +31,7 @@ class CommonViewModel(
             commonUseCase.fetchConfig().collectLatest { apiResult ->
                 when (apiResult) {
                     is ApiResult.Error ->
-                        Log.d("TAG", "getConfig: error ${apiResult.exception.first()}")
+                        Log.d("TAG", "getConfig: error ${apiResult.exception}")
                     is ApiResult.Loading -> {}
                     is ApiResult.Success -> {
                         configResponse.value = apiResult.data!!

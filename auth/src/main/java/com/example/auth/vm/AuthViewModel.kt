@@ -7,34 +7,27 @@ import com.example.domain.models.ApiStatus
 import com.example.adro.common.CommonFlowExtensions.handleErrors
 import com.example.domain.models.HomeResponse
 import com.example.domain.usecase.AuthUseCase
-import com.example.domain.usecase.HomeUseCase
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class AuthViewModel @Inject constructor(
+class AuthViewModel constructor(
     application: Application,
-    authUseCase: AuthUseCase
+    private val authUseCase: AuthUseCase
 ) :
     AndroidViewModel(application) {
 
-    private fun login(homeUseCase: HomeUseCase) {
+    fun login(mobile: String, password: String) {
         viewModelScope.launch {
-            homeUseCase.fetchHome().handleErrors().collect {
+            authUseCase.login(mobile, password).collect {
                 when (it.status) {
-                    ApiStatus.SUCCESS -> sections.value = it.data?.data?.sections!!
+                    ApiStatus.SUCCESS -> {}
                     ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it.message}: ")
+                        Log.d("TAG", "${it}: ")
                     }
+
                     ApiStatus.LOADING -> {}
                 }
             }
         }
     }
-
-    private val sections: MutableStateFlow<List<HomeResponse.Data.Section>> =
-        MutableStateFlow(emptyList())
-
 }
