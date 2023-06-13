@@ -24,6 +24,7 @@ class CommonRepositoryImp(
     @OptIn(DelicateCoroutinesApi::class)
     override suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>> =
         convertToFlow(
+
             call = {
                 client.post {
                     url { path("/ets_api/v5/configs") }
