@@ -22,7 +22,7 @@ class AuthViewModel constructor(
                 when (it.status) {
                     ApiStatus.SUCCESS -> {}
                     ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it}: ")
+                        Log.d("TAG", "${it.message}: ")
                     }
 
                     ApiStatus.LOADING -> {}

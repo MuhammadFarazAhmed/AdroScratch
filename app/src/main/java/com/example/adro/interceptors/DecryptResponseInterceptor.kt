@@ -2,11 +2,14 @@ package com.example.adro.interceptors
 
 import android.util.Log
 import com.example.adro.security.ApisEncryptionUtils
+import com.example.domain.models.ErrorResponse
 import io.ktor.client.*
 import io.ktor.client.plugins.*
 import io.ktor.client.statement.*
 import io.ktor.util.*
+import io.ktor.util.reflect.TypeInfo
 import io.ktor.utils.io.*
+import kotlinx.serialization.builtins.serializer
 
 class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
@@ -28,10 +31,8 @@ class DecryptResponseInterceptor private constructor(private val apisEncryptionU
             val decryptResponse =
                 if (decryptString == null) original else ByteReadChannel(decryptString)
 
-            if (decryptString != null) {
-                val response = HttpResponseContainer(type, decryptResponse)
-                proceedWith(response)
-            }
+            val response = HttpResponseContainer(type, decryptResponse)
+            proceedWith(response)
         }
     }
 

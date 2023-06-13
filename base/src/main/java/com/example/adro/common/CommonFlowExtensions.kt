@@ -76,19 +76,19 @@ object CommonFlowExtensions {
             try {
                 val response = call()
                 emit(ApiResult.Loading(false))
-                when (response.status) {
-                    HttpStatusCode.OK ->  emit(ApiResult.Success(response.body()))
-                    HttpStatusCode.Unauthorized -> {}
-                    HttpStatusCode.UnprocessableEntity -> emit(ApiResult.Error(ErrorResponse(message = response.status.value.toString())))
-                    HttpStatusCode.BadGateway -> {}
-                    HttpStatusCode.BadRequest -> {}
-                    HttpStatusCode.InternalServerError -> {}
-                    HttpStatusCode.MethodNotAllowed -> {}
-                    HttpStatusCode.Forbidden -> {}
-                    HttpStatusCode.NotFound -> {}
-                    HttpStatusCode.RequestTimeout -> {}
-                    else -> {}
-                }
+//                when (response.status) {
+//                    HttpStatusCode.OK ->  emit(ApiResult.Success(response.body()))
+//                    HttpStatusCode.Unauthorized -> {}
+//                    HttpStatusCode.UnprocessableEntity -> emit(ApiResult.Error(ErrorResponse(message = response.status.value.toString())))
+//                    HttpStatusCode.BadGateway -> {}
+//                    HttpStatusCode.BadRequest -> {}
+//                    HttpStatusCode.InternalServerError -> {}
+//                    HttpStatusCode.MethodNotAllowed -> {}
+//                    HttpStatusCode.Forbidden -> {}
+//                    HttpStatusCode.NotFound -> {}
+//                    HttpStatusCode.RequestTimeout -> {}
+//                    else -> {}
+//                }
                 success(response.body())
             } catch (e: Exception) {
                 emit(ApiResult.Loading(false))
