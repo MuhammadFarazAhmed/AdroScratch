@@ -28,17 +28,15 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        //setupPreDrawListener()
-
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
             vm.keepOnSplashScreenOn.collect {
                 if (!it) {
                     setContent {
-                        val appstate = rememberAdroAppState()
-                        navController = appstate.navController
-                        AdroApp(appstate)
+                        val appState = rememberAdroAppState()
+                        navController = appState.navController
+                        AdroApp(appState)
                     }
                 }
             }

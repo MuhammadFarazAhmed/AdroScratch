@@ -15,11 +15,11 @@ import kotlinx.coroutines.flow.Flow
 class HomeRepositoryImp(private val client: HttpClient) : HomeRepository {
 
     override suspend fun fetchHome(): Flow<ApiResult<HomeResponse>> =
-        convertToFlow {
+        convertToFlow({
             client.post {
                 setDefaultParams(CORE)
                 url { path("/ets_api/v5/home") }
             }
-        }
+        })
 
 }

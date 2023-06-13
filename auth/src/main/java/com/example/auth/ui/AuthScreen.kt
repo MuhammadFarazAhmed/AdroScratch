@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.Group
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -23,6 +22,7 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -35,10 +35,12 @@ import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.theme.Emad
 import com.example.auth.R
+import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.HomeResponse
+import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun AuthScreen(onBackClick: () -> Unit) {
+fun AuthScreen(onBackClick: () -> Unit, vm: AuthViewModel = getViewModel()) {
     BackHandler {
         onBackClick()
     }
@@ -55,7 +57,7 @@ fun AuthScreen(onBackClick: () -> Unit) {
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
             AppLogo()
-            LoginScreen()
+            LoginScreen(vm)
         }
     }
 
@@ -87,7 +89,7 @@ fun AuthScreenPreview() {
             modifier = Modifier.verticalScroll(rememberScrollState()),
         ) {
             AppLogo()
-            EMIDScreen()
+            LoginScreen(getViewModel())
         }
 
     }
@@ -229,7 +231,7 @@ fun EMIDScreen() {
 }
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(vm: AuthViewModel) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxSize()
@@ -237,6 +239,17 @@ fun LoginScreen() {
     ) {
         val (tvDescription, etMobile, bRegister, etPassword, bSignIn, tvForgotPassword, etCountryCode) = createRefs()
 
+       val mobile =  remember {
+            mutableStateOf(
+                TextFieldValue()
+            )
+        }
+
+        val password =  remember {
+            mutableStateOf(
+                TextFieldValue()
+            )
+        }
 
         Text(
             text = stringResource(R.string.welcome_to_where_you_belong),
@@ -295,8 +308,8 @@ fun LoginScreen() {
                 .wrapContentSize()
                 .fillMaxWidth(0.7f)
                 .background(Color.White, shape = RoundedCornerShape(4.dp)),
-            value = "",
-            onValueChange = { },
+            value = mobile.value,
+            onValueChange = { mobile.value = it},
             placeholder = { Text("e.g 5465647") })
 
         TextField(
@@ -312,12 +325,12 @@ fun LoginScreen() {
                 .wrapContentSize()
                 .fillMaxWidth()
                 .background(Color.White, shape = RoundedCornerShape(4.dp)),
-            value = "",
-            onValueChange = { },
+            value = password.value,
+            onValueChange = { password.value  = it },
             placeholder = { Text("Password") })
 
         Button(
-            onClick = { },
+            onClick = { vm.login(mobile.value.text,password.value.text) },
             modifier = Modifier
                 .constrainAs(bSignIn) {
                     linkTo(top = etPassword.bottom, bottom = parent.bottom, bias = 0.0f)
