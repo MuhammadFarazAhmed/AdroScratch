@@ -16,7 +16,6 @@ class CommonRepositoryImp(private val client: HttpClient) : CommonRepository {
 
     override suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>> =
         convertToFlow {
-
             client.post {
                 url { path("/ets_api/v5/configs") }
                 setDefaultParams(CONFIG)
