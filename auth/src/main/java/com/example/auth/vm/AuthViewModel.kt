@@ -1,16 +1,13 @@
 package com.example.auth.vm
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.domain.models.ApiStatus
-import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.domain.models.HomeResponse
 import com.example.domain.usecase.AuthUseCase
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class AuthViewModel constructor(
+class AuthViewModel(
     application: Application,
     private val authUseCase: AuthUseCase
 ) :
@@ -21,10 +18,7 @@ class AuthViewModel constructor(
             authUseCase.login(mobile, password).collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> {}
-                    ApiStatus.ERROR -> {
-                        Log.d("TAG", "${it}: ")
-                    }
-
+                    ApiStatus.ERROR -> {}
                     ApiStatus.LOADING -> {}
                 }
             }

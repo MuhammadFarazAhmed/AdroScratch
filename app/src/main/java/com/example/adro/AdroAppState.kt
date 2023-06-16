@@ -85,7 +85,7 @@ class AdroAppState(val navController: NavHostController) {
         trace("Navigation: $destination") {
 
             if (destination is TopLevelDestination) {
-                if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
+               // if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
                 navController.navigate(
                     route ?: destination.route
                 ) {
