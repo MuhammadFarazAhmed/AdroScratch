@@ -70,6 +70,7 @@ import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.client.statement.HttpResponseContainer
+import io.ktor.client.statement.bodyAsChannel
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
@@ -81,10 +82,12 @@ import io.ktor.util.reflect.TypeInfo
 import io.ktor.util.toByteArray
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
+import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -198,6 +201,45 @@ val NetworkModule = module {
                 apisEncryptionUtils = get()
             }
 
+            expectSuccess = true
+
+            HttpResponseValidator {
+//                validateResponse { response ->
+//                    if (response.status.value == 200) {
+//
+//                    } else {
+//                        response.content.readUTF8Line()?.let {
+//                            val error = Json.decodeFromString(
+//                                deserializer = ErrorResponse.serializer(),
+//                                it.byteInputStream().readBytes().decodeToString()
+//                            )
+//                            Log.d("TAG", "$error")
+//                        }
+//                    }
+//                }
+                handleResponseExceptionWithRequest { cause, _ ->
+                    when (cause) {
+                        is ClientRequestException -> {
+                            if (cause.response.status == HttpStatusCode.UnprocessableEntity) {
+                                cause.response.content.readUTF8Line()?.let {
+                                    val error = Json.decodeFromString(
+                                        deserializer = ErrorResponse.serializer(),
+                                        it.byteInputStream().readBytes().decodeToString()
+                                    )
+                                    throw Exception(
+                                        error.message.toString(),
+                                        cause
+                                    )
+                                }
+                            }
+                        }
+
+                        else -> {
+                            throw Exception(cause)
+                        }
+                    }
+                }
+            }
         }
     }
 }
