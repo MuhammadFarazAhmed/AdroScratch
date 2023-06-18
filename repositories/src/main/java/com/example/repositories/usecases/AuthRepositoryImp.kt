@@ -25,15 +25,16 @@ import java.util.HashMap
 
 class AuthRepositoryImp(
     private val client: HttpClient,
-    private val userDataStore: DataStore<LoginResponse.Data.User>
+    private val userDataStore: DataStore<LoginResponse.Data.User>,
+    private val configDataStore: DataStore<ConfigModel>
 ) :
     AuthRepository {
     override suspend fun login(hashMap: HashMap<String, String>): Flow<ApiResult<LoginResponse>> =
         convertToFlow(call = {
-                return@convertToFlow client.post {
-                    url { path("/et_user/v5/user/sign_in") }
-                    setDefaultParams(CommonUtilsExtension.API.USER, hashMap)
-                }
+            return@convertToFlow client.post {
+                url { path("/et_user/v5/user/sign_in") }
+                setDefaultParams(CommonUtilsExtension.API.USER, hashMap)
+            }
         }, success = {
             GlobalScope.launch {
                 userDataStore.updateData { it }
@@ -41,6 +42,8 @@ class AuthRepositoryImp(
         }, failure = {
 
         })
+
+    override fun getCountryList() = configDataStore.data
 
 }
 

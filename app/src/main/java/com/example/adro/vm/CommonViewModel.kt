@@ -23,7 +23,6 @@ class CommonViewModel(
         getConfig()
     }
 
-    private val configResponse = MutableStateFlow(ConfigModel())
     var keepOnSplashScreenOn = MutableStateFlow(true)
 
     private fun getConfig() {
@@ -34,7 +33,6 @@ class CommonViewModel(
                         Log.d("TAG", "getConfig: error ${apiResult.exception}")
                     is ApiResult.Loading -> {}
                     is ApiResult.Success -> {
-                        configResponse.value = apiResult.data!!
                         keepOnSplashScreenOn.value  = false
                     }
                 }

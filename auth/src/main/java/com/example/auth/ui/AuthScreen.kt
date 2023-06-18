@@ -1,11 +1,13 @@
 package com.example.auth.ui
 
+import android.util.Patterns
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -239,13 +241,13 @@ fun LoginScreen(vm: AuthViewModel) {
     ) {
         val (tvDescription, etMobile, bRegister, etPassword, bSignIn, tvForgotPassword, etCountryCode) = createRefs()
 
-       val mobile =  remember {
+        val mobile = remember {
             mutableStateOf(
                 TextFieldValue()
             )
         }
 
-        val password =  remember {
+        val password = remember {
             mutableStateOf(
                 TextFieldValue()
             )
@@ -266,7 +268,7 @@ fun LoginScreen(vm: AuthViewModel) {
         )
 
         Row(
-            modifier = Modifier
+            modifier = Modifier.clickable {  }
                 .padding(end = 4.dp)
                 .fillMaxWidth(0.3f)
                 .background(Color.White, shape = RoundedCornerShape(4.dp))
@@ -309,7 +311,7 @@ fun LoginScreen(vm: AuthViewModel) {
                 .fillMaxWidth(0.7f)
                 .background(Color.White, shape = RoundedCornerShape(4.dp)),
             value = mobile.value,
-            onValueChange = { mobile.value = it},
+            onValueChange = { mobile.value = it },
             placeholder = { Text("e.g 5465647") })
 
         TextField(
@@ -326,18 +328,20 @@ fun LoginScreen(vm: AuthViewModel) {
                 .fillMaxWidth()
                 .background(Color.White, shape = RoundedCornerShape(4.dp)),
             value = password.value,
-            onValueChange = { password.value  = it },
+            onValueChange = { password.value = it },
             placeholder = { Text("Password") })
 
         Button(
-            onClick = { vm.login(mobile.value.text,password.value.text) },
+            onClick = {
+                vm.login(mobile.value.text, password.value.text)
+            },
             modifier = Modifier
                 .constrainAs(bSignIn) {
                     linkTo(top = etPassword.bottom, bottom = parent.bottom, bias = 0.0f)
                 }
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = HexToJetpackColor.getColor("e43338")
+                backgroundColor = if (validateMobile(mobile)) HexToJetpackColor.getColor("e43338") else HexToJetpackColor.getColor("282828")
             )
         ) {
             Text(
@@ -388,6 +392,9 @@ fun LoginScreen(vm: AuthViewModel) {
         }
     }
 }
+
+fun validateMobile(mobile: MutableState<TextFieldValue>) =
+    Patterns.PHONE.matcher(mobile.value.text).matches()
 
 @Composable
 fun RegisterScreen() {
