@@ -31,7 +31,9 @@ fun AdroNavHost(
         modifier = modifier
     ) {
 
-        authGraph(onBackClick)
+        authGraph(onBackClick) {
+                navController.popBackStack()
+        }
         homeGraph(
             navigateToAuth = {
                 onNavigateToDestination(AuthDestination, AuthDestination.route)

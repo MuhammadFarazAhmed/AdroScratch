@@ -53,7 +53,6 @@ object CommonUtilsExtension {
             "location_id" to "2",
             "device_uuid" to "26525de9bd832a74",
             "__platform" to "android",
-            "device_uid" to "26525de9bd832a74",
             "__lat" to "0",
             "company" to "ADO",
             "currency" to "AED",

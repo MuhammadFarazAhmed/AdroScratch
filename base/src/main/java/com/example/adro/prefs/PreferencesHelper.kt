@@ -18,7 +18,6 @@ import java.io.IOException
 class PreferencesHelper(private val dataSource: DataStore<Preferences>) :
     IPreferenceDataStoreAPI {
 
-    fun getSessionToken() = ""
     fun getCompany() = "ADO"
     fun getApiToken() = "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4\$x"
     fun getSRKey() = "!EyFde4#\$%gYsRct54fy@#\$5"
@@ -67,7 +66,7 @@ class PreferencesHelper(private val dataSource: DataStore<Preferences>) :
 }
 
 object PreferenceDataStoreConstants {
-    val IS_MINOR_KEY = booleanPreferencesKey("IS_MINOR_KEY")
+    val IS_LOGGED_IN_KEY = booleanPreferencesKey("IS_LOGGED_IN_KEY")
     val AGE_KEY = intPreferencesKey("AGE_KEY")
     val NAME_KEY = stringPreferencesKey("NAME_KEY")
     val MOBILE_NUMBER = longPreferencesKey("MOBILE_NUMBER")

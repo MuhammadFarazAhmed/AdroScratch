@@ -72,6 +72,12 @@ fun HomeScreen(
     vm: HomeViewModel = getViewModel()
 ) {
 
+    val isUserLoggedIn by vm.isUserLoggedIn.collectAsState()
+    LaunchedEffect(isUserLoggedIn) {
+        if (isUserLoggedIn)
+            vm.fetchHomeData()
+    }
+
 
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
@@ -80,6 +86,7 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
+
 
     Surface(modifier = Modifier.background(Color.White)) {
 

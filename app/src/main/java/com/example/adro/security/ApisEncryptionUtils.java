@@ -2,6 +2,7 @@ package com.example.adro.security;
 
 import android.util.Base64;
 
+import com.example.adro.BuildConfig;
 import com.theentertainerme.adro.security.CLibController;
 
 import java.nio.charset.StandardCharsets;
@@ -39,7 +40,7 @@ public class ApisEncryptionUtils {
     private IvParameterSpec getIVSalt() {
         if (ivSalt == null) {
             //String value = getValue();
-            ivSalt = new IvParameterSpec(controller.getAuSaltKey("").getBytes(StandardCharsets.UTF_8));
+            ivSalt = new IvParameterSpec(controller.getAuSaltKey(BuildConfig.FLAVOR).getBytes(StandardCharsets.UTF_8));
         }
         return ivSalt;
     }
@@ -49,7 +50,7 @@ public class ApisEncryptionUtils {
             // String value = getValue();
             //ELog.INSTANCE.logDebug("getSecretKeySpec"+CLibController.Companion.getInstance().getAuSKey(""));
             //ELog.INSTANCE.logDebug("getIVSalt"+CLibController.Companion.getInstance().getAuSaltKey(""));
-            aesSecretKeySpec = new SecretKeySpec(controller.getAuSKey("").getBytes(StandardCharsets.UTF_8), "AES");
+            aesSecretKeySpec = new SecretKeySpec(controller.getAuSKey(BuildConfig.FLAVOR).getBytes(StandardCharsets.UTF_8), "AES");
         }
         return aesSecretKeySpec;
     }

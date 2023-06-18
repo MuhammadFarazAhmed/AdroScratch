@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -34,18 +37,32 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
+import androidx.datastore.core.DataStore
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.prefs.PreferenceDataStoreConstants
+import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.theme.Emad
 import com.example.auth.R
 import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.HomeResponse
+import kotlinx.coroutines.coroutineScope
+import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
 @Composable
-fun AuthScreen(onBackClick: () -> Unit, vm: AuthViewModel = getViewModel()) {
+fun AuthScreen(
+    onBackClick: () -> Unit,
+    navigateBack: () -> Unit,
+    vm: AuthViewModel = getViewModel(),
+    preferencesHelper: PreferencesHelper = get()
+) {
     BackHandler {
         onBackClick()
     }
+
+    val loginSuccess by vm.loginSuccess.collectAsState()
+
+    if (loginSuccess) navigateBack()
 
     Surface(modifier = Modifier.background(Color.White)) {
         Image(
@@ -268,7 +285,8 @@ fun LoginScreen(vm: AuthViewModel) {
         )
 
         Row(
-            modifier = Modifier.clickable {  }
+            modifier = Modifier
+                .clickable { }
                 .padding(end = 4.dp)
                 .fillMaxWidth(0.3f)
                 .background(Color.White, shape = RoundedCornerShape(4.dp))
@@ -332,6 +350,7 @@ fun LoginScreen(vm: AuthViewModel) {
             placeholder = { Text("Password") })
 
         Button(
+            enabled = validateMobile(mobile),
             onClick = {
                 vm.login(mobile.value.text, password.value.text)
             },
@@ -341,7 +360,7 @@ fun LoginScreen(vm: AuthViewModel) {
                 }
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = if (validateMobile(mobile)) HexToJetpackColor.getColor("e43338") else HexToJetpackColor.getColor("282828")
+                backgroundColor = HexToJetpackColor.getColor("e43338")
             )
         ) {
             Text(

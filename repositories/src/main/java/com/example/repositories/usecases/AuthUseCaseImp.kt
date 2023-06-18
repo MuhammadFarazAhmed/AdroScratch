@@ -12,9 +12,6 @@ class AuthUseCaseImp(private val authRepository: AuthRepository) : AuthUseCase {
         return authRepository.login(params)
     }
 
-    override suspend fun getCountryList() {
-        authRepository.getCountryList()
-    }
 
     override suspend fun signup() {
         TODO("Not yet implemented")

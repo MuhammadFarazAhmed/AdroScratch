@@ -86,6 +86,10 @@ import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonConfiguration
 import org.koin.android.ext.koin.androidContext
@@ -141,23 +145,33 @@ val AppModule = module {
         PreferencesHelper(get(named(DataStores.APP)))
     }
 
-    single<String> {
+    single(named("sessionToken")) {
+        var sessionToken = ""
+        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
+            sessionToken =
+                get<DataStore<LoginResponse.Data.User>>(named(DataStores.USER)).data.first().sessionToken.toString()
+        }
+        sessionToken
+    }
+
+    single(named("jwtToken")) {
+        Log.d(
+            "TAG",
+            "${get<String>(named("sessionToken"))} " +
+                    "and ${CLibController.getJApiToken()} " +
+                    "and ${CLibController.getSRKey()}"
+        )
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
             .claim("company", get<PreferencesHelper>().getCompany())
-            .claim("session_token", get<PreferencesHelper>().getSessionToken())
-            .claim("api_token", get<PreferencesHelper>().getApiToken())
+            .claim("session_token", get<String>(named("sessionToken")))
+            .claim("api_token", CLibController.getJApiToken())
             .signWith(
                 SignatureAlgorithm.HS256,
-                Base64.encodeToString(
-                    get<PreferencesHelper>().getSRKey().toByteArray(),
-                    Base64.DEFAULT
-                )
+                CLibController.getSRKey()
             ).compact()
     }
 
-    single { CLibController }
-
-    single { ApisEncryptionUtils(get()) }
+    single { ApisEncryptionUtils(CLibController) }
 
 }
 
@@ -173,14 +187,14 @@ val NetworkModule = module {
                     accept(ContentType.Application.Json)
 
                     protocol = URLProtocol.HTTPS
-                    host = get<CLibController>().getENTBaseUrlOnline()
+                    host = CLibController.getENTBaseUrlOnline()
                 }
             }
 
             install(Auth) {
                 bearer {
                     loadTokens {
-                        BearerTokens(get(), get())
+                        BearerTokens(get(named("jwtToken")), get(named("jwtToken")))
                     }
                 }
             }
@@ -204,19 +218,6 @@ val NetworkModule = module {
             expectSuccess = true
 
             HttpResponseValidator {
-//                validateResponse { response ->
-//                    if (response.status.value == 200) {
-//
-//                    } else {
-//                        response.content.readUTF8Line()?.let {
-//                            val error = Json.decodeFromString(
-//                                deserializer = ErrorResponse.serializer(),
-//                                it.byteInputStream().readBytes().decodeToString()
-//                            )
-//                            Log.d("TAG", "$error")
-//                        }
-//                    }
-//                }
                 handleResponseExceptionWithRequest { cause, _ ->
                     when (cause) {
                         is ClientRequestException -> {
@@ -253,11 +254,11 @@ val commonModule = module {
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get(), get(named(DataStores.CONFIG))) }
+    viewModel { HomeViewModel(get(), get(), get()) }
 }
 
 val authModule = module {
-    single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER))) }
+    single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER)), get()) }
     single<AuthUseCase> { AuthUseCaseImp(get()) }
     viewModel { AuthViewModel(get(), get()) }
 }

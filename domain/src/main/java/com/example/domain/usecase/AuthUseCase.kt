@@ -9,7 +9,6 @@ interface AuthUseCase {
 
     suspend fun login(phone: String, password: String): Flow<ApiResult<LoginResponse>>
 
-    suspend fun getCountryList(): Flow<ConfigModel>
 
     suspend fun signup()
 
