@@ -14,7 +14,7 @@ import retrofit2.Invocation
 
 object CommonUtilsExtension {
 
-    //convert a map to a data class
+    //convert a map to a model class
     inline fun <reified T> Map<String, Any>.toDataClass(): T {
         return convert()
     }

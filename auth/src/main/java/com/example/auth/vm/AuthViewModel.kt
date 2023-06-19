@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.models.ApiStatus
 import com.example.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.distinctUntilChangedBy
 import kotlinx.coroutines.launch
 
 class AuthViewModel(

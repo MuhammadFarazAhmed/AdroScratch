@@ -22,7 +22,7 @@ class PreferencesHelper(private val dataSource: DataStore<Preferences>) :
     fun getApiToken() = "k229rn-j#5W9-J8D#6-A6M0(o-!7#9&4\$x"
     fun getSRKey() = "!EyFde4#\$%gYsRct54fy@#\$5"
 
-    /* This returns us a flow of data from DataStore.
+    /* This returns us a flow of model from DataStore.
   Basically as soon we update the value in Datastore,
   the values returned by it also changes. */
     override suspend fun <T> getPreference(key: Preferences.Key<T>, defaultValue: T):

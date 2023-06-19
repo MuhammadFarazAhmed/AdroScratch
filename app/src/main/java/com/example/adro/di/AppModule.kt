@@ -17,6 +17,7 @@ import com.example.adro.prefs.ConfigPreferencesSerializer
 import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.prefs.UserPreferencesSerializer
 import com.example.adro.security.ApisEncryptionUtils
+import com.example.adro.security.XOREncryption
 import com.example.adro.vm.CommonViewModel
 import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.ApiResult
@@ -158,16 +159,22 @@ val AppModule = module {
         Log.d(
             "TAG",
             "${get<String>(named("sessionToken"))} " +
-                    "and ${CLibController.getJApiToken()} " +
-                    "and ${CLibController.getSRKey()}"
+                    "and ${XOREncryption.decryptFromCKey(CLibController.getJApiToken())} " +
+                    "and ${Base64.encodeToString(
+                        XOREncryption.decryptFromCKey(CLibController.getSRKey()).toByteArray(),
+                        Base64.DEFAULT
+                    )}"
         )
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
             .claim("company", get<PreferencesHelper>().getCompany())
             .claim("session_token", get<String>(named("sessionToken")))
-            .claim("api_token", CLibController.getJApiToken())
+            .claim("api_token", XOREncryption.decryptFromCKey(CLibController.getJApiToken()))
             .signWith(
                 SignatureAlgorithm.HS256,
-                CLibController.getSRKey()
+                Base64.encodeToString(
+                    XOREncryption.decryptFromCKey(CLibController.getSRKey()).toByteArray(),
+                    Base64.DEFAULT
+                )
             ).compact()
     }
 

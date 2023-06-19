@@ -10,7 +10,7 @@ data class ProfileResponse(
     val cmd: String? = null,
     @SerialName("code")
     val code: Int? = null,
-    @SerialName("data")
+    @SerialName("model")
     val `data`: List<Data>,
     @SerialName("http_response")
     val httpResponse: Int? = null,

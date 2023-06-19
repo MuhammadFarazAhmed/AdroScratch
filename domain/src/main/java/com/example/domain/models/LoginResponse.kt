@@ -12,7 +12,7 @@ data class LoginResponse(
     val message: String? = null,
     @SerialName("code")
     val code: Int? = null,
-    @SerialName("data")
+    @SerialName("model")
     val `data`: Data? = null,
     @SerialName("cmd")
     val cmd: String? = null,

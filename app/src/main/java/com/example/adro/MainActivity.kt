@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
         content.viewTreeObserver.addOnPreDrawListener(
             object : ViewTreeObserver.OnPreDrawListener {
                 override fun onPreDraw(): Boolean {
-                    // Check if the initial data is ready.
+                    // Check if the initial model is ready.
                     return if (!vm.keepOnSplashScreenOn.value) {
                         // The content is ready; start drawing.
                         content.viewTreeObserver.removeOnPreDrawListener(this)
