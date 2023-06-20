@@ -168,11 +168,11 @@ val AppModule = module {
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
             .claim("company", get<PreferencesHelper>().getCompany())
             .claim("session_token", get<String>(named("sessionToken")))
-            .claim("api_token", XOREncryption.decryptFromCKey(CLibController.getJApiToken()))
+            .claim("api_token", get<PreferencesHelper>().getApiToken())
             .signWith(
                 SignatureAlgorithm.HS256,
                 Base64.encodeToString(
-                    XOREncryption.decryptFromCKey(CLibController.getSRKey()).toByteArray(),
+                    get<PreferencesHelper>().getSRKey().toByteArray(),
                     Base64.DEFAULT
                 )
             ).compact()

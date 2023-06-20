@@ -15,8 +15,8 @@ import com.example.domain.usecase.HomeUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class HomeViewModel constructor(
-    private val application: Application,
+class HomeViewModel(
+    application: Application,
     private val homeUseCase: HomeUseCase,
     private val preferencesHelper: PreferencesHelper
 ) :
@@ -42,7 +42,7 @@ class HomeViewModel constructor(
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> {
-                        sections.value = it.data?.data?.sections!!
+                        it.data?.data?.sections?.let { sections.value = it }
                     }
 
                     ApiStatus.ERROR -> Log.d("TAG", "${it.message}: ")

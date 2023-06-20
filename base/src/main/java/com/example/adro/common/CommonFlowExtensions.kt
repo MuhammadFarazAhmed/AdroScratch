@@ -77,7 +77,7 @@ object CommonFlowExtensions {
                 val response = call()
                 emit(ApiResult.Loading(false))
                 success(response.body())
-                emit(ApiResult.Success(null))
+                emit(ApiResult.Success(response.body()))
             } catch (e: Exception) {
                 emit(ApiResult.Loading(false))
                 emit(ApiResult.Error(ErrorResponse(message = e.message)))
