@@ -9,7 +9,7 @@ interface AuthUseCase {
 
     suspend fun login(phone: String, password: String): Flow<ApiResult<LoginResponse>>
 
-
+    fun isUserLoggedIn(): Flow<LoginResponse.Data.User>
     suspend fun signup()
 
     suspend fun forgotPassword()

@@ -27,7 +27,7 @@ class DecryptResponseInterceptor private constructor(private val apisEncryptionU
             val original = ByteReadChannel(byteArray)
 
             val decryptString = apisEncryptionUtils.decryptString(String(original.toByteArray()))
-                .also { it?.let { it1 -> Log.d("decryptedResponse", it1) } }
+                  .also { it?.let { it1 -> Log.d("decryptedResponse", it1) } }
             val decryptResponse =
                 if (decryptString == null) original else ByteReadChannel(decryptString)
 

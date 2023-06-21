@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -37,24 +36,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
-import androidx.datastore.core.DataStore
 import com.example.adro.common.HexToJetpackColor
-import com.example.adro.prefs.PreferenceDataStoreConstants
-import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.theme.Emad
 import com.example.auth.R
 import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.HomeResponse
-import kotlinx.coroutines.coroutineScope
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AuthScreen(
     onBackClick: () -> Unit,
     navigateBack: () -> Unit,
-    vm: AuthViewModel = getViewModel(),
-    preferencesHelper: PreferencesHelper = get()
+    vm: AuthViewModel = getViewModel()
 ) {
     BackHandler {
         onBackClick()
@@ -260,13 +253,13 @@ fun LoginScreen(vm: AuthViewModel) {
 
         val mobile = remember {
             mutableStateOf(
-                TextFieldValue()
+                TextFieldValue("+971555555555")
             )
         }
 
         val password = remember {
             mutableStateOf(
-                TextFieldValue()
+                TextFieldValue("Faraz@#1234")
             )
         }
 

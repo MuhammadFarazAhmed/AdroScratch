@@ -12,7 +12,7 @@ data class ConfigModel(
     val message: String? = null,
     @SerialName("code")
     val code: Int? = null,
-    @SerialName("model")
+    @SerialName("data")
     val `data`: Data? = null,
     @SerialName("cmd")
     val cmd: String? = null,

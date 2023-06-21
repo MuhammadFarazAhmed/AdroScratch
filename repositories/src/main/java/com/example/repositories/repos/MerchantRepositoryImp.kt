@@ -26,7 +26,7 @@ class MerchantRepositoryImp(
                 setDefaultParams(OUTLET, params)
                 url { path("/ets_api/v5/offer/tabs") }
             }
-        })
+        }, success = {}, failure = {})
 
     override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> {
         return try {
@@ -37,7 +37,7 @@ class MerchantRepositoryImp(
                 )
                 url { path("/ets_api/v5/outlets") }
             }
-            (response.body() as OffersResponse).asList()
+            (response.body() as OffersResponse).data.outlets
         } catch (e: Exception) {
             e.toCustomExceptions()
             emptyList()

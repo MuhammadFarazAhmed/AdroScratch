@@ -3,7 +3,6 @@ package com.example.auth.nav
 import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
 import androidx.navigation.NavGraphBuilder
 import com.example.adro.AdroNavigationDestination
 import com.example.auth.ui.AuthScreen
@@ -30,7 +29,7 @@ fun NavGraphBuilder.authGraph(onBackClick: () -> Unit, navigateBack: () -> Unit)
                 animationSpec = tween(300)
             )
         }) {
-        AuthScreen(onBackClick = onBackClick,navigateBack = navigateBack)
+        AuthScreen(onBackClick = onBackClick, navigateBack = navigateBack)
     }
 
 }

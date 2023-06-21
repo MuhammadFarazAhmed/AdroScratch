@@ -17,7 +17,9 @@ import io.ktor.http.path
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class AuthRepositoryImp(
     private val client: HttpClient,
@@ -31,14 +33,15 @@ class AuthRepositoryImp(
                 url { path("/et_user/v5/user/sign_in") }
                 setDefaultParams(CommonUtilsExtension.API.USER, hashMap)
             }
-        }, success = {
-            GlobalScope.launch {
+        }, success = { response ->
+            response.data?.user?.let {
                 userDataStore.updateData { it }
-                preferencesHelper.putPreference(IS_LOGGED_IN_KEY, true)
             }
         }, failure = {
 
         })
+
+    override fun isUserLoggedIn() = userDataStore.data
 
 
 }

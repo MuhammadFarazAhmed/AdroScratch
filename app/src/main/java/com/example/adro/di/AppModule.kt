@@ -1,6 +1,5 @@
 package com.example.adro.di
 
-import android.provider.ContactsContract.Data
 import android.util.Base64
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -8,7 +7,6 @@ import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.adro.interceptors.changeBaseUrlInterceptor
@@ -20,8 +18,6 @@ import com.example.adro.security.ApisEncryptionUtils
 import com.example.adro.security.XOREncryption
 import com.example.adro.vm.CommonViewModel
 import com.example.auth.vm.AuthViewModel
-import com.example.domain.models.ApiResult
-import com.example.domain.models.ConfigModel
 import com.example.domain.models.ErrorResponse
 import com.example.domain.models.LoginResponse
 import com.example.domain.repos.AuthRepository
@@ -57,11 +53,9 @@ import io.jsonwebtoken.JwsHeader
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpResponseValidator
-import io.ktor.client.plugins.ResponseException
 import io.ktor.client.plugins.auth.Auth
 import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.auth.providers.bearer
@@ -70,29 +64,19 @@ import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
-import io.ktor.client.statement.HttpResponseContainer
-import io.ktor.client.statement.bodyAsChannel
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.util.InternalAPI
-import io.ktor.util.reflect.TypeInfo
-import io.ktor.util.toByteArray
-import io.ktor.utils.io.ByteReadChannel
-import io.ktor.utils.io.readAvailable
 import io.ktor.utils.io.readUTF8Line
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -146,33 +130,28 @@ val AppModule = module {
         PreferencesHelper(get(named(DataStores.APP)))
     }
 
-    single(named("sessionToken")) {
-        var sessionToken = ""
-        CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
-            sessionToken =
-                get<DataStore<LoginResponse.Data.User>>(named(DataStores.USER)).data.first().sessionToken.toString()
-        }
-        sessionToken
-    }
-
     single(named("jwtToken")) {
         Log.d(
             "TAG",
-            "${get<String>(named("sessionToken"))} " +
+            " credentials :${runBlocking { get<DataStore<LoginResponse.Data.User>>(named(DataStores.USER)).data.first().sessionToken }} " +
                     "and ${XOREncryption.decryptFromCKey(CLibController.getJApiToken())} " +
-                    "and ${Base64.encodeToString(
-                        XOREncryption.decryptFromCKey(CLibController.getSRKey()).toByteArray(),
-                        Base64.DEFAULT
-                    )}"
+                    "and ${
+                        Base64.encodeToString(
+                            XOREncryption.decryptFromCKey(CLibController.getSRKey()).toByteArray(),
+                            Base64.DEFAULT
+                        )
+                    }"
         )
         Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
             .claim("company", get<PreferencesHelper>().getCompany())
-            .claim("session_token", get<String>(named("sessionToken")))
-            .claim("api_token", get<PreferencesHelper>().getApiToken())
+            .claim(
+                "session_token",
+                runBlocking { get<DataStore<LoginResponse.Data.User>>(named(DataStores.USER)).data.first().sessionToken })
+            .claim("api_token", XOREncryption.decryptFromCKey(CLibController.getJApiToken()))
             .signWith(
                 SignatureAlgorithm.HS256,
                 Base64.encodeToString(
-                    get<PreferencesHelper>().getSRKey().toByteArray(),
+                    XOREncryption.decryptFromCKey(CLibController.getSRKey()).toByteArray(),
                     Base64.DEFAULT
                 )
             ).compact()
@@ -261,13 +240,13 @@ val commonModule = module {
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get(), get(named(DataStores.USER))) }
 }
 
 val authModule = module {
     single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER)), get()) }
     single<AuthUseCase> { AuthUseCaseImp(get()) }
-    viewModel { AuthViewModel(get(), get()) }
+    viewModel { AuthViewModel(get(), get(), get(named(DataStores.USER))) }
 }
 
 val merchantModule = module {

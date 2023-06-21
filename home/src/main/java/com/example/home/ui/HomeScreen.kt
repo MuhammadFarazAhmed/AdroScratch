@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
@@ -50,8 +53,6 @@ fun HomeScreenPreview() {
     Column {
         MainCarousal(pagerState, section)
 
-        // LoginView(section, navControlle)
-
         Categories(section) {
 
         }
@@ -64,7 +65,7 @@ fun HomeScreenPreview() {
 
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     navigateToAuth: () -> Unit,
@@ -72,12 +73,11 @@ fun HomeScreen(
     vm: HomeViewModel = getViewModel()
 ) {
 
-    val isUserLoggedIn by vm.isUserLoggedIn.collectAsState()
-    LaunchedEffect(isUserLoggedIn) {
-        if (isUserLoggedIn)
-            vm.fetchHomeData()
-    }
-
+//    LaunchedEffect(vm.isUserLoggedIn) {
+//        if (vm.isUserLoggedIn.value) {
+//            vm.fetchHomeData()
+//        }
+//    }
 
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
@@ -86,36 +86,49 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
+    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
 
+    Box(
+        Modifier
+            .pullRefresh(pullRefreshState)
+    ) {
 
-    Surface(modifier = Modifier.background(Color.White)) {
+        Surface(modifier = Modifier.background(Color.White)) {
 
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
 
-            items(homeSection) { section ->
+                items(homeSection) { section ->
 
-                when (section.sectionIdentifier) {
+                    when (section.sectionIdentifier) {
 
-                    "main_carousal" -> MainCarousal(pagerState, section)
+                        "main_carousal" -> MainCarousal(pagerState, section)
 
-                    "guest_user" -> LoginView(section, navigateToAuth)
+                        "guest_user" -> LoginView(section, navigateToAuth)
 
-                    "categories" -> Categories(section) { deeplink ->
-                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(deeplink)))
+                        "categories" -> Categories(section) { deeplink ->
+                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(deeplink)))
+                        }
+
+                        "exclusive_offers" -> ExclusiveItem(
+                            pagerState = exclusivePagerState,
+                            section
+                        )
+
+                        "recommended_offers" -> RecommendedItem(
+                            pagerState = recommendedPagerState,
+                            section
+                        )
                     }
 
-                    "exclusive_offers" -> ExclusiveItem(
-                        pagerState = exclusivePagerState,
-                        section
-                    )
-
-                    "recommended_offers" -> RecommendedItem(
-                        pagerState = recommendedPagerState,
-                        section
-                    )
                 }
-
             }
+
+            PullRefreshIndicator(
+                refreshing = isRefreshing,
+                state = pullRefreshState,
+                Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 
@@ -370,7 +383,8 @@ fun Categories(
         LazyRow(
             modifier = Modifier
                 .wrapContentHeight()
-                .padding(16.dp)
+                .padding(vertical = 16.dp)
+                .padding(start = 16.dp)
         ) {
 
             items(section.sectionItems) { item ->

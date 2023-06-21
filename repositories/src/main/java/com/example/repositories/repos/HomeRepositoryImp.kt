@@ -21,6 +21,10 @@ class HomeRepositoryImp(private val client: HttpClient) : HomeRepository {
                     setDefaultParams(CORE)
                     url { path("/ets_api/v5/home") }
                 }
+            }, success = {
+
+            }, failure = {
+
             })
 
 }

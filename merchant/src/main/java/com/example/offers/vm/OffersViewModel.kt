@@ -60,7 +60,7 @@ class OffersViewModel @Inject constructor(
         viewModelScope.launch {
             Pager(PagingConfig(pageSize = 60)) {
                 BasePagingSource(MutableStateFlow(false)) {
-                    merchantUseCase.fetchOffers(selectedTab.value!!.params)
+                    merchantUseCase.fetchOffers(selectedTab.value?.params)
                 }
             }.flow.cachedIn(viewModelScope).collectLatest {
                 offers.value = it

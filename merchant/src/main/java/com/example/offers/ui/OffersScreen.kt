@@ -48,7 +48,7 @@ fun OffersScreen(
     vm: OffersViewModel = getViewModel()
 ) {
 
-    Log.d("TAG", "OffersScreen: $params")
+    Log.d("TAG", "Outlet params: $params")
 
     vm.params = params
 

@@ -10,7 +10,7 @@ data class OffersResponse(
     val cmd: String? = null,
     @SerialName("code")
     val code: Int? = null,
-    @SerialName("model")
+    @SerialName("data")
     val `data`: Data,
     @SerialName("http_response")
     val httpResponse: Int? = null,

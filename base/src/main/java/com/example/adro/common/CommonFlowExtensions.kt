@@ -68,8 +68,8 @@ object CommonFlowExtensions {
 
     inline fun <reified T> convertToFlow(
         crossinline call: suspend () -> HttpResponse,
-        crossinline success: (data: T) -> Unit = {},
-        crossinline failure: () -> Unit = {}
+        crossinline success: suspend (data: T) -> Unit,
+        crossinline failure: suspend () -> Unit
     ): Flow<ApiResult<T>> =
         flow<ApiResult<T>> {
             emit(ApiResult.Loading(true))
@@ -80,8 +80,8 @@ object CommonFlowExtensions {
                 emit(ApiResult.Success(response.body()))
             } catch (e: Exception) {
                 emit(ApiResult.Loading(false))
-                emit(ApiResult.Error(ErrorResponse(message = e.message)))
                 failure()
+                emit(ApiResult.Error(ErrorResponse(message = e.message)))
             }
         }.flowOn(Dispatchers.IO)
 

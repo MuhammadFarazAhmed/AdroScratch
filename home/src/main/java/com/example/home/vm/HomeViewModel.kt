@@ -3,14 +3,14 @@ package com.example.home.vm
 import android.app.Application
 import android.util.Log
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.*
 import com.example.domain.models.ApiStatus
 import com.example.adro.common.CommonFlowExtensions.handleErrors
 import com.example.adro.prefs.PreferenceDataStoreConstants
 import com.example.adro.prefs.PreferencesHelper
-import com.example.domain.models.ConfigModel
 import com.example.domain.models.HomeResponse
+import com.example.domain.models.LoginResponse
+import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.HomeUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -18,21 +18,28 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     application: Application,
     private val homeUseCase: HomeUseCase,
-    private val preferencesHelper: PreferencesHelper
+    private val authUseCase: AuthUseCase,
+    private val preferencesHelper: PreferencesHelper,
+    private val userDataStore: DataStore<LoginResponse.Data.User>
 ) :
     AndroidViewModel(application) {
 
     val isUserLoggedIn = MutableStateFlow(false)
+    val isRefreshing = MutableStateFlow(false)
 
     init {
         fetchHomeData()
+//        viewModelScope.launch {
+//            authUseCase.isUserLoggedIn().collectLatest {
+//                if (it.userId != null) {
+//                    isUserLoggedIn.value = true
+//                }
+//            }
+//        }
+    }
 
-        viewModelScope.launch {
-            preferencesHelper.getPreference(PreferenceDataStoreConstants.IS_LOGGED_IN_KEY, false)
-                .collectLatest {
-                    isUserLoggedIn.value = it
-                }
-        }
+    fun refresh() {
+        fetchHomeData()
     }
 
     fun fetchHomeData() {
@@ -42,11 +49,18 @@ class HomeViewModel(
             homeUseCase.fetchHome().handleErrors().collect {
                 when (it.status) {
                     ApiStatus.SUCCESS -> {
+                        isRefreshing.emit(false)
                         it.data?.data?.sections?.let { sections.value = it }
                     }
 
-                    ApiStatus.ERROR -> Log.d("TAG", "${it.message}: ")
-                    ApiStatus.LOADING -> {}
+                    ApiStatus.ERROR -> {
+                        isRefreshing.emit(false)
+                        Log.d("TAG", "${it.message}: ")
+                    }
+
+                    ApiStatus.LOADING -> {
+                        isRefreshing.emit(true)
+                    }
                 }
             }
 
