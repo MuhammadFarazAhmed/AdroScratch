@@ -103,4 +103,6 @@ dependencies {
 
     implementation("io.coil-kt:coil-compose:2.2.2")
 
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+
 }

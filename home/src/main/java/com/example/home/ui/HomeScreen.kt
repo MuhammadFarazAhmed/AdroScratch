@@ -73,11 +73,6 @@ fun HomeScreen(
     vm: HomeViewModel = getViewModel()
 ) {
 
-//    LaunchedEffect(vm.isUserLoggedIn) {
-//        if (vm.isUserLoggedIn.value) {
-//            vm.fetchHomeData()
-//        }
-//    }
 
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()

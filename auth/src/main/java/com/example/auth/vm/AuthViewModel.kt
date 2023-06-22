@@ -26,12 +26,14 @@ class AuthViewModel(
             authUseCase.login(mobile, password).collect { res ->
                 when (res.status) {
                     ApiStatus.SUCCESS -> {
-                        viewModelScope.launch {
-                            res.data?.data?.user?.let {
-                                if (it.userId != null)
-                                    userDataStore.updateData { it }
-                            }
-                        }
+//                        viewModelScope.launch {
+//                            res.data?.data?.user?.let {
+//                                if (it.userId != null) {
+//                                    userDataStore.updateData { it }
+//                                    loginSuccess.value = true
+//                                }
+//                            }
+//                        }
                         loginSuccess.value = true
                     }
 

@@ -24,18 +24,17 @@ class HomeViewModel(
 ) :
     AndroidViewModel(application) {
 
-    val isUserLoggedIn = MutableStateFlow(false)
     val isRefreshing = MutableStateFlow(false)
 
     init {
         fetchHomeData()
-//        viewModelScope.launch {
-//            authUseCase.isUserLoggedIn().collectLatest {
-//                if (it.userId != null) {
-//                    isUserLoggedIn.value = true
-//                }
-//            }
-//        }
+
+        viewModelScope.launch {
+            authUseCase.isUserLoggedIn().map { it.userId != null }.collectLatest { isLoggedIn ->
+                if (isLoggedIn)
+                    refresh()
+            }
+        }
     }
 
     fun refresh() {

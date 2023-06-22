@@ -5,7 +5,6 @@ import com.example.domain.models.LoginResponse
 import com.example.domain.repos.AuthRepository
 import com.example.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 
 class AuthUseCaseImp(private val authRepository: AuthRepository) : AuthUseCase {
     override suspend fun login(phone: String, password: String): Flow<ApiResult<LoginResponse>> {
