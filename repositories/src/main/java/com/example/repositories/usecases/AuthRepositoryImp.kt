@@ -4,6 +4,7 @@ package com.example.repositories.usecases
 
 import android.util.Log
 import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
@@ -22,7 +23,8 @@ import kotlinx.coroutines.runBlocking
 
 class AuthRepositoryImp(
     private val client: HttpClient,
-    private val userDataStore: DataStore<LoginResponse.Data.User>
+    private val userDataStore: DataStore<LoginResponse.Data.User>,
+    private val preferencesHelper: PreferencesHelper
 ) :
     AuthRepository {
     override suspend fun login(hashMap: HashMap<String, String>): Flow<ApiResult<LoginResponse>> =
@@ -36,6 +38,7 @@ class AuthRepositoryImp(
                 response.data?.user?.let { user ->
                     userDataStore.updateData { user }
                 }
+                preferencesHelper.putPreference(booleanPreferencesKey("is_login"), true)
             }, failure = {
 
             })

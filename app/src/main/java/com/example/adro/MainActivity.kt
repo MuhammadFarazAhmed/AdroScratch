@@ -10,6 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.adro.vm.CommonViewModel
+import com.example.auth.ui.AuthScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -33,10 +34,16 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             vm.keepOnSplashScreenOn.collect {
                 if (!it) {
-                    setContent {
-                        val appState = rememberAdroAppState()
-                        navController = appState.navController
-                        AdroApp(appState)
+                    if(vm.isLogin.value.not()){
+                        setContent {
+                            AuthScreen(onBackClick = {  }, navigateBack = {  })
+                        }
+                    }else {
+                        setContent {
+                            val appState = rememberAdroAppState()
+                            navController = appState.navController
+                            AdroApp(appState)
+                        }
                     }
                 }
             }

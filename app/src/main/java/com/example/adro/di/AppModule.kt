@@ -13,7 +13,6 @@ import com.example.adro.prefs.ConfigPreferencesSerializer
 import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.prefs.UserPreferencesSerializer
 import com.example.adro.security.ApisEncryptionUtils
-import com.theentertainerme.adro.security.JWTProvider
 import com.example.adro.vm.CommonViewModel
 import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.ErrorResponse
@@ -51,9 +50,6 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
-import io.ktor.client.plugins.auth.providers.BearerTokens
-import io.ktor.client.plugins.auth.providers.RefreshTokensParams
-import io.ktor.client.plugins.auth.providers.bearer
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -201,7 +197,7 @@ val NetworkModule = module {
 val commonModule = module {
     single<CommonRepository> { CommonRepositoryImp(get(), get(named(DataStores.CONFIG))) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
-    viewModel { CommonViewModel(get(), get()) }
+    viewModel { CommonViewModel(get(), get(), get()) }
 }
 
 val homeModule = module {
@@ -211,7 +207,7 @@ val homeModule = module {
 }
 
 val authModule = module {
-    single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER))) }
+    single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER)), get()) }
     single<AuthUseCase> { AuthUseCaseImp(get()) }
     viewModel { AuthViewModel(get(), get(), get(named(DataStores.USER))) }
 }
