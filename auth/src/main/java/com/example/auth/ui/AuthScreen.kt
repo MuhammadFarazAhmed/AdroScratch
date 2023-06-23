@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension.Companion.fillToConstraints
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.theme.Emad
 import com.example.auth.R
@@ -45,25 +46,27 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun AuthScreen(
-    onBackClick: () -> Unit,
-    navigateBack: () -> Unit,
+    onBackClick: () -> Unit = {},
+    onLoginSuccess: () -> Unit = {},
     vm: AuthViewModel = getViewModel()
 ) {
     BackHandler {
         onBackClick()
     }
 
-    val loginSuccess by vm.loginSuccess.collectAsState()
+    val loginSuccess by vm.loginSuccess.collectAsStateLifecycleAware()
 
-    if (loginSuccess) navigateBack()
+    if (loginSuccess) onLoginSuccess()
 
     Surface(modifier = Modifier.background(Color.White)) {
+
         Image(
             painter = painterResource(id = R.drawable.adro_image),
             contentDescription = "",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier.fillMaxSize()
         )
+
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.verticalScroll(rememberScrollState())
@@ -71,6 +74,7 @@ fun AuthScreen(
             AppLogo()
             LoginScreen(vm)
         }
+
     }
 
 }

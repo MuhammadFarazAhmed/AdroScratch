@@ -4,7 +4,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.example.adro.AdroNavigationDestination
+import com.example.adro.ui.AdroNavigationDestination
 import com.example.auth.nav.AuthDestination
 import com.example.auth.nav.authGraph
 import com.example.home.nav.HomeDestination
@@ -17,10 +17,11 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun AdroNavHost(
+fun ThriveNavHost(
     navController: NavHostController,
     onNavigateToDestination: (AdroNavigationDestination, String?) -> Unit,
-    onBackClick: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    isApiLoading: (loading: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = HomeDestination.route
 ) {
@@ -30,8 +31,8 @@ fun AdroNavHost(
         modifier = modifier
     ) {
 
-        authGraph(onBackClick) {
-                navController.popBackStack()
+        authGraph(onLoginSuccess) {
+            navController.popBackStack()
         }
         homeGraph(
             navigateToAuth = {
@@ -39,6 +40,9 @@ fun AdroNavHost(
             },
             navigateToOffers = {
                 onNavigateToDestination(MerchantDestination, MerchantDestination.route)
+            },
+            isApiLoading = { loading: Boolean ->
+                isApiLoading(loading)
             }
         )
         merchantGraph(
@@ -46,7 +50,11 @@ fun AdroNavHost(
                 onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
             })
         favGraph()
-        profileGraph()
+        profileGraph(
+            navigateToHome = {
+                onNavigateToDestination(HomeDestination, HomeDestination.route)
+            }
+        )
 
     }
 }

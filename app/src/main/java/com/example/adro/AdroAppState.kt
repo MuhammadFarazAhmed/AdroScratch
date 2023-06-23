@@ -6,9 +6,9 @@ import androidx.core.os.trace
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
 import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
+import com.example.adro.ui.AdroNavigationDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
 import com.example.offers.nav.FavoriteDestination
@@ -27,6 +27,7 @@ fun rememberAdroAppState(navController: NavHostController = rememberAnimatedNavC
 
 @Stable
 class AdroAppState(val navController: NavHostController) {
+
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
@@ -65,19 +66,7 @@ class AdroAppState(val navController: NavHostController) {
             )
         )
 
-    /**
-     * UI logic for navigating to a particular destination in the app. The NavigationOptions to
-     * navigate with are based on the type of destination, which could be a top level destination or
-     * just a regular destination.
-     *
-     * Top level destinations have only one copy of the destination of the back stack, and save and
-     * restore state whenever you navigate to and from it.
-     * Regular destinations can have multiple copies in the back stack and state isn't saved nor
-     * restored.
-     *
-     * @param destination: The [AdroNavigationDestination] the app needs to navigate to.
-     * @param route: Optional route to navigate to in case the destination contains arguments.
-     */
+
     fun navigate(
         destination: AdroNavigationDestination,
         route: String? = null
@@ -107,7 +96,7 @@ class AdroAppState(val navController: NavHostController) {
         }
     }
 
-    fun onBackClick() {
+    fun onLoginSuccess() {
         navController.popBackStack()
     }
 }

@@ -1,14 +1,7 @@
-package com.example.adro
+package com.example.adro.ui
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,7 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.adro.theme.AdroScratchTheme
+import com.example.adro.theme.ThriveScratchTheme
 import com.example.base.R
 
 
@@ -88,7 +81,7 @@ fun Toolbar(visibility: MutableState<Boolean>) {
 @Preview(uiMode = UI_MODE_NIGHT_NO)
 @Composable
 fun ToolbarPreview() {
-    AdroScratchTheme {
+    ThriveScratchTheme {
         Toolbar(mutableStateOf(true))
     }
 }

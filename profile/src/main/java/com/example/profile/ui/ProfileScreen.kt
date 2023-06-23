@@ -25,6 +25,7 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,14 +42,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
-import com.example.adro.ErrorItem
-import com.example.adro.LoadingItem
-import com.example.adro.LoadingView
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
@@ -64,11 +62,18 @@ enum class ProfileSections(val value: String) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
+fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getViewModel()) {
 
     val lazySections = vm.sections.collectAsLazyPagingItems()
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
+    val isLogin by vm.isLogin.collectAsState()
+    val takeMeToLogin by vm.takeMeToTheLogin.collectAsState()
+
+
+    if (takeMeToLogin) {
+        navigateToHome()
+    }
 
     Box(
         Modifier
@@ -85,7 +90,11 @@ fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
                 val item = lazySections[index]
                 when (item?.sectionIdentifier) {
 
-                    ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader()
+                    ProfileSections.PROFILE_HEADER.value -> {
+                        if (!isLogin) {
+                            ProfileSectionHeader()
+                        }
+                    }
 
                     ProfileSections.MY_ACCOUNT.value,
                     ProfileSections.REDEMPTIONS_DETAILS.value,
@@ -104,39 +113,15 @@ fun ProfileScreen(vm: ProfileViewModel = getViewModel()) {
                         }
                     }
 
-                    ProfileSections.SIGN_OUT.value -> ProfileSectionSignOut()
+                    ProfileSections.SIGN_OUT.value -> if (isLogin) {
+                        ProfileSectionSignOut(vm)
+                    }
 
                 }
             }
-            lazySections.apply {
-                when {
-                    loadState.refresh is LoadState.Loading -> {
-                        item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
-                    }
 
-                    loadState.append is LoadState.Loading -> {
-                        item { LoadingItem() }
-                    }
+            applyPagination(lazySections)
 
-                    loadState.refresh is LoadState.Error -> {
-                        val e = lazySections.loadState.refresh as LoadState.Error
-                        item {
-                            ErrorItem(message = e.error.message,
-                                modifier = Modifier.fillParentMaxSize(),
-                                onClickRetry = { })
-                        }
-                    }
-
-                    loadState.append is LoadState.Error -> {
-                        val e = lazySections.loadState.append as LoadState.Error
-                        item {
-                            ErrorItem(
-                                message = e.error.message, onClickRetry = { vm.sections }
-                            )
-                        }
-                    }
-                }
-            }
         }
 
         PullRefreshIndicator(
@@ -278,7 +263,7 @@ fun ProfileSectionSwitch(title: String?, value: Int?) {
 }
 
 @Composable
-fun ProfileSectionSignOut() {
+fun ProfileSectionSignOut(vm: ProfileViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -290,7 +275,9 @@ fun ProfileSectionSignOut() {
         Button(
             elevation = ButtonDefaults.elevation(0.dp),
             colors = ButtonDefaults.buttonColors(backgroundColor = Color.Transparent),
-            onClick = { },
+            onClick = {
+                vm.signOut()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 8.dp)

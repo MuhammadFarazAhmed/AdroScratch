@@ -3,7 +3,7 @@ package com.example.home.nav
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
-import com.example.adro.AdroNavigationDestination
+import com.example.adro.ui.AdroNavigationDestination
 import com.example.home.ui.HomeScreen
 
 
@@ -15,7 +15,8 @@ object HomeDestination : AdroNavigationDestination {
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
-    navigateToOffers: () -> Unit
+    navigateToOffers: () -> Unit,
+    isApiLoading: (loading: Boolean) -> Unit
 //    nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
 //    navigation(
@@ -23,7 +24,10 @@ fun NavGraphBuilder.homeGraph(
 //        startDestination = HomeDestination.destination
 //    ) {
     composable(HomeDestination.route) {
-        HomeScreen(navigateToAuth = navigateToAuth, navigateToOffers = { navigateToOffers() })
+        HomeScreen(
+            navigateToAuth = navigateToAuth,
+            navigateToOffers = { navigateToOffers() },
+            isApiLoading = { loading: Boolean -> isApiLoading(loading) })
     }
 //        nestedGraphs()
 //    }

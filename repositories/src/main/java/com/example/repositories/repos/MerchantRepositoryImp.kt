@@ -21,12 +21,16 @@ class MerchantRepositoryImp(
 ) : MerchantRepository {
 
     override fun fetchTabs(params: HashMap<String, String>?): Flow<ApiResult<TabsResponse>> =
-        convertToFlow({
+        convertToFlow(call = {
             client.post {
                 setDefaultParams(OUTLET, params)
                 url { path("/ets_api/v5/offer/tabs") }
             }
-        }, success = {}, failure = {})
+        }, success = {
+
+        },
+            failure = {}
+        )
 
     override suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet> {
         return try {

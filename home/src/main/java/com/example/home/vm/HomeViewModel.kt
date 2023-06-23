@@ -2,13 +2,10 @@ package com.example.home.vm
 
 import android.app.Application
 import android.util.Log
-import androidx.compose.runtime.collectAsState
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.*
 import com.example.domain.models.ApiStatus
 import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.adro.prefs.PreferenceDataStoreConstants
 import com.example.adro.prefs.PreferencesHelper
 import com.example.domain.models.HomeResponse
 import com.example.domain.models.LoginResponse
@@ -27,14 +24,16 @@ class HomeViewModel(
     AndroidViewModel(application) {
 
     val isRefreshing = MutableStateFlow(false)
+    val isLogin = MutableStateFlow(false)
 
     init {
         fetchHomeData()
 
         viewModelScope.launch {
-            authUseCase.isUserLoggedIn().map { it.userId != null }.collectLatest { isLoggedIn ->
-                if (isLoggedIn)
-                    refresh()
+            authUseCase.isUserLoggedIn().collectLatest { isLoggedIn ->
+                isLogin.value = isLoggedIn
+//                if (isLoggedIn)
+//                    refresh()
             }
         }
     }

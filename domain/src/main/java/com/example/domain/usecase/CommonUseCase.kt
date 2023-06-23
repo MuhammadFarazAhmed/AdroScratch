@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 interface CommonUseCase {
     
     suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>>
+
 }

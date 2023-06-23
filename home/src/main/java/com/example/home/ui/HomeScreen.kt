@@ -33,11 +33,14 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.ui.ProgressDialog
 import com.example.base.R
 import com.example.domain.models.HomeResponse
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
 import io.ktor.util.*
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -70,6 +73,7 @@ fun HomeScreenPreview() {
 fun HomeScreen(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit,
+    isApiLoading: (loading: Boolean) -> Unit,
     vm: HomeViewModel = getViewModel()
 ) {
 
@@ -126,6 +130,14 @@ fun HomeScreen(
             )
         }
     }
+
+    //show progress
+    if (isRefreshing) {
+        ProgressDialog()
+    }
+
+    //callback for main activity to hide bottom nav rail
+    isApiLoading(isRefreshing)
 
 }
 

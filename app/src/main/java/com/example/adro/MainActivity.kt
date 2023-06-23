@@ -1,3 +1,5 @@
+@file:Suppress("FunctionName")
+
 package com.example.adro
 
 import android.content.Intent
@@ -11,7 +13,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.adro.vm.CommonViewModel
 import com.example.auth.ui.AuthScreen
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -32,21 +33,40 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
-            vm.keepOnSplashScreenOn.collect {
-                if (!it) {
-                    if(vm.isLogin.value.not()){
+
+            vm.keepOnSplashScreenOn.collect { keepOnSplashScreen ->
+
+                if (!keepOnSplashScreen) {
+
+                    if (vm.isLogin.value.not()) {
+
                         setContent {
-                            AuthScreen(onBackClick = {  }, navigateBack = {  })
+                            AuthScreen(
+                                onBackClick = {
+                                    MainScreen()
+                                }, onLoginSuccess = {
+                                    MainScreen()
+                                })
                         }
-                    }else {
-                        setContent {
-                            val appState = rememberAdroAppState()
-                            navController = appState.navController
-                            AdroApp(appState)
-                        }
+
+                    } else {
+
+                        MainScreen()
+
                     }
+
                 }
+
             }
+
+        }
+    }
+
+    private fun MainScreen() {
+        setContent {
+            val appState = rememberAdroAppState()
+            navController = appState.navController
+            ThriveApp(appState)
         }
     }
 

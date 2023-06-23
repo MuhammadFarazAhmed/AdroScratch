@@ -197,7 +197,7 @@ val NetworkModule = module {
 val commonModule = module {
     single<CommonRepository> { CommonRepositoryImp(get(), get(named(DataStores.CONFIG))) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
-    viewModel { CommonViewModel(get(), get(), get()) }
+    viewModel { CommonViewModel(get(), get(),get()) }
 }
 
 val homeModule = module {
@@ -228,5 +228,5 @@ val merchantModule = module {
 val profileModule = module {
     single<ProfileRepository> { ProfileRepositoryImp(get()) }
     single<ProfileUseCase> { ProfileUseCaseImp(get()) }
-    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get(),get()) }
 }

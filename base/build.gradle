@@ -91,7 +91,7 @@ dependencies {
     api "com.google.accompanist:accompanist-navigation-animation:0.25.1"
 
 
-    debugApi("androidx.paging:paging-compose:3.2.0-beta01")
+    debugApi("androidx.paging:paging-compose:3.2.0-rc01")
 
     api project(path: ':domain')
 
@@ -101,7 +101,8 @@ dependencies {
 
 
 
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation("io.coil-kt:coil-gif:2.4.0")
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'
 

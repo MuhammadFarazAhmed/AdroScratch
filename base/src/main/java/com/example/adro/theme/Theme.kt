@@ -5,7 +5,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.adro.ToolbarPreview
+import com.example.adro.ui.ToolbarPreview
 
 private val DarkColorPalette =
         darkColors(primary = Purple200, primaryVariant = Purple700, secondary = Red)
@@ -22,8 +22,8 @@ private val LightColorPalette = lightColors(
         onSurface = Color.Black,
                                            )
 
-@Composable fun AdroScratchTheme(darkTheme: Boolean = isSystemInDarkTheme(),
-                                 content: @Composable () -> Unit) {
+@Composable fun ThriveScratchTheme(darkTheme: Boolean = isSystemInDarkTheme(),
+                                   content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -34,7 +34,7 @@ private val LightColorPalette = lightColors(
 }
 
 @Preview(name = "Dark Theme" ,showBackground = true) @Composable
-fun AdroScratchDarkThemePreview(darkTheme: Boolean = true) {
+fun ThriveScratchDarkThemePreview(darkTheme: Boolean = true) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

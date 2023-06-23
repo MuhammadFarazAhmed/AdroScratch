@@ -4,18 +4,14 @@ import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.net.toUri
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.composable
-import com.example.adro.AdroNavigationDestination
-import com.example.offers.ui.FavoriteScreen
+import com.example.adro.ui.AdroNavigationDestination
 import com.example.offers.ui.MerchantDetailScreen
 import com.example.offers.ui.OffersScreen
-import java.util.Hashtable
 
 object MerchantDestination : AdroNavigationDestination {
     override val route = "merchant_route"

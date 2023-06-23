@@ -4,7 +4,9 @@ import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.example.adro.*
+import com.example.adro.ui.ErrorItem
+import com.example.adro.ui.LoadingItem
+import com.example.adro.ui.LoadingView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.request.*

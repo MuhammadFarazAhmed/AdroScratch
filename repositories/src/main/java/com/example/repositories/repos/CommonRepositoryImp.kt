@@ -13,6 +13,7 @@ import io.ktor.http.path
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
@@ -23,19 +24,19 @@ class CommonRepositoryImp(
 
     @OptIn(DelicateCoroutinesApi::class)
     override suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>> =
-        convertToFlow(
-
+        convertToFlow<ConfigModel>(
             call = {
                 client.post {
                     url { path("/ets_api/v5/configs") }
                     setDefaultParams(CONFIG)
                 }
-            }, success = {
-                GlobalScope.launch {
-                    configDataStore.updateData { it }
-                }
-            }, failure = {
+            },
+            success = { result ->
+
+                configDataStore.updateData { result }
+
+            },
+            failure = {
 
             })
-
 }
