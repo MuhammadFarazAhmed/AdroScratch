@@ -1,33 +1,29 @@
 package com.example.profile.vm
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
-import androidx.paging.LoadState
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import androidx.paging.PagingSource
 import androidx.paging.cachedIn
-import androidx.paging.map
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonFlowExtensions.handleErrors
 import com.example.domain.models.ProfileResponse
-import com.example.domain.models.TabsResponse
 import com.example.domain.usecase.AuthUseCase
-import com.example.domain.usecase.ProfileUseCase
 import com.example.repositories.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-@HiltViewModel
-class ProfileViewModel @Inject constructor(
+class ProfileViewModel(
     application: Application,
-    private val profileUseCase: ProfileUseCase,
     private val authUseCase: AuthUseCase
 ) :
     AndroidViewModel(application) {
@@ -36,22 +32,10 @@ class ProfileViewModel @Inject constructor(
     val sections: MutableStateFlow<PagingData<ProfileResponse.Data>> =
         MutableStateFlow(PagingData.empty())
 
-    val isLogin = MutableStateFlow(false)
-
-    val takeMeToTheLogin = MutableStateFlow(false)
-
-    init {
-        takeMeToTheLogin.value = false
-
-        refresh()
-
-        viewModelScope.launch {
-            authUseCase.isUserLoggedIn().collectLatest {
-                isLogin.value = it
-            }
-        }
-
-    }
+    val isLogin = authUseCase.isUserLoggedIn().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly, null
+    )
 
     fun refresh() {
         viewModelScope.launch {
@@ -61,7 +45,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     private suspend fun getProfile() {
-        Pager(PagingConfig(pageSize = 60)) { BasePagingSource(isRefreshing) { profileUseCase.fetchProfile() } }.flow.cachedIn(
+        Pager(PagingConfig(pageSize = 60)) { BasePagingSource(isRefreshing) { authUseCase.fetchProfile() } }.flow.cachedIn(
             viewModelScope
         ).collect {
             sections.value = it
@@ -70,8 +54,8 @@ class ProfileViewModel @Inject constructor(
 
     fun signOut() {
         viewModelScope.launch {
-            authUseCase.logOut().collectLatest { success ->
-                takeMeToTheLogin.value = success
+            authUseCase.logOut().handleErrors().collectLatest { success ->
+                Log.d("TAG", "signOut: $success")
             }
         }
     }

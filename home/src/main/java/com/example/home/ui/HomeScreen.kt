@@ -1,8 +1,5 @@
 package com.example.home.ui
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.*
@@ -15,6 +12,7 @@ import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -36,11 +34,9 @@ import com.example.adro.common.HexToJetpackColor
 import com.example.adro.ui.ProgressDialog
 import com.example.base.R
 import com.example.domain.models.HomeResponse
+import com.example.home.ui.HomeSections.*
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
-import io.ktor.util.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -54,6 +50,7 @@ fun HomeScreenPreview() {
     val section = HomeResponse.Data.Section("")
 
     Column {
+
         MainCarousal(pagerState, section)
 
         Categories(section) {
@@ -66,6 +63,14 @@ fun HomeScreenPreview() {
 
     }
 
+}
+
+enum class HomeSections(val value: String) {
+    MAIN_CAROUSAL("main_carousal"),
+    GUEST_USER("guest_user"),
+    CATEGORIES("categories"),
+    EXCLUSIVE_OFFERS("exclusive_offers"),
+    RECOMMENDED_OFFERS("recommended_offers"),
 }
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
@@ -89,35 +94,31 @@ fun HomeScreen(
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
 
     Box(
-        Modifier
+        contentAlignment = Center,
+        modifier = Modifier
             .pullRefresh(pullRefreshState)
+            .background(Color.White)
     ) {
 
-        Surface(modifier = Modifier.background(Color.White)) {
+        Surface {
 
-            LazyColumn(modifier = Modifier.fillMaxSize()) {
+            LazyColumn {
 
                 items(homeSection) { section ->
 
                     when (section.sectionIdentifier) {
 
-                        "main_carousal" -> MainCarousal(pagerState, section)
+                        MAIN_CAROUSAL.value -> MainCarousal(pagerState, section)
+                        GUEST_USER.value -> LoginView(section, navigateToAuth)
 
-                        "guest_user" -> LoginView(section, navigateToAuth)
-
-                        "categories" -> Categories(section) { deeplink ->
-                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(deeplink)))
+                        CATEGORIES.value -> Categories(section) { deeplink ->
+                            context.startActivity(
+                                Intent(Intent.ACTION_VIEW, Uri.parse(deeplink))
+                            )
                         }
 
-                        "exclusive_offers" -> ExclusiveItem(
-                            pagerState = exclusivePagerState,
-                            section
-                        )
-
-                        "recommended_offers" -> RecommendedItem(
-                            pagerState = recommendedPagerState,
-                            section
-                        )
+                        EXCLUSIVE_OFFERS.value -> ExclusiveItem(exclusivePagerState, section)
+                        RECOMMENDED_OFFERS.value -> RecommendedItem(recommendedPagerState, section)
                     }
 
                 }
@@ -133,11 +134,11 @@ fun HomeScreen(
 
     //show progress
     if (isRefreshing) {
-        ProgressDialog()
+        ProgressDialog(Color.White, alpha = 1.0)
     }
 
     //callback for main activity to hide bottom nav rail
-    isApiLoading(isRefreshing)
+//    isApiLoading(isRefreshing)
 
 }
 

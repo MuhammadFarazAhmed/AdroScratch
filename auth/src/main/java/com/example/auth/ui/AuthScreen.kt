@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -42,6 +45,8 @@ import com.example.adro.theme.Emad
 import com.example.auth.R
 import com.example.auth.vm.AuthViewModel
 import com.example.domain.models.HomeResponse
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -54,9 +59,10 @@ fun AuthScreen(
         onBackClick()
     }
 
-    val loginSuccess by vm.loginSuccess.collectAsStateLifecycleAware()
+    val isLogin = vm.isLogin.collectAsStateLifecycleAware()
 
-    if (loginSuccess) onLoginSuccess()
+    if (isLogin.value)
+        onLoginSuccess()
 
     Surface(modifier = Modifier.background(Color.White)) {
 

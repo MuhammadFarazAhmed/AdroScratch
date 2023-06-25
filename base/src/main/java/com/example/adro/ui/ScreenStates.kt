@@ -48,7 +48,7 @@ fun LoadingItem() {
 }
 
 @Composable
-fun ProgressDialog() {
+fun ProgressDialog(color: Color = Color.Black.copy(.5f), alpha: Double = 0.5) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)
         .components {
@@ -63,7 +63,7 @@ fun ProgressDialog() {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .background(Color.Black.copy(.5f))
+            .background(color.copy(alpha.toFloat()))
             .fillMaxSize()
     ) {
         Image(

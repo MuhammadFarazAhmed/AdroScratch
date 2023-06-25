@@ -34,6 +34,7 @@ fun ThriveNavHost(
         authGraph(onLoginSuccess) {
             navController.popBackStack()
         }
+
         homeGraph(
             navigateToAuth = {
                 onNavigateToDestination(AuthDestination, AuthDestination.route)
@@ -45,11 +46,14 @@ fun ThriveNavHost(
                 isApiLoading(loading)
             }
         )
+
         merchantGraph(
             navigateToDetail = {
                 onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
             })
+
         favGraph()
+
         profileGraph(
             navigateToHome = {
                 onNavigateToDestination(HomeDestination, HomeDestination.route)

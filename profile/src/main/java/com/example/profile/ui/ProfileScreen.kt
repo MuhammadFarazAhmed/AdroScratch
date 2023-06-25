@@ -25,10 +25,14 @@ import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -50,14 +54,21 @@ import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 
 enum class ProfileSections(val value: String) {
-    PROFILE_HEADER("profile_header"), MY_ACCOUNT("my_account"), REDEMPTIONS_DETAILS("redemption_details"), SETTINGS(
-        "settings"
-    ),
-    HELP_SUPPORT("help_support"), ABOUT("about"), SIGN_OUT("signout"),
+    PROFILE_HEADER("profile_header"),
+    MY_ACCOUNT("my_account"),
+    REDEMPTIONS_DETAILS("redemption_details"),
+    SETTINGS("settings"),
+    HELP_SUPPORT("help_support"),
+    ABOUT("about"),
+    SIGN_OUT("signout"),
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -67,12 +78,17 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
     val lazySections = vm.sections.collectAsLazyPagingItems()
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
-    val isLogin by vm.isLogin.collectAsState()
-    val takeMeToLogin by vm.takeMeToTheLogin.collectAsState()
+
+    val isLogin = vm.isLogin.collectAsStateLifecycleAware()
 
 
-    if (takeMeToLogin) {
-        navigateToHome()
+    LaunchedEffect(key1 = isLogin) {
+        vm.refresh()
+        vm.isLogin.collectLatest {
+            if (it == false) {
+                navigateToHome()
+            }
+        }
     }
 
     Box(
@@ -91,7 +107,7 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                 when (item?.sectionIdentifier) {
 
                     ProfileSections.PROFILE_HEADER.value -> {
-                        if (!isLogin) {
+                        if (isLogin.value == false) {
                             ProfileSectionHeader()
                         }
                     }
@@ -113,7 +129,7 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                         }
                     }
 
-                    ProfileSections.SIGN_OUT.value -> if (isLogin) {
+                    ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) {
                         ProfileSectionSignOut(vm)
                     }
 

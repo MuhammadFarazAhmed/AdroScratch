@@ -2,14 +2,16 @@ package com.example.adro.interceptors
 
 import android.util.Log
 import com.example.adro.security.ApisEncryptionUtils
-import com.example.domain.models.ErrorResponse
-import io.ktor.client.*
-import io.ktor.client.plugins.*
-import io.ktor.client.statement.*
-import io.ktor.util.*
-import io.ktor.util.reflect.TypeInfo
-import io.ktor.utils.io.*
-import kotlinx.serialization.builtins.serializer
+import io.ktor.client.HttpClient
+import io.ktor.client.HttpClientConfig
+import io.ktor.client.plugins.HttpClientPlugin
+import io.ktor.client.statement.HttpResponseContainer
+import io.ktor.client.statement.HttpResponsePipeline
+import io.ktor.util.AttributeKey
+import io.ktor.util.Identity.decode
+import io.ktor.util.toByteArray
+import io.ktor.utils.io.ByteReadChannel
+import io.ktor.utils.io.readAvailable
 
 class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
@@ -26,13 +28,14 @@ class DecryptResponseInterceptor private constructor(private val apisEncryptionU
             // Here we have original content untouched
             val original = ByteReadChannel(byteArray)
 
-            val decryptString = apisEncryptionUtils.decryptString(String(original.toByteArray()))
-                  .also { it?.let { it1 -> Log.d("decryptedResponse", it1) } }
-            val decryptResponse =
-                if (decryptString == null) original else ByteReadChannel(decryptString)
 
-            val response = HttpResponseContainer(type, decryptResponse)
-            proceedWith(response)
+            val decryptString = apisEncryptionUtils.decryptString(String(original.toByteArray()))
+                .also { it?.let { it1 -> Log.d("decryptedResponse", it1) } }
+
+            if (decryptString == null) {
+                proceedWith(HttpResponseContainer(type, ByteReadChannel(byteArray)))
+            } else
+                proceedWith(HttpResponseContainer(type, ByteReadChannel(decryptString)))
         }
     }
 

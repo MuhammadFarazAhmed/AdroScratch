@@ -21,13 +21,11 @@ import com.example.domain.repos.CommonRepository
 import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
 import com.example.domain.repos.MerchantRepository
-import com.example.domain.repos.ProfileRepository
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.CommonUseCase
 import com.example.domain.usecase.FavUseCase
 import com.example.domain.usecase.HomeUseCase
 import com.example.domain.usecase.MerchantUseCase
-import com.example.domain.usecase.ProfileUseCase
 import com.example.home.vm.HomeViewModel
 import com.example.offers.vm.FavoriteViewModel
 import com.example.offers.vm.OffersViewModel
@@ -36,14 +34,12 @@ import com.example.repositories.repos.CommonRepositoryImp
 import com.example.repositories.repos.FavRepositoryImp
 import com.example.repositories.repos.HomeRepositoryImp
 import com.example.repositories.repos.MerchantRepositoryImp
-import com.example.repositories.repos.ProfileRepositoryImp
 import com.example.repositories.usecases.AuthRepositoryImp
 import com.example.repositories.usecases.AuthUseCaseImp
 import com.example.repositories.usecases.CommonUseCaseImp
 import com.example.repositories.usecases.FavUseCaseImp
 import com.example.repositories.usecases.HomeUseCaseImp
 import com.example.repositories.usecases.MerchantUseCaseImp
-import com.example.repositories.usecases.ProfileUseCaseImp
 import com.theentertainerme.adro.security.CLibController
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
@@ -76,7 +72,7 @@ fun appModule() = listOf(AppModule, NetworkModule)
 
 fun networkModule() = listOf(NetworkModule)
 
-fun featureModules() = listOf(commonModule, authModule, homeModule, merchantModule, profileModule)
+fun featureModules() = listOf(commonModule, authModule, homeModule, merchantModule)
 
 public enum class DataStores {
     CONFIG, USER, APP
@@ -203,13 +199,14 @@ val commonModule = module {
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get(), get(named(DataStores.USER))) }
+    viewModel { HomeViewModel(get(), get(), get()) }
 }
 
 val authModule = module {
-    single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER)), get()) }
+    single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER))) }
     single<AuthUseCase> { AuthUseCaseImp(get()) }
-    viewModel { AuthViewModel(get(), get(), get(named(DataStores.USER))) }
+    viewModel { AuthViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get()) }
 }
 
 val merchantModule = module {
@@ -225,8 +222,3 @@ val merchantModule = module {
 
 }
 
-val profileModule = module {
-    single<ProfileRepository> { ProfileRepositoryImp(get()) }
-    single<ProfileUseCase> { ProfileUseCaseImp(get()) }
-    viewModel { ProfileViewModel(get(), get(),get()) }
-}

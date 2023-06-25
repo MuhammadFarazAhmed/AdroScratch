@@ -1,34 +1,34 @@
 package com.example.auth.vm
 
 import android.app.Application
-import android.util.Log
-import androidx.datastore.core.DataStore
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.models.ApiStatus
-import com.example.domain.models.LoginResponse
 import com.example.domain.usecase.AuthUseCase
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.shareIn
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
     application: Application,
-    private val authUseCase: AuthUseCase,
-    private val userDataStore: DataStore<LoginResponse.Data.User>,
+    private val authUseCase: AuthUseCase
 ) :
     AndroidViewModel(application) {
 
-    val loginSuccess = MutableStateFlow(false)
+        val isLogin = authUseCase.isUserLoggedIn().stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly, false)
 
     fun login(mobile: String, password: String) {
         viewModelScope.launch {
-            authUseCase.login(mobile, password).collect { res ->
+            authUseCase.login(mobile, password).collectLatest { res ->
                 when (res.status) {
-                    ApiStatus.SUCCESS -> {
-                        loginSuccess.value = true
-                    }
-
+                    ApiStatus.SUCCESS -> {}
                     ApiStatus.ERROR -> {}
                     ApiStatus.LOADING -> {}
                 }

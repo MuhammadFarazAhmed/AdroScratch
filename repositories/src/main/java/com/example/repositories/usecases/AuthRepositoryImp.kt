@@ -4,14 +4,17 @@ package com.example.repositories.usecases
 
 import androidx.datastore.core.DataStore
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
+import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
-import com.example.adro.prefs.PreferencesHelper
 import com.example.domain.models.ApiResult
 import com.example.domain.models.LoginResponse
 import com.example.domain.models.LogoutModel
+import com.example.domain.models.ProfileResponse
+import com.example.domain.models.asList
 import com.example.domain.repos.AuthRepository
 import io.ktor.client.HttpClient
+import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.http.path
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -20,10 +23,12 @@ import kotlinx.coroutines.flow.map
 
 class AuthRepositoryImp(
     private val client: HttpClient,
-    private val userDataStore: DataStore<LoginResponse.Data.User>,
-    private val preferencesHelper: PreferencesHelper
+    private val userDataStore: DataStore<LoginResponse.Data.User>
 ) :
     AuthRepository {
+
+    override fun isUserLoggedIn() = userDataStore.data
+
     override suspend fun login(hashMap: HashMap<String, String>): Flow<ApiResult<LoginResponse>> =
         convertToFlow<LoginResponse>(
             call = {
@@ -39,8 +44,7 @@ class AuthRepositoryImp(
 
             })
 
-    override fun isUserLoggedIn() = userDataStore.data
-    override fun logout(): Flow<ApiResult<LogoutModel>> =
+    override suspend fun logout(): Flow<Boolean> =
         convertToFlow<LogoutModel>(
             call = {
                 client.post {
@@ -52,7 +56,22 @@ class AuthRepositoryImp(
             }, failure = {
 
             }
-        )
+        ).map {
+            it.data?.success == true
+        }
+
+    override suspend fun fetchProfile(): List<ProfileResponse.Data> {
+        return try {
+            val response = client.post {
+                url { path("et_user/v5/user/profile") }
+                setDefaultParams(CommonUtilsExtension.API.USER)
+            }
+            (response.body() as ProfileResponse).asList()
+        } catch (e: Exception) {
+            e.toCustomExceptions()
+            emptyList()
+        }
+    }
 
 
 }
