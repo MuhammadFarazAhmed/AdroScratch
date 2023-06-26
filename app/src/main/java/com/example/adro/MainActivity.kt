@@ -8,11 +8,14 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.mutableStateOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.adro.vm.CommonViewModel
 import com.example.auth.ui.AuthScreen
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -23,43 +26,20 @@ class MainActivity : ComponentActivity() {
     private val vm: CommonViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        installSplashScreen().apply {
-            setKeepOnScreenCondition {
-                return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
-            }
-        }
-
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch {
-
-            vm.keepOnSplashScreenOn.collect { keepOnSplashScreen ->
-
-                if (!keepOnSplashScreen) {
-
-                    if (vm.isLogin.value.not()) {
-
-                        setContent {
-                            AuthScreen(
-                                onBackClick = {
-                                    MainScreen()
-                                }, onLoginSuccess = {
-                                    MainScreen()
-                                })
-                        }
-
-                    } else {
-
-                        MainScreen()
-
-                    }
-
-                }
-
-            }
-
+        splashScreen.setKeepOnScreenCondition {
+            return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
         }
+
+        if (!vm.isLogin.value)
+            setContent {
+                AuthScreen(onBackClick = { MainScreen() }, onLoginSuccess = { MainScreen() })
+            }
+        else
+            MainScreen()
+
     }
 
     private fun MainScreen() {
