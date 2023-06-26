@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -28,14 +29,22 @@ class ProfileViewModel(
 ) :
     AndroidViewModel(application) {
 
+
     val isRefreshing = MutableStateFlow(false)
     val sections: MutableStateFlow<PagingData<ProfileResponse.Data>> =
         MutableStateFlow(PagingData.empty())
 
     val isLogin = authUseCase.isUserLoggedIn().stateIn(
         scope = viewModelScope,
-        started = SharingStarted.Eagerly, null
+        started = SharingStarted.Eagerly,
+        initialValue = null
     )
+
+
+    init {
+        refresh()
+    }
+
 
     fun refresh() {
         viewModelScope.launch {

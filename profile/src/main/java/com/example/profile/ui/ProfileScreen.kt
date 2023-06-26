@@ -78,22 +78,25 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
     val lazySections = vm.sections.collectAsLazyPagingItems()
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
-
+    val scope = rememberCoroutineScope()
     val isLogin = vm.isLogin.collectAsStateLifecycleAware()
 
+    LaunchedEffect(isLogin) {
 
-    LaunchedEffect(key1 = isLogin) {
-        vm.refresh()
-        vm.isLogin.collectLatest {
-            if (it == false) {
-                navigateToHome()
+        scope.launch {
+
+            vm.isLogin.collectLatest {
+                if (it == false) {
+                    navigateToHome()
+                }
             }
+
         }
+
     }
 
     Box(
-        Modifier
-            .pullRefresh(pullRefreshState)
+        Modifier.pullRefresh(pullRefreshState)
     ) {
 
         LazyColumn(Modifier.background(HexToJetpackColor.getColor("F1F1F1"))) {
@@ -119,12 +122,12 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                     ProfileSections.ABOUT.value,
                     -> {
                         ProfileSectionHeaderRow(item.sectionTitle)
-                        item.sectionData.forEach { item ->
-                            when (item.type) {
-                                "arrow" -> ProfileSectionArrow(item.title)
-                                "text" -> ProfileSectionText(item.title, item.desc)
-                                "switch" -> ProfileSectionSwitch(item.title, item.value)
-                                else -> ProfileSectionHeaderRow(item.title)
+                        item.sectionData.forEach { innerItem ->
+                            when (innerItem.type) {
+                                "arrow" -> ProfileSectionArrow(innerItem.title)
+                                "text" -> ProfileSectionText(innerItem.title, innerItem.desc)
+                                "switch" -> ProfileSectionSwitch(innerItem.title, innerItem.value)
+                                else -> ProfileSectionHeaderRow(innerItem.title)
                             }
                         }
                     }
