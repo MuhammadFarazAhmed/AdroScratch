@@ -1,8 +1,7 @@
 package com.example.adro.prefs
 
 import androidx.datastore.core.Serializer
-import com.example.domain.models.ConfigModel
-import com.example.domain.models.LoginResponse
+import com.example.adro.models.LoginResponse
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream

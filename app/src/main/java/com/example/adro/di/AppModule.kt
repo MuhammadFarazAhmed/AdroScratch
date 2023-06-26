@@ -15,7 +15,7 @@ import com.example.adro.prefs.UserPreferencesSerializer
 import com.example.adro.security.ApisEncryptionUtils
 import com.example.adro.vm.CommonViewModel
 import com.example.auth.vm.AuthViewModel
-import com.example.domain.models.ErrorResponse
+import com.example.adro.models.ErrorResponse
 import com.example.domain.repos.AuthRepository
 import com.example.domain.repos.CommonRepository
 import com.example.domain.repos.FavoritesRepository

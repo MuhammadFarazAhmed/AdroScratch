@@ -1,4 +1,4 @@
-package com.example.domain.models
+package com.example.adro.models
 
 data class TabWithOffers(
     val tab: TabsResponse.Data.Tab? = null,

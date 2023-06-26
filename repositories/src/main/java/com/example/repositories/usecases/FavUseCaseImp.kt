@@ -1,6 +1,6 @@
 package com.example.repositories.usecases
 
-import com.example.domain.models.FavoriteResponse
+import com.example.adro.models.FavoriteResponse
 import com.example.domain.repos.FavoritesRepository
 import com.example.domain.usecase.FavUseCase
 import javax.inject.Inject

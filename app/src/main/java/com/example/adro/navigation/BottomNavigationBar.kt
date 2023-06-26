@@ -19,12 +19,12 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 
 @Composable
 fun BottomNavigationBar(
-    bottomBarState: MutableState<Boolean>,
+    bottomBarState: Boolean,
     destinations: List<TopLevelDestination>,
     onNavigateToDestination: (TopLevelDestination, String?) -> Unit,
     currentDestination: NavDestination?
 ) {
-    AnimatedVisibility(visible = bottomBarState.value) {
+    AnimatedVisibility(visible = bottomBarState) {
         BottomNavigation(contentColor = Color.White) {
             destinations.forEach { destination ->
                 val selected =

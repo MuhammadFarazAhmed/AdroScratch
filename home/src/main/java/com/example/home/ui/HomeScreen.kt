@@ -33,7 +33,7 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.ui.ProgressDialog
 import com.example.base.R
-import com.example.domain.models.HomeResponse
+import com.example.adro.models.HomeResponse
 import com.example.home.ui.HomeSections.*
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
@@ -138,7 +138,7 @@ fun HomeScreen(
     }
 
     //callback for main activity to hide bottom nav rail
-//    isApiLoading(isRefreshing)
+    isApiLoading(isRefreshing)
 
 }
 

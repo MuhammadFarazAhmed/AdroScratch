@@ -3,7 +3,7 @@ package com.theentertainerme.adro.security
 import android.util.Base64
 import android.util.Log
 import androidx.datastore.core.DataStore
-import com.example.domain.models.LoginResponse
+import com.example.adro.models.LoginResponse
 import io.jsonwebtoken.JwsHeader
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm

@@ -1,10 +1,9 @@
 package com.example.repositories.usecases
 
 import android.util.Log
-import com.example.domain.models.ApiResult
-import com.example.domain.models.LoginResponse
-import com.example.domain.models.LogoutModel
-import com.example.domain.models.ProfileResponse
+import com.example.adro.models.ApiResult
+import com.example.adro.models.LoginResponse
+import com.example.adro.models.ProfileResponse
 import com.example.domain.repos.AuthRepository
 import com.example.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.Flow

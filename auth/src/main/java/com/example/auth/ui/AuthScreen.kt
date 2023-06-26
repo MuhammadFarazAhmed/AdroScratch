@@ -44,7 +44,7 @@ import com.example.adro.common.HexToJetpackColor
 import com.example.adro.theme.Emad
 import com.example.auth.R
 import com.example.auth.vm.AuthViewModel
-import com.example.domain.models.HomeResponse
+import com.example.adro.models.HomeResponse
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel

@@ -1,9 +1,8 @@
 package com.example.domain.repos
 
-import com.example.domain.models.ApiResult
-import com.example.domain.models.LoginResponse
-import com.example.domain.models.LogoutModel
-import com.example.domain.models.ProfileResponse
+import com.example.adro.models.ApiResult
+import com.example.adro.models.LoginResponse
+import com.example.adro.models.ProfileResponse
 import kotlinx.coroutines.flow.Flow
 import java.util.HashMap
 

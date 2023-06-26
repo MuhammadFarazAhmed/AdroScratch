@@ -31,8 +31,8 @@ import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
-import com.example.domain.models.OffersResponse
-import com.example.domain.models.TabsResponse
+import com.example.adro.models.OffersResponse
+import com.example.adro.models.TabsResponse
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope

@@ -93,7 +93,6 @@ dependencies {
 
     debugApi("androidx.paging:paging-compose:3.2.0-rc01")
 
-    api project(path: ':domain')
 
     implementation "androidx.datastore:datastore-preferences:1.1.0-alpha04"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"

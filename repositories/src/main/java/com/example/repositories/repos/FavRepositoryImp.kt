@@ -3,8 +3,8 @@ package com.example.repositories.repos
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension.API.OUTLET
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
-import com.example.domain.models.FavoriteResponse
-import com.example.domain.models.asList
+import com.example.adro.models.FavoriteResponse
+import com.example.adro.models.asList
 import com.example.domain.repos.FavoritesRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

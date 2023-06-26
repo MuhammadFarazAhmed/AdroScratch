@@ -7,9 +7,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.domain.models.ApiStatus
-import com.example.domain.models.OffersResponse
-import com.example.domain.models.TabsResponse
+import com.example.adro.models.ApiStatus
+import com.example.adro.models.OffersResponse
+import com.example.adro.models.TabsResponse
 import com.example.domain.usecase.MerchantUseCase
 import com.example.repositories.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel

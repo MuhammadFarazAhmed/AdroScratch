@@ -2,7 +2,7 @@ package com.example.adro
 
 import android.util.Base64
 import androidx.datastore.core.DataStore
-import com.example.domain.models.LoginResponse
+import com.example.adro.models.LoginResponse
 import com.theentertainerme.adro.security.CLibController
 import com.theentertainerme.adro.security.XOREncryption
 import io.jsonwebtoken.JwsHeader

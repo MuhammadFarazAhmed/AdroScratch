@@ -33,7 +33,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonUtilsExtension.applyPagination
-import com.example.domain.models.FavoriteResponse
+import com.example.adro.models.FavoriteResponse
 import com.example.offers.vm.FavoriteViewModel
 import org.koin.androidx.compose.getViewModel
 

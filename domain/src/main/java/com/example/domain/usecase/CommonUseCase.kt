@@ -1,11 +1,10 @@
 package com.example.domain.usecase
 
-import com.example.domain.models.ApiResult
-import com.example.domain.models.ConfigModel
+import com.example.adro.common.Result
+import com.example.adro.models.ConfigModel
 import kotlinx.coroutines.flow.Flow
 
 interface CommonUseCase {
-    
-    suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>>
+    suspend fun fetchConfig(): Flow<Result<ConfigModel>>
 
 }

@@ -14,7 +14,7 @@ object AuthDestination : AdroNavigationDestination {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.authGraph(onBackClick: () -> Unit, onLoginSuccess: () -> Unit) {
+fun NavGraphBuilder.authGraph(onBackClick: () -> Unit, popBack: () -> Unit) {
 
     composable(
         AuthDestination.route,
@@ -29,7 +29,7 @@ fun NavGraphBuilder.authGraph(onBackClick: () -> Unit, onLoginSuccess: () -> Uni
                 animationSpec = tween(300)
             )
         }) {
-        AuthScreen(onBackClick = onBackClick, onLoginSuccess = onLoginSuccess)
+        AuthScreen(onBackClick = onBackClick, onLoginSuccess = popBack)
     }
 
 }

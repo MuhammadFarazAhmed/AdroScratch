@@ -20,7 +20,7 @@ import com.google.accompanist.navigation.animation.AnimatedNavHost
 fun ThriveNavHost(
     navController: NavHostController,
     onNavigateToDestination: (AdroNavigationDestination, String?) -> Unit,
-    onLoginSuccess: () -> Unit,
+    popBack: () -> Unit,
     isApiLoading: (loading: Boolean) -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = HomeDestination.route
@@ -31,9 +31,7 @@ fun ThriveNavHost(
         modifier = modifier
     ) {
 
-        authGraph(onLoginSuccess) {
-            navController.popBackStack()
-        }
+        authGraph(popBack,popBack)
 
         homeGraph(
             navigateToAuth = {

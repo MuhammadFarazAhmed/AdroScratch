@@ -20,8 +20,8 @@ import com.example.base.R
 
 
 @Composable
-fun Toolbar(visibility: MutableState<Boolean>) {
-    AnimatedVisibility(visible = visibility.value) {
+fun Toolbar(visibility: Boolean) {
+    AnimatedVisibility(visible = visibility) {
         Box(
             modifier = Modifier
                 .background(Color.Black)
@@ -82,6 +82,6 @@ fun Toolbar(visibility: MutableState<Boolean>) {
 @Composable
 fun ToolbarPreview() {
     ThriveScratchTheme {
-        Toolbar(mutableStateOf(true))
+        Toolbar(true)
     }
 }

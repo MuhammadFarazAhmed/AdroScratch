@@ -1,4 +1,4 @@
-package com.example.domain.models
+package com.example.adro.models
 
 
 import com.google.gson.annotations.SerializedName
@@ -42,21 +42,21 @@ data class HomeResponse(
         )
 @Serializable
         data class Section(
-            @SerialName("section_identifier")
+    @SerialName("section_identifier")
             val sectionIdentifier: String = "1",
-            @SerialName("section_items")
+    @SerialName("section_items")
             val sectionItems: List<SectionItem> = arrayListOf(),
-            @SerialName("sort_order")
+    @SerialName("sort_order")
             val sortOrder: Int = 1,
-            @SerialName("title")
+    @SerialName("title")
             val title: String = "title",
-            @SerialName("image_url")
+    @SerialName("image_url")
             val imageUrl: String = "",
-            @SerialName("button_title")
+    @SerialName("button_title")
             val buttonTitle: String = "text",
-            @SerialName("button_bg_color")
+    @SerialName("button_bg_color")
             val buttonBgColor: String = "FF343434",
-            @SerialName("sub_title")
+    @SerialName("sub_title")
             val subTitle: String = ""
         ) {
     @Serializable

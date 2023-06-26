@@ -1,10 +1,10 @@
 package com.example.repositories.repos
 
-import com.example.domain.models.ApiResult
+import com.example.adro.models.ApiResult
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonUtilsExtension.API.CORE
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
-import com.example.domain.models.HomeResponse
+import com.example.adro.models.HomeResponse
 import com.example.domain.repos.HomeRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.request.post

@@ -20,11 +20,11 @@ fun ThriveApp(appState: AdroAppState) {
 
     ThriveScratchTheme {
 
-        ToggleToolbarAndNavRail(appState, bottomBarState, topBarState)
+        //ToggleToolbarAndNavRail(appState, bottomBarState, topBarState)
 
         Scaffold(
 
-            topBar = { Toolbar(topBarState) },
+            topBar = { Toolbar(appState.shouldShowToolBar) },
 
             content = { padding ->
 
@@ -36,7 +36,7 @@ fun ThriveApp(appState: AdroAppState) {
 
                     ThriveNavHost(
                         navController = appState.navController,
-                        onLoginSuccess = appState::onLoginSuccess,
+                        popBack = appState::popBack,
                         isApiLoading = { loading -> bottomBarState.value = !loading },
                         onNavigateToDestination = appState::navigate
                     )
@@ -45,12 +45,12 @@ fun ThriveApp(appState: AdroAppState) {
 
             }, bottomBar = {
 
-                BottomNavigationBar(
-                    bottomBarState = bottomBarState,
-                    destinations = appState.topLevelDestinations,
-                    onNavigateToDestination = appState::navigate,
-                    currentDestination = appState.currentDestination
-                )
+                    BottomNavigationBar(
+                        bottomBarState = appState.shouldShowBottomBar,
+                        destinations = appState.topLevelDestinations,
+                        onNavigateToDestination = appState::navigate,
+                        currentDestination = appState.currentDestination
+                    )
 
             })
 

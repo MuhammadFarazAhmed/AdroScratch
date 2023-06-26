@@ -1,4 +1,4 @@
-package com.example.domain.models
+package com.example.adro.models
 
 
 import kotlinx.serialization.SerialName

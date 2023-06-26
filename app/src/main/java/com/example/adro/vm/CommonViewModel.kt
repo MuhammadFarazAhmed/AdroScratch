@@ -4,8 +4,8 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.adro.prefs.PreferencesHelper
-import com.example.domain.models.ApiResult
+import com.example.adro.common.Result
+import com.example.adro.models.ApiResult
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.CommonUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,11 +40,11 @@ class CommonViewModel(
         viewModelScope.launch {
             commonUseCase.fetchConfig().collectLatest { apiResult ->
                 when (apiResult) {
-                    is ApiResult.Error ->
+                    is Result.Error ->
                         Log.d("TAG", "getConfig: error ${apiResult.exception}")
 
-                    is ApiResult.Loading -> {}
-                    is ApiResult.Success -> keepOnSplashScreenOn.value = false
+                    is Result.Loading -> {}
+                    is Result.Success -> keepOnSplashScreenOn.value = false
                 }
             }
         }

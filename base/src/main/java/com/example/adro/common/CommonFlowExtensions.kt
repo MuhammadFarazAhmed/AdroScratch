@@ -10,18 +10,21 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.domain.models.ApiResult
-import com.example.domain.models.ErrorResponse
-import io.ktor.client.call.*
-import io.ktor.client.plugins.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.HttpStatusCode
+import com.example.adro.models.ApiResult
+import com.example.adro.models.ErrorResponse
+import io.ktor.client.call.body
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.ServerResponseException
+import io.ktor.client.statement.HttpResponse
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onStart
 import java.io.IOException
-import java.lang.Exception
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import kotlin.coroutines.CoroutineContext
@@ -86,6 +89,18 @@ object CommonFlowExtensions {
         }.flowOn(Dispatchers.IO)
 
 
+
+    fun <T> Flow<T>.asResult(success:(T)->Unit): Flow<Result<T>> {
+        return this
+            .map<T, Result<T>> {
+                success(it)
+                Result.Success(it)
+            }
+            .onStart { emit(Result.Loading) }
+            .catch { emit(Result.Error(it)) }
+    }
+
+
     @Composable
     fun <T> rememberFlow(
         flow: Flow<T>,
@@ -112,4 +127,10 @@ object CommonFlowExtensions {
         context: CoroutineContext = EmptyCoroutineContext
     ): State<T> = collectAsStateLifecycleAware(value, context)
 
+}
+
+sealed interface Result<out T> {
+    data class Success<T>(val data: T) : Result<T>
+    data class Error(val exception: Throwable? = null) : Result<Nothing>
+    object Loading : Result<Nothing>
 }

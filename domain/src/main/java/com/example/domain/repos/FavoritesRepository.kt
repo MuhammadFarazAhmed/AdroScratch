@@ -1,7 +1,7 @@
 package com.example.domain.repos
 
 
-import com.example.domain.models.FavoriteResponse
+import com.example.adro.models.FavoriteResponse
 
 interface FavoritesRepository {
 

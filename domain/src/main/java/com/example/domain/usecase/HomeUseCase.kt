@@ -1,9 +1,8 @@
 package com.example.domain.usecase
 
-import com.example.domain.models.ApiResult
-import com.example.domain.models.HomeResponse
+import com.example.adro.models.ApiResult
+import com.example.adro.models.HomeResponse
 import kotlinx.coroutines.flow.Flow
-import retrofit2.Response
 
 interface HomeUseCase {
     

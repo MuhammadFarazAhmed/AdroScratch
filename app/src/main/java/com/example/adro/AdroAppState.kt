@@ -30,6 +30,13 @@ class AdroAppState(val navController: NavHostController) {
 
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
+    val shouldShowBottomBar: Boolean
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination?.route in topLevelDestinations.map { it.route }
+
+    val shouldShowToolBar: Boolean
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination?.route in topLevelDestinations.map { it.route }
 
     /**
      * Top level destinations to be used in the BottomBar and NavRail
@@ -74,7 +81,7 @@ class AdroAppState(val navController: NavHostController) {
         trace("Navigation: $destination") {
 
             if (destination is TopLevelDestination) {
-               // if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
+                // if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
                 navController.navigate(
                     route ?: destination.route
                 ) {
@@ -96,7 +103,7 @@ class AdroAppState(val navController: NavHostController) {
         }
     }
 
-    fun onLoginSuccess() {
+    fun popBack() {
         navController.popBackStack()
     }
 }

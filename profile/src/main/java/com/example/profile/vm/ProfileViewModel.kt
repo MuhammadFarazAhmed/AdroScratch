@@ -9,7 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.domain.models.ProfileResponse
+import com.example.adro.models.ProfileResponse
 import com.example.domain.usecase.AuthUseCase
 import com.example.repositories.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
