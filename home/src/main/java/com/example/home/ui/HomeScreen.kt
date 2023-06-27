@@ -79,6 +79,7 @@ fun HomeScreen(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit,
     isApiLoading: (loading: Boolean) -> Unit,
+    handleDeepLinks: () -> Unit,
     vm: HomeViewModel = getViewModel()
 ) {
 
@@ -92,6 +93,12 @@ fun HomeScreen(
     val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
+
+    LaunchedEffect(key1 = homeSection) {
+        if (homeSection.isNotEmpty()) {
+            handleDeepLinks()
+        }
+    }
 
     Box(
         contentAlignment = Center,

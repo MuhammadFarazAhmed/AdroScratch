@@ -22,6 +22,7 @@ fun ThriveNavHost(
     onNavigateToDestination: (AdroNavigationDestination, String?) -> Unit,
     popBack: () -> Unit,
     isApiLoading: (loading: Boolean) -> Unit,
+    handleDeepLinks: () -> Unit,
     modifier: Modifier = Modifier,
     startDestination: String = HomeDestination.route
 ) {
@@ -31,9 +32,12 @@ fun ThriveNavHost(
         modifier = modifier
     ) {
 
-        authGraph(popBack,popBack)
+        authGraph(popBack, popBack)
 
         homeGraph(
+            handleDeepLinks = {
+                handleDeepLinks()
+            },
             navigateToAuth = {
                 onNavigateToDestination(AuthDestination, AuthDestination.route)
             },

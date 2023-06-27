@@ -1,5 +1,6 @@
 package com.example.adro
 
+import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.core.os.trace
@@ -18,15 +19,23 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun rememberAdroAppState(navController: NavHostController = rememberAnimatedNavController()): AdroAppState {
+fun rememberAdroAppState(navController: NavHostController = rememberAnimatedNavController()): ThriveAppState {
     NavigationTrackingSideEffect(navController)
     return remember(navController) {
-        AdroAppState(navController)
+        ThriveAppState(navController)
     }
 }
 
 @Stable
-class AdroAppState(val navController: NavHostController) {
+class ThriveAppState(val navController: NavHostController) {
+
+
+    fun handleDeepLinks(intent: Intent?) {
+        intent?.data?.let {
+            navController.handleDeepLink(intent)
+            intent.data = null
+        }
+    }
 
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
@@ -76,7 +85,8 @@ class AdroAppState(val navController: NavHostController) {
 
     fun navigate(
         destination: AdroNavigationDestination,
-        route: String? = null
+        route: String? = null,
+        isFromDeepLink: Boolean = false
     ) {
         trace("Navigation: $destination") {
 
@@ -98,6 +108,10 @@ class AdroAppState(val navController: NavHostController) {
                     restoreState = true
                 }
             } else {
+                navController.navigate(route ?: destination.route)
+            }
+
+            if(isFromDeepLink){
                 navController.navigate(route ?: destination.route)
             }
         }

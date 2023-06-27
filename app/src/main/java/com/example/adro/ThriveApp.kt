@@ -7,12 +7,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import com.example.adro.navigation.*
 import com.example.adro.theme.ThriveScratchTheme
 import com.example.adro.ui.Toolbar
+import com.example.offers.nav.findActivity
 
 @Composable
-fun ThriveApp(appState: AdroAppState) {
+fun ThriveApp(appState: ThriveAppState) {
 
     val topBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
 
@@ -34,9 +36,13 @@ fun ThriveApp(appState: AdroAppState) {
                         .fillMaxHeight()
                 ) {
 
+                    val context = LocalContext.current
+                    val activity = context.findActivity()
+
                     ThriveNavHost(
                         navController = appState.navController,
                         popBack = appState::popBack,
+                        handleDeepLinks = { appState.handleDeepLinks(activity?.intent) },
                         isApiLoading = { loading -> bottomBarState.value = !loading },
                         onNavigateToDestination = appState::navigate
                     )
@@ -45,12 +51,12 @@ fun ThriveApp(appState: AdroAppState) {
 
             }, bottomBar = {
 
-                    BottomNavigationBar(
-                        bottomBarState = appState.shouldShowBottomBar,
-                        destinations = appState.topLevelDestinations,
-                        onNavigateToDestination = appState::navigate,
-                        currentDestination = appState.currentDestination
-                    )
+                BottomNavigationBar(
+                    bottomBarState = appState.shouldShowBottomBar,
+                    destinations = appState.topLevelDestinations,
+                    onNavigateToDestination = appState::navigate,
+                    currentDestination = appState.currentDestination
+                )
 
             })
 
@@ -60,7 +66,7 @@ fun ThriveApp(appState: AdroAppState) {
 
 @Composable
 private fun ToggleToolbarAndNavRail(
-    appState: AdroAppState,
+    appState: ThriveAppState,
     bottomBarState: MutableState<Boolean>,
     topBarState: MutableState<Boolean>
 ) {

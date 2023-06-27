@@ -16,6 +16,7 @@ object HomeDestination : AdroNavigationDestination {
 fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit,
+    handleDeepLinks: () -> Unit,
     isApiLoading: (loading: Boolean) -> Unit
 //    nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
@@ -27,6 +28,7 @@ fun NavGraphBuilder.homeGraph(
         HomeScreen(
             navigateToAuth = navigateToAuth,
             navigateToOffers = { navigateToOffers() },
+            handleDeepLinks = { handleDeepLinks() },
             isApiLoading = { loading: Boolean -> isApiLoading(loading) })
     }
 //        nestedGraphs()
