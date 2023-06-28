@@ -39,13 +39,13 @@ class ThriveAppState(val navController: NavHostController) {
 
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
+
     val shouldShowBottomBar: Boolean
-        @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination?.route in topLevelDestinations.map { it.route }
+        @Composable get() = currentDestination?.route in topLevelDestinations.map { it.route }
 
     val shouldShowToolBar: Boolean
-        @Composable get() = navController
-            .currentBackStackEntryAsState().value?.destination?.route in topLevelDestinations.map { it.route }
+        @Composable get() = !(currentDestination?.route == MerchantDestination.route || currentDestination?.route == ProfileDestination.route)
+
 
     /**
      * Top level destinations to be used in the BottomBar and NavRail
@@ -111,7 +111,7 @@ class ThriveAppState(val navController: NavHostController) {
                 navController.navigate(route ?: destination.route)
             }
 
-            if(isFromDeepLink){
+            if (isFromDeepLink) {
                 navController.navigate(route ?: destination.route)
             }
         }
