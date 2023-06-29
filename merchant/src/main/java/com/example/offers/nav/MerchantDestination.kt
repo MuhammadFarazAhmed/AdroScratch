@@ -9,16 +9,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.*
 import com.google.accompanist.navigation.animation.composable
-import com.example.adro.ui.AdroNavigationDestination
+import com.example.adro.ui.ThriveNavigationDestination
 import com.example.offers.ui.MerchantDetailScreen
 import com.example.offers.ui.OffersScreen
+import com.example.offers.ui.SearchScreen
 
-object MerchantDestination : AdroNavigationDestination {
+object MerchantDestination : ThriveNavigationDestination {
     override val route = "merchant_route"
     override val destination = "offers_destination"
 
     const val detail = "merchant_detail"
-    const val fav = "fav"
 }
 
 @OptIn(ExperimentalAnimationApi::class)

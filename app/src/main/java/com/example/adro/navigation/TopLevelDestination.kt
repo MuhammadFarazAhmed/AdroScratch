@@ -2,7 +2,7 @@ package com.example.adro.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.adro.ui.AdroNavigationDestination
+import com.example.adro.ui.ThriveNavigationDestination
 
 /**
  * Type for the top level destinations in the application. Each of these destinations
@@ -15,7 +15,7 @@ data class TopLevelDestination(
     val selectedIcon: Icon,
     val unselectedIcon: Icon,
     val iconTextId: Int
-) : AdroNavigationDestination
+) : ThriveNavigationDestination
 
 sealed class Icon {
     data class ImageVectorIcon(val imageVector: ImageVector) : Icon()

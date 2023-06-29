@@ -1,9 +1,10 @@
-package com.example.adro.ui
+package com.example.adro
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -16,11 +17,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.adro.theme.ThriveScratchTheme
+import com.example.adro.ui.ThriveNavigationDestination
 import com.example.base.R
+import com.example.offers.nav.SearchDestination
 
 
 @Composable
-fun Toolbar(visibility: Boolean) {
+fun Toolbar(visibility: Boolean, onNavigateToDestination: (ThriveNavigationDestination, String?) -> Unit) {
     AnimatedVisibility(visible = visibility) {
         Box(
             modifier = Modifier
@@ -60,7 +63,11 @@ fun Toolbar(visibility: Boolean) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_search),
                         contentScale = ContentScale.Inside,
-                        contentDescription = ""
+                        contentDescription = "",
+                        modifier = Modifier.clickable {
+                            onNavigateToDestination(SearchDestination, SearchDestination.route)
+                        }
+
                     )
 
                     Spacer(modifier = Modifier.padding(4.dp))
@@ -68,8 +75,7 @@ fun Toolbar(visibility: Boolean) {
                     Image(
                         painter = painterResource(id = R.drawable.ic_notification),
                         contentScale = ContentScale.Inside,
-                        contentDescription = ""
-                    )
+                        contentDescription = "")
                 }
 
 
@@ -82,6 +88,6 @@ fun Toolbar(visibility: Boolean) {
 @Composable
 fun ToolbarPreview() {
     ThriveScratchTheme {
-        Toolbar(true)
+        Toolbar(true) { _, _ -> }
     }
 }

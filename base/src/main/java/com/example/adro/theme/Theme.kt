@@ -1,11 +1,11 @@
 package com.example.adro.theme
 
+import android.widget.Toolbar
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.adro.ui.ToolbarPreview
 
 private val DarkColorPalette =
         darkColors(primary = Purple200, primaryVariant = Purple700, secondary = Red)
@@ -41,10 +41,10 @@ fun ThriveScratchDarkThemePreview(darkTheme: Boolean = true) {
         LightColorPalette
     }
     
-    MaterialTheme(colors = colors,
-            typography = Typography,
-            shapes = Shapes,
-            content = { Scaffold(topBar = { ToolbarPreview() }, content = {}) })
+//    MaterialTheme(colors = colors,
+//            typography = Typography,
+//            shapes = Shapes,
+//            content = { Scaffold(topBar = {  }, content = {}) })
 }
 
 @Preview(name = "Light Theme" ,showBackground = true) @Composable
@@ -55,8 +55,8 @@ fun AdroScratchLightThemePreview(darkTheme: Boolean = false) {
         LightColorPalette
     }
     
-    MaterialTheme(colors = colors,
-            typography = Typography,
-            shapes = Shapes,
-            content = { Scaffold(topBar = { ToolbarPreview() },content = {}) })
+//    MaterialTheme(colors = colors,
+//            typography = Typography,
+//            shapes = Shapes,
+//            content = { Scaffold(topBar = { com.example.adro.ToolbarPreview() },content = {}) })
 }

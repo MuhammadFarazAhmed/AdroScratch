@@ -124,7 +124,7 @@ fun Tabs(
     }
 }
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Pager(
     tabs: List<TabsResponse.Data.Tab?>?,
@@ -142,16 +142,16 @@ fun Pager(
 
             val lazyOutlets = vm.offers.collectAsLazyPagingItems()
 
-            LazyColumn {
+            LazyColumn(modifier = Modifier.fillMaxSize() , verticalArrangement = Arrangement.Top){
 
                 items(
                     count = lazyOutlets.itemCount,
                     key = lazyOutlets.itemKey(),
-                    contentType = lazyOutlets.itemContentType(
-                    )
+                    contentType = lazyOutlets.itemContentType()
                 ) { index ->
                     val item = lazyOutlets[index]
                     OutletItem(item, navigateToDetail = navigateToDetail)
+                    Divider(color = Color.Black, thickness = .5.dp, modifier = Modifier.padding(horizontal = 4.dp))
                 }
 
                 applyPagination(lazyOutlets)
@@ -176,46 +176,35 @@ fun OutletItem(
             .wrapContentSize()
             .clickable {
                 navigateToDetail()
-            }
-            .drawBehind {
-                val strokeWidth = Stroke.DefaultMiter
-                val x = size.width - strokeWidth
-                drawLine(
-                    color = Color.LightGray,
-                    start = Offset(20f, 0f), //(0,0) at top-left point of the box
-                    end = Offset(x - 20, 0f), //top-right point of the box
-                    strokeWidth = strokeWidth
-                )
             },
     ) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Card(
+            Row(
                 modifier = Modifier
-                    .padding(12.dp)
-                    .height(75.dp)
-                    .width(75.dp),
-                border = BorderStroke(1.dp, Color.Gray),
-                shape = RoundedCornerShape(12.dp)
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                AsyncImage(model = outlet?.merchantLogoUrl, contentDescription = "")
+                Card(
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .height(75.dp)
+                        .width(75.dp),
+                    border = BorderStroke(1.dp, Color.Gray),
+                    shape = RoundedCornerShape(12.dp)
+                ) {
+                    AsyncImage(model = outlet?.merchantLogoUrl, contentDescription = "")
+                }
+                Column(
+                    modifier = Modifier
+                        .padding(vertical = 12.dp)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Text(text = outlet?.merchantName ?: "")
+                    Text(text = outlet?.name ?: "", modifier = Modifier.padding(vertical = 6.dp))
+                    Text(text = outlet?.humanLocation ?: "")
+                }
             }
-            Column(
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Text(text = outlet?.merchantName ?: "")
-                Text(text = outlet?.name ?: "", modifier = Modifier.padding(vertical = 6.dp))
-                Text(text = outlet?.humanLocation ?: "")
-            }
-        }
-
     }
 }
 

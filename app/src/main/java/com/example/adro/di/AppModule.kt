@@ -18,7 +18,6 @@ import com.example.auth.vm.AuthViewModel
 import com.example.adro.models.ErrorResponse
 import com.example.domain.repos.AuthRepository
 import com.example.domain.repos.CommonRepository
-import com.example.domain.repos.FavoritesRepository
 import com.example.domain.repos.HomeRepository
 import com.example.domain.repos.MerchantRepository
 import com.example.domain.usecase.AuthUseCase
@@ -29,9 +28,9 @@ import com.example.domain.usecase.MerchantUseCase
 import com.example.home.vm.HomeViewModel
 import com.example.offers.vm.FavoriteViewModel
 import com.example.offers.vm.OffersViewModel
+import com.example.offers.vm.SearchViewModel
 import com.example.profile.vm.ProfileViewModel
 import com.example.repositories.repos.CommonRepositoryImp
-import com.example.repositories.repos.FavRepositoryImp
 import com.example.repositories.repos.HomeRepositoryImp
 import com.example.repositories.repos.MerchantRepositoryImp
 import com.example.repositories.usecases.AuthRepositoryImp
@@ -72,7 +71,7 @@ fun appModule() = listOf(AppModule, NetworkModule)
 
 fun networkModule() = listOf(NetworkModule)
 
-fun featureModules() = listOf(commonModule, authModule, homeModule, merchantModule)
+fun featureModules() = listOf(commonModule, authModule, homeModule, merchantModule, searchModule)
 
 public enum class DataStores {
     CONFIG, USER, APP
@@ -193,7 +192,7 @@ val NetworkModule = module {
 val commonModule = module {
     single<CommonRepository> { CommonRepositoryImp(get(), get(named(DataStores.CONFIG))) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
-    viewModel { CommonViewModel(get(), get(),get()) }
+    viewModel { CommonViewModel(get(), get(), get()) }
 }
 
 val homeModule = module {
@@ -203,16 +202,23 @@ val homeModule = module {
 }
 
 val authModule = module {
+
     single<AuthRepository> { AuthRepositoryImp(get(), get(named(DataStores.USER))) }
     single<AuthUseCase> { AuthUseCaseImp(get()) }
+
     viewModel { AuthViewModel(get(), get()) }
     viewModel { ProfileViewModel(get(), get()) }
+
 }
+
+val searchModule = module {
+    viewModel { SearchViewModel(get(), get()) }
+}
+
 
 val merchantModule = module {
 
     single<MerchantRepository> { MerchantRepositoryImp(get()) }
-    single<FavoritesRepository> { FavRepositoryImp(get()) }
 
     single<MerchantUseCase> { MerchantUseCaseImp(get()) }
     single<FavUseCase> { FavUseCaseImp(get()) }

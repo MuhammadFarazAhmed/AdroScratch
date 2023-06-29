@@ -9,11 +9,12 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
-import com.example.adro.ui.AdroNavigationDestination
+import com.example.adro.ui.ThriveNavigationDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
 import com.example.offers.nav.FavoriteDestination
 import com.example.offers.nav.MerchantDestination
+import com.example.offers.nav.SearchDestination
 import com.example.profile.nav.ProfileDestination
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 
@@ -44,7 +45,8 @@ class ThriveAppState(val navController: NavHostController) {
         @Composable get() = currentDestination?.route in topLevelDestinations.map { it.route }
 
     val shouldShowToolBar: Boolean
-        @Composable get() = !(currentDestination?.route == MerchantDestination.route || currentDestination?.route == ProfileDestination.route)
+        @Composable get() = !(currentDestination?.route == MerchantDestination.route || currentDestination?.route == ProfileDestination.route ||
+                currentDestination?.route == SearchDestination.route)
 
 
     /**
@@ -84,7 +86,7 @@ class ThriveAppState(val navController: NavHostController) {
 
 
     fun navigate(
-        destination: AdroNavigationDestination,
+        destination: ThriveNavigationDestination,
         route: String? = null,
         isFromDeepLink: Boolean = false
     ) {

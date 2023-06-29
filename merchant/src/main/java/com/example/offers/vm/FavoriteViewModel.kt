@@ -12,8 +12,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import javax.inject.Inject
 
-@HiltViewModel
-class FavoriteViewModel @Inject constructor(application: Application, favUseCase: FavUseCase) :
+
+class FavoriteViewModel(application: Application, favUseCase: FavUseCase) :
     AndroidViewModel(application) {
 
     val favoriteList =

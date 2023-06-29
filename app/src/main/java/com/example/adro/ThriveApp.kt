@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.adro.navigation.*
 import com.example.adro.theme.ThriveScratchTheme
-import com.example.adro.ui.Toolbar
 import com.example.offers.nav.findActivity
 
 @Composable
@@ -26,7 +25,7 @@ fun ThriveApp(appState: ThriveAppState) {
 
         Scaffold(
 
-            topBar = { Toolbar(appState.shouldShowToolBar) },
+            topBar = { Toolbar(appState.shouldShowToolBar,appState::navigate) },
 
             content = { padding ->
 

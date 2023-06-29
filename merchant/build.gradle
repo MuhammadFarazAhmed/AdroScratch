@@ -56,12 +56,16 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
+    implementation("androidx.compose.material3:material3:1.1.1")
+
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
+
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation project(path: ':domain')
     implementation project(path: ':repositories')
+    api(project(':base'))
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
@@ -79,7 +83,7 @@ dependencies {
 
     implementation "com.google.accompanist:accompanist-pager:0.25.1"
 
-    implementation("io.coil-kt:coil-compose:2.2.2")
+    implementation("io.coil-kt:coil-compose:2.4.0")
 
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 
@@ -89,9 +93,10 @@ dependencies {
     implementation(project(':base'))
     implementation(project(':domain'))
 
-    debugApi("androidx.paging:paging-compose:3.2.0-beta01")
+    debugApi("androidx.paging:paging-compose:3.2.0-rc01")
     def paging_version = "3.1.1"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
+
 
 
     implementation 'io.jsonwebtoken:jjwt:0.9.1'

@@ -38,7 +38,11 @@ object CommonUtilsExtension {
 
     val Apikey = AttributeKey<API>("api")
 
-    fun HttpRequestBuilder.setDefaultParams(api: API, convert: HashMap<String, String>? = hashMapOf()) {
+    fun HttpRequestBuilder.setDefaultParams(
+        api: API,
+        additionalParams: HashMap<String, String>? = hashMapOf(),
+        params: HashMap<String, String> = hashMapOf()
+    ) {
         attributes.put(Apikey, api)
         val defaultParams = hashMapOf(
             "__company" to "ADO",
@@ -62,8 +66,11 @@ object CommonUtilsExtension {
             "lat" to "0"
         )
 
-        convert?.let { defaultParams.putAll(it) }
-        setBody(defaultParams)
+        if (additionalParams != null) {
+            params.putAll(additionalParams)
+        }
+        params.putAll(defaultParams)
+        setBody(params)
     }
 
     fun <T : Any> LazyListScope.applyPagination(

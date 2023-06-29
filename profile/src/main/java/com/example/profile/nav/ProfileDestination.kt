@@ -3,10 +3,10 @@ package com.example.profile.nav
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
-import com.example.adro.ui.AdroNavigationDestination
+import com.example.adro.ui.ThriveNavigationDestination
 import com.example.profile.ui.ProfileScreen
 
-object ProfileDestination : AdroNavigationDestination {
+object ProfileDestination : ThriveNavigationDestination {
     override val route = "profile_route"
     override val destination = "offers_destination"
 }

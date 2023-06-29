@@ -1,12 +1,16 @@
 package com.example.repositories.usecases
 
 import com.example.adro.models.FavoriteResponse
-import com.example.domain.repos.FavoritesRepository
+import com.example.domain.repos.MerchantRepository
 import com.example.domain.usecase.FavUseCase
+import com.example.domain.usecase.MerchantUseCase
 import javax.inject.Inject
 
-class FavUseCaseImp @Inject constructor(private val favRepository: FavoritesRepository) :
+class FavUseCaseImp(private val merchantRepository: MerchantRepository) :
     FavUseCase {
-    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> = favRepository.fetchFavorites()
+
+    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> =
+        merchantRepository.fetchFavorites()
+
 }
 

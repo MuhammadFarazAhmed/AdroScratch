@@ -8,5 +8,10 @@ import kotlinx.coroutines.flow.Flow
 interface MerchantUseCase {
     
     fun fetchTabs(params: HashMap<String,String>?= hashMapOf()): Flow<ApiResult<TabsResponse>>
-    suspend fun fetchOffers(params: TabsResponse.Data.Tab.Params?): List<OffersResponse.Data.Outlet>
+
+    suspend fun fetchOffers(
+        params: TabsResponse.Data.Tab.Params? = null,
+        query: String? = null,
+        queryType: String? = null
+    ): List<OffersResponse.Data.Outlet>
 }

@@ -20,7 +20,7 @@ package com.example.adro.ui
  * Interface for describing the Now in Android navigation destinations
  */
 
-interface AdroNavigationDestination {
+interface ThriveNavigationDestination {
     /**
      * Defines a specific route this destination belongs to.
      * Route is a String that defines the path to your composable.
