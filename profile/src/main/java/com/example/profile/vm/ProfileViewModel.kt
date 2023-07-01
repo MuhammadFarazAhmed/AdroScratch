@@ -11,7 +11,7 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonFlowExtensions.handleErrors
 import com.example.adro.models.ProfileResponse
 import com.example.domain.usecase.AuthUseCase
-import com.example.repositories.paging.BasePagingSource
+import com.example.adro.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -42,24 +42,18 @@ class ProfileViewModel(
 
 
     init {
-        refresh()
-    }
-
-
-    fun refresh() {
         viewModelScope.launch {
-            isRefreshing.emit(true)
-            getProfile()
+            authUseCase.isUserLoggedIn().collectLatest {
+                isRefreshing.emit(true)
+                Pager(PagingConfig(pageSize = 60)) { BasePagingSource(isRefreshing) { authUseCase.fetchProfile() } }.flow.cachedIn(
+                    viewModelScope
+                ).collect {
+                    sections.value = it
+                }
+            }
         }
     }
 
-    private suspend fun getProfile() {
-        Pager(PagingConfig(pageSize = 60)) { BasePagingSource(isRefreshing) { authUseCase.fetchProfile() } }.flow.cachedIn(
-            viewModelScope
-        ).collect {
-            sections.value = it
-        }
-    }
 
     fun signOut() {
         viewModelScope.launch {

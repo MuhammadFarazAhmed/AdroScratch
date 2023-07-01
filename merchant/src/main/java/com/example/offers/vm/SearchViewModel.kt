@@ -11,7 +11,7 @@ import com.example.adro.models.ApiStatus
 import com.example.adro.models.OffersResponse
 import com.example.adro.models.TabsResponse
 import com.example.domain.usecase.MerchantUseCase
-import com.example.repositories.paging.BasePagingSource
+import com.example.adro.paging.BasePagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch

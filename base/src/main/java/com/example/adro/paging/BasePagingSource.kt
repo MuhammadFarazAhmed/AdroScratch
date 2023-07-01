@@ -1,4 +1,4 @@
-package com.example.repositories.paging
+package com.example.adro.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

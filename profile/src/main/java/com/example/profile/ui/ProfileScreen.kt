@@ -10,10 +10,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
@@ -52,6 +54,7 @@ import androidx.paging.compose.itemKey
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.components.SwipeToRefreshContainer
 import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
 import kotlinx.coroutines.flow.collect
@@ -76,79 +79,71 @@ enum class ProfileSections(val value: String) {
 fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getViewModel()) {
 
     val lazySections = vm.sections.collectAsLazyPagingItems()
+    val lazySectionsState = rememberLazyListState()
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
-    val scope = rememberCoroutineScope()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { lazySections.refresh() })
     val isLogin = vm.isLogin.collectAsStateLifecycleAware()
 
-    LaunchedEffect(isLogin) {
 
-        scope.launch {
+    SwipeToRefreshContainer(
+        pullRefreshState = pullRefreshState,
+        isRefreshing = isRefreshing,
+        modifier = Modifier
+            .pullRefresh(pullRefreshState)
+            .fillMaxSize(),
+        content = {
+            LazyColumn(
+                state = lazySectionsState,
+                modifier = Modifier.background(HexToJetpackColor.getColor("F1F1F1"))
+            ) {
 
-            vm.isLogin.collectLatest {
-                if (it == false) {
-                    navigateToHome()
-                }
-            }
+                items(
+                    count = lazySections.itemCount,
+                    key = lazySections.itemKey(),
+                    contentType = lazySections.itemContentType()
+                ) { index ->
+                    val item = lazySections[index]
+                    when (item?.sectionIdentifier) {
 
-        }
-
-    }
-
-    Box(
-        Modifier.pullRefresh(pullRefreshState)
-    ) {
-
-        LazyColumn(Modifier.background(HexToJetpackColor.getColor("F1F1F1"))) {
-
-            items(
-                count = lazySections.itemCount,
-                key = lazySections.itemKey(),
-                contentType = lazySections.itemContentType()
-            ) { index ->
-                val item = lazySections[index]
-                when (item?.sectionIdentifier) {
-
-                    ProfileSections.PROFILE_HEADER.value -> {
-                        if (isLogin.value == false) {
-                            ProfileSectionHeader()
-                        }
-                    }
-
-                    ProfileSections.MY_ACCOUNT.value,
-                    ProfileSections.REDEMPTIONS_DETAILS.value,
-                    ProfileSections.SETTINGS.value,
-                    ProfileSections.HELP_SUPPORT.value,
-                    ProfileSections.ABOUT.value,
-                    -> {
-                        ProfileSectionHeaderRow(item.sectionTitle)
-                        item.sectionData.forEach { innerItem ->
-                            when (innerItem.type) {
-                                "arrow" -> ProfileSectionArrow(innerItem.title)
-                                "text" -> ProfileSectionText(innerItem.title, innerItem.desc)
-                                "switch" -> ProfileSectionSwitch(innerItem.title, innerItem.value)
-                                else -> ProfileSectionHeaderRow(innerItem.title)
+                        ProfileSections.PROFILE_HEADER.value -> {
+                            if (isLogin.value == false) {
+                                ProfileSectionHeader()
                             }
                         }
-                    }
 
-                    ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) {
-                        ProfileSectionSignOut(vm)
-                    }
+                        ProfileSections.MY_ACCOUNT.value,
+                        ProfileSections.REDEMPTIONS_DETAILS.value,
+                        ProfileSections.SETTINGS.value,
+                        ProfileSections.HELP_SUPPORT.value,
+                        ProfileSections.ABOUT.value,
+                        -> {
+                            ProfileSectionHeaderRow(item.sectionTitle)
+                            item.sectionData.forEach { innerItem ->
+                                when (innerItem.type) {
+                                    "arrow" -> ProfileSectionArrow(innerItem.title)
+                                    "text" -> ProfileSectionText(innerItem.title, innerItem.desc)
+                                    "switch" -> ProfileSectionSwitch(
+                                        innerItem.title,
+                                        innerItem.value
+                                    )
 
+                                    else -> ProfileSectionHeaderRow(innerItem.title)
+                                }
+                            }
+                        }
+
+                        ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) {
+                            ProfileSectionSignOut(vm)
+                        }
+
+                    }
                 }
+
+                applyPagination(lazySections)
+
             }
-
-            applyPagination(lazySections)
-
         }
-
-        PullRefreshIndicator(
-            refreshing = isRefreshing,
-            state = pullRefreshState,
-            Modifier.align(Alignment.TopCenter)
-        )
-    }
+    )
 }
 
 

@@ -28,15 +28,21 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.components.SwipeToRefreshContainer
 import com.example.adro.ui.ProgressDialog
 import com.example.base.R
 import com.example.adro.models.HomeResponse
 import com.example.home.ui.HomeSections.*
 import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
@@ -90,30 +96,28 @@ fun HomeScreen(
 
     val context = LocalContext.current
 
-    val homeSection by vm.sections.collectAsStateLifecycleAware(initial = emptyList())
+    val homeSection = vm.sections.collectAsLazyPagingItems()
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { homeSection.refresh() })
 
-    LaunchedEffect(key1 = homeSection) {
-        if (homeSection.isNotEmpty()) {
-            handleDeepLinks()
-        }
-    }
 
-    Box(
-        contentAlignment = Center,
+    SwipeToRefreshContainer(
+        pullRefreshState = pullRefreshState,
+        isRefreshing = isRefreshing,
         modifier = Modifier
             .pullRefresh(pullRefreshState)
-            .background(Color.White)
-    ) {
-
-        Surface {
-
+            .fillMaxSize(),
+        content = {
             LazyColumn {
 
-                items(homeSection) { section ->
+                items(
+                    count = homeSection.itemCount,
+                    key = homeSection.itemKey(),
+                    contentType = homeSection.itemContentType()
+                ) { index ->
+                    val section = homeSection[index]
 
-                    when (section.sectionIdentifier) {
+                    when (section?.sectionIdentifier) {
 
                         MAIN_CAROUSAL.value -> MainCarousal(pagerState, section)
                         GUEST_USER.value -> LoginView(section, navigateToAuth)
@@ -127,17 +131,11 @@ fun HomeScreen(
                         EXCLUSIVE_OFFERS.value -> ExclusiveItem(exclusivePagerState, section)
                         RECOMMENDED_OFFERS.value -> RecommendedItem(recommendedPagerState, section)
                     }
-
                 }
+                applyPagination(homeSection)
             }
-
-            PullRefreshIndicator(
-                refreshing = isRefreshing,
-                state = pullRefreshState,
-                Modifier.align(Alignment.TopCenter)
-            )
         }
-    }
+    )
 
     //show progress
     if (isRefreshing) {

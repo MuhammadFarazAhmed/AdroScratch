@@ -1,6 +1,7 @@
 package com.example.adro.common
 
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
@@ -74,7 +75,8 @@ object CommonUtilsExtension {
     }
 
     fun <T : Any> LazyListScope.applyPagination(
-        lazyLayout: LazyPagingItems<T>
+        lazyLayout: LazyPagingItems<T>,
+        callback : () -> Unit = {}
     ) {
         lazyLayout.apply {
             when {
@@ -84,6 +86,10 @@ object CommonUtilsExtension {
 
                 loadState.append is LoadState.Loading -> {
                     item { LoadingItem() }
+                }
+
+                loadState.refresh is LoadState.NotLoading && itemCount == 0 -> {
+                   callback()
                 }
 
                 loadState.refresh is LoadState.Error -> {

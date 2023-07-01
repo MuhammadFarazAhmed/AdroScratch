@@ -12,7 +12,7 @@ data class HomeResponse(
     @SerialName("code")
     val code: Int? = null,
     @SerialName("data")
-    val `data`: Data? = null,
+    val `data`: Data = Data(),
     @SerialName("http_response")
     val httpResponse: Int? = null,
     @SerialName("message")
@@ -27,7 +27,7 @@ data class HomeResponse(
         @SerialName("pending_transaction_deeplink")
         val pendingTransactionDeeplink: String? = null,
         @SerialName("sections")
-        val sections: List<Section>
+        val sections: List<Section> = arrayListOf()
     ) {
         @Serializable
         data class BannerDetail(
@@ -40,26 +40,27 @@ data class HomeResponse(
             @SerialName("should_show_cancel_button")
             val shouldShowCancelButton: Boolean? = null
         )
-@Serializable
+
+        @Serializable
         data class Section(
-    @SerialName("section_identifier")
+            @SerialName("section_identifier")
             val sectionIdentifier: String = "1",
-    @SerialName("section_items")
+            @SerialName("section_items")
             val sectionItems: List<SectionItem> = arrayListOf(),
-    @SerialName("sort_order")
+            @SerialName("sort_order")
             val sortOrder: Int = 1,
-    @SerialName("title")
+            @SerialName("title")
             val title: String = "title",
-    @SerialName("image_url")
+            @SerialName("image_url")
             val imageUrl: String = "",
-    @SerialName("button_title")
+            @SerialName("button_title")
             val buttonTitle: String = "text",
-    @SerialName("button_bg_color")
+            @SerialName("button_bg_color")
             val buttonBgColor: String = "FF343434",
-    @SerialName("sub_title")
+            @SerialName("sub_title")
             val subTitle: String = ""
         ) {
-    @Serializable
+            @Serializable
             data class SectionItem(
                 @SerialName("button_bg_color")
                 val buttonBgColor: String = "FF343434",

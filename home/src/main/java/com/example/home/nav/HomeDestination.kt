@@ -11,6 +11,7 @@ import com.example.home.ui.HomeScreen
 
 object HomeDestination : ThriveNavigationDestination {
     override val route = "home_route"
+    val auth = "auth_route"
     override val destination = "home_destination"
 
     const val homeGraphRoutePattern = "home_graph"

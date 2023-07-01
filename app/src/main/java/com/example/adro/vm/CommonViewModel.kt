@@ -15,29 +15,13 @@ import kotlinx.coroutines.launch
 
 class CommonViewModel(
     application: Application,
-    private val commonUseCase: CommonUseCase,
-    private val authUseCase: AuthUseCase
+    private val commonUseCase: CommonUseCase
 ) :
     AndroidViewModel(application) {
 
-    var isLogin = MutableStateFlow(false)
     var keepOnSplashScreenOn = MutableStateFlow(true)
 
     init {
-        getConfig()
-        observerLogin()
-    }
-
-    private fun observerLogin() {
-        viewModelScope.launch {
-            authUseCase.isUserLoggedIn()
-                .collectLatest {
-                    isLogin.value = it
-                }
-        }
-    }
-
-    private fun getConfig() {
         viewModelScope.launch {
             commonUseCase.fetchConfig().collectLatest { apiResult ->
                 when (apiResult.status) {
@@ -50,5 +34,4 @@ class CommonViewModel(
             }
         }
     }
-
 }

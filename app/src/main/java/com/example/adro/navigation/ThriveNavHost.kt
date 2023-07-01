@@ -36,7 +36,6 @@ fun ThriveNavHost(
         modifier = modifier
     ) {
 
-        authGraph(popBack, popBack)
 
         homeGraph(
             handleDeepLinks = {
@@ -52,6 +51,7 @@ fun ThriveNavHost(
                 isApiLoading(loading)
             },
             nestedGraphs = {
+                authGraph(popBack, popBack)
                 searchGraph(navigateToDetail = {
                     onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
                 })
@@ -67,7 +67,7 @@ fun ThriveNavHost(
 
         profileGraph(
             navigateToHome = {
-                onNavigateToDestination(HomeDestination, HomeDestination.route)
+                onNavigateToDestination(HomeDestination, HomeDestination.homeGraphRoutePattern)
             }
         )
 

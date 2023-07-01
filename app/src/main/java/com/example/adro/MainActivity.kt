@@ -33,16 +33,6 @@ class MainActivity : ComponentActivity() {
             return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
         }
 
-        if (!vm.isLogin.value)
-            setContent {
-                AuthScreen(onBackClick = { MainScreen() }, onLoginSuccess = { MainScreen() })
-            }
-        else
-            MainScreen()
-
-    }
-
-    private fun MainScreen() {
         setContent {
             val appState = rememberAdroAppState()
             navController = appState.navController

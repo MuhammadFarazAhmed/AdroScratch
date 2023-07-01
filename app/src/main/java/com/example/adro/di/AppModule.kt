@@ -52,6 +52,7 @@ import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.accept
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.HttpStatusCode.Companion.NotFound
 import io.ktor.http.URLProtocol
 import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
@@ -176,6 +177,11 @@ val NetworkModule = module {
                                         cause
                                     )
                                 }
+                            } else if (cause.response.status == NotFound) {
+                                throw Exception(
+                                    "Url not Found 404",
+                                    cause
+                                )
                             }
                         }
 
@@ -192,7 +198,7 @@ val NetworkModule = module {
 val commonModule = module {
     single<CommonRepository> { CommonRepositoryImp(get(), get(named(DataStores.CONFIG))) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
-    viewModel { CommonViewModel(get(), get(), get()) }
+    viewModel { CommonViewModel(get(), get()) }
 }
 
 val homeModule = module {
@@ -223,7 +229,7 @@ val merchantModule = module {
     single<MerchantUseCase> { MerchantUseCaseImp(get()) }
     single<FavUseCase> { FavUseCaseImp(get()) }
 
-    viewModel { OffersViewModel(get(), get()) }
+    viewModel { OffersViewModel(get(), get(), get()) }
     viewModel { FavoriteViewModel(get(), get()) }
 
 }

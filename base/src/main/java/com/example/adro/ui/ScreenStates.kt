@@ -76,8 +76,6 @@ fun ProgressDialog(color: Color = Color.Black.copy(.5f), alpha: Double = 0.5) {
             modifier = Modifier.fillMaxWidth(),
         )
     }
-
-
 }
 
 @Composable

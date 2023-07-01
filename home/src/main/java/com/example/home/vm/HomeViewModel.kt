@@ -1,11 +1,13 @@
 package com.example.home.vm
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
-import com.example.adro.models.ApiStatus
-import com.example.adro.common.CommonFlowExtensions.handleErrors
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.example.adro.models.HomeResponse
+import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.HomeUseCase
 import kotlinx.coroutines.flow.*
@@ -13,48 +15,34 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(
     application: Application,
-    private val homeUseCase: HomeUseCase,
-    private val authUseCase: AuthUseCase
+    homeUseCase: HomeUseCase,
+    authUseCase: AuthUseCase
 ) :
     AndroidViewModel(application) {
 
     val isRefreshing = MutableStateFlow(false)
 
+    val isLogin = authUseCase.isUserLoggedIn().stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = null
+    )
+
+    val sections: MutableStateFlow<PagingData<HomeResponse.Data.Section>> = MutableStateFlow(
+        PagingData.empty()
+    )
+
     init {
         viewModelScope.launch {
-            authUseCase.isUserLoggedIn().collectLatest { _ -> refresh() }
-        }
-    }
-
-    fun refresh() {
-        fetchHomeData()
-    }
-
-    private fun fetchHomeData() {
-
-        viewModelScope.launch {
-
-            homeUseCase.fetchHome().handleErrors().collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS -> {
-                        isRefreshing.emit(false)
-                        it.data?.data?.sections?.let { sections.value = it }
-                    }
-
-                    ApiStatus.ERROR -> {
-                        isRefreshing.emit(false)
-                        Log.d("TAG", "${it.message}: ")
-                    }
-
-                    ApiStatus.LOADING -> {
-                        isRefreshing.emit(true)
-                    }
+            authUseCase.isUserLoggedIn().collectLatest { _ ->
+                Pager(PagingConfig(pageSize = 60)) { BasePagingSource(isRefreshing) { homeUseCase.fetchHome() } }.flow.cachedIn(
+                    viewModelScope
+                ).collect {
+                    sections.value = it
                 }
             }
-
         }
     }
 
-    val sections: MutableStateFlow<List<HomeResponse.Data.Section>> = MutableStateFlow(emptyList())
 
 }

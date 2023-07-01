@@ -10,6 +10,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
 import com.example.adro.ui.ThriveNavigationDestination
+import com.example.auth.nav.AuthDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
 import com.example.offers.nav.FavoriteDestination
@@ -45,44 +46,39 @@ class ThriveAppState(val navController: NavHostController) {
         @Composable get() = currentDestination?.route in topLevelDestinations.map { it.route }
 
     val shouldShowToolBar: Boolean
-        @Composable get() = !(currentDestination?.route == MerchantDestination.route || currentDestination?.route == ProfileDestination.route ||
-                currentDestination?.route == SearchDestination.route)
+        @Composable get() = !(currentDestination?.route == FavoriteDestination.route || currentDestination?.route == MerchantDestination.route || currentDestination?.route == ProfileDestination.route || currentDestination?.route == AuthDestination.route || currentDestination?.route == SearchDestination.route)
 
 
     /**
      * Top level destinations to be used in the BottomBar and NavRail
      */
-    val topLevelDestinations: List<TopLevelDestination> =
-        listOf(
-            TopLevelDestination(
-                route = HomeDestination.route,
-                destination = HomeDestination.destination,
-                selectedIcon = Icon.DrawableResourceIcon(R.drawable.home_select_icon),
-                unselectedIcon = Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
-                iconTextId = R.string.home
-            ),
-            TopLevelDestination(
-                route = MerchantDestination.route,
-                destination = MerchantDestination.destination,
-                selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
-                unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
-                iconTextId = com.example.adro.R.string.offers
-            ),
-            TopLevelDestination(
-                route = FavoriteDestination.route,
-                destination = FavoriteDestination.destination,
-                selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
-                unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
-                iconTextId = com.example.adro.R.string.Favorite
-            ),
-            TopLevelDestination(
-                route = ProfileDestination.route,
-                destination = ProfileDestination.destination,
-                selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
-                unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
-                iconTextId = com.example.adro.R.string.profile
-            )
+    val topLevelDestinations: List<TopLevelDestination> = listOf(
+        TopLevelDestination(
+            route = HomeDestination.route,
+            destination = HomeDestination.destination,
+            selectedIcon = Icon.DrawableResourceIcon(R.drawable.home_select_icon),
+            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
+            iconTextId = R.string.home
+        ), TopLevelDestination(
+            route = MerchantDestination.route,
+            destination = MerchantDestination.destination,
+            selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
+            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
+            iconTextId = com.example.adro.R.string.offers
+        ), TopLevelDestination(
+            route = FavoriteDestination.route,
+            destination = FavoriteDestination.destination,
+            selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
+            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
+            iconTextId = com.example.adro.R.string.Favorite
+        ), TopLevelDestination(
+            route = ProfileDestination.route,
+            destination = ProfileDestination.destination,
+            selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
+            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
+            iconTextId = com.example.adro.R.string.profile
         )
+    )
 
 
     fun navigate(

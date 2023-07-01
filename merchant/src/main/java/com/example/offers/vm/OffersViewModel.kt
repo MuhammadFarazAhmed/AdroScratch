@@ -11,21 +11,24 @@ import com.example.adro.models.ApiStatus
 import com.example.adro.models.OffersResponse
 import com.example.adro.models.TabsResponse
 import com.example.domain.usecase.MerchantUseCase
-import com.example.repositories.paging.BasePagingSource
+import com.example.adro.paging.BasePagingSource
+import com.example.domain.usecase.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class OffersViewModel @Inject constructor(
+
+class OffersViewModel(
     application: Application,
-    private val merchantUseCase: MerchantUseCase
+    private val merchantUseCase: MerchantUseCase,
+    private val authUseCase: AuthUseCase
 ) :
     AndroidViewModel(application) {
 
     val isRefreshing = MutableStateFlow(false)
     var params = hashMapOf<String, String>()
+    val query = MutableStateFlow("")
 
     init {
         fetchTabs()
@@ -33,37 +36,45 @@ class OffersViewModel @Inject constructor(
 
     private fun fetchTabs() {
         viewModelScope.launch {
-            merchantUseCase.fetchTabs(params).collect {
-                when (it.status) {
-                    ApiStatus.SUCCESS -> {
-                        isRefreshing.emit(false)
-                        tabs.value = it.data?.data?.tabs
-                        getOutlets()
-                    }
+            authUseCase.isUserLoggedIn().collectLatest { _ ->
+                merchantUseCase.fetchTabs(params).collect {
+                    when (it.status) {
+                        ApiStatus.SUCCESS -> {
+                            isRefreshing.emit(false)
+                            tabs.value = it.data?.data?.tabs
+                            getOutlets()
+                        }
 
-                    ApiStatus.ERROR -> {
-                        isRefreshing.emit(false)
-                        Log.d("TAG", "${it.message}: ")
-                    }
+                        ApiStatus.ERROR -> {
+                            isRefreshing.emit(false)
+                            Log.d("TAG", "${it.message}: ")
+                        }
 
-                    ApiStatus.LOADING -> isRefreshing.emit(true)
+                        ApiStatus.LOADING -> isRefreshing.emit(true)
+                    }
                 }
             }
         }
     }
 
     fun refresh() {
-        fetchTabs()
+        getOutlets()
     }
 
     private fun getOutlets() {
         viewModelScope.launch {
-            Pager(PagingConfig(pageSize = 60)) {
-                BasePagingSource(MutableStateFlow(false)) {
-                    merchantUseCase.fetchOffers(selectedTab.value?.params)
+            authUseCase.isUserLoggedIn().collectLatest { _ ->
+                Pager(PagingConfig(pageSize = 60)) {
+                    BasePagingSource(MutableStateFlow(false)) {
+                        merchantUseCase.fetchOffers(
+                            params = selectedTab.value?.params,
+                            query = if (query.value != "") query.value else null,
+                            queryType = if (query.value != "") "name" else null
+                        )
+                    }
+                }.flow.cachedIn(viewModelScope).collectLatest {
+                    offers.value = it
                 }
-            }.flow.cachedIn(viewModelScope).collectLatest {
-                offers.value = it
             }
         }
     }

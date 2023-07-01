@@ -6,12 +6,16 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -24,6 +28,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
@@ -31,11 +36,16 @@ import coil.compose.AsyncImage
 import com.example.adro.PagerExtension.pagerTabIndicatorOffset
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
+import com.example.adro.components.Header
+import com.example.adro.components.SwipeToRefreshContainer
 import com.example.adro.models.OffersResponse
 import com.example.adro.models.TabsResponse
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -59,30 +69,52 @@ fun OffersScreen(
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
 
-    Box(
-        Modifier
+    val text by vm.query.collectAsStateLifecycleAware()
+    val lazyOutlets = vm.offers.collectAsLazyPagingItems()
+
+    SwipeToRefreshContainer(
+        pullRefreshState = pullRefreshState,
+        isRefreshing = isRefreshing,
+        modifier = Modifier
             .pullRefresh(pullRefreshState)
-    ) {
+            .fillMaxSize(),
+        content = {
+            Surface(modifier = Modifier.fillMaxSize()) {
 
-        Surface(modifier = Modifier.fillMaxSize()) {
+                LaunchedEffect(key1 = text) {
+                    val debounceDuration = 500L // Debounce duration in milliseconds
+                    var debounceJob: Job? = null
 
-            Column {
+                    vm.query.collectLatest {
+                        debounceJob?.cancel()
+                        debounceJob = launch {
+                            delay(debounceDuration)
+                            vm.refresh()
+                        }
+                    }
 
-                Tabs(tabs, pagerState, coroutineScope) { tab ->
-                    vm.selectedTab.value = tab
                 }
 
-                Pager(tabs = tabs, pagerState = pagerState, vm, navigateToDetail)
+                Column {
 
+                    Header(
+                        toolbarTitle = "Offers",
+                        searchText = text,
+                        isBackIconShown = false,
+                        onQueryChange = { queryText -> vm.query.value = queryText },
+                        onCrossClicked = { if (text.isNotEmpty()) vm.query.value = "" }
+                    )
+
+                    Tabs(tabs, pagerState, coroutineScope) { tab ->
+                        vm.selectedTab.value = tab
+                    }
+
+                    Pager(tabs = tabs, pagerState = pagerState, vm, lazyOutlets, navigateToDetail)
+
+                }
             }
         }
-
-        PullRefreshIndicator(
-            refreshing = isRefreshing,
-            state = pullRefreshState,
-            Modifier.align(Alignment.TopCenter)
-        )
-    }
+    )
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -130,6 +162,7 @@ fun Pager(
     tabs: List<TabsResponse.Data.Tab?>?,
     pagerState: PagerState,
     vm: OffersViewModel,
+    lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
     navigateToDetail: () -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -140,9 +173,12 @@ fun Pager(
 
             vm.selectedTab.value = tabs?.get(index)
 
-            val lazyOutlets = vm.offers.collectAsLazyPagingItems()
 
-            LazyColumn(modifier = Modifier.fillMaxSize() , verticalArrangement = Arrangement.Top){
+
+            LazyColumn(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top
+            ) {
 
                 items(
                     count = lazyOutlets.itemCount,
@@ -151,7 +187,11 @@ fun Pager(
                 ) { index ->
                     val item = lazyOutlets[index]
                     OutletItem(item, navigateToDetail = navigateToDetail)
-                    Divider(color = Color.Black, thickness = .5.dp, modifier = Modifier.padding(horizontal = 4.dp))
+                    Divider(
+                        color = Color.Black,
+                        thickness = .5.dp,
+                        modifier = Modifier.padding(horizontal = 4.dp)
+                    )
                 }
 
                 applyPagination(lazyOutlets)
@@ -165,7 +205,6 @@ class OutletProvider : PreviewParameterProvider<OffersResponse.Data.Outlet> {
 }
 
 @Composable
-@Preview
 fun OutletItem(
     @PreviewParameter(OutletProvider::class) outlet: OffersResponse.Data.Outlet?,
     navigateToDetail: () -> Unit
@@ -179,32 +218,32 @@ fun OutletItem(
             },
     ) {
 
-            Row(
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(12.dp)
+                    .height(75.dp)
+                    .width(75.dp),
+                border = BorderStroke(1.dp, Color.Gray),
+                shape = RoundedCornerShape(12.dp)
             ) {
-                Card(
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .height(75.dp)
-                        .width(75.dp),
-                    border = BorderStroke(1.dp, Color.Gray),
-                    shape = RoundedCornerShape(12.dp)
-                ) {
-                    AsyncImage(model = outlet?.merchantLogoUrl, contentDescription = "")
-                }
-                Column(
-                    modifier = Modifier
-                        .padding(vertical = 12.dp)
-                        .fillMaxHeight(),
-                    verticalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    Text(text = outlet?.merchantName ?: "")
-                    Text(text = outlet?.name ?: "", modifier = Modifier.padding(vertical = 6.dp))
-                    Text(text = outlet?.humanLocation ?: "")
-                }
+                AsyncImage(model = outlet?.merchantLogoUrl, contentDescription = "")
             }
+            Column(
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.SpaceEvenly
+            ) {
+                Text(text = outlet?.merchantName ?: "")
+                Text(text = outlet?.name ?: "", modifier = Modifier.padding(vertical = 6.dp))
+                Text(text = outlet?.humanLocation ?: "")
+            }
+        }
     }
 }
 

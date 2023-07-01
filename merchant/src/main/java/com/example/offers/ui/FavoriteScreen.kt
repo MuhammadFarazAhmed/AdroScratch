@@ -15,9 +15,13 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -28,33 +32,63 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
+import com.example.adro.components.SwipeToRefreshContainer
+import com.example.adro.components.Toolbar
 import com.example.adro.models.FavoriteResponse
 import com.example.offers.vm.FavoriteViewModel
 import org.koin.androidx.compose.getViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun FavoriteScreen(vm: FavoriteViewModel = getViewModel()) {
 
     Surface(modifier = Modifier.fillMaxSize()) {
 
         val lazyFavs = vm.favoriteList.collectAsLazyPagingItems()
+        val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+        val pullRefreshState = rememberPullRefreshState(isRefreshing, {
+            vm.isRefreshing.value = true
+            lazyFavs.refresh()
+        })
 
+        SwipeToRefreshContainer(
+            pullRefreshState = pullRefreshState,
+            isRefreshing = isRefreshing,
+            modifier = Modifier
+                .pullRefresh(pullRefreshState)
+                .fillMaxSize(),
+            content = {
+                MainContent(lazyFavs)
+            }
+        )
+    }
+}
+
+@Composable
+private fun MainContent(lazyFavs: LazyPagingItems<FavoriteResponse.Data.Outlet>) {
+    Column {
+        Toolbar(text = "Favorites",false) {
+        }
         LazyColumn {
-
-            items(count = lazyFavs.itemCount,
+            items(
+                count = lazyFavs.itemCount,
                 key = lazyFavs.itemKey(),
-                contentType = lazyFavs.itemContentType()) { index ->
+                contentType = lazyFavs.itemContentType()
+            ) { index ->
                 val item = lazyFavs[index]
                 FavoriteItem(item)
             }
-            applyPagination(lazyFavs)
-        }
+            applyPagination(lazyFavs) {
 
+            }
+        }
     }
 }
 
