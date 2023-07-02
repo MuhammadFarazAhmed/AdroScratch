@@ -14,6 +14,8 @@ import com.example.adro.models.TabsResponse
 import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.MerchantUseCase
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -37,6 +39,7 @@ class OffersViewModel(
     val selectedTab = MutableStateFlow(TabsResponse.Data.Tab())
 
     init {
+        //Observer login and FetchTabs Api Response
         viewModelScope.launch {
             combine(
                 authUseCase.isUserLoggedIn(),
@@ -49,7 +52,8 @@ class OffersViewModel(
                 when (it.second.status) {
                     SUCCESS -> {
                         tabs.value = it.second.data?.data?.tabs ?: emptyList()
-                        selectedTab.value = it.second.data?.data?.tabs?.get(0) ?: TabsResponse.Data.Tab()
+                        selectedTab.value =
+                            it.second.data?.data?.tabs?.get(0) ?: TabsResponse.Data.Tab()
                     }
 
                     ERROR -> {}
@@ -59,14 +63,18 @@ class OffersViewModel(
         }
 
         viewModelScope.launch {
-            selectedTab.collectLatest {
-                getOutlets(it)
+            val queryFlow = query.onEach {
+                if (it.isNotEmpty())
+                    delay(500L)
             }
-        }
+            combine(selectedTab, queryFlow, ::Pair).collectLatest {
+                getOutlets(it.first)
+            }
 
+        }
     }
 
-    suspend fun getOutlets(tab: TabsResponse.Data.Tab) {
+    private suspend fun getOutlets(tab: TabsResponse.Data.Tab) {
         Pager(PagingConfig(pageSize = 60)) {
             BasePagingSource(MutableStateFlow(false)) {
                 merchantUseCase.fetchOffers(

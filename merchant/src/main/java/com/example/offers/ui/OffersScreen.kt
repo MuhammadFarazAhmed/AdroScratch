@@ -78,19 +78,6 @@ fun OffersScreen(
         content = {
             Surface(modifier = Modifier.fillMaxSize()) {
 
-//                LaunchedEffect(key1 = text) {
-//                    val debounceDuration = 500L // Debounce duration in milliseconds
-//                    var debounceJob: Job? = null
-//
-//                    vm.query.collectLatest {
-//                        debounceJob?.cancel()
-//                        debounceJob = launch {
-//                            delay(debounceDuration)
-//                            lazyOutlets.refresh()
-//                        }
-//                    }
-//                }
-
                 LaunchedEffect(pagerState) {
                     snapshotFlow { pagerState.currentPage }.collect { page ->
                         if (tabs.isNotEmpty())
