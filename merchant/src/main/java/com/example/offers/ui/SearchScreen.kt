@@ -16,6 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -64,7 +65,9 @@ fun SearchScreen(
                 toolbarTitle = "Search",
                 searchText = text,
                 onQueryChange = { queryText -> vm.query.value = queryText },
-                onCrossClicked = { if (text.isNotEmpty()) vm.query.value = "" }
+                onCrossClicked = {
+                    if (text.isNotEmpty()) vm.query.value = ""
+                }
             )
 
             OutletResults(lazyOutlets, navigateToDetail)

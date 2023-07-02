@@ -1,5 +1,6 @@
 package com.example.adro.common
 
+import android.util.Log
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -64,19 +65,24 @@ object CommonUtilsExtension {
             "company" to "ADO",
             "currency" to "AED",
             "wlcompany" to "ADO",
-            "lat" to "0"
+            "lat" to "0",
+            "location_id" to "2",
+            "category" to "",
+            "time_zone" to "Asia/Karachi",
         )
 
         if (additionalParams != null) {
             params.putAll(additionalParams)
         }
         params.putAll(defaultParams)
+
+        Log.e("TAG", "setDefaultParams: $params")
         setBody(params)
     }
 
     fun <T : Any> LazyListScope.applyPagination(
         lazyLayout: LazyPagingItems<T>,
-        callback : () -> Unit = {}
+        callback: () -> Unit = {}
     ) {
         lazyLayout.apply {
             when {
@@ -89,7 +95,7 @@ object CommonUtilsExtension {
                 }
 
                 loadState.refresh is LoadState.NotLoading && itemCount == 0 -> {
-                   callback()
+                    callback()
                 }
 
                 loadState.refresh is LoadState.Error -> {

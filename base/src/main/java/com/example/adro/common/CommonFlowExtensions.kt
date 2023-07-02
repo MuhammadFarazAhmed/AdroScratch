@@ -90,10 +90,9 @@ object CommonFlowExtensions {
 
 
 
-    fun <T> Flow<T>.asResult(success:(T)->Unit): Flow<Result<T>> {
+    fun <T> Flow<T>.asResult(): Flow<Result<T>> {
         return this
             .map<T, Result<T>> {
-                success(it)
                 Result.Success(it)
             }
             .onStart { emit(Result.Loading) }

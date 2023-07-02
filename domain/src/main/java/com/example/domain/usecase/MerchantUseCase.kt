@@ -6,12 +6,13 @@ import com.example.adro.models.TabsResponse
 import kotlinx.coroutines.flow.Flow
 
 interface MerchantUseCase {
-    
-    fun fetchTabs(params: HashMap<String,String>?= hashMapOf()): Flow<ApiResult<TabsResponse>>
+
+    fun fetchTabs(params: HashMap<String, String>? = hashMapOf()): Flow<ApiResult<TabsResponse>>
 
     suspend fun fetchOffers(
-        params: TabsResponse.Data.Tab.Params? = null,
+        tabsParams: TabsResponse.Data.Tab.Params? = null,
         query: String? = null,
-        queryType: String? = null
+        queryType: String? = null,
+        params: HashMap<String, String> = hashMapOf()
     ): List<OffersResponse.Data.Outlet>
 }

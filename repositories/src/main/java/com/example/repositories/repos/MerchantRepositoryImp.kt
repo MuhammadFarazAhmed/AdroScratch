@@ -9,12 +9,10 @@ import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.adro.models.FavoriteResponse
 import com.example.adro.models.OffersResponse
 import com.example.adro.models.TabsResponse
-import com.example.adro.models.asList
 import com.example.domain.repos.MerchantRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
 import io.ktor.http.path
 import kotlinx.coroutines.flow.Flow
 
@@ -35,9 +33,10 @@ class MerchantRepositoryImp(
         )
 
     override suspend fun fetchOffers(
-        params: TabsResponse.Data.Tab.Params?,
+        tabsParams: TabsResponse.Data.Tab.Params?,
         query: String?,
-        queryType: String?
+        queryType: String?,
+        params: HashMap<String, String>
     ): List<OffersResponse.Data.Outlet> {
 
         return try {
@@ -45,8 +44,9 @@ class MerchantRepositoryImp(
 
                 setDefaultParams(
                     api = OUTLET,
-                    additionalParams = params?.convert<TabsResponse.Data.Tab.Params, HashMap<String, String>>(),
+                    additionalParams = tabsParams?.convert<TabsResponse.Data.Tab.Params, HashMap<String, String>>(),
                     params = hashMapOf<String, String>().apply {
+                        putAll(params)
                         if (queryType != null && query != null) {
                             put("query", query)
                             put("query_type", queryType)
@@ -70,7 +70,7 @@ class MerchantRepositoryImp(
                 setDefaultParams(OUTLET)
                 url { path("/ets_api/v5/outlets") }
             }
-            (response.body() as FavoriteResponse).asList()
+            (response.body() as FavoriteResponse).data.outlets
         } catch (e: Exception) {
             e.toCustomExceptions()
             emptyList()

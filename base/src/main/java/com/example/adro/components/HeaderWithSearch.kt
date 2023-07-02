@@ -25,12 +25,12 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun Header(
-    toolbarTitle: String,
-    searchText: String,
+    toolbarTitle: String = "",
+    searchText: String = "",
     isBackIconShown: Boolean = true,
     isSearchBarShown: Boolean = true,
-    onCrossClicked: () -> Unit,
-    onQueryChange: (String) -> Unit
+    onCrossClicked: () -> Unit = {},
+    onQueryChange: (String) -> Unit = {}
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -39,7 +39,7 @@ fun Header(
             .fillMaxWidth()
     ) {
 
-        Toolbar(toolbarTitle,isBackIconShown) {
+        Toolbar(toolbarTitle, isBackIconShown) {
 
         }
 

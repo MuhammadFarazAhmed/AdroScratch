@@ -6,12 +6,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
@@ -20,10 +16,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
@@ -67,7 +60,10 @@ fun OffersScreen(
     val tabs by vm.tabs.collectAsStateLifecycleAware()
 
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
-    val pullRefreshState = rememberPullRefreshState(isRefreshing, { vm.refresh() })
+    val pullRefreshState =
+        rememberPullRefreshState(
+            isRefreshing,
+            { coroutineScope.launch { vm.selectedTab.value = tabs[pagerState.currentPage] } })
 
     val text by vm.query.collectAsStateLifecycleAware()
     val lazyOutlets = vm.offers.collectAsLazyPagingItems()
@@ -89,10 +85,16 @@ fun OffersScreen(
                         debounceJob?.cancel()
                         debounceJob = launch {
                             delay(debounceDuration)
-                            vm.refresh()
+                            lazyOutlets.refresh()
                         }
                     }
+                }
 
+                LaunchedEffect(key1 = pagerState) {
+                    coroutineScope.launch {
+                        if (vm.tabs.value.isNotEmpty())
+                            vm.selectedTab.value = vm.tabs.value[pagerState.currentPage]
+                    }
                 }
 
                 Column {
@@ -109,7 +111,14 @@ fun OffersScreen(
                         vm.selectedTab.value = tab
                     }
 
-                    Pager(tabs = tabs, pagerState = pagerState, vm, lazyOutlets, navigateToDetail)
+                    Pager(
+                        tabs = tabs,
+                        pagerState = pagerState,
+                        vm,
+                        coroutineScope,
+                        lazyOutlets,
+                        navigateToDetail
+                    )
 
                 }
             }
@@ -159,20 +168,18 @@ fun Tabs(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Pager(
-    tabs: List<TabsResponse.Data.Tab?>?,
+    tabs: List<TabsResponse.Data.Tab>,
     pagerState: PagerState,
     vm: OffersViewModel,
+    coroutineScope: CoroutineScope,
     lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
     navigateToDetail: () -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             state = pagerState,
-            count = tabs?.size ?: 1
+            count = tabs.size
         ) { index ->
-
-            vm.selectedTab.value = tabs?.get(index)
-
 
 
             LazyColumn(

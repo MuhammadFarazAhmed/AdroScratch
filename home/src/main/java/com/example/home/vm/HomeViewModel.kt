@@ -22,12 +22,6 @@ class HomeViewModel(
 
     val isRefreshing = MutableStateFlow(false)
 
-    val isLogin = authUseCase.isUserLoggedIn().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Eagerly,
-        initialValue = null
-    )
-
     val sections: MutableStateFlow<PagingData<HomeResponse.Data.Section>> = MutableStateFlow(
         PagingData.empty()
     )

@@ -15,9 +15,14 @@ class MerchantUseCaseImp @Inject constructor(private val merchantRepository: Mer
         merchantRepository.fetchTabs(params)
 
     override suspend fun fetchOffers(
-        params: TabsResponse.Data.Tab.Params?,
+        tabsParams: TabsResponse.Data.Tab.Params?,
         query: String?,
-        queryType: String?
-    ): List<OffersResponse.Data.Outlet> = merchantRepository.fetchOffers(params,query,queryType)
+        queryType: String?,
+        params: HashMap<String, String>
+    ): List<OffersResponse.Data.Outlet> = merchantRepository.fetchOffers(
+        tabsParams,
+        query,
+        queryType
+    )
 }
 

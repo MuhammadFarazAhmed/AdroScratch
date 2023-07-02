@@ -28,9 +28,7 @@ fun SwipeToRefreshContainer(
 ) {
     Box(modifier) {
 
-        Surface(modifier = modifier.fillMaxSize()) {
             content()
-        }
 
         PullRefreshIndicator(
             refreshing = isRefreshing,

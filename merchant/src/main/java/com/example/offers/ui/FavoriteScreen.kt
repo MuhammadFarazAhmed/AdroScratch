@@ -39,6 +39,7 @@ import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
+import com.example.adro.components.Header
 import com.example.adro.components.SwipeToRefreshContainer
 import com.example.adro.components.Toolbar
 import com.example.adro.models.FavoriteResponse
@@ -49,46 +50,46 @@ import org.koin.androidx.compose.getViewModel
 @Composable
 fun FavoriteScreen(vm: FavoriteViewModel = getViewModel()) {
 
-    Surface(modifier = Modifier.fillMaxSize()) {
 
-        val lazyFavs = vm.favoriteList.collectAsLazyPagingItems()
-        val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
-        val pullRefreshState = rememberPullRefreshState(isRefreshing, {
-            vm.isRefreshing.value = true
-            lazyFavs.refresh()
-        })
+    val lazyFavs = vm.favoriteList.collectAsLazyPagingItems()
+    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, {
+        vm.isRefreshing.value = true
+        lazyFavs.refresh()
+    })
 
-        SwipeToRefreshContainer(
-            pullRefreshState = pullRefreshState,
-            isRefreshing = isRefreshing,
-            modifier = Modifier
-                .pullRefresh(pullRefreshState)
-                .fillMaxSize(),
-            content = {
+    SwipeToRefreshContainer(
+        pullRefreshState = pullRefreshState,
+        isRefreshing = isRefreshing,
+        modifier = Modifier
+            .pullRefresh(pullRefreshState)
+            .fillMaxSize(),
+        content = {
+            Column {
+                Header(
+                    toolbarTitle = "Favorites",
+                    isBackIconShown = false,
+                    isSearchBarShown = false
+                )
                 MainContent(lazyFavs)
             }
-        )
-    }
+        }
+    )
 }
 
 @Composable
 private fun MainContent(lazyFavs: LazyPagingItems<FavoriteResponse.Data.Outlet>) {
-    Column {
-        Toolbar(text = "Favorites",false) {
-        }
-        LazyColumn {
-            items(
-                count = lazyFavs.itemCount,
-                key = lazyFavs.itemKey(),
-                contentType = lazyFavs.itemContentType()
-            ) { index ->
-                val item = lazyFavs[index]
-                FavoriteItem(item)
-            }
-            applyPagination(lazyFavs) {
 
-            }
+    LazyColumn {
+        items(
+            count = lazyFavs.itemCount,
+            key = lazyFavs.itemKey(),
+            contentType = lazyFavs.itemContentType()
+        ) { index ->
+            val item = lazyFavs[index]
+            FavoriteItem(item)
         }
+        applyPagination(lazyFavs)
     }
 }
 

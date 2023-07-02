@@ -14,8 +14,9 @@ interface MerchantRepository {
     suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet>
 
     suspend fun fetchOffers(
-        params: TabsResponse.Data.Tab.Params?,
+        tabsParams: TabsResponse.Data.Tab.Params?,
         query: String? = "mak",
-        queryType: String? = "name"
+        queryType: String? = "name",
+        params: HashMap<String,String> = hashMapOf()
     ): List<OffersResponse.Data.Outlet>
 }

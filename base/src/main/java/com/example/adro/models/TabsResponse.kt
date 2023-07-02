@@ -24,7 +24,7 @@ data class TabsResponse(
         @SerialName("limit")
         val limit: Int? = null,
         @SerialName("tabs")
-        val tabs: List<Tab?>? = null
+        val tabs: List<Tab> = emptyList()
     ) {
         @Serializable
         data class Tab(

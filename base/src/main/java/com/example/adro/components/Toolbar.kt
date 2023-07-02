@@ -1,5 +1,6 @@
 package com.example.adro.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +22,12 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun Toolbar(text: String, isBackIconShown: Boolean = true, onBackArrowClicked: () -> Unit) {
 
-    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.Black)
+    ) {
 
         takeIf { isBackIconShown }?.let {
             Icon(
@@ -38,6 +44,7 @@ fun Toolbar(text: String, isBackIconShown: Boolean = true, onBackArrowClicked: (
         }
 
         Text(
+            modifier = Modifier.padding(12.dp),
             text = text,
             color = Color.White,
             fontSize = 24.sp,
