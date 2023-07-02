@@ -49,6 +49,7 @@ class OffersViewModel(
                 when (it.second.status) {
                     SUCCESS -> {
                         tabs.value = it.second.data?.data?.tabs ?: emptyList()
+                        selectedTab.value = it.second.data?.data?.tabs?.get(0) ?: TabsResponse.Data.Tab()
                     }
 
                     ERROR -> {}
@@ -59,17 +60,13 @@ class OffersViewModel(
 
         viewModelScope.launch {
             selectedTab.collectLatest {
-                if (it.params?.tid != null)
-                    getOutlets(it)
+                getOutlets(it)
             }
         }
+
     }
 
-    suspend fun refresh() {
-        getOutlets(selectedTab.value)
-    }
-
-    private suspend fun getOutlets(tab: TabsResponse.Data.Tab) {
+    suspend fun getOutlets(tab: TabsResponse.Data.Tab) {
         Pager(PagingConfig(pageSize = 60)) {
             BasePagingSource(MutableStateFlow(false)) {
                 merchantUseCase.fetchOffers(

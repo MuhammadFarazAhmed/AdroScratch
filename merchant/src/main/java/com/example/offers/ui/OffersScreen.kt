@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -56,14 +57,14 @@ fun OffersScreen(
     vm.params = params
 
     val coroutineScope = rememberCoroutineScope()
-    val pagerState = rememberPagerState(initialPage = 0)
+    val pagerState = rememberPagerState()
     val tabs by vm.tabs.collectAsStateLifecycleAware()
 
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState =
         rememberPullRefreshState(
             isRefreshing,
-            { coroutineScope.launch { vm.selectedTab.value = tabs[pagerState.currentPage] } })
+            { })
 
     val text by vm.query.collectAsStateLifecycleAware()
     val lazyOutlets = vm.offers.collectAsLazyPagingItems()
@@ -77,43 +78,35 @@ fun OffersScreen(
         content = {
             Surface(modifier = Modifier.fillMaxSize()) {
 
-                LaunchedEffect(key1 = text) {
-                    val debounceDuration = 500L // Debounce duration in milliseconds
-                    var debounceJob: Job? = null
+//                LaunchedEffect(key1 = text) {
+//                    val debounceDuration = 500L // Debounce duration in milliseconds
+//                    var debounceJob: Job? = null
+//
+//                    vm.query.collectLatest {
+//                        debounceJob?.cancel()
+//                        debounceJob = launch {
+//                            delay(debounceDuration)
+//                            lazyOutlets.refresh()
+//                        }
+//                    }
+//                }
 
-                    vm.query.collectLatest {
-                        debounceJob?.cancel()
-                        debounceJob = launch {
-                            delay(debounceDuration)
-                            lazyOutlets.refresh()
-                        }
-                    }
-                }
-
-                LaunchedEffect(key1 = pagerState) {
-                    coroutineScope.launch {
-                        if (vm.tabs.value.isNotEmpty())
-                            vm.selectedTab.value = vm.tabs.value[pagerState.currentPage]
+                LaunchedEffect(pagerState) {
+                    snapshotFlow { pagerState.currentPage }.collect { page ->
+                        if (tabs.isNotEmpty())
+                            vm.selectedTab.value = tabs[page]
                     }
                 }
 
                 Column {
 
-                    Header(
-                        toolbarTitle = "Offers",
-                        searchText = text,
-                        isBackIconShown = false,
-                        onQueryChange = { queryText -> vm.query.value = queryText },
-                        onCrossClicked = { if (text.isNotEmpty()) vm.query.value = "" }
-                    )
+                    Header(text, vm)
 
-                    Tabs(tabs, pagerState, coroutineScope) { tab ->
-                        vm.selectedTab.value = tab
-                    }
+                    Tabs(tabs, pagerState, coroutineScope)
 
                     Pager(
-                        tabs = tabs,
-                        pagerState = pagerState,
+                        tabs,
+                        pagerState,
                         vm,
                         coroutineScope,
                         lazyOutlets,
@@ -126,13 +119,23 @@ fun OffersScreen(
     )
 }
 
+@Composable
+private fun Header(text: String, vm: OffersViewModel) {
+    Header(
+        toolbarTitle = "Offers",
+        searchText = text,
+        isBackIconShown = false,
+        onQueryChange = { queryText -> vm.query.value = queryText },
+        onCrossClicked = { if (text.isNotEmpty()) vm.query.value = "" }
+    )
+}
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Tabs(
     tabs: List<TabsResponse.Data.Tab?>?,
     pagerState: PagerState,
     coroutineScope: CoroutineScope,
-    onTabSelect: (tab: TabsResponse.Data.Tab) -> Unit,
 ) {
 
     val tabIndex = pagerState.currentPage
@@ -152,9 +155,6 @@ fun Tabs(
                 modifier = Modifier.background(Color.Black),
                 onClick = {
                     coroutineScope.launch {
-                        if (tab != null) {
-                            onTabSelect(tab)
-                        }
                         pagerState.animateScrollToPage(index)
                     }
                 },
@@ -180,7 +180,6 @@ fun Pager(
             state = pagerState,
             count = tabs.size
         ) { index ->
-
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -263,9 +262,6 @@ fun OffersScreenPreview() {
     val tabs = listOf(TabsResponse.Data.Tab("All Offers"))
     val pagerState = rememberPagerState(initialPage = 0)
     Surface(modifier = Modifier.fillMaxSize()) {
-        Tabs(tabs, pagerState, coroutineScope) {
-//            Pager(tabs = tabs, pagerState = pagerState)
-
-        }
+        Tabs(tabs, pagerState, coroutineScope)
     }
 }
