@@ -64,10 +64,10 @@ class MerchantRepositoryImp(
 
     }
 
-    override suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet> =
+    override suspend fun fetchFavorites(params: HashMap<String, String>): List<FavoriteResponse.Data.Outlet> =
         try {
             val response = client.post {
-                setDefaultParams(OUTLET)
+                setDefaultParams(OUTLET,params)
                 url { path("/ets_api/v5/outlets") }
             }
             (response.body() as FavoriteResponse).data.outlets

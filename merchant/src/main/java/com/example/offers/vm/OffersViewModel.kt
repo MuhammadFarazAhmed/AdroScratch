@@ -63,13 +63,13 @@ class OffersViewModel(
         }
 
         viewModelScope.launch {
-            val queryFlow = query.onEach {
-                if (it.isNotEmpty())
-                    delay(500L)
-            }
-            combine(selectedTab, queryFlow, ::Pair).collectLatest {
-                getOutlets(it.first)
-            }
+
+            combine(
+                selectedTab,
+                query.debounce(500L),
+                ::Pair
+            )
+                .collectLatest { pair -> getOutlets(pair.first) }
 
         }
     }

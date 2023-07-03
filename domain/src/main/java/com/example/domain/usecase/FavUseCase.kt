@@ -4,6 +4,6 @@ import com.example.adro.models.FavoriteResponse
 
 interface FavUseCase {
 
-    suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet>
+    suspend fun fetchFavorites(params: HashMap<String, String>): List<FavoriteResponse.Data.Outlet>
 
 }

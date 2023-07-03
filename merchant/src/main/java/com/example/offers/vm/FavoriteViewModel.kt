@@ -19,7 +19,7 @@ class FavoriteViewModel(application: Application, favUseCase: FavUseCase) :
     val isRefreshing = MutableStateFlow(false)
 
     val favoriteList = Pager(PagingConfig(pageSize = 60)) {
-        BasePagingSource(isRefreshing) { favUseCase.fetchFavorites() }
+        BasePagingSource(isRefreshing) { favUseCase.fetchFavorites(hashMapOf("listing_type" to "favourites")) }
     }.flow.cachedIn(viewModelScope)
 
 }

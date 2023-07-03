@@ -1,21 +1,19 @@
 package com.example.offers.ui
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -25,7 +23,7 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.components.Header
 import com.example.adro.models.OffersResponse
-import com.example.adro.ui.ErrorItem
+import com.example.adro.ui.EmptyItem
 import com.example.offers.vm.SearchViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -44,17 +42,6 @@ fun SearchScreen(
     val lazyOutlets = vm.offers.collectAsLazyPagingItems()
 
     LaunchedEffect(key1 = text) {
-        val debounceDuration = 500L // Debounce duration in milliseconds
-        var debounceJob: Job? = null
-
-        vm.query.collectLatest {
-            debounceJob?.cancel()
-            debounceJob = launch {
-                delay(debounceDuration)
-                lazyOutlets.refresh()
-            }
-        }
-
     }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -65,12 +52,10 @@ fun SearchScreen(
                 toolbarTitle = "Search",
                 searchText = text,
                 onQueryChange = { queryText -> vm.query.value = queryText },
-                onCrossClicked = {
-                    if (text.isNotEmpty()) vm.query.value = ""
-                }
+                onCrossClicked = { vm.query.value = "" }
             )
 
-            OutletResults(lazyOutlets, navigateToDetail)
+            OutletResults(vm, lazyOutlets, navigateToDetail)
 
         }
     }
@@ -78,6 +63,7 @@ fun SearchScreen(
 
 @Composable
 private fun OutletResults(
+    vm: SearchViewModel,
     lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
     navigateToDetail: () -> Unit
 ) {
@@ -102,13 +88,16 @@ private fun OutletResults(
 
             }
 
-            applyPagination(lazyOutlets) {
-                item {
-                    ErrorItem(message = "No Result Found",
-                        modifier = Modifier.fillParentMaxSize(),
-                        onClickRetry = { })
-                }
-            }
+            if (lazyOutlets.itemCount == 0) item { EmptyItem(modifier = Modifier.fillParentMaxSize()) }
+
+            applyPagination(lazyOutlets,
+                refreshLoadingCallback = {
+                    item { EmptyItem(modifier = Modifier.fillParentMaxSize()) }
+                }, notLoadingAndItemCountZeroCallback = {
+                    item { EmptyItem(modifier = Modifier.fillParentMaxSize()) }
+                }, appendLoadingCallback = {
+
+                })
         }
 
     }

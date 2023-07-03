@@ -11,7 +11,7 @@ interface MerchantRepository {
 
     fun fetchTabs(params: HashMap<String,String>?): Flow<ApiResult<TabsResponse>>
 
-    suspend fun fetchFavorites(): List<FavoriteResponse.Data.Outlet>
+    suspend fun fetchFavorites(params: HashMap<String, String>): List<FavoriteResponse.Data.Outlet>
 
     suspend fun fetchOffers(
         tabsParams: TabsResponse.Data.Tab.Params?,

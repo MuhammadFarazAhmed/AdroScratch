@@ -82,20 +82,24 @@ object CommonUtilsExtension {
 
     fun <T : Any> LazyListScope.applyPagination(
         lazyLayout: LazyPagingItems<T>,
-        callback: () -> Unit = {}
+        notLoadingAndItemCountZeroCallback: () -> Unit = {},
+        refreshLoadingCallback: () -> Unit = {},
+        appendLoadingCallback: () -> Unit = {},
     ) {
         lazyLayout.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
                     item { LoadingView(modifier = Modifier.fillParentMaxSize()) }
+                    refreshLoadingCallback()
                 }
 
                 loadState.append is LoadState.Loading -> {
                     item { LoadingItem() }
+                    appendLoadingCallback()
                 }
 
                 loadState.refresh is LoadState.NotLoading && itemCount == 0 -> {
-                    callback()
+                    notLoadingAndItemCountZeroCallback()
                 }
 
                 loadState.refresh is LoadState.Error -> {

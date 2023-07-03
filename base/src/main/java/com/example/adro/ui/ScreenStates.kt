@@ -82,6 +82,7 @@ fun ProgressDialog(color: Color = Color.Black.copy(.5f), alpha: Double = 0.5) {
 fun ErrorItem(
     message: String?,
     modifier: Modifier = Modifier,
+    isButtonShown: Boolean = true,
     onClickRetry: () -> Unit
 ) {
     Row(
@@ -96,8 +97,20 @@ fun ErrorItem(
             style = MaterialTheme.typography.h6,
             color = Color.Red
         )
-        OutlinedButton(onClick = onClickRetry) {
+        if (isButtonShown) OutlinedButton(onClick = onClickRetry) {
             Text(text = "Try again")
         }
+    }
+}
+
+@Composable
+fun EmptyItem(
+    modifier: Modifier = Modifier
+) {
+    Row(
+        modifier = modifier.padding(16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
     }
 }
