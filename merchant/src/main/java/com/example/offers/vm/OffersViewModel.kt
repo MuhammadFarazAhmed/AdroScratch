@@ -14,12 +14,14 @@ import com.example.adro.models.TabsResponse
 import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.MerchantUseCase
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
 
+@OptIn(FlowPreview::class)
 class OffersViewModel(
     application: Application,
     private val merchantUseCase: MerchantUseCase,
