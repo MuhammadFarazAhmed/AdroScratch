@@ -1,6 +1,7 @@
 package com.example.home.vm
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -36,6 +37,11 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        Log.d("TAG", "HomeScreen Cleared")
     }
 
 

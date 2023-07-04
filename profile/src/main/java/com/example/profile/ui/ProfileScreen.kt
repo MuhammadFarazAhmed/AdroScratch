@@ -92,6 +92,7 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
             .pullRefresh(pullRefreshState)
             .fillMaxSize(),
         content = {
+
             LazyColumn(
                 state = lazySectionsState,
                 modifier = Modifier.background(HexToJetpackColor.getColor("F1F1F1"))
@@ -102,6 +103,7 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                     key = lazySections.itemKey(),
                     contentType = lazySections.itemContentType()
                 ) { index ->
+
                     val item = lazySections[index]
                     when (item?.sectionIdentifier) {
 
@@ -122,10 +124,7 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                                 when (innerItem.type) {
                                     "arrow" -> ProfileSectionArrow(innerItem.title)
                                     "text" -> ProfileSectionText(innerItem.title, innerItem.desc)
-                                    "switch" -> ProfileSectionSwitch(
-                                        innerItem.title,
-                                        innerItem.value
-                                    )
+                                    "switch" -> ProfileSectionSwitch(innerItem.title, innerItem.value)
 
                                     else -> ProfileSectionHeaderRow(innerItem.title)
                                 }
