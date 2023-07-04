@@ -47,6 +47,8 @@ import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
+import org.koin.core.qualifier.named
+import org.koin.java.KoinJavaComponent.getKoin
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -81,6 +83,10 @@ enum class HomeSections(val value: String) {
     EXCLUSIVE_OFFERS("exclusive_offers"),
     RECOMMENDED_OFFERS("recommended_offers"),
 }
+
+@Retention(AnnotationRetention.RUNTIME)
+annotation class HomeScope
+
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable

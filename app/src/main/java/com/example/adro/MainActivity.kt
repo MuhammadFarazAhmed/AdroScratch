@@ -8,15 +8,9 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.mutableStateOf
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import com.example.adro.vm.CommonViewModel
-import com.example.auth.ui.AuthScreen
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {

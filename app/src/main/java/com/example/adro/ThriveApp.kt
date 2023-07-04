@@ -21,11 +21,9 @@ fun ThriveApp(appState: ThriveAppState) {
 
     ThriveScratchTheme {
 
-        //ToggleToolbarAndNavRail(appState, bottomBarState, topBarState)
-
         Scaffold(
 
-            topBar = { Toolbar(appState.shouldShowToolBar,appState::navigate) },
+            topBar = { Toolbar(appState.shouldShowToolBar, appState::navigate) },
 
             content = { padding ->
 

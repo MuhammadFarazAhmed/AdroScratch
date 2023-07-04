@@ -84,7 +84,7 @@ class ThriveAppState(val navController: NavHostController) {
     fun navigate(
         destination: ThriveNavigationDestination,
         route: String? = null,
-        isFromDeepLink: Boolean = false
+        isFromDeepLink: Boolean = false,
     ) {
         trace("Navigation: $destination") {
 

@@ -11,6 +11,7 @@ import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
@@ -18,10 +19,12 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -52,22 +55,32 @@ fun OffersScreen(
     vm: OffersViewModel = getViewModel()
 ) {
 
-    Log.d("TAG", "Outlet params: $params")
-
     vm.params = params
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val lifecycleEventObserver = LifecycleEventObserver { _, event ->
+            // event contains current lifecycle event
+            Log.d("TAG", "OfferScreen: $event")
+        }
+
+        lifecycleOwner.lifecycle.addObserver(lifecycleEventObserver)
+
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(lifecycleEventObserver)
+        }
+    }
 
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
     val tabs by vm.tabs.collectAsStateLifecycleAware()
 
-    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
-    val pullRefreshState =
-        rememberPullRefreshState(
-            isRefreshing,
-            { })
-
     val text by vm.query.collectAsStateLifecycleAware()
     val lazyOutlets = vm.offers.collectAsLazyPagingItems()
+
+    val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
+    val pullRefreshState = rememberPullRefreshState(isRefreshing, { lazyOutlets.refresh() })
+
 
     SwipeToRefreshContainer(
         pullRefreshState = pullRefreshState,
