@@ -1,6 +1,7 @@
 package com.example.offers.vm
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import androidx.paging.Pager
 import androidx.paging.PagingConfig

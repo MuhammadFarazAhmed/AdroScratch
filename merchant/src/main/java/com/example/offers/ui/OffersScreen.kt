@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -56,20 +57,6 @@ fun OffersScreen(
 ) {
 
     vm.params = params
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val lifecycleEventObserver = LifecycleEventObserver { _, event ->
-            // event contains current lifecycle event
-            Log.d("TAG", "OfferScreen: $event")
-        }
-
-        lifecycleOwner.lifecycle.addObserver(lifecycleEventObserver)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleEventObserver)
-        }
-    }
 
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()

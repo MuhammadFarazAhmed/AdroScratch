@@ -110,20 +110,6 @@ fun HomeScreen(
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { homeSection.refresh() })
 
 
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val lifecycleEventObserver = LifecycleEventObserver { _, event ->
-            // event contains current lifecycle event
-            Log.d("TAG", "HomeScreen: $event")
-        }
-
-        lifecycleOwner.lifecycle.addObserver(lifecycleEventObserver)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleEventObserver)
-        }
-    }
-
     SwipeToRefreshContainer(
         pullRefreshState = pullRefreshState,
         isRefreshing = isRefreshing,

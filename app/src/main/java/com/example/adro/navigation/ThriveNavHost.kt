@@ -28,7 +28,7 @@ fun ThriveNavHost(
     isApiLoading: (loading: Boolean) -> Unit,
     handleDeepLinks: () -> Unit,
     modifier: Modifier = Modifier,
-    startDestination: String = "home_graph"
+    startDestination: String = HomeDestination.route
 ) {
     AnimatedNavHost(
         navController = navController,
@@ -51,12 +51,15 @@ fun ThriveNavHost(
                 isApiLoading(loading)
             },
             nestedGraphs = {
-                authGraph(popBack, popBack)
-                searchGraph(navigateToDetail = {
-                    onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
-                })
+
             }
         )
+
+        authGraph(popBack, popBack)
+
+        searchGraph(navigateToDetail = {
+            onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
+        })
 
         merchantGraph(
             navigateToDetail = {

@@ -11,7 +11,7 @@ import com.example.home.ui.HomeScreen
 
 object HomeDestination : ThriveNavigationDestination {
     override val route = "home_route"
-    val auth = "auth_route"
+
     override val destination = "home_destination"
 
     const val homeGraphRoutePattern = "home_graph"
@@ -26,10 +26,10 @@ fun NavGraphBuilder.homeGraph(
     isApiLoading: (loading: Boolean) -> Unit,
     nestedGraphs: NavGraphBuilder.() -> Unit
 ) {
-    navigation(
-        route = homeGraphRoutePattern,
-        startDestination = HomeDestination.route
-    ) {
+//    navigation(
+//        route = homeGraphRoutePattern,
+//        startDestination = HomeDestination.route
+//    ) {
         composable(HomeDestination.route) {
             HomeScreen(
                 navigateToAuth = navigateToAuth,
@@ -38,5 +38,5 @@ fun NavGraphBuilder.homeGraph(
                 isApiLoading = { loading: Boolean -> isApiLoading(loading) })
         }
         nestedGraphs()
-    }
+//    }
 }
