@@ -3,9 +3,11 @@ package com.example.adro.common
 import android.util.Log
 import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import com.example.adro.LocaleManager
 import com.example.adro.ui.ErrorItem
 import com.example.adro.ui.LoadingItem
 import com.example.adro.ui.LoadingView
@@ -78,6 +80,10 @@ object CommonUtilsExtension {
 
         Log.e("TAG", "setDefaultParams: $params")
         setBody(params)
+    }
+
+    val LocalLocaleManager = staticCompositionLocalOf<LocaleManager> {
+        error("No LocaleManager provided")
     }
 
     fun <T : Any> LazyListScope.applyPagination(

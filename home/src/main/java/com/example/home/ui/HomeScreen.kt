@@ -1,5 +1,8 @@
 package com.example.home.ui
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -22,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
 import androidx.compose.ui.text.font.FontWeight.Companion.SemiBold
 import androidx.compose.ui.text.style.TextAlign
@@ -30,12 +34,15 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
+import com.example.adro.LocaleManager
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonUtilsExtension.LocalLocaleManager
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
@@ -47,6 +54,7 @@ import com.example.home.vm.HomeViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.inject
 import org.koin.core.qualifier.named
 import org.koin.java.KoinJavaComponent.getKoin
 
@@ -271,15 +279,20 @@ fun LoginView(
                         style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
                     )
 
+                    val context = LocalContext.current
+                    val localeManager = LocalLocaleManager.current
+
                     Button(contentPadding = PaddingValues(horizontal = 4.dp),
                         modifier = Modifier
                             .height(34.dp)
                             .align(Alignment.CenterVertically)
                             .width(80.dp), onClick = {
-                            navigateToAuth()
+//                            navigateToAuth()
+                            localeManager.setNewLocale(context, "ar")
+//                            context.findActivity()?.recreate()
                         }) {
                         Text(
-                            text = "Login",
+                            text = stringResource(R.string.login),
                             fontSize = 14.sp,
                             fontWeight = Bold,
                             style = MaterialTheme.typography.body2
@@ -309,6 +322,12 @@ fun LoginView(
             }
         }
     }
+}
+
+fun Context.findActivity(): Activity? = when (this) {
+    is Activity -> this
+    is ContextWrapper -> baseContext.findActivity()
+    else -> null
 }
 
 @OptIn(ExperimentalPagerApi::class)

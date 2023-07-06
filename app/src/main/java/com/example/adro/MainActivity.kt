@@ -2,15 +2,34 @@
 
 package com.example.adro
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.intl.Locale
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
+import com.example.adro.LocaleManager.setLocale
+import com.example.adro.LocaleManager.setNewLocale
+import com.example.adro.common.CommonUtilsExtension.LocalLocaleManager
+import com.example.adro.prefs.PreferencesHelper
 import com.example.adro.vm.CommonViewModel
+import kotlinx.serialization.json.Json.Default.configuration
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
@@ -28,10 +47,45 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            val appState = rememberAdroAppState()
-            navController = appState.navController
-            ThriveApp(appState)
+            LocalizedApp {
+                val appState = rememberAdroAppState()
+                navController = appState.navController
+                ThriveApp(appState)
+            }
         }
+    }
+
+//    override fun attachBaseContext(newBase: Context) {
+//        super.attachBaseContext(
+//            setLocale(newBase)
+//        )
+//    }
+
+    @Composable
+    fun ProvideCurrentLocale(locale: Locale, content: @Composable () -> Unit) {
+        CompositionLocalProvider(LocalCurrentLocale provides locale, content = content)
+    }
+
+    @Composable
+    fun LocalizedApp(content: @Composable () -> Unit) {
+
+        val currentLocale by remember { mutableStateOf(Locale.current) }
+        var context = LocalContext.current
+        val configuration = LocalConfiguration.current
+        val localeManager = remember { LocaleManager }
+
+        LaunchedEffect(configuration) {
+            context = setNewLocale(context, "ar")
+        }
+
+        ProvideCurrentLocale(currentLocale) {
+            // Compose UI
+            content()
+        }
+
+//        CompositionLocalProvider(LocalLocaleManager provides localeManager) {
+//            content()
+//        }
     }
 
     override fun onNewIntent(intent: Intent?) {
