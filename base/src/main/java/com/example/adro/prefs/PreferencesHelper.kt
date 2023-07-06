@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.map
 import java.io.IOException
 
 
-class PreferencesHelper(private val dataSource: DataStore<Preferences>) :
+class PreferencesHelper( val dataSource: DataStore<Preferences>) :
     IPreferenceDataStoreAPI {
 
     fun getCompany() = "ADO"

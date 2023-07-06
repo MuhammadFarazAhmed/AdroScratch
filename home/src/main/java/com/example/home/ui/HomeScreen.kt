@@ -5,25 +5,46 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.*
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Center
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -34,29 +55,29 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
-import com.example.adro.LocaleManager
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
-import com.example.adro.common.CommonUtilsExtension.LocalLocaleManager
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
+import com.example.adro.models.HomeResponse
 import com.example.adro.ui.ProgressDialog
 import com.example.base.R
-import com.example.adro.models.HomeResponse
-import com.example.home.ui.HomeSections.*
+import com.example.home.ui.HomeSections.CATEGORIES
+import com.example.home.ui.HomeSections.EXCLUSIVE_OFFERS
+import com.example.home.ui.HomeSections.GUEST_USER
+import com.example.home.ui.HomeSections.MAIN_CAROUSAL
+import com.example.home.ui.HomeSections.RECOMMENDED_OFFERS
 import com.example.home.vm.HomeViewModel
-import com.google.accompanist.pager.*
-import kotlinx.coroutines.flow.collectLatest
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import org.koin.androidx.compose.inject
-import org.koin.core.qualifier.named
-import org.koin.java.KoinJavaComponent.getKoin
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -106,7 +127,6 @@ fun HomeScreen(
     vm: HomeViewModel = getViewModel()
 ) {
 
-
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
@@ -137,7 +157,7 @@ fun HomeScreen(
                     when (section?.sectionIdentifier) {
 
                         MAIN_CAROUSAL.value -> MainCarousal(pagerState, section)
-                        GUEST_USER.value -> LoginView(section, navigateToAuth)
+                        GUEST_USER.value -> LoginView(section, navigateToAuth, vm)
 
                         CATEGORIES.value -> Categories(section) { deeplink ->
                             context.startActivity(
@@ -146,7 +166,10 @@ fun HomeScreen(
                         }
 
                         EXCLUSIVE_OFFERS.value -> ExclusiveItem(exclusivePagerState, section)
-                        RECOMMENDED_OFFERS.value -> RecommendedItem(recommendedPagerState, section)
+                        RECOMMENDED_OFFERS.value -> RecommendedItem(
+                            recommendedPagerState,
+                            section
+                        )
                     }
                 }
                 applyPagination(homeSection)
@@ -171,7 +194,7 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 @Composable
 fun LoginView(
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
-    navigateToAuth: () -> Unit
+    navigateToAuth: () -> Unit, vm: HomeViewModel
 ) {
 
     Column {
@@ -279,17 +302,17 @@ fun LoginView(
                         style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
                     )
 
-                    val context = LocalContext.current
-                    val localeManager = LocalLocaleManager.current
-
+                    val scope = rememberCoroutineScope()
                     Button(contentPadding = PaddingValues(horizontal = 4.dp),
                         modifier = Modifier
                             .height(34.dp)
                             .align(Alignment.CenterVertically)
                             .width(80.dp), onClick = {
 //                            navigateToAuth()
-                            localeManager.setNewLocale(context, "ar")
-//                            context.findActivity()?.recreate()
+                            scope.launch {
+                                vm.setLanguage("ar")
+                            }
+
                         }) {
                         Text(
                             text = stringResource(R.string.login),

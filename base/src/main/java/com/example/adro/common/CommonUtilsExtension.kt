@@ -17,6 +17,7 @@ import io.ktor.client.request.*
 import io.ktor.util.*
 import okhttp3.Request
 import retrofit2.Invocation
+import java.util.Locale
 
 object CommonUtilsExtension {
 
@@ -82,9 +83,6 @@ object CommonUtilsExtension {
         setBody(params)
     }
 
-    val LocalLocaleManager = staticCompositionLocalOf<LocaleManager> {
-        error("No LocaleManager provided")
-    }
 
     fun <T : Any> LazyListScope.applyPagination(
         lazyLayout: LazyPagingItems<T>,

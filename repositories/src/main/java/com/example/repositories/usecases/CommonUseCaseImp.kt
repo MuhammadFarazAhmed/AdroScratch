@@ -9,7 +9,14 @@ import kotlinx.coroutines.flow.Flow
 
 class CommonUseCaseImp(private val commonRepository: CommonRepository) :
     CommonUseCase {
-    override suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>> = commonRepository.fetchConfig()
+    override suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>> =
+        commonRepository.fetchConfig()
+
+    override fun getLanguage(): Flow<String> = commonRepository.getLanguage()
+
+    override fun setLanguage(language: String) {
+       commonRepository.setLanguage(language)
+    }
 
 }
 

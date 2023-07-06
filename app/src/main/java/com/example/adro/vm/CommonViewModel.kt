@@ -10,7 +10,9 @@ import com.example.adro.models.ApiStatus
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.CommonUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class CommonViewModel(
@@ -20,6 +22,9 @@ class CommonViewModel(
     AndroidViewModel(application) {
 
     var keepOnSplashScreenOn = MutableStateFlow(true)
+
+    val language =
+        commonUseCase.getLanguage().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "en")
 
     init {
         viewModelScope.launch {

@@ -17,9 +17,9 @@ object LocaleManager : KoinComponent {
 
     private val preferencesHelper: PreferencesHelper = get()
 
-    fun setLocale(context: Context) {
+    fun setLocale(context: Context): Context {
         val selectedLanguage = getSelectedLanguage()
-        updateResources(context, selectedLanguage)
+       return updateResources(context, selectedLanguage)
     }
 
     fun setNewLocale(context: Context, language: String): Context {

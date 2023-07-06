@@ -8,4 +8,8 @@ import kotlinx.coroutines.flow.Flow
 interface CommonUseCase {
     suspend fun fetchConfig(): Flow<ApiResult<ConfigModel>>
 
+    fun getLanguage(): Flow<String>
+
+     fun setLanguage(language: String)
+
 }

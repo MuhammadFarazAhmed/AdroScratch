@@ -7,8 +7,6 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import com.example.adro.BearerTokenProvider
-import com.example.adro.LocaleManager
-import com.example.adro.MainActivity
 import com.example.adro.interceptors.changeBaseUrlInterceptor
 import com.example.adro.interceptors.decryptResponse
 import com.example.adro.prefs.ConfigPreferencesSerializer
@@ -27,7 +25,6 @@ import com.example.domain.usecase.CommonUseCase
 import com.example.domain.usecase.FavUseCase
 import com.example.domain.usecase.HomeUseCase
 import com.example.domain.usecase.MerchantUseCase
-import com.example.home.ui.HomeScreen
 import com.example.home.vm.HomeViewModel
 import com.example.offers.vm.FavoriteViewModel
 import com.example.offers.vm.OffersViewModel
@@ -67,7 +64,6 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.core.qualifier.Qualifier
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -200,7 +196,7 @@ val NetworkModule = module {
 }
 
 val commonModule = module {
-    single<CommonRepository> { CommonRepositoryImp(get(), get(named(DataStores.CONFIG))) }
+    single<CommonRepository> { CommonRepositoryImp(get(), get(named(DataStores.CONFIG)), get()) }
     single<CommonUseCase> { CommonUseCaseImp(get()) }
     viewModel { CommonViewModel(get(), get()) }
 }
@@ -208,7 +204,7 @@ val commonModule = module {
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get()) }
 }
 
 val authModule = module {

@@ -10,6 +10,7 @@ import androidx.paging.cachedIn
 import com.example.adro.models.HomeResponse
 import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.AuthUseCase
+import com.example.domain.usecase.CommonUseCase
 import com.example.domain.usecase.HomeUseCase
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -17,7 +18,8 @@ import kotlinx.coroutines.launch
 class HomeViewModel(
     application: Application,
     homeUseCase: HomeUseCase,
-    authUseCase: AuthUseCase
+    authUseCase: AuthUseCase,
+    private val commonUseCase: CommonUseCase
 ) :
     AndroidViewModel(application) {
 
@@ -42,6 +44,10 @@ class HomeViewModel(
     override fun onCleared() {
         super.onCleared()
         Log.d("TAG", "HomeScreen Cleared")
+    }
+
+    suspend fun setLanguage(language: String) {
+        commonUseCase.setLanguage(language)
     }
 
 
