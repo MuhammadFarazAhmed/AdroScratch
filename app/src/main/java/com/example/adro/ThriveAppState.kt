@@ -10,6 +10,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
 import com.example.adro.ui.ThriveNavigationDestination
+import com.example.adro.vm.CommonViewModel
 import com.example.auth.nav.AuthDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
@@ -18,6 +19,8 @@ import com.example.offers.nav.MerchantDestination
 import com.example.offers.nav.SearchDestination
 import com.example.profile.nav.ProfileDestination
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import org.koin.androidx.compose.get
+import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

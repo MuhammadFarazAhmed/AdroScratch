@@ -1,12 +1,21 @@
 package com.example.adro.common
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
 import android.util.Log
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
@@ -27,6 +36,7 @@ import kotlinx.coroutines.flow.onStart
 import java.io.IOException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.Locale
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -89,7 +99,6 @@ object CommonFlowExtensions {
         }.flowOn(Dispatchers.IO)
 
 
-
     fun <T> Flow<T>.asResult(): Flow<Result<T>> {
         return this
             .map<T, Result<T>> {
@@ -97,6 +106,42 @@ object CommonFlowExtensions {
             }
             .onStart { emit(Result.Loading) }
             .catch { emit(Result.Error(it)) }
+    }
+
+    @Composable
+    fun SetAppLanguage(language: String, content: @Composable () -> Unit) {
+        val locale = Locale(language)
+        val configuration = LocalConfiguration.current
+        configuration.setLocale(locale)
+        val resources = LocalContext.current.resources
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+
+        CompositionLocalProvider(
+            LocalLayoutDirection provides
+                    if (LocalConfiguration.current.layoutDirection == LayoutDirection.Rtl.ordinal)
+                        LayoutDirection.Rtl
+                    else LayoutDirection.Ltr
+        ) {
+
+            content()
+
+        }
+    }
+
+    fun Context.findActivity(): Activity? = when (this) {
+        is Activity -> this
+        is ContextWrapper -> baseContext.findActivity()
+        else -> null
+    }
+
+    @Composable
+    fun SetAppLanguage(locale: Locale) {
+        val locale = locale
+        val configuration = LocalConfiguration.current
+        configuration.setLocale(locale)
+        val resources = LocalContext.current.resources
+        resources.updateConfiguration(configuration, resources.displayMetrics)
+
     }
 
 

@@ -44,6 +44,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,6 +61,7 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonFlowExtensions.findActivity
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
@@ -78,6 +80,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
+import java.util.Locale
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -301,18 +304,14 @@ fun LoginView(
                             .align(Alignment.CenterVertically),
                         style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
                     )
-
-                    val scope = rememberCoroutineScope()
+                    val context = LocalContext.current
                     Button(contentPadding = PaddingValues(horizontal = 4.dp),
                         modifier = Modifier
                             .height(34.dp)
                             .align(Alignment.CenterVertically)
                             .width(80.dp), onClick = {
-//                            navigateToAuth()
-                            scope.launch {
-                                vm.setLanguage("ar")
-                            }
-
+                            navigateToAuth()
+                            context.findActivity()?.recreate()
                         }) {
                         Text(
                             text = stringResource(R.string.login),

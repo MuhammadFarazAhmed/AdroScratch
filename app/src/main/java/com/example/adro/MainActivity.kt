@@ -2,23 +2,19 @@
 
 package com.example.adro
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalContext
+import androidx.compose.runtime.LaunchedEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
-import com.example.adro.LocaleManager.setLocale
+import com.example.adro.common.CommonFlowExtensions.SetAppLanguage
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.vm.CommonViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.util.Locale
 
 class MainActivity : ComponentActivity() {
 
@@ -37,28 +33,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            val language = vm.language.collectAsState("en").value
+            val language = vm.language.collectAsStateLifecycleAware()
 
-            SetLanguage(language)
             val appState = rememberAdroAppState()
             navController = appState.navController
-            ThriveApp(appState)
+
+            SetAppLanguage(language.value) {
+
+                ThriveApp(appState)
+
+            }
+
         }
-    }
-
-    override fun attachBaseContext(newBase: Context) {
-        super.attachBaseContext(
-            setLocale(newBase)
-        )
-    }
-
-    @Composable
-    private fun SetLanguage(language: String) {
-        val locale = Locale(language)
-        val configuration = LocalConfiguration.current
-        configuration.setLocale(locale)
-        val resources = LocalContext.current.resources
-        resources.updateConfiguration(configuration, resources.displayMetrics)
     }
 
     override fun onNewIntent(intent: Intent?) {

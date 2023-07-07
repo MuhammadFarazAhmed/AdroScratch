@@ -2,11 +2,11 @@ package com.example.home.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.navigation
 import com.google.accompanist.navigation.animation.composable
 import com.example.adro.ui.ThriveNavigationDestination
-import com.example.home.nav.HomeDestination.homeGraphRoutePattern
+import com.example.domain.usecase.CommonUseCase
 import com.example.home.ui.HomeScreen
+import org.koin.androidx.compose.get
 
 
 object HomeDestination : ThriveNavigationDestination {
@@ -30,13 +30,15 @@ fun NavGraphBuilder.homeGraph(
 //        route = homeGraphRoutePattern,
 //        startDestination = HomeDestination.route
 //    ) {
-        composable(HomeDestination.route) {
-            HomeScreen(
-                navigateToAuth = navigateToAuth,
-                navigateToOffers = { navigateToOffers() },
-                handleDeepLinks = { handleDeepLinks() },
-                isApiLoading = { loading: Boolean -> isApiLoading(loading) })
-        }
-        nestedGraphs()
+    composable(HomeDestination.route) {
+        val commonUseCase = get<CommonUseCase>()
+        HomeScreen(
+            navigateToAuth = { commonUseCase.setLanguage("ar") },
+            navigateToOffers = { navigateToOffers() },
+            handleDeepLinks = { handleDeepLinks() },
+            isApiLoading = { loading: Boolean -> isApiLoading(loading) })
+    }
+    nestedGraphs()
 //    }
 }
+
