@@ -6,7 +6,6 @@ import android.content.ContextWrapper
 import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -109,7 +108,7 @@ object CommonFlowExtensions {
     }
 
     @Composable
-    fun SetAppLanguage(language: String, content: @Composable () -> Unit) {
+    fun LocalizeApp(language: String, content: @Composable () -> Unit) {
         val locale = Locale(language)
         val configuration = LocalConfiguration.current
         configuration.setLocale(locale)
@@ -135,7 +134,7 @@ object CommonFlowExtensions {
     }
 
     @Composable
-    fun SetAppLanguage(locale: Locale) {
+    fun LocalizeApp(locale: Locale) {
         val locale = locale
         val configuration = LocalConfiguration.current
         configuration.setLocale(locale)

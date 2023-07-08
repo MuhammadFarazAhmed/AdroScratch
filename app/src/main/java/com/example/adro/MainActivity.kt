@@ -8,10 +8,9 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.LaunchedEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.NavController
-import com.example.adro.common.CommonFlowExtensions.SetAppLanguage
+import com.example.adro.common.CommonFlowExtensions.LocalizeApp
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.vm.CommonViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -38,7 +37,7 @@ class MainActivity : ComponentActivity() {
             val appState = rememberAdroAppState()
             navController = appState.navController
 
-            SetAppLanguage(language.value) {
+            LocalizeApp(language.value) {
 
                 ThriveApp(appState)
 
