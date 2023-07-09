@@ -304,14 +304,13 @@ fun LoginView(
                             .align(Alignment.CenterVertically),
                         style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
                     )
-                    val context = LocalContext.current
+
                     Button(contentPadding = PaddingValues(horizontal = 4.dp),
                         modifier = Modifier
                             .height(34.dp)
                             .align(Alignment.CenterVertically)
                             .width(80.dp), onClick = {
                             navigateToAuth()
-                            context.findActivity()?.recreate()
                         }) {
                         Text(
                             text = stringResource(R.string.login),

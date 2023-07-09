@@ -39,7 +39,7 @@ data class ProfileResponse(
             @SerialName("image")
             val image: String? = null,
             @SerialName("key")
-            val key: String? = null,
+            val key: String? = "",
             @SerialName("name")
             val name: String? = null,
             @SerialName("signInBtn")

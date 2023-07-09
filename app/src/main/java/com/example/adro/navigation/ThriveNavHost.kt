@@ -49,9 +49,6 @@ fun ThriveNavHost(
             },
             isApiLoading = { loading: Boolean ->
                 isApiLoading(loading)
-            },
-            nestedGraphs = {
-
             }
         )
 

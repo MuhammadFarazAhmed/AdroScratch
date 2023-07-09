@@ -213,7 +213,7 @@ val authModule = module {
     single<AuthUseCase> { AuthUseCaseImp(get()) }
 
     viewModel { AuthViewModel(get(), get()) }
-    viewModel { ProfileViewModel(get(), get()) }
+    viewModel { ProfileViewModel(get(), get(),get()) }
 
 }
 

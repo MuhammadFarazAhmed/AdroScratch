@@ -1,8 +1,6 @@
 package com.example.adro
 
 import android.app.Application
-import android.content.Context
-import com.example.adro.LocaleManager.setLocale
 import com.example.adro.di.appModule
 import com.example.adro.di.featureModules
 import com.example.adro.di.networkModule

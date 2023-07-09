@@ -11,8 +11,8 @@
 
         <!-- Use windowSplashScreenAnimatedIcon to add either a drawable or an
              animated drawable. One of these is required. -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_app_logo_splash</item>
-        <item name="windowSplashScreenIconBackgroundColor">@color/purple_200</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_vector</item>
+        <item name="windowSplashScreenIconBackgroundColor">@color/purple_700</item>
         <!-- Required for animated icons -->
 
         <!-- Set the theme of the Activity that directly follows your splash screen. -->
@@ -20,4 +20,5 @@
         <item name="postSplashScreenTheme">@style/Theme.AdroScratch</item>
         <item name="windowSplashScreenAnimationDuration">1000</item>
     </style>
+
 </resources>

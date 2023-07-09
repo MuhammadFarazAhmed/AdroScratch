@@ -2,22 +2,19 @@ package com.example.adro.common
 
 import android.util.Log
 import androidx.compose.foundation.lazy.LazyListScope
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.example.adro.LocaleManager
 import com.example.adro.ui.ErrorItem
 import com.example.adro.ui.LoadingItem
 import com.example.adro.ui.LoadingView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import io.ktor.client.request.*
-import io.ktor.util.*
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.setBody
+import io.ktor.util.AttributeKey
 import okhttp3.Request
 import retrofit2.Invocation
-import java.util.Locale
 
 object CommonUtilsExtension {
 

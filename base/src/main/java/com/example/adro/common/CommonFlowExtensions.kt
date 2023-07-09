@@ -135,12 +135,10 @@ object CommonFlowExtensions {
 
     @Composable
     fun LocalizeApp(locale: Locale) {
-        val locale = locale
         val configuration = LocalConfiguration.current
         configuration.setLocale(locale)
         val resources = LocalContext.current.resources
         resources.updateConfiguration(configuration, resources.displayMetrics)
-
     }
 
 

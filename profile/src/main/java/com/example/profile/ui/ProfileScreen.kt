@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +24,8 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -44,14 +47,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
+import com.example.adro.common.CommonFlowExtensions.findActivity
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
@@ -123,8 +130,17 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                             item.sectionData.forEach { innerItem ->
                                 when (innerItem.type) {
                                     "arrow" -> ProfileSectionArrow(innerItem.title)
-                                    "text" -> ProfileSectionText(innerItem.title, innerItem.desc)
-                                    "switch" -> ProfileSectionSwitch(innerItem.title, innerItem.value)
+                                    "text" -> innerItem.key?.let {
+                                        ProfileSectionText(
+                                            innerItem.title, innerItem.desc,
+                                            it, vm
+                                        )
+                                    }
+
+                                    "switch" -> ProfileSectionSwitch(
+                                        innerItem.title,
+                                        innerItem.value
+                                    )
 
                                     else -> ProfileSectionHeaderRow(innerItem.title)
                                 }
@@ -225,6 +241,7 @@ fun ProfileSectionHeaderRow(sectionTitle: String?) {
 
 @Composable
 fun ProfileSectionArrow(title: String?) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -237,16 +254,37 @@ fun ProfileSectionArrow(title: String?) {
         Icon(
             modifier = Modifier.size(24.dp),
             tint = Color.LightGray,
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_baseline_chevron_right_24),
+            imageVector = if (LocalLayoutDirection.current == LayoutDirection.Ltr) ImageVector.vectorResource(
+                id = R.drawable.ic_baseline_chevron_right_24
+            ) else Icons.Default.KeyboardArrowLeft,
             contentDescription = ""
         )
     }
 }
 
 @Composable
-fun ProfileSectionText(title: String?, value: String?) {
+fun ProfileSectionText(title: String?, value: String?, key: String, vm: ProfileViewModel) {
+    val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
+    val lang = vm.selectedLanguage.collectAsStateLifecycleAware().value
     Row(
         modifier = Modifier
+            .clickable {
+                when (key) {
+                    "lang" -> {
+                        coroutineScope.launch {
+                            if (lang == "ar")
+                                vm.setLanguage("en") else
+                                vm.setLanguage("ar")
+                            context
+                                .findActivity()
+                                ?.recreate()
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
             .fillMaxWidth()
             .background(Color.White)
             .padding(16.dp),
@@ -254,7 +292,7 @@ fun ProfileSectionText(title: String?, value: String?) {
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = title ?: "")
-        Text(text = value ?: "")
+        Text(text = if (lang == "ar") "English" else "Arabic")
     }
 }
 

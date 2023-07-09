@@ -23,22 +23,14 @@ fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit,
     handleDeepLinks: () -> Unit,
-    isApiLoading: (loading: Boolean) -> Unit,
-    nestedGraphs: NavGraphBuilder.() -> Unit
+    isApiLoading: (loading: Boolean) -> Unit
 ) {
-//    navigation(
-//        route = homeGraphRoutePattern,
-//        startDestination = HomeDestination.route
-//    ) {
     composable(HomeDestination.route) {
-        val commonUseCase = get<CommonUseCase>()
         HomeScreen(
-            navigateToAuth = { commonUseCase.setLanguage("ar") },
+            navigateToAuth = { navigateToAuth() },
             navigateToOffers = { navigateToOffers() },
             handleDeepLinks = { handleDeepLinks() },
             isApiLoading = { loading: Boolean -> isApiLoading(loading) })
     }
-    nestedGraphs()
-//    }
 }
 

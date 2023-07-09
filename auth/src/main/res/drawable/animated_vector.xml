@@ -1,0 +1,46 @@
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/ic_app_logo_splash">
+
+
+    <target android:name="red">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:propertyName="scaleX"
+                    android:duration="300"
+                    android:valueFrom="1"
+                    android:valueTo="0.8"
+                    android:repeatCount="1"
+                    android:repeatMode="reverse"
+                    android:interpolator="@android:anim/bounce_interpolator" />
+                <objectAnimator
+                    android:propertyName="scaleY"
+                    android:duration="300"
+                    android:valueFrom="1"
+                    android:valueTo="0.8"
+                    android:repeatCount="1"
+                    android:repeatMode="reverse"
+                    android:interpolator="@android:anim/bounce_interpolator" />
+                <objectAnimator
+                    android:propertyName="translationX"
+                    android:duration="300"
+                    android:valueFrom="0dp"
+                    android:valueTo="10dp"
+                    android:repeatCount="1"
+                    android:repeatMode="reverse"
+                    android:interpolator="@android:anim/bounce_interpolator" />
+                <objectAnimator
+                    android:propertyName="translationY"
+                    android:duration="300"
+                    android:valueFrom="0dp"
+                    android:valueTo="10dp"
+                    android:repeatCount="1"
+                    android:repeatMode="reverse"
+                    android:interpolator="@android:anim/bounce_interpolator" />
+            </set>
+        </aapt:attr>
+    </target>
+
+
+</animated-vector>

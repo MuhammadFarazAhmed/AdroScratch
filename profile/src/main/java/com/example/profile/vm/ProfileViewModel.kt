@@ -11,6 +11,7 @@ import com.example.adro.common.CommonFlowExtensions.handleErrors
 import com.example.adro.models.ProfileResponse
 import com.example.domain.usecase.AuthUseCase
 import com.example.adro.paging.BasePagingSource
+import com.example.domain.usecase.CommonUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 
 class ProfileViewModel(
     application: Application,
-    private val authUseCase: AuthUseCase
+    private val authUseCase: AuthUseCase,
+    private val commonUseCase: CommonUseCase,
 ) :
     AndroidViewModel(application) {
 
@@ -47,6 +49,13 @@ class ProfileViewModel(
             }
         }
     }
+
+    fun setLanguage(language: String) {
+        commonUseCase.setLanguage(language)
+    }
+
+    val selectedLanguage =
+        commonUseCase.getLanguage().stateIn(viewModelScope, SharingStarted.Eagerly, "")
 
 
     fun signOut() {
