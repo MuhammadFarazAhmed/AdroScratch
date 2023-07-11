@@ -6,7 +6,7 @@ import androidx.datastore.dataStoreFile
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.preferencesDataStoreFile
-import com.example.adro.BearerTokenProvider
+import com.example.adro.security.BearerTokenProvider
 import com.example.adro.interceptors.changeBaseUrlInterceptor
 import com.example.adro.interceptors.decryptResponse
 import com.example.adro.prefs.ConfigPreferencesSerializer

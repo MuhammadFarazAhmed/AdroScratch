@@ -11,21 +11,20 @@ import androidx.compose.material.*
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -38,12 +37,10 @@ import com.example.adro.components.Header
 import com.example.adro.components.SwipeToRefreshContainer
 import com.example.adro.models.OffersResponse
 import com.example.adro.models.TabsResponse
+import com.example.adro.ui.ProgressDialog
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
@@ -56,17 +53,26 @@ fun OffersScreen(
     vm: OffersViewModel = getViewModel()
 ) {
 
-    vm.params = params
+    Log.d("TAG", "OffersScreen: $params")
 
     val coroutineScope = rememberCoroutineScope()
     val pagerState = rememberPagerState()
     val tabs by vm.tabs.collectAsStateLifecycleAware()
 
-    val text by vm.query.collectAsStateLifecycleAware()
+    val searchQuery = vm.query.collectAsState().value
     val lazyOutlets = vm.offers.collectAsLazyPagingItems()
 
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()
     val pullRefreshState = rememberPullRefreshState(isRefreshing, { lazyOutlets.refresh() })
+
+    val showBackButton = remember { mutableStateOf(params["category"] != null) }.value
+
+    LaunchedEffect(key1 = params) {
+        coroutineScope.launch {
+            if (params["category"] != null)
+                vm.getOutlets(params)
+        }
+    }
 
 
     SwipeToRefreshContainer(
@@ -87,33 +93,45 @@ fun OffersScreen(
 
                 Column {
 
-                    Header(text, vm)
+                    Header(searchQuery, params["category"], showBackButton, vm)
 
-                    Tabs(tabs, pagerState, coroutineScope)
+                    Column {
+                        Tabs(tabs, pagerState, coroutineScope)
 
-                    Pager(
-                        tabs,
-                        pagerState,
-                        vm,
-                        coroutineScope,
-                        lazyOutlets,
-                        navigateToDetail
-                    )
+                        Pager(
+                            tabs,
+                            pagerState,
+                            vm,
+                            coroutineScope,
+                            lazyOutlets,
+                            navigateToDetail
+                        )
+
+                        if (isRefreshing) {
+                            ProgressDialog(Color.White, alpha = 1.0)
+                        }
+                    }
 
                 }
             }
         }
     )
+
 }
 
 @Composable
-private fun Header(text: String, vm: OffersViewModel) {
+private fun Header(
+    queryText: String,
+    category: String?,
+    showBackButton: Boolean,
+    vm: OffersViewModel
+) {
     Header(
-        toolbarTitle = "Offers",
-        searchText = text,
-        isBackIconShown = false,
-        onQueryChange = { queryText -> vm.query.value = queryText },
-        onCrossClicked = { if (text.isNotEmpty()) vm.query.value = "" }
+        toolbarTitle = category ?: "Offers",
+        searchText = queryText,
+        isBackIconShown = showBackButton,
+        onQueryChange = { newQuery -> vm.query.value = newQuery },
+        onCrossClicked = { if (queryText.isNotEmpty()) vm.query.value = "" }
     )
 }
 

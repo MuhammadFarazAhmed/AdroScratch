@@ -134,6 +134,25 @@ object CommonFlowExtensions {
     }
 
     @Composable
+    fun fetchParamsFromDeeplink(): HashMap<String, String> {
+
+        val params = hashMapOf<String, String>()
+
+        val context = LocalContext.current
+        val activity = context.findActivity()
+        val queryParamsKeys = activity?.intent?.data?.queryParameterNames
+
+        // GET ARGUMENTS FROM DEEPLINK
+        queryParamsKeys?.forEach { queryParamKey ->
+            params[queryParamKey] = activity.intent?.data?.getQueryParameter(queryParamKey) ?: ""
+        }
+
+        activity?.intent?.data = null
+        return params
+    }
+
+
+    @Composable
     fun LocalizeApp(locale: Locale) {
         val configuration = LocalConfiguration.current
         configuration.setLocale(locale)

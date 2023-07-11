@@ -1,13 +1,10 @@
 package com.example.offers.nav
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.*
+import com.example.adro.common.CommonFlowExtensions
+import com.example.adro.common.CommonFlowExtensions.fetchParamsFromDeeplink
 import com.google.accompanist.navigation.animation.composable
 import com.example.adro.ui.ThriveNavigationDestination
 import com.example.offers.ui.MerchantDetailScreen
@@ -16,16 +13,32 @@ import com.example.offers.ui.SearchScreen
 
 object MerchantDestination : ThriveNavigationDestination {
     override val route = "merchant_route"
+
     override val destination = "offers_destination"
 
     const val detail = "merchant_detail"
+
+    const val specificOffers = "merchant_specific_category_route"
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.merchantGraph(navigateToDetail: () -> Unit) {
 
     composable(
-        MerchantDestination.route,
+        MerchantDestination.route
+    )
+    { _ ->
+        OffersScreen(navigateToDetail)
+    }
+    composable(MerchantDestination.detail) {
+        MerchantDetailScreen()
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+fun NavGraphBuilder.specificOffers(navigateToDetail: () -> Unit) {
+    composable(
+        MerchantDestination.specificOffers,
         deepLinks = listOf(
             navDeepLink {
                 uriPattern = "adoentertainer://offers"
@@ -33,34 +46,7 @@ fun NavGraphBuilder.merchantGraph(navigateToDetail: () -> Unit) {
             }
         )
     )
-    {
+    { _ ->
         OffersScreen(navigateToDetail, fetchParamsFromDeeplink())
     }
-    composable(MerchantDestination.detail) {
-        MerchantDetailScreen()
-    }
-}
-
-@Composable
-private fun fetchParamsFromDeeplink(): HashMap<String, String> {
-
-    val params = hashMapOf<String, String>()
-
-    val context = LocalContext.current
-    val activity = context.findActivity()
-    val queryParamsKeys = activity?.intent?.data?.queryParameterNames
-
-    // GET ARGUMENTS FROM DEEPLINK
-    queryParamsKeys?.forEach { queryParamKey ->
-        params[queryParamKey] = activity.intent?.data?.getQueryParameter(queryParamKey) ?: ""
-    }
-
-    activity?.intent?.data = null
-    return params
-}
-
-fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
 }

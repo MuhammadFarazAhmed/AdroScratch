@@ -1,16 +1,22 @@
 package com.example.adro
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.example.adro.navigation.*
+import com.example.adro.common.CommonFlowExtensions.findActivity
+import com.example.adro.navigation.BottomNavigationBar
+import com.example.adro.navigation.ThriveNavHost
 import com.example.adro.theme.ThriveScratchTheme
-import com.example.offers.nav.findActivity
+import com.example.offers.nav.MerchantDestination
 
 @Composable
 fun ThriveApp(appState: ThriveAppState) {
@@ -33,13 +39,11 @@ fun ThriveApp(appState: ThriveAppState) {
                         .fillMaxHeight()
                 ) {
 
-                    val context = LocalContext.current
-                    val activity = context.findActivity()
 
                     ThriveNavHost(
                         navController = appState.navController,
                         popBack = appState::popBack,
-                        handleDeepLinks = { appState.handleDeepLinks(activity?.intent) },
+                        handleDeepLinks = appState::navigate,
                         isApiLoading = { loading -> bottomBarState.value = !loading },
                         onNavigateToDestination = appState::navigate
                     )

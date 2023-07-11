@@ -1,11 +1,14 @@
 package com.example.home.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
 import com.google.accompanist.navigation.animation.composable
 import com.example.adro.ui.ThriveNavigationDestination
 import com.example.domain.usecase.CommonUseCase
+import com.example.home.nav.HomeDestination.homeGraphRoutePattern
 import com.example.home.ui.HomeScreen
+import com.google.accompanist.navigation.animation.navigation
 import org.koin.androidx.compose.get
 
 
@@ -22,15 +25,22 @@ object HomeDestination : ThriveNavigationDestination {
 fun NavGraphBuilder.homeGraph(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit,
-    handleDeepLinks: () -> Unit,
-    isApiLoading: (loading: Boolean) -> Unit
+    handleDeepLinks: (deepLink: String) -> Unit,
+    isApiLoading: (loading: Boolean) -> Unit,
+    nestedGraphs: NavGraphBuilder.() -> Unit,
 ) {
-    composable(HomeDestination.route) {
-        HomeScreen(
-            navigateToAuth = { navigateToAuth() },
-            navigateToOffers = { navigateToOffers() },
-            handleDeepLinks = { handleDeepLinks() },
-            isApiLoading = { loading: Boolean -> isApiLoading(loading) })
+    navigation(
+        route = homeGraphRoutePattern,
+        startDestination = HomeDestination.route
+    ) {
+        composable(HomeDestination.route) {
+            HomeScreen(
+                navigateToAuth = { navigateToAuth() },
+                navigateToOffers = { navigateToOffers() },
+                handleDeepLinks = { deepLink -> handleDeepLinks(deepLink) },
+                isApiLoading = { loading: Boolean -> isApiLoading(loading) })
+        }
     }
+    nestedGraphs()
 }
 

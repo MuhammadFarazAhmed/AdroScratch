@@ -34,17 +34,13 @@ import androidx.compose.material.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -78,9 +74,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import java.util.Locale
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -116,17 +110,13 @@ enum class HomeSections(val value: String) {
     RECOMMENDED_OFFERS("recommended_offers"),
 }
 
-@Retention(AnnotationRetention.RUNTIME)
-annotation class HomeScope
-
-
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     navigateToAuth: () -> Unit,
     navigateToOffers: () -> Unit,
     isApiLoading: (loading: Boolean) -> Unit,
-    handleDeepLinks: () -> Unit,
+    handleDeepLinks: (deepLink: String) -> Unit,
     vm: HomeViewModel = getViewModel()
 ) {
 
@@ -160,19 +150,16 @@ fun HomeScreen(
                     when (section?.sectionIdentifier) {
 
                         MAIN_CAROUSAL.value -> MainCarousal(pagerState, section)
-                        GUEST_USER.value -> LoginView(section, navigateToAuth, vm)
+
+                        GUEST_USER.value -> LoginView(section, navigateToAuth)
 
                         CATEGORIES.value -> Categories(section) { deeplink ->
-                            context.startActivity(
-                                Intent(Intent.ACTION_VIEW, Uri.parse(deeplink))
-                            )
+                            handleDeepLinks(deeplink)
                         }
 
                         EXCLUSIVE_OFFERS.value -> ExclusiveItem(exclusivePagerState, section)
-                        RECOMMENDED_OFFERS.value -> RecommendedItem(
-                            recommendedPagerState,
-                            section
-                        )
+
+                        RECOMMENDED_OFFERS.value -> RecommendedItem(recommendedPagerState, section)
                     }
                 }
                 applyPagination(homeSection)
@@ -197,7 +184,7 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 @Composable
 fun LoginView(
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
-    navigateToAuth: () -> Unit, vm: HomeViewModel
+    navigateToAuth: () -> Unit
 ) {
 
     Column {
@@ -297,7 +284,7 @@ fun LoginView(
                             .width(40.dp)
                     )
                     Text(
-                        text = "Login to enjoy discounts and offers",
+                        text = "Enjoy discounts and offers",
                         modifier = Modifier
                             .padding(8.dp)
                             .fillMaxWidth(.7f)

@@ -1,6 +1,8 @@
 package com.example.adro
 
 import android.content.Intent
+import android.net.Uri
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.core.os.trace
@@ -10,7 +12,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.adro.navigation.Icon
 import com.example.adro.navigation.TopLevelDestination
 import com.example.adro.ui.ThriveNavigationDestination
-import com.example.adro.vm.CommonViewModel
 import com.example.auth.nav.AuthDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
@@ -20,7 +21,6 @@ import com.example.offers.nav.SearchDestination
 import com.example.profile.nav.ProfileDestination
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import org.koin.androidx.compose.get
-import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -35,21 +35,19 @@ fun rememberAdroAppState(navController: NavHostController = rememberAnimatedNavC
 class ThriveAppState(val navController: NavHostController) {
 
 
-    fun handleDeepLinks(intent: Intent?) {
-        intent?.data?.let {
-            navController.handleDeepLink(intent)
-            intent.data = null
-        }
-    }
-
     val currentDestination: NavDestination?
         @Composable get() = navController.currentBackStackEntryAsState().value?.destination
 
     val shouldShowBottomBar: Boolean
-        @Composable get() = currentDestination?.route in topLevelDestinations.map { it.route }
+        @Composable get() = currentDestination?.route in topLevelDestinations.map { it.route } || currentDestination?.route != MerchantDestination.specificOffers
 
     val shouldShowToolBar: Boolean
-        @Composable get() = !(currentDestination?.route == FavoriteDestination.route || currentDestination?.route == MerchantDestination.route || currentDestination?.route == ProfileDestination.route || currentDestination?.route == AuthDestination.route || currentDestination?.route == SearchDestination.route)
+        @Composable get() = !(currentDestination?.route == FavoriteDestination.route ||
+                currentDestination?.route == MerchantDestination.route ||
+                currentDestination?.route == MerchantDestination.specificOffers ||
+                currentDestination?.route == ProfileDestination.route ||
+                currentDestination?.route == AuthDestination.route ||
+                currentDestination?.route == SearchDestination.route)
 
 
     /**
@@ -87,9 +85,14 @@ class ThriveAppState(val navController: NavHostController) {
     fun navigate(
         destination: ThriveNavigationDestination,
         route: String? = null,
-        isFromDeepLink: Boolean = false,
+        deeplink: String = ""
     ) {
         trace("Navigation: $destination") {
+
+            if (deeplink.isNotEmpty()) {
+                navController.navigate(route ?: destination.route)
+                return@navigate
+            }
 
             if (destination is TopLevelDestination) {
                 // if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
@@ -109,10 +112,6 @@ class ThriveAppState(val navController: NavHostController) {
                     restoreState = true
                 }
             } else {
-                navController.navigate(route ?: destination.route)
-            }
-
-            if (isFromDeepLink) {
                 navController.navigate(route ?: destination.route)
             }
         }

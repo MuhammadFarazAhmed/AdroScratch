@@ -67,7 +67,6 @@ object CommonUtilsExtension {
             "wlcompany" to "ADO",
             "lat" to "0",
             "location_id" to "2",
-            "category" to "",
             "time_zone" to "Asia/Karachi",
         )
 

@@ -31,7 +31,7 @@ class OffersViewModel(
     AndroidViewModel(application) {
 
     val isRefreshing = MutableStateFlow(false)
-    var params = hashMapOf<String, String>()
+    var params: Flow<HashMap<String, String>> = flow { }
     val query = MutableStateFlow("")
 
     val tabs: MutableStateFlow<List<TabsResponse.Data.Tab>> = MutableStateFlow(emptyList())
@@ -41,8 +41,7 @@ class OffersViewModel(
 
     val selectedTab = MutableStateFlow(TabsResponse.Data.Tab())
 
-    init {
-        //Observer login and FetchTabs Api Response
+    fun getOutlets(params: HashMap<String, String>) {
         viewModelScope.launch {
             combine(
                 authUseCase.isUserLoggedIn(),
@@ -57,10 +56,13 @@ class OffersViewModel(
                         tabs.value = it.second.data?.data?.tabs ?: emptyList()
                         selectedTab.value =
                             it.second.data?.data?.tabs?.get(0) ?: TabsResponse.Data.Tab()
+                        isRefreshing.emit(false)
                     }
 
-                    ERROR -> {}
-                    LOADING -> {}
+                    ERROR -> { isRefreshing.emit(false)}
+                    LOADING -> {
+                        isRefreshing.emit(true)
+                    }
                 }
             }
         }
