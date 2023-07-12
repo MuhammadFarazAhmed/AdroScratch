@@ -16,6 +16,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.adro.common.HexToJetpackColor
 import com.example.adro.theme.ThriveScratchTheme
 import com.example.adro.ui.ThriveNavigationDestination
 import com.example.base.R
@@ -23,9 +24,13 @@ import com.example.offers.nav.SearchDestination
 
 
 @Composable
-fun Toolbar(visibility: Boolean, onNavigateToDestination: (ThriveNavigationDestination, String?) -> Unit) {
+fun Toolbar(
+    visibility: Boolean,
+    onNavigateToDestination: (ThriveNavigationDestination, String?) -> Unit
+) {
     AnimatedVisibility(visible = visibility) {
         Box(
+            contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
                 .background(Color.Black)
                 .height(67.dp)
@@ -75,12 +80,15 @@ fun Toolbar(visibility: Boolean, onNavigateToDestination: (ThriveNavigationDesti
                     Image(
                         painter = painterResource(id = R.drawable.ic_notification),
                         contentScale = ContentScale.Inside,
-                        contentDescription = "")
+                        contentDescription = ""
+                    )
                 }
 
 
             }
+            Divider(thickness = 4.dp, color = HexToJetpackColor.getColor("acccbc"))
         }
+
     }
 }
 

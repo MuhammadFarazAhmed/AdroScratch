@@ -7,12 +7,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,26 +20,23 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -47,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -57,6 +55,9 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.AsyncImagePainter.State.Loading
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonFlowExtensions.findActivity
 import com.example.adro.common.CommonUtilsExtension.applyPagination
@@ -64,11 +65,9 @@ import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
 import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
+import java.lang.Error
 
 
 enum class ProfileSections(val value: String) {
@@ -114,12 +113,7 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                     val item = lazySections[index]
                     when (item?.sectionIdentifier) {
 
-                        ProfileSections.PROFILE_HEADER.value -> {
-                            if (isLogin.value == false) {
-                                ProfileSectionHeader()
-                            }
-                        }
-
+                        ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader(vm)
                         ProfileSections.MY_ACCOUNT.value,
                         ProfileSections.REDEMPTIONS_DETAILS.value,
                         ProfileSections.SETTINGS.value,
@@ -163,58 +157,95 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
 
 
 @Composable
-fun ProfileSectionHeader() {
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Black)
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        Text(
-            text = "Hello Guest",
-            modifier = Modifier.padding(vertical = 8.dp),
-            style = MaterialTheme.typography.h1,
-            color = Color.White
-        )
-        Text(
-            text = "Do you have an Abu Dhabi Golden Visa ?",
-            style = MaterialTheme.typography.h3,
-            modifier = Modifier.padding(vertical = 8.dp),
-            color = Color.White
-        )
-        Button(
-            onClick = { },
+fun ProfileSectionHeader(vm: ProfileViewModel) {
+    val user = vm.user.collectAsStateLifecycleAware().value
+    if (user.userId == null)
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp),
-            colors = ButtonDefaults.buttonColors(backgroundColor = HexToJetpackColor.getColor("E41C38"))
+                .background(Color.Black)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             Text(
-                text = "SignIn",
+                text = "Hello Guest",
                 modifier = Modifier.padding(vertical = 8.dp),
-                style = MaterialTheme.typography.body2,
+                style = MaterialTheme.typography.h1,
                 color = Color.White
             )
+            Text(
+                text = "Do you have an Abu Dhabi Golden Visa ?",
+                style = MaterialTheme.typography.h3,
+                modifier = Modifier.padding(vertical = 8.dp),
+                color = Color.White
+            )
+            Button(
+                onClick = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = HexToJetpackColor.getColor(
+                        "E41C38"
+                    )
+                )
+            ) {
+                Text(
+                    text = "SignIn",
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    style = MaterialTheme.typography.body2,
+                    color = Color.White
+                )
+            }
+            Button(
+                onClick = { },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 8.dp)
+                    .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+            ) {
+                Text(
+                    text = "Create new Account",
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    style = MaterialTheme.typography.body2,
+                    color = Color.White
+                )
+            }
+
         }
-        Button(
-            onClick = { },
+    else
+        Column(
+            verticalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 8.dp)
-                .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+                .background(Color.Black)
+                .padding(16.dp)
+                .height(150.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "Create new Account",
-                modifier = Modifier.padding(vertical = 8.dp),
-                style = MaterialTheme.typography.body2,
-                color = Color.White
-            )
-        }
 
-    }
+            AsyncImage(
+                onState = { state ->
+                    when (state) {
+                        is Loading -> {}
+                        is AsyncImagePainter.State.Error -> {}
+                        is AsyncImagePainter.State.Success -> {}
+                        is AsyncImagePainter.State.Empty -> {}
+                        else -> {}
+                    }
+                },
+                modifier = Modifier
+                    .size(65.dp)
+                    .clip(RoundedCornerShape(65.dp)),
+                model = user.profileImage,
+                contentScale = ContentScale.FillWidth,
+                contentDescription = "profile picture"
+            )
+
+            Text(text = user.firstName + " " + user.lastName, color = Color.White)
+        }
+    Divider(thickness = 4.dp, color = HexToJetpackColor.getColor("acccbc"))
 
 }
 
@@ -366,7 +397,9 @@ fun CustomSwitch(
     // To move thumb, we need to calculate the position (along x axis)
     val animatePosition =
         animateFloatAsState(targetValue = if (switchON.value) with(LocalDensity.current) { (width - thumbRadius - gapBetweenThumbAndTrackEdge).toPx() }
-        else with(LocalDensity.current) { (thumbRadius + gapBetweenThumbAndTrackEdge).toPx() })
+        else with(LocalDensity.current) { (thumbRadius + gapBetweenThumbAndTrackEdge).toPx() },
+            label = ""
+        )
 
     Canvas(modifier = Modifier
         .size(width = width, height = height)

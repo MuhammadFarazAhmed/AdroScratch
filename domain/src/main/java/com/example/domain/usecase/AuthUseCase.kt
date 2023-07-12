@@ -11,6 +11,8 @@ interface AuthUseCase {
 
     fun isUserLoggedIn(): Flow<Boolean>
 
+    fun getUser(): Flow<LoginResponse.Data.User>
+
     suspend fun signup()
 
     suspend fun forgotPassword()

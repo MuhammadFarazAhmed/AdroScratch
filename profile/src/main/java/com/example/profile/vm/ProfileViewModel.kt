@@ -8,12 +8,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.adro.common.CommonFlowExtensions.handleErrors
+import com.example.adro.models.LoginResponse
 import com.example.adro.models.ProfileResponse
 import com.example.domain.usecase.AuthUseCase
 import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.CommonUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -53,6 +55,9 @@ class ProfileViewModel(
     fun setLanguage(language: String) {
         commonUseCase.setLanguage(language)
     }
+
+    val user = authUseCase.getUser()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, LoginResponse.Data.User())
 
     val selectedLanguage =
         commonUseCase.getLanguage().stateIn(viewModelScope, SharingStarted.Eagerly, "")
