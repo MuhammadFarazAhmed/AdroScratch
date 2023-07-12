@@ -44,7 +44,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
-
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun OffersScreen(
@@ -69,8 +68,9 @@ fun OffersScreen(
 
     LaunchedEffect(key1 = params) {
         coroutineScope.launch {
-            if (params["category"] != null)
-                vm.getOutlets(params)
+            if (params.isNotEmpty()) {
+                vm.deepLinkParams.value = params
+            }
         }
     }
 
@@ -122,12 +122,12 @@ fun OffersScreen(
 @Composable
 private fun Header(
     queryText: String,
-    category: String?,
+    categoryName: String?,
     showBackButton: Boolean,
     vm: OffersViewModel
 ) {
     Header(
-        toolbarTitle = category ?: "Offers",
+        toolbarTitle = categoryName ?: "Offers",
         searchText = queryText,
         isBackIconShown = showBackButton,
         onQueryChange = { newQuery -> vm.query.value = newQuery },
