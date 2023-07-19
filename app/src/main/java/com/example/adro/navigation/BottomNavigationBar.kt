@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,6 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
+import com.example.adro.theme.Black500
 
 @Composable
 fun BottomNavigationBar(
@@ -25,12 +27,14 @@ fun BottomNavigationBar(
     currentDestination: NavDestination?
 ) {
     AnimatedVisibility(visible = bottomBarState) {
-        BottomNavigation(contentColor = Color.White) {
+        BottomNavigation(
+            backgroundColor = MaterialTheme.colors.surface,
+            contentColor = MaterialTheme.colors.onSurface
+        ) {
             destinations.forEach { destination ->
                 val selected =
                     currentDestination?.hierarchy?.any { it.route == destination.route } == true
                 BottomNavigationItem(modifier = Modifier
-                    .background(Color.White)
                     .navigationBarsPadding(),
                     icon = {
                         val icon = if (selected) {
@@ -57,7 +61,7 @@ fun BottomNavigationBar(
                     label = {
                         Text(
                             stringResource(destination.iconTextId),
-                            color = Color.Black
+                            color = MaterialTheme.colors.onSurface
                         )
                     },
                     alwaysShowLabel = true,

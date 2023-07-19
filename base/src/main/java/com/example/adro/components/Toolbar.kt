@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.adro.theme.Black500
 
 @Preview
 @Composable
@@ -28,7 +29,7 @@ fun Toolbar(text: String, isBackIconShown: Boolean = true, onBackArrowClicked: (
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.Black)
+            .background(Black500)
     ) {
 
         takeIf { isBackIconShown }?.let {

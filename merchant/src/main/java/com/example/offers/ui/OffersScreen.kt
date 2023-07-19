@@ -93,19 +93,19 @@ fun OffersScreen(
 
                 Column {
 
-                    Header(searchQuery, params["category"], showBackButton, vm)
+                    Header(
+                        toolbarTitle = params["category"] ?: "Offers",
+                        searchText = searchQuery,
+                        isBackIconShown = showBackButton,
+                        onQueryChange = { newQuery -> vm.query.value = newQuery },
+                        onCrossClicked = { if (searchQuery.isNotEmpty()) vm.query.value = "" }
+                    )
 
                     Column {
+
                         Tabs(tabs, pagerState, coroutineScope)
 
-                        Pager(
-                            tabs,
-                            pagerState,
-                            vm,
-                            coroutineScope,
-                            lazyOutlets,
-                            navigateToDetail
-                        )
+                        Pager(tabs, pagerState, lazyOutlets, navigateToDetail)
 
                         if (isRefreshing) {
                             ProgressDialog(Color.White, alpha = 1.0)
@@ -117,22 +117,6 @@ fun OffersScreen(
         }
     )
 
-}
-
-@Composable
-private fun Header(
-    queryText: String,
-    categoryName: String?,
-    showBackButton: Boolean,
-    vm: OffersViewModel
-) {
-    Header(
-        toolbarTitle = categoryName ?: "Offers",
-        searchText = queryText,
-        isBackIconShown = showBackButton,
-        onQueryChange = { newQuery -> vm.query.value = newQuery },
-        onCrossClicked = { if (queryText.isNotEmpty()) vm.query.value = "" }
-    )
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -175,8 +159,6 @@ fun Tabs(
 fun Pager(
     tabs: List<TabsResponse.Data.Tab>,
     pagerState: PagerState,
-    vm: OffersViewModel,
-    coroutineScope: CoroutineScope,
     lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
     navigateToDetail: () -> Unit
 ) {
@@ -199,7 +181,7 @@ fun Pager(
                     val item = lazyOutlets[index]
                     OutletItem(item, navigateToDetail = navigateToDetail)
                     Divider(
-                        color = Color.Black,
+                        color = MaterialTheme.colors.onSurface,
                         thickness = .5.dp,
                         modifier = Modifier.padding(horizontal = 4.dp)
                     )

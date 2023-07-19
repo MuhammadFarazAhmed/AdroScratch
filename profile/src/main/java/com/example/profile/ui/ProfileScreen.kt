@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -63,11 +64,11 @@ import com.example.adro.common.CommonFlowExtensions.findActivity
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
+import com.example.adro.theme.Black500
 import com.example.base.R
 import com.example.profile.vm.ProfileViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
-import java.lang.Error
 
 
 enum class ProfileSections(val value: String) {
@@ -101,7 +102,10 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
 
             LazyColumn(
                 state = lazySectionsState,
-                modifier = Modifier.background(HexToJetpackColor.getColor("F1F1F1"))
+                modifier = Modifier.background(
+                    if (isSystemInDarkTheme()) HexToJetpackColor.getColor("d8d8d8")
+                    else HexToJetpackColor.getColor("F1F1F1")
+                )
             ) {
 
                 items(
@@ -141,9 +145,9 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
                             }
                         }
 
-                        ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) {
-                            ProfileSectionSignOut(vm)
-                        }
+                        ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) ProfileSectionSignOut(
+                            vm
+                        )
 
                     }
                 }
@@ -163,8 +167,8 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(Color.Black)
-                .padding(16.dp),
+                .background(Black500)
+                .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -203,13 +207,13 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
-                    .border(1.dp, Color.White, RoundedCornerShape(4.dp))
+                    .border(1.dp, MaterialTheme.colors.surface, RoundedCornerShape(4.dp))
             ) {
                 Text(
                     text = "Create new Account",
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = MaterialTheme.typography.body2,
-                    color = Color.White
+                    color = MaterialTheme.colors.surface
                 )
             }
 
@@ -252,11 +256,11 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
 
 @Composable
 fun ProfileSectionHeaderRow(sectionTitle: String?) {
-    if (sectionTitle != ProfileSections.MY_ACCOUNT.value) Spacer(modifier = Modifier.padding(8.dp))
+    if (sectionTitle != "My Account") Spacer(modifier = Modifier.padding(4.dp))
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(MaterialTheme.colors.surface)
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
@@ -265,7 +269,7 @@ fun ProfileSectionHeaderRow(sectionTitle: String?) {
             text = sectionTitle ?: "",
             modifier = Modifier.padding(vertical = 8.dp),
             style = MaterialTheme.typography.h1,
-            color = Color.Black
+            color = MaterialTheme.colors.onSurface
         )
     }
 }
@@ -276,12 +280,12 @@ fun ProfileSectionArrow(title: String?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(MaterialTheme.colors.surface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = title ?: "")
+        Text(text = title ?: "", color = MaterialTheme.colors.onSurface)
         Icon(
             modifier = Modifier.size(24.dp),
             tint = Color.LightGray,
@@ -317,12 +321,12 @@ fun ProfileSectionText(title: String?, value: String?, key: String, vm: ProfileV
                 }
             }
             .fillMaxWidth()
-            .background(Color.White)
+            .background(MaterialTheme.colors.surface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = title ?: "")
+        Text(text = title ?: "", color = MaterialTheme.colors.onSurface)
         Text(text = if (lang == "ar") "English" else "Arabic")
     }
 }
@@ -332,12 +336,12 @@ fun ProfileSectionSwitch(title: String?, value: Int?) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color.White)
+            .background(MaterialTheme.colors.surface)
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = title ?: "")
+        Text(text = title ?: "", color = MaterialTheme.colors.onSurface)
         CustomSwitch(initialValue = value == 1, gapBetweenThumbAndTrackEdge = 0.dp) { _ ->
 
         }

@@ -1,6 +1,6 @@
 package com.example.adro.theme
 
-import android.widget.Toolbar
+import android.annotation.SuppressLint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -8,55 +8,75 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 private val DarkColorPalette =
-        darkColors(primary = Purple200, primaryVariant = Purple700, secondary = Red)
+    darkColors(
+        primary = Color.White,
+        primaryVariant = Color.White,
+        secondary = Red,
+        background = Black,
+        surface = Black,
+        onPrimary = Black500,
+        onSecondary = Red,
+        onBackground = Color.White,
+        onSurface = Color.White,
+    )
 
-private val LightColorPalette = lightColors(
-        primary = Purple500,
-        primaryVariant = Purple700,
+private val LightColorPalette =
+    lightColors(
+        primary = Black500,
+        primaryVariant = Black500,
         secondary = Red,
         background = Color.White,
         surface = Color.White,
         onPrimary = Color.White,
-        onSecondary = Color.White,
-        onBackground = Color.Black,
-        onSurface = Color.Black,
-                                           )
+        onSecondary = Red,
+        onBackground = Black500,
+        onSurface = Black500,
+    )
 
-@Composable fun ThriveScratchTheme(darkTheme: Boolean = isSystemInDarkTheme(),
-                                   content: @Composable () -> Unit) {
+@Composable
+fun ThriveScratchTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
-    
+
     MaterialTheme(colors = colors, typography = Typography, shapes = Shapes, content = content)
 }
 
-@Preview(name = "Dark Theme" ,showBackground = true) @Composable
+@Preview(name = "Dark Theme", showBackground = true)
+@Composable
 fun ThriveScratchDarkThemePreview(darkTheme: Boolean = true) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
-    
-//    MaterialTheme(colors = colors,
-//            typography = Typography,
-//            shapes = Shapes,
-//            content = { Scaffold(topBar = {  }, content = {}) })
+
+    MaterialTheme(colors = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = { Scaffold(content = {}) }
+    )
 }
 
-@Preview(name = "Light Theme" ,showBackground = true) @Composable
-fun AdroScratchLightThemePreview(darkTheme: Boolean = false) {
+@Preview(name = "Light Theme", showBackground = true)
+@Composable
+fun ThriveScratchLightThemePreview(darkTheme: Boolean = true) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
-    
-//    MaterialTheme(colors = colors,
-//            typography = Typography,
-//            shapes = Shapes,
-//            content = { Scaffold(topBar = { com.example.adro.ToolbarPreview() },content = {}) })
+
+    MaterialTheme(
+        colors = colors,
+        typography = Typography,
+        shapes = Shapes,
+        content = {
+
+        })
 }

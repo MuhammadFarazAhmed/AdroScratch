@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.theme.Black500
 import com.example.adro.theme.ThriveScratchTheme
 import com.example.adro.ui.ThriveNavigationDestination
 import com.example.base.R
@@ -32,7 +33,7 @@ fun Toolbar(
         Box(
             contentAlignment = Alignment.BottomCenter,
             modifier = Modifier
-                .background(Color.Black)
+                .background(Black500)
                 .height(67.dp)
                 .fillMaxWidth(),
         ) {
