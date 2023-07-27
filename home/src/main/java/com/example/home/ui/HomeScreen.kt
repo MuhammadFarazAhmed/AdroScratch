@@ -27,15 +27,16 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.Card
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -224,7 +225,7 @@ fun LoginView(
                 ) {
 
                     Text(
-                        style = MaterialTheme.typography.body2,
+                        style = MaterialTheme.typography.bodyMedium,
                         text = section?.title ?: "",
                         color = Color.White,
                         fontSize = 14.sp,
@@ -232,7 +233,7 @@ fun LoginView(
                     )
 
                     Text(
-                        style = MaterialTheme.typography.h1,
+                        style = MaterialTheme.typography.headlineLarge,
                         text = section?.subTitle ?: "",
                         color = Color.White,
                         letterSpacing = 1.sp,
@@ -249,7 +250,7 @@ fun LoginView(
                             .wrapContentSize()
                             .width(100.dp),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = HexToJetpackColor.getColor(
+                            containerColor = HexToJetpackColor.getColor(
                                 section?.buttonBgColor ?: "acccbc"
                             )
                         )
@@ -257,7 +258,7 @@ fun LoginView(
                         Text(
                             text = section?.buttonTitle ?: "",
                             color = Color.White,
-                            style = MaterialTheme.typography.body2,
+                            style = MaterialTheme.typography.bodyMedium,
                             fontSize = 12.sp
                         )
                     }
@@ -267,7 +268,7 @@ fun LoginView(
 
             Card(
                 shape = RoundedCornerShape(12.dp),
-                elevation = 4.dp,
+                elevation = CardDefaults.cardElevation(),
                 border = BorderStroke(2.dp, HexToJetpackColor.getColor("acccbc")),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -294,7 +295,7 @@ fun LoginView(
                                 .padding(8.dp)
                                 .fillMaxWidth(.7f)
                                 .align(Alignment.CenterVertically),
-                            style = MaterialTheme.typography.body1.copy(lineHeight = 21.sp)
+                            style = MaterialTheme.typography.bodyLarge.copy(lineHeight = 21.sp)
                         )
 
                         Button(contentPadding = PaddingValues(horizontal = 4.dp),
@@ -308,7 +309,7 @@ fun LoginView(
                                 text = stringResource(R.string.login),
                                 fontSize = 14.sp,
                                 fontWeight = Bold,
-                                style = MaterialTheme.typography.body2
+                                style = MaterialTheme.typography.bodyMedium
                             )
                         }
 
@@ -327,7 +328,7 @@ fun LoginView(
                                 .padding(vertical = 8.dp, horizontal = 2.dp),
                             text = "Thrive Club app is exclusively for Abu Dhabi Golden Visa holders",
                             maxLines = 1,
-                            style = MaterialTheme.typography.body1,
+                            style = MaterialTheme.typography.bodyLarge,
                             fontSize = 12.sp,
                             textAlign = TextAlign.Center
                         )
@@ -364,7 +365,7 @@ fun MainCarousal(
 
         Card(
             modifier = Modifier.fillMaxSize(),
-            elevation = 4.dp,
+            elevation = CardDefaults.cardElevation(),
             shape = RoundedCornerShape(8.dp)
         ) {
 
@@ -409,7 +410,7 @@ fun MainCarousal(
                         .height(34.dp)
                         .width(100.dp),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = HexToJetpackColor.getColor(
+                        containerColor = HexToJetpackColor.getColor(
                             item.buttonBgColor
                         )
                     )
@@ -431,8 +432,8 @@ fun Categories(
 
         Text(
             text = section.title,
-            style = MaterialTheme.typography.h1,
-            color = MaterialTheme.colors.onSurface,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(start = 16.dp)
         )
 
@@ -452,7 +453,7 @@ fun Categories(
                         .clickable {
                             handleDeeplink(item.deeplink)
                         },
-                    elevation = 4.dp,
+                    elevation = CardDefaults.cardElevation(),
                     shape = RoundedCornerShape(8.dp)
                 ) {
 
@@ -501,8 +502,8 @@ fun ExclusiveItem(
 
         Text(
             text = section.title,
-            style = MaterialTheme.typography.h1,
-            color = MaterialTheme.colors.onSurface,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 0.dp)
         )
 
@@ -520,7 +521,7 @@ fun ExclusiveItem(
 
             Card(
                 modifier = Modifier.fillMaxSize(),
-                elevation = 4.dp,
+                elevation = CardDefaults.cardElevation(),
                 shape = RoundedCornerShape(8.dp)
             ) {
 
@@ -587,8 +588,8 @@ fun RecommendedItem(
 
         Text(
             text = section.title,
-            style = MaterialTheme.typography.h1,
-            color = MaterialTheme.colors.onSurface,
+            style = MaterialTheme.typography.headlineLarge,
+            color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(start = 16.dp, top = 8.dp, bottom = 0.dp)
         )
 
@@ -606,7 +607,7 @@ fun RecommendedItem(
 
             Card(
                 modifier = Modifier.fillMaxSize(),
-                elevation = 4.dp,
+                elevation = CardDefaults.cardElevation(),
                 shape = RoundedCornerShape(8.dp)
             ) {
 

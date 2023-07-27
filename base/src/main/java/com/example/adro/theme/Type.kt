@@ -1,6 +1,6 @@
 package com.example.adro.theme
 
-import androidx.compose.material.Typography
+import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.sp
@@ -14,32 +14,32 @@ val Emad = FontFamily(
 )
 
 val Typography = Typography(
-    h1 = TextStyle(
+    headlineLarge = TextStyle(
         fontFamily = Emad,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
-    h2 = TextStyle(
+    headlineMedium = TextStyle(
         fontFamily = Emad,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     ),
-    h3 = TextStyle(
+    headlineSmall = TextStyle(
         fontFamily = Emad,
         fontWeight = FontWeight.Medium,
         fontSize = 14.sp
     ),
-    body1 = TextStyle(
+    bodyLarge = TextStyle(
         fontFamily = Emad,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
-    body2 = TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = Emad,
         fontWeight = FontWeight.Light,
         fontSize = 16.sp
     ),
-    button = TextStyle(
+    bodySmall = TextStyle(
         fontFamily = Emad,
         fontWeight = FontWeight.Light,
         fontSize = 14.sp

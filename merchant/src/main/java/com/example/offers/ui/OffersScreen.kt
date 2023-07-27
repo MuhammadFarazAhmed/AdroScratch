@@ -7,7 +7,8 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material3.*
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
@@ -37,6 +38,7 @@ import com.example.adro.components.Header
 import com.example.adro.components.SwipeToRefreshContainer
 import com.example.adro.models.OffersResponse
 import com.example.adro.models.TabsResponse
+import com.example.adro.theme.Black500
 import com.example.adro.ui.ProgressDialog
 import com.example.offers.vm.OffersViewModel
 import com.google.accompanist.pager.*
@@ -44,7 +46,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun OffersScreen(
     navigateToDetail: () -> Unit,
@@ -132,7 +134,7 @@ fun Tabs(
     ScrollableTabRow(
         edgePadding = 0.dp,
         selectedTabIndex = tabIndex,
-        backgroundColor = Color.Black,
+        containerColor = Black500,
         indicator = { tabPositions ->
             TabRowDefaults.Indicator(
                 Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
@@ -141,7 +143,7 @@ fun Tabs(
         }) {
         tabs?.forEachIndexed { index, tab ->
             Tab(selected = tabIndex == index,
-                modifier = Modifier.background(Color.Black),
+                modifier = Modifier.background(Black500),
                 onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(index)
@@ -181,7 +183,7 @@ fun Pager(
                     val item = lazyOutlets[index]
                     OutletItem(item, navigateToDetail = navigateToDetail)
                     Divider(
-                        color = MaterialTheme.colors.onSurface,
+                        color = MaterialTheme.colorScheme.onSurface,
                         thickness = .5.dp,
                         modifier = Modifier.padding(horizontal = 4.dp)
                     )

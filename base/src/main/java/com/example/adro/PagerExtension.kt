@@ -1,6 +1,5 @@
 package com.example.adro
 
-import androidx.compose.material.TabPosition
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Constraints
@@ -13,7 +12,7 @@ object PagerExtension {
     @ExperimentalPagerApi
     fun Modifier.pagerTabIndicatorOffset(
         pagerState: PagerState,
-        tabPositions: List<TabPosition>,
+        tabPositions: List<androidx.compose.material3.TabPosition>,
         pageIndexMapping: (Int) -> Int = { it },
                                         ): Modifier = layout { measurable, constraints ->
         if (tabPositions.isEmpty()) {

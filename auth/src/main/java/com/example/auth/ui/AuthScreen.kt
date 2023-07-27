@@ -6,6 +6,18 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -182,7 +194,7 @@ fun EMIDScreen() {
                     .padding(vertical = 16.dp)
                     .fillMaxWidth(),
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = HexToJetpackColor.getColor("e43338")
+                    containerColor = HexToJetpackColor.getColor("e43338")
                 )
             ) {
                 Text(
@@ -318,9 +330,8 @@ fun LoginScreen(vm: AuthViewModel) {
         }
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(start = 4.dp)
@@ -336,9 +347,8 @@ fun LoginScreen(vm: AuthViewModel) {
             placeholder = { Text("e.g 5465647") })
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .constrainAs(etPassword) {
@@ -363,7 +373,7 @@ fun LoginScreen(vm: AuthViewModel) {
                 }
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = HexToJetpackColor.getColor("e43338")
+                containerColor = HexToJetpackColor.getColor("e43338")
             )
         ) {
             Text(
@@ -400,7 +410,7 @@ fun LoginScreen(vm: AuthViewModel) {
                     linkTo(top = tvForgotPassword.bottom, bottom = parent.bottom)
                 },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = HexToJetpackColor.getColor("ffffff")
+                containerColor = HexToJetpackColor.getColor("ffffff")
             )
         ) {
             Text(
@@ -450,9 +460,8 @@ fun RegisterScreen() {
         )
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(backgroundColor = MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(bottom = 12.dp)
@@ -464,9 +473,8 @@ fun RegisterScreen() {
             placeholder = { Text("First Name") })
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(bottom = 12.dp)
@@ -510,9 +518,8 @@ fun RegisterScreen() {
             }
 
             TextField(
-                colors = TextFieldDefaults.textFieldColors(
-                    backgroundColor = Color.LightGray,
-                    textColor = Color.Black
+                colors = TextFieldDefaults.colors(
+                    contentColorFor(Color.LightGray), Color.LightGray,
                 ),
                 modifier = Modifier
                     .clickable(false) {
@@ -528,9 +535,8 @@ fun RegisterScreen() {
         }
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(bottom = 12.dp)
@@ -542,9 +548,8 @@ fun RegisterScreen() {
             placeholder = { Text("Golden Visa Category") })
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(bottom = 12.dp)
@@ -556,9 +561,8 @@ fun RegisterScreen() {
             placeholder = { Text("Email") })
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(bottom = 12.dp)
@@ -570,9 +574,8 @@ fun RegisterScreen() {
             placeholder = { Text("Password") })
 
         TextField(
-            colors = TextFieldDefaults.textFieldColors(
-                backgroundColor = MaterialTheme.colors.surface.copy(alpha = 1.0f),
-                textColor = Color.Black
+            colors = TextFieldDefaults.colors(
+                contentColorFor(MaterialTheme.colorScheme.surface.copy(alpha = 1.0f)),
             ),
             modifier = Modifier
                 .padding(bottom = 16.dp)
@@ -614,7 +617,7 @@ fun RegisterScreen() {
                 .padding(vertical = 16.dp)
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = HexToJetpackColor.getColor("e43338")
+                containerColor = HexToJetpackColor.getColor("e43338")
             )
         ) {
             Text(
@@ -672,7 +675,7 @@ fun CustomCheckBox(text: AnnotatedString) {
                 Color.White,
                 RoundedCornerShape(4.dp)
             ),
-            elevation = 0.dp,
+            elevation = CardDefaults.cardElevation(),
         ) {
             Box(
                 modifier = Modifier

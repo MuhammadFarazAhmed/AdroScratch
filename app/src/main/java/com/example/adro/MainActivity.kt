@@ -32,15 +32,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
 
-            val language = vm.language.collectAsStateLifecycleAware()
+            val language = vm.language.collectAsStateLifecycleAware().value
 
             val appState = rememberAdroAppState()
             navController = appState.navController
 
-            LocalizeApp(language.value) {
-
+            LocalizeApp(language) {
                 ThriveApp(appState)
-
             }
 
         }

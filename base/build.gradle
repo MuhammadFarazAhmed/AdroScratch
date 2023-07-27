@@ -54,12 +54,15 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation("androidx.compose.material3:material3:1.1.1")
+    api "androidx.compose.material:material:$compose_version"
+    api("androidx.compose.material3:material3:1.1.1")
+
+    // temporary library for pull to refresh as officials are not yet supported
+//    implementation("me.omico.lux:lux-androidx-compose-material3-pullrefresh")
+
 
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
 
-    implementation "androidx.lifecycle:lifecycle-viewmodel:2.6.1"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
 
     testImplementation 'junit:junit:4.13.2'
@@ -87,7 +90,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
     implementation("ch.qos.logback:logback-classic:1.2.3")
 
-    api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+    api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
 
     implementation "com.google.accompanist:accompanist-pager:0.25.1"
     api "com.google.accompanist:accompanist-navigation-animation:0.25.1"
@@ -102,7 +105,6 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
-    implementation 'com.google.android.material:material:1.6.1'
 
     implementation "io.insert-koin:koin-androidx-compose:$koin_version"
 

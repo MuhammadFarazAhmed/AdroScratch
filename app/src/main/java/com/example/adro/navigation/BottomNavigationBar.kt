@@ -7,7 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -28,8 +28,8 @@ fun BottomNavigationBar(
 ) {
     AnimatedVisibility(visible = bottomBarState) {
         BottomNavigation(
-            backgroundColor = MaterialTheme.colors.surface,
-            contentColor = MaterialTheme.colors.onSurface
+            backgroundColor = MaterialTheme.colorScheme.surface,
+            contentColor = MaterialTheme.colorScheme.onSurface
         ) {
             destinations.forEach { destination ->
                 val selected =
@@ -61,7 +61,7 @@ fun BottomNavigationBar(
                     label = {
                         Text(
                             stringResource(destination.iconTextId),
-                            color = MaterialTheme.colors.onSurface
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     },
                     alwaysShowLabel = true,

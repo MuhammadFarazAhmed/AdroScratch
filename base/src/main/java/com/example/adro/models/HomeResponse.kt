@@ -49,7 +49,7 @@ data class HomeResponse(
             val sectionItems: List<SectionItem> = arrayListOf(),
             @SerialName("sort_order")
             val sortOrder: Int = 1,
-            @SerialName("title")
+            @SerialName("section_title")
             val title: String = "title",
             @SerialName("image_url")
             val imageUrl: String = "",
