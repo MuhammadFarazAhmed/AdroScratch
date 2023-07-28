@@ -189,7 +189,7 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
                 modifier = Modifier.padding(vertical = 8.dp),
                 color = MaterialTheme.colorScheme.onSurface
             )
-            Button(
+            androidx.compose.material3.OutlinedButton(
                 onClick = { },
                 modifier = Modifier
                     .fillMaxWidth()
