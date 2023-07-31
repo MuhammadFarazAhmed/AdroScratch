@@ -49,7 +49,6 @@ class OffersViewModel(
 
         }
 
-        //
         viewModelScope.launch {
 
             combine(
@@ -60,6 +59,7 @@ class OffersViewModel(
                 .collectLatest { pair -> getOutlets(pair.first) }
 
         }
+
     }
 
     private suspend fun getTabs(params: HashMap<String, String>) {

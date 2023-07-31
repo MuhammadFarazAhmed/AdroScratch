@@ -2,19 +2,15 @@ package com.example.adro.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material.MaterialTheme.colors
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 
-private val DarkColorPalette =
+private val darkColorPalette =
     darkColorScheme(
         primary = md_theme_dark_primary,
         onPrimary = md_theme_dark_onPrimary,
@@ -44,7 +40,7 @@ private val DarkColorPalette =
         inversePrimary = md_theme_dark_inversePrimary,
     )
 
-private val LightColorPalette =
+private val lightColorPalette =
     lightColorScheme(
         primary = md_theme_light_primary,
         onPrimary = md_theme_light_onPrimary,
@@ -77,7 +73,7 @@ private val LightColorPalette =
 @Composable
 fun ThriveScratchTheme(
     isDarkTheme: Boolean = isSystemInDarkTheme(),
-    isDynamicColor: Boolean = true,
+    isDynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val dynamicColor = isDynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
@@ -90,8 +86,8 @@ fun ThriveScratchTheme(
             dynamicLightColorScheme(LocalContext.current)
         }
 
-        isDarkTheme -> DarkColorPalette
-        else -> LightColorPalette
+        isDarkTheme -> darkColorPalette
+        else -> lightColorPalette
     }
 
     MaterialTheme(

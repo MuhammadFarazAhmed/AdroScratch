@@ -1,10 +1,5 @@
 package com.example.home.ui
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -22,21 +17,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material.pullrefresh.pullRefresh
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -61,7 +55,6 @@ import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
-import com.example.adro.common.CommonFlowExtensions.findActivity
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
@@ -164,16 +157,20 @@ fun HomeScreen(
                         EXCLUSIVE_OFFERS.value -> ExclusiveItem(exclusivePagerState, section)
 
                         RECOMMENDED_OFFERS.value -> RecommendedItem(recommendedPagerState, section)
+
                     }
+
                 }
+
                 applyPagination(homeSection)
+
             }
         }
     )
 
     //show progress
     if (isRefreshing) {
-        ProgressDialog(Color.White, alpha = 1.0)
+        ProgressDialog(MaterialTheme.colorScheme.surface, alpha = 1.0)
     }
 
     //callback for main activity to hide bottom nav rail
@@ -244,11 +241,11 @@ fun LoginView(
                     )
 
                     Button(
+                        shape = RoundedCornerShape(4.dp),
                         onClick = { },
                         contentPadding = PaddingValues(horizontal = 12.dp),
                         modifier = Modifier
-                            .wrapContentSize()
-                            .width(100.dp),
+                            .wrapContentSize(),
                         colors = ButtonDefaults.buttonColors(
                             containerColor = HexToJetpackColor.getColor(
                                 section?.buttonBgColor ?: "acccbc"
@@ -299,8 +296,9 @@ fun LoginView(
                         )
 
                         Button(contentPadding = PaddingValues(horizontal = 4.dp),
+                            shape = RoundedCornerShape(4.dp),
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                             modifier = Modifier
-                                .height(34.dp)
                                 .align(Alignment.CenterVertically)
                                 .wrapContentSize(), onClick = {
                                 navigateToAuth()
@@ -340,11 +338,6 @@ fun LoginView(
     }
 }
 
-fun Context.findActivity(): Activity? = when (this) {
-    is Activity -> this
-    is ContextWrapper -> baseContext.findActivity()
-    else -> null
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable

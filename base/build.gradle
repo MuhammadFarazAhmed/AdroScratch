@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
-    id 'dagger.hilt.android.plugin'
     id("org.jetbrains.kotlin.plugin.serialization") version "1.8.21"
 }
 
@@ -74,17 +73,10 @@ dependencies {
     implementation "androidx.navigation:navigation-compose:${nav_version}"
     implementation "androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation_version"
 
-    implementation 'com.google.dagger:hilt-android:2.43.1'
-    kapt 'com.google.dagger:hilt-compiler:2.43.1'
-    kapt "com.google.dagger:hilt-android-compiler:2.43.1"
-
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_logger_version"
 
     implementation("io.ktor:ktor-client-core:$ktor_version")
     implementation("io.ktor:ktor-client-android:$ktor_version")
+    api("io.ktor:ktor-serialization-gson:$ktor_version")
     implementation("io.ktor:ktor-client-serialization:$ktor_version")
     implementation("io.ktor:ktor-client-logging:$ktor_version")
     implementation("io.ktor:ktor-client-content-negotiation:$ktor_version")
@@ -98,11 +90,11 @@ dependencies {
 
 
 
-    debugApi("androidx.paging:paging-compose:3.2.0-rc01")
+    debugApi("androidx.paging:paging-compose:3.2.0")
 
 
     implementation "androidx.datastore:datastore-preferences:1.1.0-alpha04"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1"
     implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
 
 

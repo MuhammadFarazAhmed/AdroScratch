@@ -9,6 +9,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +54,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -91,6 +94,7 @@ enum class Type(val value: String) {
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
+@Preview
 fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getViewModel()) {
 
     val lazySections = vm.sections.collectAsLazyPagingItems()
@@ -100,68 +104,68 @@ fun ProfileScreen(navigateToHome: () -> Unit = {}, vm: ProfileViewModel = getVie
     val isLogin = vm.isLogin.collectAsStateLifecycleAware()
 
 
-    SwipeToRefreshContainer(
-        pullRefreshState = pullRefreshState,
-        isRefreshing = isRefreshing,
+    Box(
         modifier = Modifier
             .pullRefresh(pullRefreshState)
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.tertiary),
-        content = {
+            .background(color = MaterialTheme.colorScheme.tertiary)
+    ) {
 
-            LazyColumn(
-                state = lazySectionsState,
-            ) {
+        LazyColumn(
+            state = lazySectionsState,
+        ) {
 
-                items(
-                    count = lazySections.itemCount,
-                    key = lazySections.itemKey(),
-                    contentType = lazySections.itemContentType()
-                ) { index ->
+            items(
+                count = lazySections.itemCount,
+                key = lazySections.itemKey(),
+                contentType = lazySections.itemContentType()
+            ) { index ->
 
-                    val item = lazySections[index]
-                    when (item?.sectionIdentifier) {
+                val item = lazySections[index]
+                when (item?.sectionIdentifier) {
 
-                        ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader(vm)
-                        ProfileSections.MY_ACCOUNT.value,
-                        ProfileSections.REDEMPTIONS_DETAILS.value,
-                        ProfileSections.SETTINGS.value,
-                        ProfileSections.HELP_SUPPORT.value,
-                        ProfileSections.ABOUT.value,
-                        -> {
-                            ProfileSectionHeaderRow(item.sectionTitle)
-                            item.sectionData.forEach { innerItem ->
-                                when (innerItem.type) {
-                                    Type.ARROW.value -> ProfileSectionArrow(innerItem.title)
-                                    Type.TEXT.value -> innerItem.key?.let {
-                                        ProfileSectionText(
-                                            innerItem.title, innerItem.desc,
-                                            it, vm
-                                        )
-                                    }
-
-                                    Type.SWITCH.value -> ProfileSectionSwitch(
-                                        innerItem.title,
-                                        innerItem.value
-                                    )
-
-                                    else -> ProfileSectionHeaderRow(innerItem.title)
+                    ProfileSections.PROFILE_HEADER.value -> ProfileSectionHeader(vm)
+                    ProfileSections.MY_ACCOUNT.value,
+                    ProfileSections.REDEMPTIONS_DETAILS.value,
+                    ProfileSections.SETTINGS.value,
+                    ProfileSections.HELP_SUPPORT.value,
+                    ProfileSections.ABOUT.value,
+                    -> {
+                        ProfileSectionHeaderRow(item.sectionTitle)
+                        item.sectionData.forEach { innerItem ->
+                            when (innerItem.type) {
+                                Type.ARROW.value -> ProfileSectionArrow(innerItem.title)
+                                Type.TEXT.value -> innerItem.key?.let {
+                                    ProfileSectionText(innerItem.title, innerItem.desc, it, vm)
                                 }
+
+                                Type.SWITCH.value -> ProfileSectionSwitch(
+                                    innerItem.title,
+                                    innerItem.value
+                                )
+
+                                else -> ProfileSectionHeaderRow(innerItem.title)
                             }
                         }
-
-                        ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) ProfileSectionSignOut(
-                            vm
-                        )
-
                     }
+
+                    ProfileSections.SIGN_OUT.value -> if (isLogin.value == true) ProfileSectionSignOut(
+                        vm
+                    )
+
                 }
-
-                applyPagination(lazySections)
-
             }
+
+            applyPagination(lazySections)
+
         }
-    )
+
+        PullRefreshIndicator(
+            refreshing = isRefreshing,
+            state = pullRefreshState,
+            Modifier.align(Alignment.TopCenter)
+        )
+    }
 }
 
 
@@ -172,7 +176,7 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface)
+                .background(Black500)
                 .padding(12.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -181,15 +185,16 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
                 text = "Hello Guest",
                 modifier = Modifier.padding(vertical = 8.dp),
                 style = MaterialTheme.typography.headlineLarge,
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color.White
             )
             Text(
                 text = "Do you have an Abu Dhabi Golden Visa ?",
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier.padding(vertical = 8.dp),
-                color = MaterialTheme.colorScheme.onSurface
+                color = Color.White
             )
-            androidx.compose.material3.OutlinedButton(
+            Button(
+                shape = RoundedCornerShape(4.dp),
                 onClick = { },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -204,21 +209,22 @@ fun ProfileSectionHeader(vm: ProfileViewModel) {
                     text = "SignIn",
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface
+                    color = Color.White
                 )
             }
-            Button(
+            androidx.compose.material3.OutlinedButton(
+                shape = RoundedCornerShape(4.dp),
+                border = BorderStroke(1.dp, Color.White),
                 onClick = { },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 8.dp)
-                    .border(1.dp, MaterialTheme.colorScheme.surface, RoundedCornerShape(4.dp))
             ) {
                 Text(
                     text = "Create new Account",
                     modifier = Modifier.padding(vertical = 8.dp),
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.surface
+                    color = Color.White
                 )
             }
 

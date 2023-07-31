@@ -14,7 +14,6 @@ import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.setBody
 import io.ktor.util.AttributeKey
 import okhttp3.Request
-import retrofit2.Invocation
 
 object CommonUtilsExtension {
 
@@ -30,9 +29,9 @@ object CommonUtilsExtension {
         return gson.fromJson(json, object : TypeToken<O>() {}.type)
     }
 
-    fun <T : Annotation> Request.getAnnotation(annotationClass: Class<T>): T? {
-        return this.tag(Invocation::class.java)?.method()?.getAnnotation(annotationClass)
-    }
+//    fun <T : Annotation> Request.getAnnotation(annotationClass: Class<T>): T? {
+//        return this.tag(Invocation::class.java)?.method()?.getAnnotation(annotationClass)
+//    }
 
     enum class API {
         CORE, CONFIG, USER, MERCHANT, OUTLET, ACCOUNT, REDEMPTION
