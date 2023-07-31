@@ -133,7 +133,7 @@ fun AuthScreenPreview() {
 fun AppLogo() {
     Row {
         Image(
-            painter = painterResource(id = R.drawable.ic_app_logo),
+            painter = painterResource(id = com.example.base.R.drawable.ic_app_logo),
             contentDescription = "",
             modifier = Modifier
                 .padding(top = 48.dp)

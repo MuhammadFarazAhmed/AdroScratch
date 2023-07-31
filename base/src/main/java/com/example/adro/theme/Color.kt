@@ -6,7 +6,7 @@ val Black500 = Color(16, 24, 32, 255)
 
 val md_theme_light_primary = Color(0xFF101820)
 val md_theme_light_onPrimary = Color(0xFFF8FDFF)
-val md_theme_light_primaryContainer = Color(0x83253444)
+val md_theme_light_primaryContainer = Color(0xFF101820)
 val md_theme_light_onPrimaryContainer = Color(0xFFF8FDFF)
 
 val md_theme_light_secondary = Color(0xFFE43338)
