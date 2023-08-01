@@ -19,9 +19,9 @@
 
     <item
         android:bottom="60dp"
-        android:gravity="bottom">
+        android:gravity="bottom|fill_horizontal|clip_horizontal">
         <bitmap
-            android:gravity="bottom|fill_horizontal|clip_horizontal"
+            android:gravity="center"
             android:src="@drawable/powered_by" />
     </item>
 </layer-list>
