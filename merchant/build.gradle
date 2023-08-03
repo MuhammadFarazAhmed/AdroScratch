@@ -63,7 +63,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation project(path: ':domain')
     implementation project(path: ':repositories')
-    api(project(':base'))
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
@@ -88,10 +87,10 @@ dependencies {
     debugApi "androidx.customview:customview:1.2.0-alpha02"
     debugApi "androidx.customview:customview-poolingcontainer:1.0.0"
 
-    implementation(project(':base'))
+    api(project(':base'))
     implementation(project(':domain'))
 
-    debugApi("androidx.paging:paging-compose:3.2.0-rc01")
+    debugApi("androidx.paging:paging-compose:3.2.0")
     def paging_version = "3.1.1"
     debugApi "androidx.paging:paging-runtime-ktx:$paging_version"
 

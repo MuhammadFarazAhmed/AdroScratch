@@ -40,12 +40,12 @@ class ThriveAppState(val navController: NavHostController) {
 
     val shouldShowBottomBar: Boolean
         @Composable get() = currentDestination?.route in topLevelDestinations.map { it.route }
-                && currentDestination?.route != MerchantDestination.specificOffers
 
     val shouldShowToolBar: Boolean
         @Composable get() = !(currentDestination?.route == FavoriteDestination.route ||
                 currentDestination?.route == MerchantDestination.route ||
                 currentDestination?.route == MerchantDestination.specificOffers ||
+                currentDestination?.route == MerchantDestination.detail ||
                 currentDestination?.route == ProfileDestination.route ||
                 currentDestination?.route == AuthDestination.route ||
                 currentDestination?.route == SearchDestination.route)
