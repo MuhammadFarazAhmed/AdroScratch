@@ -2,6 +2,7 @@ package com.example.adro.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.PullRefreshState
@@ -19,7 +20,9 @@ fun SwipeToRefreshContainer(
     isRefreshing: Boolean,
     content: @Composable () -> Unit,
 ) {
-    Box(modifier.background(MaterialTheme.colorScheme.surface)) {
+    Box(
+        modifier
+            .background(MaterialTheme.colorScheme.surface)) {
 
         content()
 

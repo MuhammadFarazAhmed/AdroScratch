@@ -9,6 +9,7 @@ import android.view.ViewTreeObserver
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import com.example.adro.common.CommonFlowExtensions.LocalizeApp
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
@@ -24,6 +25,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+
 
         splashScreen.setKeepOnScreenCondition {
             return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
@@ -42,6 +45,7 @@ class MainActivity : ComponentActivity() {
             }
 
         }
+
     }
 
     override fun onNewIntent(intent: Intent?) {

@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -27,7 +28,7 @@ fun ThriveApp(appState: ThriveAppState) {
 
     ThriveScratchTheme {
 
-        Scaffold(
+        Scaffold(modifier = Modifier.systemBarsPadding(),
 
             topBar = { Toolbar(appState.shouldShowToolBar, appState::navigate) },
 
