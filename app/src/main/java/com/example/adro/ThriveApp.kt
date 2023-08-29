@@ -11,10 +11,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import com.example.adro.navigation.BottomNavigationBar
+import com.example.adro.navigation.ThriveNavHost
 import com.example.adro.theme.ThriveScratchTheme
+import com.example.adro.vm.CommonViewModel
 
 @Composable
-fun ThriveApp(appState: ThriveAppState) {
+fun ThriveApp(appState: ThriveAppState, vm: CommonViewModel) {
 
     val bottomBarState: MutableState<Boolean> = rememberSaveable { (mutableStateOf(true)) }
 
@@ -27,16 +29,17 @@ fun ThriveApp(appState: ThriveAppState) {
             content = { padding ->
 
                 Box(
-                    modifier =  Modifier.systemBarsPadding()
+                    modifier =  Modifier
                         .padding(padding)
                         .fillMaxHeight()
                 ) {
 
-                    com.example.adro.navigation.ThriveNavHost(
+                    ThriveNavHost(
                         navController = appState.navController,
                         popBack = appState::popBack,
                         handleDeepLinks = appState::navigate,
                         isApiLoading = { loading -> bottomBarState.value = !loading },
+                        vm = vm,
                         onNavigateToDestination = appState::navigate
                     )
 

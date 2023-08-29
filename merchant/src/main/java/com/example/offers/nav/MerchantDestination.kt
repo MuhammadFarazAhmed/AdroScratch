@@ -5,6 +5,7 @@ import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.*
 import com.example.adro.common.CommonFlowExtensions.fetchParamsFromDeeplink
 import com.example.adro.navigation.ThriveNavigationDestination
+import com.example.adro.vm.CommonViewModel
 import com.google.accompanist.navigation.animation.composable
 
 import com.example.offers.ui.MerchantDetailScreen
@@ -21,7 +22,7 @@ object MerchantDestination : ThriveNavigationDestination {
 }
 
 @OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.merchantGraph(navigateToDetail: () -> Unit) {
+fun NavGraphBuilder.merchantGraph(vm: CommonViewModel, navigateToDetail: () -> Unit) {
 
     composable(
         MerchantDestination.route
@@ -30,7 +31,7 @@ fun NavGraphBuilder.merchantGraph(navigateToDetail: () -> Unit) {
         OffersScreen(navigateToDetail)
     }
     composable(MerchantDestination.detail) {
-        MerchantDetailScreen()
+        MerchantDetailScreen(vm)
     }
 }
 

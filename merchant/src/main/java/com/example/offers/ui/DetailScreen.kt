@@ -30,7 +30,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Preview
 @Composable
-fun MerchantDetailScreen(vm: CommonViewModel = getViewModel()) {
+fun MerchantDetailScreen(vm: CommonViewModel) {
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme()
@@ -39,14 +39,14 @@ fun MerchantDetailScreen(vm: CommonViewModel = getViewModel()) {
     DisposableEffect(systemUiController, useDarkIcons) {
         // Update all of the system bar colors to be transparent, and use
         // dark icons if we're in light theme
-        vm.makeStatusBarTranslucent.value = true
+        vm.makeStatusBarTranslucent.value = false
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
             darkIcons = false
         )
 
         onDispose {
-            vm.makeStatusBarTranslucent.value = false
+            vm.makeStatusBarTranslucent.value = true
             systemUiController.setStatusBarColor(
                 color = Color.Black,
                 darkIcons = false

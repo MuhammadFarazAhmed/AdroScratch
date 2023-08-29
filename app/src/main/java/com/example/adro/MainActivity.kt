@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
             navController = appState.navController
 
             LocalizeApp(language) {
-                ThriveApp(appState)
+                ThriveApp(appState,vm)
             }
 
         }

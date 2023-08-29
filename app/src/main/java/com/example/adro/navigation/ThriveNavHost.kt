@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.example.adro.common.CommonFlowExtensions.findActivity
+import com.example.adro.vm.CommonViewModel
 import com.example.auth.nav.AuthDestination
 import com.example.auth.nav.authGraph
 import com.example.home.nav.HomeDestination
@@ -29,6 +30,7 @@ fun ThriveNavHost(
     isApiLoading: (loading: Boolean) -> Unit,
     handleDeepLinks: (ThriveNavigationDestination, String?, deepLink: String) -> Unit,
     modifier: Modifier = Modifier,
+    vm: CommonViewModel,
     startDestination: String = HomeDestination.homeGraphRoutePattern
 ) {
     val context = LocalContext.current
@@ -69,6 +71,7 @@ fun ThriveNavHost(
         authGraph(popBack, popBack)
 
         merchantGraph(
+            vm = vm,
             navigateToDetail = {
                 onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
             })
