@@ -1,15 +1,12 @@
 package com.example.home.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.navigation.NavGraph
 import androidx.navigation.NavGraphBuilder
+import com.example.adro.navigation.ThriveNavigationDestination
 import com.google.accompanist.navigation.animation.composable
-import com.example.adro.ui.ThriveNavigationDestination
-import com.example.domain.usecase.CommonUseCase
 import com.example.home.nav.HomeDestination.homeGraphRoutePattern
 import com.example.home.ui.HomeScreen
 import com.google.accompanist.navigation.animation.navigation
-import org.koin.androidx.compose.get
 
 
 object HomeDestination : ThriveNavigationDestination {

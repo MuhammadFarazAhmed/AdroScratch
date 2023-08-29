@@ -2,7 +2,6 @@ package com.example.adro.navigation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.adro.ui.ThriveNavigationDestination
 
 /**
  * Type for the top level destinations in the application. Each of these destinations

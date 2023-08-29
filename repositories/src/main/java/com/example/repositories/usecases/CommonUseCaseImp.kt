@@ -1,8 +1,8 @@
 package com.example.repositories.usecases
 
 import com.example.adro.common.Result
-import com.example.adro.models.ApiResult
-import com.example.adro.models.ConfigModel
+import com.example.domain.models.ApiResult
+import com.example.domain.models.ConfigModel
 import com.example.domain.repos.CommonRepository
 import com.example.domain.usecase.CommonUseCase
 import kotlinx.coroutines.flow.Flow

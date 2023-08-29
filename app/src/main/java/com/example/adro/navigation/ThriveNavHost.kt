@@ -7,13 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
-import com.example.adro.common.CommonFlowExtensions
-import com.example.adro.common.CommonFlowExtensions.fetchParamsFromDeeplink
 import com.example.adro.common.CommonFlowExtensions.findActivity
-import com.example.adro.ui.ThriveNavigationDestination
 import com.example.auth.nav.AuthDestination
 import com.example.auth.nav.authGraph
 import com.example.home.nav.HomeDestination
@@ -23,10 +17,8 @@ import com.example.offers.nav.favGraph
 import com.example.offers.nav.merchantGraph
 import com.example.offers.nav.searchGraph
 import com.example.offers.nav.specificOffers
-import com.example.offers.ui.OffersScreen
 import com.example.profile.nav.profileGraph
 import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable

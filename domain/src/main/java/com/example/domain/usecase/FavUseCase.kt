@@ -1,6 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.adro.models.FavoriteResponse
+import com.example.domain.models.FavoriteResponse
+
 
 interface FavUseCase {
 

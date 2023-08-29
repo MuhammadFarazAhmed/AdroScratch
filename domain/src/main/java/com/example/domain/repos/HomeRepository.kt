@@ -1,7 +1,7 @@
 package com.example.domain.repos
 
+import com.example.domain.models.HomeResponse
 
-import com.example.adro.models.HomeResponse
 
 interface HomeRepository {
     

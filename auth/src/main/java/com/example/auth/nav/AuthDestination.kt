@@ -4,7 +4,7 @@ import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.tween
 import androidx.navigation.NavGraphBuilder
-import com.example.adro.ui.ThriveNavigationDestination
+import com.example.adro.navigation.ThriveNavigationDestination
 import com.example.auth.ui.AuthScreen
 import com.google.accompanist.navigation.animation.composable
 

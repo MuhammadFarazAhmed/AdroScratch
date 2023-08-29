@@ -5,9 +5,9 @@ import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.API.CORE
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
-import com.example.adro.models.HomeResponse
-import com.example.adro.models.ProfileResponse
-import com.example.adro.models.asList
+import com.example.domain.models.HomeResponse
+import com.example.domain.models.ProfileResponse
+import com.example.domain.models.asList
 import com.example.domain.repos.HomeRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

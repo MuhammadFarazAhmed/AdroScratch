@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -36,8 +37,8 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.components.Header
 import com.example.adro.components.SwipeToRefreshContainer
-import com.example.adro.models.OffersResponse
-import com.example.adro.models.TabsResponse
+import com.example.domain.models.OffersResponse
+import com.example.domain.models.TabsResponse
 import com.example.adro.theme.Black500
 import com.example.adro.ui.ProgressDialog
 import com.example.offers.vm.OffersViewModel
@@ -84,6 +85,7 @@ fun OffersScreen(
             .pullRefresh(pullRefreshState)
             .fillMaxSize(),
         content = {
+
             Surface(modifier = Modifier.fillMaxSize()) {
 
                 LaunchedEffect(pagerState) {
@@ -249,8 +251,11 @@ fun OutletItem(
 fun OffersScreenPreview() {
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(TabsResponse.Data.Tab("All Offers"))
-    val pagerState = rememberPagerState(initialPage = 0)
+    val pagerState = rememberPagerState()
     Surface(modifier = Modifier.fillMaxSize()) {
-        Tabs(tabs, pagerState, coroutineScope)
+        Column {
+            Tabs(tabs, pagerState, coroutineScope)
+            //Pager(tabs, pagerState, lazyOutlets) {}
+        }
     }
 }

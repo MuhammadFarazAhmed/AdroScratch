@@ -1,17 +1,12 @@
 package com.example.adro
 
-import android.content.Intent
-import android.net.Uri
-import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.*
 import androidx.core.os.trace
 import androidx.navigation.*
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.example.adro.navigation.Icon
-import com.example.adro.navigation.TopLevelDestination
-import com.example.adro.ui.ThriveNavigationDestination
+import com.example.adro.navigation.ThriveNavigationDestination
 import com.example.auth.nav.AuthDestination
 import com.example.base.R
 import com.example.home.nav.HomeDestination
@@ -20,7 +15,6 @@ import com.example.offers.nav.MerchantDestination
 import com.example.offers.nav.SearchDestination
 import com.example.profile.nav.ProfileDestination
 import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import org.koin.androidx.compose.get
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -54,30 +48,30 @@ class ThriveAppState(val navController: NavHostController) {
     /**
      * Top level destinations to be used in the BottomBar and NavRail
      */
-    val topLevelDestinations: List<TopLevelDestination> = listOf(
-        TopLevelDestination(
+    val topLevelDestinations: List<com.example.adro.navigation.TopLevelDestination> = listOf(
+        com.example.adro.navigation.TopLevelDestination(
             route = HomeDestination.route,
             destination = HomeDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.home_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
+            selectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.home_select_icon),
+            unselectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.home_unselect_icon),
             iconTextId = R.string.home
-        ), TopLevelDestination(
+        ), com.example.adro.navigation.TopLevelDestination(
             route = MerchantDestination.route,
             destination = MerchantDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
+            selectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.offers_select_icon),
+            unselectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.offer_unselect_icon),
             iconTextId = com.example.adro.R.string.offers
-        ), TopLevelDestination(
+        ), com.example.adro.navigation.TopLevelDestination(
             route = FavoriteDestination.route,
             destination = FavoriteDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
+            selectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.favourite_select_icon),
+            unselectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.favourite_unselect_icon),
             iconTextId = com.example.adro.R.string.Favorite
-        ), TopLevelDestination(
+        ), com.example.adro.navigation.TopLevelDestination(
             route = ProfileDestination.route,
             destination = ProfileDestination.destination,
-            selectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
-            unselectedIcon = Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
+            selectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.profile_select_icon),
+            unselectedIcon = com.example.adro.navigation.Icon.DrawableResourceIcon(R.drawable.profile_unselect_icon),
             iconTextId = com.example.adro.R.string.profile
         )
     )
@@ -95,7 +89,7 @@ class ThriveAppState(val navController: NavHostController) {
                 return@navigate
             }
 
-            if (destination is TopLevelDestination) {
+            if (destination is com.example.adro.navigation.TopLevelDestination) {
                 // if (route == "home_route") navController.popBackStack() //A BIG CHAPPI for deeplink
                 navController.navigate(
                     route ?: destination.route

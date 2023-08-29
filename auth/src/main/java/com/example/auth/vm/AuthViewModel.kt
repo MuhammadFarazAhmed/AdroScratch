@@ -3,7 +3,7 @@ package com.example.auth.vm
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.adro.models.ApiStatus
+import com.example.domain.models.ApiStatus
 import com.example.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.collectLatest

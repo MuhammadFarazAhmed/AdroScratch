@@ -2,7 +2,7 @@ package com.example.adro.security;
 
 import android.util.Base64;
 
-import com.example.adro.BuildConfig;
+import com.example.base.BuildConfig;
 import com.theentertainerme.adro.security.CLibController;
 
 import java.nio.charset.StandardCharsets;

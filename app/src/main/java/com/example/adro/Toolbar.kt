@@ -17,9 +17,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.adro.common.HexToJetpackColor
+import com.example.adro.navigation.ThriveNavigationDestination
 import com.example.adro.theme.Black500
 import com.example.adro.theme.ThriveScratchTheme
-import com.example.adro.ui.ThriveNavigationDestination
 import com.example.base.R
 import com.example.offers.nav.SearchDestination
 

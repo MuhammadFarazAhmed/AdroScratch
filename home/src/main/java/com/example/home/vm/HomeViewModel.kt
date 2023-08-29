@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.adro.models.HomeResponse
+import com.example.domain.models.HomeResponse
 import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.CommonUseCase

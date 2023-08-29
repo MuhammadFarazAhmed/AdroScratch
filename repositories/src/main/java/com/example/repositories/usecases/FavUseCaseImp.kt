@@ -1,6 +1,6 @@
 package com.example.repositories.usecases
 
-import com.example.adro.models.FavoriteResponse
+import com.example.domain.models.FavoriteResponse
 import com.example.domain.repos.MerchantRepository
 import com.example.domain.usecase.FavUseCase
 

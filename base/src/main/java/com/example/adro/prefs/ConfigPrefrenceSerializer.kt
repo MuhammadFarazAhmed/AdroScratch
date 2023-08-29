@@ -1,21 +1,21 @@
 package com.example.adro.prefs
 
 import androidx.datastore.core.Serializer
-import com.example.adro.models.ConfigModel
+import com.example.domain.models.ConfigModel
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
 
 
-object ConfigPreferencesSerializer : Serializer<ConfigModel> {
+object ConfigPreferencesSerializer : Serializer<com.example.domain.models.ConfigModel> {
 
-    override val defaultValue: ConfigModel
-        get() = ConfigModel()
+    override val defaultValue: com.example.domain.models.ConfigModel
+        get() = com.example.domain.models.ConfigModel()
 
-    override suspend fun readFrom(input: InputStream): ConfigModel {
+    override suspend fun readFrom(input: InputStream): com.example.domain.models.ConfigModel {
         return try {
             Json.decodeFromString(
-                deserializer = ConfigModel.serializer(),
+                deserializer = com.example.domain.models.ConfigModel.serializer(),
                 input.readBytes().decodeToString()
             )
         } catch (e: Exception) {
@@ -24,9 +24,9 @@ object ConfigPreferencesSerializer : Serializer<ConfigModel> {
         }
     }
 
-    override suspend fun writeTo(t: ConfigModel, output: OutputStream) {
+    override suspend fun writeTo(t: com.example.domain.models.ConfigModel, output: OutputStream) {
         output.write(
-            Json.encodeToString(serializer = ConfigModel.serializer(), t).encodeToByteArray()
+            Json.encodeToString(serializer = com.example.domain.models.ConfigModel.serializer(), t).encodeToByteArray()
         )
     }
 

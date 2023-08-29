@@ -1,6 +1,6 @@
 package com.example.repositories.usecases
 
-import com.example.adro.models.HomeResponse
+import com.example.domain.models.HomeResponse
 import com.example.domain.repos.HomeRepository
 import com.example.domain.usecase.HomeUseCase
 import javax.inject.Inject

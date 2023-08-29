@@ -3,13 +3,12 @@ package com.example.offers.nav
 import android.content.Intent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.*
-import com.example.adro.common.CommonFlowExtensions
 import com.example.adro.common.CommonFlowExtensions.fetchParamsFromDeeplink
+import com.example.adro.navigation.ThriveNavigationDestination
 import com.google.accompanist.navigation.animation.composable
-import com.example.adro.ui.ThriveNavigationDestination
+
 import com.example.offers.ui.MerchantDetailScreen
 import com.example.offers.ui.OffersScreen
-import com.example.offers.ui.SearchScreen
 
 object MerchantDestination : ThriveNavigationDestination {
     override val route = "merchant_route"

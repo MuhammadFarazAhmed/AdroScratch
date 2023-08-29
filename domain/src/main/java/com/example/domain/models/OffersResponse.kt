@@ -1,11 +1,11 @@
-package com.example.adro.models
+package com.example.domain.models
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FavoriteResponse(
+data class OffersResponse(
     @SerialName("cmd")
     val cmd: String? = null,
     @SerialName("code")
@@ -20,6 +20,7 @@ data class FavoriteResponse(
     val success: Boolean? = null
 ) {
     @Serializable
+
     data class Data(
         @SerialName("favourite_merchant")
         val favouriteMerchant: Int? = null,
@@ -51,6 +52,7 @@ data class FavoriteResponse(
         val totalRecords: Int? = null
     ) {
         @Serializable
+
         data class Outlet(
             @SerialName("attributes")
             val attributes: List<Attribute?>? = null,
@@ -116,7 +118,6 @@ data class FavoriteResponse(
                 @SerialName("value")
                 val value: String? = null
             )
-
             @Serializable
             data class Merchant(
                 @SerialName("id")
@@ -147,10 +148,9 @@ data class FavoriteResponse(
                 val uid: String? = null
             )
         }
-
         @Serializable
         class PingSection
     }
 }
 
-fun FavoriteResponse.asList() = data.outlets
+fun OffersResponse.asList() = data.outlets

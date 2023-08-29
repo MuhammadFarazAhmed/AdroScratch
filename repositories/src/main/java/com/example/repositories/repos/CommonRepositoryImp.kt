@@ -10,8 +10,8 @@ import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonUtilsExtension.API.CONFIG
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.adro.common.Result
-import com.example.adro.models.ApiResult
-import com.example.adro.models.ConfigModel
+import com.example.domain.models.ApiResult
+import com.example.domain.models.ConfigModel
 import com.example.adro.prefs.PreferencesHelper
 import com.example.domain.repos.CommonRepository
 import io.ktor.client.HttpClient

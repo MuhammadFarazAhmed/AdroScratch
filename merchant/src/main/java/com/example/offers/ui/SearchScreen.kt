@@ -22,7 +22,7 @@ import androidx.paging.compose.itemKey
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.components.Header
-import com.example.adro.models.OffersResponse
+import com.example.domain.models.OffersResponse
 import com.example.adro.ui.EmptyItem
 import com.example.offers.vm.SearchViewModel
 import kotlinx.coroutines.Job

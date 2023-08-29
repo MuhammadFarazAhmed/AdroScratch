@@ -1,21 +1,21 @@
 package com.example.adro.prefs
 
 import androidx.datastore.core.Serializer
-import com.example.adro.models.LoginResponse
+import com.example.domain.models.LoginResponse
 import kotlinx.serialization.json.Json
 import java.io.InputStream
 import java.io.OutputStream
 
 
-object UserPreferencesSerializer : Serializer<LoginResponse.Data.User> {
+object UserPreferencesSerializer : Serializer<com.example.domain.models.LoginResponse.Data.User> {
 
-    override val defaultValue: LoginResponse.Data.User
-        get() = LoginResponse.Data.User()
+    override val defaultValue: com.example.domain.models.LoginResponse.Data.User
+        get() = com.example.domain.models.LoginResponse.Data.User()
 
-    override suspend fun readFrom(input: InputStream): LoginResponse.Data.User {
+    override suspend fun readFrom(input: InputStream): com.example.domain.models.LoginResponse.Data.User {
         return try {
             Json.decodeFromString(
-                deserializer = LoginResponse.Data.User.serializer(),
+                deserializer = com.example.domain.models.LoginResponse.Data.User.serializer(),
                 input.readBytes().decodeToString()
             )
         } catch (e: Exception) {
@@ -24,9 +24,9 @@ object UserPreferencesSerializer : Serializer<LoginResponse.Data.User> {
         }
     }
 
-    override suspend fun writeTo(t: LoginResponse.Data.User, output: OutputStream) {
+    override suspend fun writeTo(t: com.example.domain.models.LoginResponse.Data.User, output: OutputStream) {
         output.write(
-            Json.encodeToString(serializer = LoginResponse.Data.User.serializer(), t)
+            Json.encodeToString(serializer = com.example.domain.models.LoginResponse.Data.User.serializer(), t)
                 .encodeToByteArray()
         )
     }

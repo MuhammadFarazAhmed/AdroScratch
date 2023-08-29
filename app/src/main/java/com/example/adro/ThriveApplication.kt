@@ -18,7 +18,6 @@ class ThriveApplication : Application() {
             androidLogger()
             androidContext(this@ThriveApplication)
             modules(appModule() + networkModule() + featureModules())
-            //setLocale(applicationContext)
         }
     }
 }

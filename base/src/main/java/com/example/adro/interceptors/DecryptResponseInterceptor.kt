@@ -8,15 +8,14 @@ import io.ktor.client.plugins.HttpClientPlugin
 import io.ktor.client.statement.HttpResponseContainer
 import io.ktor.client.statement.HttpResponsePipeline
 import io.ktor.util.AttributeKey
-import io.ktor.util.Identity.decode
 import io.ktor.util.toByteArray
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
 
-class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
+class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: com.example.adro.security.ApisEncryptionUtils) {
 
     class Config {
-        lateinit var apisEncryptionUtils: ApisEncryptionUtils
+        lateinit var apisEncryptionUtils: com.example.adro.security.ApisEncryptionUtils
     }
 
     private fun decryptedResponse(client: HttpClient) {

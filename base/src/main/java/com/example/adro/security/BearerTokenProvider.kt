@@ -2,7 +2,7 @@ package com.example.adro.security
 
 import android.util.Base64
 import androidx.datastore.core.DataStore
-import com.example.adro.models.LoginResponse
+import com.example.domain.models.LoginResponse
 import com.theentertainerme.adro.security.CLibController
 import com.theentertainerme.adro.security.XOREncryption
 import io.jsonwebtoken.JwsHeader
@@ -18,7 +18,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class BearerTokenProvider(private val userDataStore: DataStore<LoginResponse.Data.User>) : AuthProvider {
+class BearerTokenProvider(private val userDataStore: DataStore<com.example.domain.models.LoginResponse.Data.User>) : AuthProvider {
 
     private var token: String = ""
 

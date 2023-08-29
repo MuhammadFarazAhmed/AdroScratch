@@ -8,8 +8,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.adro.common.CommonFlowExtensions.handleErrors
-import com.example.adro.models.LoginResponse
-import com.example.adro.models.ProfileResponse
+import com.example.domain.models.LoginResponse
+import com.example.domain.models.ProfileResponse
 import com.example.domain.usecase.AuthUseCase
 import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.CommonUseCase

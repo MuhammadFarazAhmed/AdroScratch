@@ -4,10 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.adro.common.Result
-import com.example.adro.models.ApiResult
-import com.example.adro.models.ApiStatus
-import com.example.domain.usecase.AuthUseCase
+import com.example.domain.models.ApiStatus
 import com.example.domain.usecase.CommonUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,6 +19,8 @@ class CommonViewModel(
     AndroidViewModel(application) {
 
     var keepOnSplashScreenOn = MutableStateFlow(true)
+
+    val makeStatusBarTranslucent = MutableStateFlow(true)
 
     val language =
         commonUseCase.getLanguage().stateIn(viewModelScope, SharingStarted.WhileSubscribed(), "en")

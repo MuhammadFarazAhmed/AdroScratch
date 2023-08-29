@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.adro.ui
+package com.example.adro.navigation
 
 /**
  * Interface for describing the Now in Android navigation destinations

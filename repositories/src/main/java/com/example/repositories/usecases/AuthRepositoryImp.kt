@@ -7,11 +7,11 @@ import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
-import com.example.adro.models.ApiResult
-import com.example.adro.models.LoginResponse
-import com.example.adro.models.LogoutModel
-import com.example.adro.models.ProfileResponse
-import com.example.adro.models.asList
+import com.example.domain.models.ApiResult
+import com.example.domain.models.LoginResponse
+import com.example.domain.models.LogoutModel
+import com.example.domain.models.ProfileResponse
+import com.example.domain.models.asList
 import com.example.domain.repos.AuthRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body

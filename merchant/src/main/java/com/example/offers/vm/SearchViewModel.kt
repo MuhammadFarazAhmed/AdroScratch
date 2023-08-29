@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.example.adro.models.OffersResponse
+import com.example.domain.models.OffersResponse
 import com.example.domain.usecase.MerchantUseCase
 import com.example.adro.paging.BasePagingSource
 import kotlinx.coroutines.FlowPreview

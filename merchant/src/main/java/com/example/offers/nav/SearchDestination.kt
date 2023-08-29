@@ -4,7 +4,8 @@ package com.example.offers.nav
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.NavGraphBuilder
-import com.example.adro.ui.ThriveNavigationDestination
+import com.example.adro.navigation.ThriveNavigationDestination
+
 import com.example.offers.ui.SearchScreen
 import com.google.accompanist.navigation.animation.composable
 

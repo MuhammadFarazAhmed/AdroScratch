@@ -1,6 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.adro.models.HomeResponse
+import com.example.domain.models.HomeResponse
+
 
 interface HomeUseCase {
     
