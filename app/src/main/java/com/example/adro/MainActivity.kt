@@ -29,17 +29,15 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
 
+        splashScreen.setKeepOnScreenCondition {
+            return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
+        }
+
         lifecycleScope.launch {
             vm.makeStatusBarTranslucent.collectLatest {
                 WindowCompat.setDecorFitsSystemWindows(window, it)
             }
         }
-
-
-        splashScreen.setKeepOnScreenCondition {
-            return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
-        }
-
 
         setContent {
 
@@ -49,7 +47,7 @@ class MainActivity : ComponentActivity() {
             navController = appState.navController
 
             LocalizeApp(language) {
-                ThriveApp(appState,vm)
+                ThriveApp(appState = appState, vm = vm)
             }
 
         }
