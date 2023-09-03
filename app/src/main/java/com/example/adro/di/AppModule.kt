@@ -27,6 +27,7 @@ import com.example.domain.usecase.HomeUseCase
 import com.example.domain.usecase.MerchantUseCase
 import com.example.home.vm.HomeViewModel
 import com.example.offers.vm.FavoriteViewModel
+import com.example.offers.vm.MerchantDetailViewModel
 import com.example.offers.vm.OffersViewModel
 import com.example.offers.vm.SearchViewModel
 import com.example.profile.vm.ProfileViewModel
@@ -213,7 +214,7 @@ val authModule = module {
     single<AuthUseCase> { AuthUseCaseImp(get()) }
 
     viewModel { AuthViewModel(get(), get()) }
-    viewModel { ProfileViewModel(get(), get(),get()) }
+    viewModel { ProfileViewModel(get(), get(), get()) }
 
 }
 
@@ -230,6 +231,7 @@ val merchantModule = module {
     single<FavUseCase> { FavUseCaseImp(get()) }
 
     viewModel { OffersViewModel(get(), get(), get()) }
+    viewModel { MerchantDetailViewModel(get(), get()) }
     viewModel { FavoriteViewModel(get(), get()) }
 
 }

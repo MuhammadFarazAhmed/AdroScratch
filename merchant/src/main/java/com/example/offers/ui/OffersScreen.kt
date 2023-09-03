@@ -50,7 +50,7 @@ import org.koin.androidx.compose.getViewModel
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun OffersScreen(
-    navigateToDetail: () -> Unit,
+    navigateToDetail: (outlet: OffersResponse.Data.Outlet?) -> Unit,
     params: HashMap<String, String> = hashMapOf(),
     vm: OffersViewModel = getViewModel()
 ) {
@@ -164,7 +164,7 @@ fun Pager(
     tabs: List<TabsResponse.Data.Tab>,
     pagerState: PagerState,
     lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
-    navigateToDetail: () -> Unit
+    navigateToDetail: (outlet: OffersResponse.Data.Outlet?) -> Unit
 ) {
     Surface(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
@@ -204,14 +204,16 @@ class OutletProvider : PreviewParameterProvider<OffersResponse.Data.Outlet> {
 @Composable
 fun OutletItem(
     @PreviewParameter(OutletProvider::class) outlet: OffersResponse.Data.Outlet?,
-    navigateToDetail: () -> Unit
+    navigateToDetail: (outlet:OffersResponse.Data.Outlet?) -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .wrapContentSize()
             .clickable {
-                navigateToDetail()
+                if (outlet != null) {
+                    navigateToDetail(outlet)
+                }
             },
     ) {
 

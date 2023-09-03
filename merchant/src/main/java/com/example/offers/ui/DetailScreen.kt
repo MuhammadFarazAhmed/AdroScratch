@@ -34,6 +34,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,20 +54,74 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
 import androidx.paging.compose.itemKey
 import coil.compose.AsyncImage
+import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.vm.CommonViewModel
 import com.example.domain.models.HomeResponse
+import com.example.domain.models.MerchantDetailModel
 import com.example.offers.R
+import com.example.offers.vm.MerchantDetailViewModel
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.map
+import org.koin.androidx.compose.getViewModel
 
 val COLLAPSED_TOP_BAR_HEIGHT = 85.dp
 val EXPANDED_TOP_BAR_HEIGHT = 200.dp
 
-@SuppressLint("InternalInsetResource")
+@SuppressLint("InternalInsetResource", "DiscouragedApi")
 @Preview
 @Composable
-fun MerchantDetailScreen(vm: CommonViewModel) {
+fun MerchantDetailScreen(vm: CommonViewModel, detailVM: MerchantDetailViewModel = getViewModel()) {
 
+    val listState = rememberLazyListState()
+
+    val overlapHeightPx = with(LocalDensity.current) {
+        val context = LocalContext.current
+        val resourceId =
+            context.resources.getIdentifier("status_bar_height", "dimen", "android")
+        EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx() - context.resources.getDimensionPixelSize(
+            resourceId
+        )
+    }
+
+    val isCollapsed: Boolean by remember {
+        derivedStateOf {
+            val isFirstItemHidden = listState.firstVisibleItemScrollOffset > overlapHeightPx
+            isFirstItemHidden || listState.firstVisibleItemIndex > 0
+        }
+    }
+
+    ChangeStatusBar(vm = vm, isCollapsed = isCollapsed)
+
+
+    val lazySections =
+        detailVM.merchantDetailResponse.collectAsStateLifecycleAware().value
+
+    Surface(
+        modifier = Modifier
+            .navigationBarsPadding()
+            .fillMaxSize()
+    ) {
+        Box {
+            CollapsedTopBar(
+                modifier = Modifier
+                    .zIndex(2f),
+                isCollapsed = isCollapsed
+            )
+            LazyColumn(state = listState) {
+                item { ExpandedTopBar() }
+                items(lazySections) {
+                    Book(modifier = Modifier, it)
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+private fun ChangeStatusBar(isCollapsed: Boolean, vm: CommonViewModel) {
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme()
 
@@ -83,69 +138,28 @@ fun MerchantDetailScreen(vm: CommonViewModel) {
         }
     }
 
-    Surface(
-        modifier = Modifier
-            .navigationBarsPadding()
-            .fillMaxSize()
-    ) {
-
-        val listState = rememberLazyListState()
-
-        val overlapHeightPx = with(LocalDensity.current) {
-            val context = LocalContext.current
-            val resourceId =
-                context.resources.getIdentifier("status_bar_height", "dimen", "android")
-            EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx() - context.resources.getDimensionPixelSize(
-                resourceId
-            )
-        }
-
-        val isCollapsed: Boolean by remember {
-            derivedStateOf {
-                val isFirstItemHidden = listState.firstVisibleItemScrollOffset > overlapHeightPx
-                isFirstItemHidden || listState.firstVisibleItemIndex > 0
-            }
-        }
-
-        if (isCollapsed) {
-            systemUiController.setSystemBarsColor(
-                color = Color.Black,
-                darkIcons = false
-            )
-        } else {
-            systemUiController.setSystemBarsColor(
-                color = Color.Transparent,
-                darkIcons = false
-            )
-        }
-
-        Box {
-            CollapsedTopBar(
-                modifier = Modifier
-                    .zIndex(2f),
-                isCollapsed = isCollapsed
-            )
-            LazyColumn(state = listState) {
-                item { ExpandedTopBar() }
-                items(items = DEFAULT_BOOKS) { book ->
-                    Book(model = book)
-                    Spacer(modifier = Modifier.height(24.dp))
-                }
-            }
-        }
-
+    if (isCollapsed) {
+        systemUiController.setSystemBarsColor(
+            color = Color.Black,
+            darkIcons = false
+        )
+    } else {
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = false
+        )
     }
 }
 
 @Composable
-fun Book(modifier: Modifier = Modifier, model: BookModel) =
+fun Book(modifier: Modifier = Modifier, model: MerchantDetailModel.Data.Detail) =
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(model.title)
-            Text(model.author)
-            androidx.compose.material.Text("${model.pageCount} pages")
+            Text(model.sectionTitle)
+            Text(model.merchantName)
+            androidx.compose.material.Text("${model.categoryItem} pages")
         }
     }
 
@@ -190,6 +204,11 @@ private fun CollapsedTopBar(modifier: Modifier = Modifier, isCollapsed: Boolean)
                 model = com.example.base.R.drawable.ic_back,
                 contentDescription = ""
             )
+
+            AnimatedVisibility(visible = isCollapsed) {
+                Text(text = "Title", color = MaterialTheme.colors.surface)
+            }
+
             AsyncImage(
                 modifier = modifier.size(85.dp),
                 model = com.example.base.R.drawable.ic_favorite,
@@ -222,15 +241,3 @@ private fun ExpandedTopBar() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun Header(modifier: Modifier) {
-    Box(
-        modifier = modifier
-            .wrapContentHeight(),
-        contentAlignment = Alignment.TopCenter
-    ) {
-
-
-    }
-}

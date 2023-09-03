@@ -3,10 +3,13 @@ package com.example.repositories.repos
 import com.example.domain.models.ApiResult
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
+import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.API.OUTLET
+import com.example.adro.common.CommonUtilsExtension.API.MERCHANT
 import com.example.adro.common.CommonUtilsExtension.convert
 import com.example.adro.common.CommonUtilsExtension.setDefaultParams
 import com.example.domain.models.FavoriteResponse
+import com.example.domain.models.MerchantDetailModel
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.repos.MerchantRepository
@@ -15,6 +18,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.http.path
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class MerchantRepositoryImp(
     private val client: HttpClient
@@ -64,10 +68,22 @@ class MerchantRepositoryImp(
 
     }
 
+    override suspend fun fetchMerchantDetail(
+        merchantId: String,
+        params: HashMap<String, String>
+    ): Flow<ApiResult<MerchantDetailModel>> =
+        convertToFlow(call = {
+            client.post {
+                setDefaultParams(MERCHANT, params)
+                url { path("/ets_api/v5/mercants/$merchantId") }
+            }
+        }, success = {}, failure = {}
+        )
+
     override suspend fun fetchFavorites(params: HashMap<String, String>): List<FavoriteResponse.Data.Outlet> =
         try {
             val response = client.post {
-                setDefaultParams(OUTLET,params)
+                setDefaultParams(OUTLET, params)
                 url { path("/ets_api/v5/outlets") }
             }
             (response.body() as FavoriteResponse).data.outlets

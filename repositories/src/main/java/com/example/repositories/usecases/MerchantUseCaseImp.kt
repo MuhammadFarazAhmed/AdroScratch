@@ -1,11 +1,13 @@
 package com.example.repositories.usecases
 
 import com.example.domain.models.ApiResult
+import com.example.domain.models.MerchantDetailModel
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import com.example.domain.repos.MerchantRepository
 import com.example.domain.usecase.MerchantUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class MerchantUseCaseImp @Inject constructor(private val merchantRepository: MerchantRepository) :
@@ -24,5 +26,11 @@ class MerchantUseCaseImp @Inject constructor(private val merchantRepository: Mer
         query,
         queryType
     )
+
+    override suspend fun fetchMerchantDetail(
+        merchantId: String,
+        params: HashMap<String, String>
+    ): Flow<ApiResult<MerchantDetailModel>> =
+        merchantRepository.fetchMerchantDetail(merchantId, params)
 }
 

@@ -1,6 +1,7 @@
 package com.example.domain.usecase
 
 import com.example.domain.models.ApiResult
+import com.example.domain.models.MerchantDetailModel
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
 import kotlinx.coroutines.flow.Flow
@@ -15,4 +16,11 @@ interface MerchantUseCase {
         queryType: String? = null,
         params: HashMap<String, String> = hashMapOf()
     ): List<OffersResponse.Data.Outlet>
+
+
+    suspend fun fetchMerchantDetail(
+        merchantId: String,
+        params: HashMap<String, String>
+    ): Flow<ApiResult<MerchantDetailModel>>
+
 }
