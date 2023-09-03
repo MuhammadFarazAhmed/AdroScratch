@@ -1,6 +1,7 @@
 package com.example.offers.nav
 
 import android.content.Intent
+import android.os.Bundle
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.navigation.*
 import com.example.adro.common.CommonFlowExtensions.fetchParamsFromDeeplink
@@ -11,13 +12,14 @@ import com.google.accompanist.navigation.animation.composable
 
 import com.example.offers.ui.MerchantDetailScreen
 import com.example.offers.ui.OffersScreen
+import com.google.gson.Gson
 
 object MerchantDestination : ThriveNavigationDestination {
     override val route = "merchant_route"
 
     override val destination = "offers_destination"
 
-    const val detail = "merchant_detail"
+    const val detail = "merchant_detail/{outlet}"
 
     const val specificOffers = "merchant_specific_category_route"
 }
@@ -34,8 +36,16 @@ fun NavGraphBuilder.merchantGraph(
     { _ ->
         OffersScreen(navigateToDetail)
     }
-    composable(MerchantDestination.detail) {
-        MerchantDetailScreen(vm)
+    composable(MerchantDestination.detail,
+        arguments = listOf(
+            navArgument("outlet") {
+                type = MerchantParamType()
+            }
+        )) {
+        val outlet = it.arguments?.getParcelable<OffersResponse.Data.Outlet>("outlet")
+        if (outlet != null) {
+            MerchantDetailScreen(vm, outlet)
+        }
     }
 }
 
@@ -53,4 +63,21 @@ fun NavGraphBuilder.specificOffers(navigateToDetail: (outlet: OffersResponse.Dat
     { _ ->
         OffersScreen(navigateToDetail, fetchParamsFromDeeplink())
     }
+}
+
+@Suppress("DEPRECATION")
+class MerchantParamType : NavType<OffersResponse.Data.Outlet>(isNullableAllowed = false) {
+
+    override fun get(bundle: Bundle, key: String): OffersResponse.Data.Outlet? {
+        return bundle.getParcelable(key)
+    }
+
+    override fun parseValue(value: String): OffersResponse.Data.Outlet {
+        return Gson().fromJson(value, OffersResponse.Data.Outlet::class.java)
+    }
+
+    override fun put(bundle: Bundle, key: String, value: OffersResponse.Data.Outlet) {
+        bundle.putParcelable(key, value)
+    }
+
 }

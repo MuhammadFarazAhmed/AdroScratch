@@ -58,6 +58,7 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.vm.CommonViewModel
 import com.example.domain.models.HomeResponse
 import com.example.domain.models.MerchantDetailModel
+import com.example.domain.models.OffersResponse
 import com.example.offers.R
 import com.example.offers.vm.MerchantDetailViewModel
 import com.google.accompanist.systemuicontroller.SystemUiController
@@ -72,7 +73,11 @@ val EXPANDED_TOP_BAR_HEIGHT = 200.dp
 @SuppressLint("InternalInsetResource", "DiscouragedApi")
 @Preview
 @Composable
-fun MerchantDetailScreen(vm: CommonViewModel, detailVM: MerchantDetailViewModel = getViewModel()) {
+fun MerchantDetailScreen(
+    vm: CommonViewModel,
+    outlet: OffersResponse.Data.Outlet,
+    detailVM: MerchantDetailViewModel = getViewModel()
+) {
 
     val listState = rememberLazyListState()
 

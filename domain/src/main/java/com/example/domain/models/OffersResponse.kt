@@ -1,10 +1,13 @@
 package com.example.domain.models
 
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
+@Parcelize
 data class OffersResponse(
     @SerialName("cmd")
     val cmd: String? = null,
@@ -18,9 +21,9 @@ data class OffersResponse(
     val message: String? = null,
     @SerialName("success")
     val success: Boolean? = null
-) {
+) :Parcelable {
     @Serializable
-
+    @Parcelize
     data class Data(
         @SerialName("favourite_merchant")
         val favouriteMerchant: Int? = null,
@@ -50,9 +53,9 @@ data class OffersResponse(
         val showDeliveryPurchaseView: Boolean? = null,
         @SerialName("total_records")
         val totalRecords: Int? = null
-    ) {
+    ): Parcelable {
         @Serializable
-
+        @Parcelize
         data class Outlet(
             @SerialName("attributes")
             val attributes: List<Attribute?>? = null,
@@ -110,15 +113,17 @@ data class OffersResponse(
             val tags: List<Tag?>? = null,
             @SerialName("top_offer_redeemability")
             val topOfferRedeemability: Int? = null
-        ) {
+        ):Parcelable {
             @Serializable
+            @Parcelize
             data class Attribute(
                 @SerialName("type")
                 val type: String? = null,
                 @SerialName("value")
                 val value: String? = null
-            )
+            ):Parcelable
             @Serializable
+            @Parcelize
             data class Merchant(
                 @SerialName("id")
                 val id: Int? = null,
@@ -126,9 +131,10 @@ data class OffersResponse(
                 val name: String? = null,
                 @SerialName("name_for_outlet")
                 val nameForOutlet: String? = null
-            )
+            ):Parcelable
 
             @Serializable
+            @Parcelize
             data class Tag(
                 @SerialName("abbreviated_text")
                 val abbreviatedText: String? = null,
@@ -146,10 +152,11 @@ data class OffersResponse(
                 val titleColor: String? = null,
                 @SerialName("uid")
                 val uid: String? = null
-            )
+            ):Parcelable
         }
         @Serializable
-        class PingSection
+        @Parcelize
+        class PingSection : Parcelable
     }
 }
 
