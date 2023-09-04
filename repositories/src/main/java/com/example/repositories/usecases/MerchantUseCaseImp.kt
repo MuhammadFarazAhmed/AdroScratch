@@ -7,7 +7,6 @@ import com.example.domain.models.TabsResponse
 import com.example.domain.repos.MerchantRepository
 import com.example.domain.usecase.MerchantUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class MerchantUseCaseImp @Inject constructor(private val merchantRepository: MerchantRepository) :

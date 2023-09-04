@@ -17,7 +17,6 @@ import com.example.offers.nav.MerchantDestination
 import com.example.offers.nav.favGraph
 import com.example.offers.nav.merchantGraph
 import com.example.offers.nav.searchGraph
-import com.example.offers.nav.specificOffers
 import com.example.profile.nav.profileGraph
 import com.google.accompanist.navigation.animation.AnimatedNavHost
 
@@ -57,14 +56,12 @@ fun ThriveNavHost(
             },
             isApiLoading = { loading: Boolean ->
                 isApiLoading(loading)
-            },
-            nestedGraphs = {
-                specificOffers(navigateToDetail = {
-                    onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
-                })
+            }, nestedGraphs = {
+
                 searchGraph(navigateToDetail = {
                     onNavigateToDestination(MerchantDestination, MerchantDestination.detail)
                 })
+
             }
         )
 

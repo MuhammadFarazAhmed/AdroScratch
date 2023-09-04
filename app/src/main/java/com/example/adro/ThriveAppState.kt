@@ -117,11 +117,11 @@ class ThriveAppState(val navController: NavHostController) {
     }
 }
 
-/**
- * Stores information about navigation events to be used with JankStats
- */
-@Composable
-private fun NavigationTrackingSideEffect(navController: NavHostController) {
+    /**
+     * Stores information about navigation events to be used with JankStats
+     */
+    @Composable
+    private fun NavigationTrackingSideEffect(navController: NavHostController) {
 //    JankMetricDisposableEffect(navController) { metricsHolder ->
 //        val listener = NavController.OnDestinationChangedListener { _, destination, _ ->
 //            metricsHolder.state?.putState("Navigation", destination.route.toString())
@@ -133,4 +133,4 @@ private fun NavigationTrackingSideEffect(navController: NavHostController) {
 //            navController.removeOnDestinationChangedListener(listener)
 //        }
 //    }
-}
+    }

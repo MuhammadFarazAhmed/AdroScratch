@@ -1,10 +1,6 @@
-package com.example.domain.models
-
-
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.json.JSONObject
-
 
 
 @Serializable
@@ -31,7 +27,7 @@ data class MerchantDetailModel(
         @SerialName("merchant_name")
         val merchantName: String? = null,
         @SerialName("details")
-        val details: List<Detail>?  = null
+        val details: List<Detail?>? = null
     ) {
         @Serializable
         data class Detail(
@@ -72,7 +68,21 @@ data class MerchantDetailModel(
                 val itemName: String? = null,
                 @SerialName("item_image")
                 val itemImage: String? = null
-            )
+            ) {
+                companion object {
+                    @JvmStatic
+                    fun buildFromJson(jsonObject: JSONObject?): CategoryItem? {
+
+                        jsonObject?.run {
+                            return CategoryItem(
+                                optString("item_name"),
+                                optString("item_image")
+                            )
+                        }
+                        return null
+                    }
+                }
+            }
 
             @Serializable
             data class Outlet(
@@ -106,7 +116,34 @@ data class MerchantDetailModel(
                 val isFavourite: Boolean? = null,
                 @SerialName("distance")
                 val distance: Int? = null
-            )
+            ) {
+                companion object {
+                    @JvmStatic
+                    fun buildFromJson(jsonObject: JSONObject?): Outlet? {
+
+                        jsonObject?.run {
+                            return Outlet(
+                                optInt("id"),
+                                optString("email"),
+                                optString("telephone"),
+                                optDouble("lat"),
+                                optDouble("lng"),
+                                optString("delivery_telephone"),
+                                optString("merlin_url"),
+                                optString("name"),
+                                optString("description"),
+                                optString("human_location"),
+                                optString("neighborhood"),
+                                optString("mall"),
+                                optString("hotel"),
+                                optBoolean("is_favourite"),
+                                optInt("distance")
+                            )
+                        }
+                        return null
+                    }
+                }
+            }
 
             @Serializable
             data class Offer(
@@ -170,7 +207,7 @@ data class MerchantDetailModel(
                     @SerialName("is_pingable")
                     val isPingable: Boolean? = null,
                     @SerialName("is_pinged")
-                    val isPinged: Boolean?,
+                    val isPinged: Boolean? = null,
                     @SerialName("is_show_smiles")
                     val isShowSmiles: Boolean? = null,
                     @SerialName("smiles_earn_value")

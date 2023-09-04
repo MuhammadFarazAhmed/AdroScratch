@@ -22,8 +22,6 @@ class MerchantDetailViewModel(
 
     init {
 
-//        val params = hashMapOf("outletid" , "")
-
         viewModelScope.launch {
             merchantUseCase.fetchMerchantDetail("55957", hashMapOf()).collectLatest {
                 it.data?.data?.details?.let {

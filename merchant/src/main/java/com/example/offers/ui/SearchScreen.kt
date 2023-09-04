@@ -33,7 +33,7 @@ import org.koin.androidx.compose.getViewModel
 
 @Composable
 fun SearchScreen(
-    navigateToDetail: () -> Unit,
+    navigateToDetail: (outlet:OffersResponse.Data.Outlet?) -> Unit,
     params: HashMap<String, String> = hashMapOf(),
     vm: SearchViewModel = getViewModel()
 ) {
@@ -65,7 +65,7 @@ fun SearchScreen(
 private fun OutletResults(
     vm: SearchViewModel,
     lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
-    navigateToDetail: () -> Unit
+    navigateToDetail: (outlet: OffersResponse.Data.Outlet?) -> Unit
 ) {
 
     Column {

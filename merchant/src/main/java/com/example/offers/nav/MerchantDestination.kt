@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.offers.nav
 
 import android.content.Intent
@@ -19,7 +21,7 @@ object MerchantDestination : ThriveNavigationDestination {
 
     override val destination = "offers_destination"
 
-    const val detail = "merchant_detail/{outlet}"
+    const val detail = "merchant_detail/"
 
     const val specificOffers = "merchant_specific_category_route"
 }
@@ -30,27 +32,10 @@ fun NavGraphBuilder.merchantGraph(
     navigateToDetail: (outlet: OffersResponse.Data.Outlet?) -> Unit
 ) {
 
-    composable(
-        MerchantDestination.route
-    )
-    { _ ->
+    composable(MerchantDestination.route) { _ ->
         OffersScreen(navigateToDetail)
     }
-    composable(MerchantDestination.detail,
-        arguments = listOf(
-            navArgument("outlet") {
-                type = MerchantParamType()
-            }
-        )) {
-        val outlet = it.arguments?.getParcelable<OffersResponse.Data.Outlet>("outlet")
-        if (outlet != null) {
-            MerchantDetailScreen(vm, outlet)
-        }
-    }
-}
 
-@OptIn(ExperimentalAnimationApi::class)
-fun NavGraphBuilder.specificOffers(navigateToDetail: (outlet: OffersResponse.Data.Outlet?) -> Unit) {
     composable(
         MerchantDestination.specificOffers,
         deepLinks = listOf(
@@ -63,21 +48,10 @@ fun NavGraphBuilder.specificOffers(navigateToDetail: (outlet: OffersResponse.Dat
     { _ ->
         OffersScreen(navigateToDetail, fetchParamsFromDeeplink())
     }
-}
 
-@Suppress("DEPRECATION")
-class MerchantParamType : NavType<OffersResponse.Data.Outlet>(isNullableAllowed = false) {
-
-    override fun get(bundle: Bundle, key: String): OffersResponse.Data.Outlet? {
-        return bundle.getParcelable(key)
+    composable(
+        MerchantDestination.detail
+    ) {
+        MerchantDetailScreen(vm)
     }
-
-    override fun parseValue(value: String): OffersResponse.Data.Outlet {
-        return Gson().fromJson(value, OffersResponse.Data.Outlet::class.java)
-    }
-
-    override fun put(bundle: Bundle, key: String, value: OffersResponse.Data.Outlet) {
-        bundle.putParcelable(key, value)
-    }
-
 }

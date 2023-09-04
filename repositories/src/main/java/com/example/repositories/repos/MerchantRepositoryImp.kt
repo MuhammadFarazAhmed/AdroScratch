@@ -3,7 +3,6 @@ package com.example.repositories.repos
 import com.example.domain.models.ApiResult
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
-import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.API.OUTLET
 import com.example.adro.common.CommonUtilsExtension.API.MERCHANT
 import com.example.adro.common.CommonUtilsExtension.convert
@@ -18,7 +17,6 @@ import io.ktor.client.call.body
 import io.ktor.client.request.post
 import io.ktor.http.path
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 
 class MerchantRepositoryImp(
     private val client: HttpClient
@@ -75,7 +73,7 @@ class MerchantRepositoryImp(
         convertToFlow(call = {
             client.post {
                 setDefaultParams(MERCHANT, params)
-                url { path("/ets_api/v5/mercants/$merchantId") }
+                url { path("/ets_api/v5/merchants/$merchantId") }
             }
         }, success = {}, failure = {}
         )

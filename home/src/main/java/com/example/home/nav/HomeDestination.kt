@@ -37,7 +37,7 @@ fun NavGraphBuilder.homeGraph(
                 handleDeepLinks = { deepLink -> handleDeepLinks(deepLink) },
                 isApiLoading = { loading: Boolean -> isApiLoading(loading) })
         }
+        nestedGraphs()
     }
-    nestedGraphs()
 }
 
