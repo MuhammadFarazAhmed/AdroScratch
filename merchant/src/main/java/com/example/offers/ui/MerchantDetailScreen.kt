@@ -13,38 +13,62 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.constraintlayout.compose.*
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.ThumbUp
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
@@ -52,10 +76,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ExperimentalMotionApi
+import androidx.constraintlayout.compose.MotionLayout
+import androidx.constraintlayout.compose.MotionScene
+import androidx.core.widget.NestedScrollView
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.vm.CommonViewModel
+import com.example.offers.R
 import com.example.offers.vm.MerchantDetailViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import okhttp3.internal.wait
 import org.koin.androidx.compose.getViewModel
 
 val COLLAPSED_TOP_BAR_HEIGHT = 56.dp
@@ -69,24 +100,24 @@ fun MerchantDetailScreen(
 ) {
 
     val listState = rememberLazyListState()
-
-    val overlapHeightPx = with(LocalDensity.current) {
-        val context = LocalContext.current
-        val resourceId =
-            context.resources.getIdentifier("status_bar_height", "dimen", "android")
-        EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx() - context.resources.getDimensionPixelSize(
-            resourceId
-        ) - 12.dp.toPx()
-    }
-
-    val isCollapsed: Boolean by remember {
-        derivedStateOf {
-            val isFirstItemHidden = listState.firstVisibleItemScrollOffset > overlapHeightPx
-            isFirstItemHidden || listState.firstVisibleItemIndex > 0
-        }
-    }
-
-    ChangeStatusBar(vm = vm, isCollapsed = isCollapsed)
+//
+//    val overlapHeightPx = with(LocalDensity.current) {
+//        val context = LocalContext.current
+//        val resourceId =
+//            context.resources.getIdentifier("status_bar_height", "dimen", "android")
+//        EXPANDED_TOP_BAR_HEIGHT.toPx() - COLLAPSED_TOP_BAR_HEIGHT.toPx() - context.resources.getDimensionPixelSize(
+//            resourceId
+//        ) - 12.dp.toPx()
+//    }
+//
+//    val isCollapsed: Boolean by remember {
+//        derivedStateOf {
+//            val isFirstItemHidden = listState.firstVisibleItemScrollOffset > overlapHeightPx
+//            isFirstItemHidden || listState.firstVisibleItemIndex > 0
+//        }
+//    }
+//
+//    ChangeStatusBar(vm = vm, isCollapsed = isCollapsed)
 
 
     val lazySections =
@@ -97,27 +128,85 @@ fun MerchantDetailScreen(
             .navigationBarsPadding()
             .fillMaxSize()
     ) {
-        Box {
-            CollapsedTopBar(
-                modifier = Modifier
-                    .zIndex(2f),
-                isCollapsed = isCollapsed
-            )
-            LazyColumn(state = listState) {
-                item { ExpandedTopBar() }
-                item { AboutSection() }
+        Header()
+    }
+
+}
+
+@OptIn(ExperimentalMotionApi::class)
+@Composable
+@Preview
+private fun Header() {
+
+    val context = LocalContext.current
+    val motionScene = remember {
+        context.resources
+            .openRawResource(com.example.base.R.raw.motion_scene)
+            .readBytes()
+            .decodeToString()
+    }
+
+    val maxPx = with(LocalDensity.current) { EXPANDED_TOP_BAR_HEIGHT.roundToPx().toFloat() }
+    val minPx = with(LocalDensity.current) { COLLAPSED_TOP_BAR_HEIGHT.roundToPx().toFloat() }
+    val toolbarHeight = remember { mutableStateOf(maxPx) }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val height = toolbarHeight.value;
+
+                if (height + available.y > maxPx) {
+                    toolbarHeight.value = maxPx
+                    return Offset(0f, maxPx - height)
+                }
+
+                if (height + available.y < minPx) {
+                    toolbarHeight.value = minPx
+                    return Offset(0f, minPx - height)
+                }
+
+                toolbarHeight.value += available.y
+                return Offset(0f, available.y)
+            }
+
+        }
+    }
+
+    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx);
+    MotionLayout(
+        progress = progress,
+        motionScene = MotionScene(content = motionScene),
+        modifier = Modifier
+            .background(Color.LightGray)
+            .fillMaxSize()
+    ) {
+
+        Image(
+            painter = painterResource(id = com.example.base.R.drawable.demoimage),
+            contentDescription = "",
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .layoutId("headerImage")
+        )
+
+
+        Box(
+            modifier = Modifier
+                .nestedScroll(nestedScrollConnection)
+                .fillMaxHeight()
+                .background(Color.White)
+                .layoutId("contentBg")
+        ) {
+            LazyColumn {
                 items(DEFAULT_BOOKS) {
                     Book(modifier = Modifier, it)
                 }
             }
         }
     }
-
 }
 
-
 @Composable
-@Preview
 private fun CollapsedToolbarStates() {
     Column {
         CollapsedTopBar(
@@ -136,7 +225,6 @@ private fun CollapsedToolbarStates() {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-@Preview
 private fun ExpandedTopBar() {
     Box(
         modifier = Modifier
@@ -180,13 +268,10 @@ private fun ExpandedTopBar() {
                 }
             }
         }
-
-
     }
 }
 
 @Composable
-@Preview
 private fun AboutSection() {
     Column {
         Text("Abu dhabi")
@@ -198,7 +283,6 @@ private fun AboutSection() {
 
 @SuppressLint("DiscouragedApi", "InternalInsetResource")
 @Composable
-@Preview
 private fun ScreenPreview() {
 
     val listState = rememberLazyListState()
@@ -279,8 +363,8 @@ fun Book(modifier: Modifier = Modifier, model: BookModel) =
         Column(
             modifier = Modifier.padding(16.dp)
         ) {
-            Text(model.author ?: "")
-            Text(model.title ?: "")
+            Text(model.author)
+            Text(model.title)
             androidx.compose.material.Text("${model.author} pages")
         }
     }
