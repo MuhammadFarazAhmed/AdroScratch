@@ -18,7 +18,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class BearerTokenProvider(private val userDataStore: DataStore<com.example.domain.models.LoginResponse.Data.User>) : AuthProvider {
+class BearerTokenProvider(private val userDataStore: DataStore<LoginResponse.Data.User>) : AuthProvider {
 
     private var token: String = ""
 

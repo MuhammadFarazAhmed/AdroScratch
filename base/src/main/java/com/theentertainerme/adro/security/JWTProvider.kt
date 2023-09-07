@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-class JWTProvider(private val userDataStore: DataStore<com.example.domain.models.LoginResponse.Data.User>) {
+class JWTProvider(private val userDataStore: DataStore<LoginResponse.Data.User>) {
 
     private var sessionToken: String = ""
 

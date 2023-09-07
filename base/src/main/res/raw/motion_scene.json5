@@ -13,10 +13,70 @@
       contentBg: {
         width: 'spread',
         height: 'spread',
-        start: ['parent', 'start',0],
-        end: ['parent', 'end',0],
-        top: ['parent','top', 250],
+        start: ['parent', 'start',16],
+        end: ['parent', 'end',16],
+        top: ['parent','top', 200],
         bottom: ['parent','bottom'],
+      },
+      toolbar: {
+        width: "spread",
+        height: 56,
+        top: [
+          'parent',
+          'top',
+        ],
+        start: [
+          'parent',
+          'start',
+          0
+        ],
+        end: [
+          'parent',
+          'end',
+          0
+        ],
+        alpha: 1,
+        custom: {
+          background: '#00ffffff'
+        }
+      },
+      ivBack: {
+        width: 80,
+        height: 80,
+        top: [
+          'parent',
+          'top',
+          0
+        ],
+        start: [
+          'parent',
+          'start',
+          16
+        ],
+        end: [
+          'parent',
+          'end',
+          0
+        ]
+      },
+      ivFav: {
+        width: 80,
+        height: 80,
+        top: [
+          'parent',
+          'top',
+          0
+        ],
+        start: [
+          'parent',
+          'start',
+          0
+        ],
+        end: [
+          'parent',
+          'end',
+          16
+        ]
       }
     },
     end: {
@@ -36,18 +96,78 @@
         end: ['parent', 'end'],
         top: ['parent','top'],
         bottom: ['parent','bottom'],
-      }
-    }
-  },
-  Transitions: {
-    default: {
-      from: 'start',
-      to: 'end',
-      onSwipe: {
-        anchor: 'contentBg',
-        direction: 'up',
-        side: 'top',
       },
+      toolbar: {
+        width: "spread",
+        height: 56,
+        top: [
+          'parent',
+          'top'
+        ],
+        start: [
+          'parent',
+          'start',
+          0
+        ],
+        end: [
+          'parent',
+          'end',
+          0
+        ],
+        alpha: 1,
+        custom: {
+          background: '#FF000000'
+        }
+      },
+      ivBack: {
+        width: 80,
+        height: 80,
+        top: [
+          'parent',
+          'top',
+          0
+        ],
+        start: [
+          'parent',
+          'start',
+          16
+        ],
+        end: [
+          'parent',
+          'end',
+          0
+        ]
+      },
+      ivFav: {
+        width: 80,
+        height: 80,
+        top: [
+          'parent',
+          'top',
+          0
+        ],
+        start: [
+          'parent',
+          'start',
+          0
+        ],
+        end: [
+          'parent',
+          'end',
+          16
+        ]
+      }
+    },
+    Transitions: {
+      default: {
+        from: 'start',
+        to: 'end',
+        onSwipe: {
+          anchor: 'contentBg',
+          direction: 'up',
+          side: 'top',
+        },
+      }
     }
   }
 }
