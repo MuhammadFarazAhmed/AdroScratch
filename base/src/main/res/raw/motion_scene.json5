@@ -18,65 +18,64 @@
         top: ['parent','top', 200],
         bottom: ['parent','bottom'],
       },
-      toolbar: {
-        width: "spread",
-        height: 56,
-        top: [
-          'parent',
-          'top',
-        ],
-        start: [
-          'parent',
-          'start',
-          0
-        ],
-        end: [
-          'parent',
-          'end',
-          0
-        ],
-        alpha: 1,
+      menu: {
+        width: 38,
+        height: 38,
+        start: ['parent', 'start', 16],
+        top: ['parent', 'top', 16],
+      },
+      title: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent','top',200],
+      },
+      titleDivider: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['title','bottom'],
+      },
+      subTitle: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['titleDivider','bottom'],
+      },
+      subTitleDivider: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['subTitle','bottom'],
+      },
+      date: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['subTitleDivider','bottom'],
+      },
+      actions: {
+        width: 'spread',
+        height: 50,
+        start: ['parent', 'start',16],
+        end: ['parent', 'end',16],
+        top: ['date','bottom'],
         custom: {
-          background: '#00ffffff'
+          background: '#444444'
         }
       },
-      ivBack: {
-        width: 80,
-        height: 80,
-        top: [
-          'parent',
-          'top',
-          0
-        ],
-        start: [
-          'parent',
-          'start',
-          16
-        ],
-        end: [
-          'parent',
-          'end',
-          0
-        ]
-      },
-      ivFav: {
-        width: 80,
-        height: 80,
-        top: [
-          'parent',
-          'top',
-          0
-        ],
-        start: [
-          'parent',
-          'start',
-          0
-        ],
-        end: [
-          'parent',
-          'end',
-          16
-        ]
+      text: {
+        width: 'spread',
+        height: 'spread',
+        start: ['parent', 'start',16],
+        end: ['parent', 'end',16],
+        top: ['actions','bottom', 16],
+        bottom: ['parent','bottom']
       }
     },
     end: {
@@ -97,77 +96,78 @@
         top: ['parent','top'],
         bottom: ['parent','bottom'],
       },
-      toolbar: {
-        width: "spread",
-        height: 56,
-        top: [
-          'parent',
-          'top'
-        ],
-        start: [
-          'parent',
-          'start',
-          0
-        ],
-        end: [
-          'parent',
-          'end',
-          0
-        ],
-        alpha: 1,
+      menu: {
+        width: 38,
+        height: 38,
+        start: ['parent', 'start', 16],
+        top: ['parent', 'top', 16],
+      },
+      title: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['parent','top', 6],
+      },
+      titleDivider: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start',34],
+        end: ['parent', 'end', 34],
+        top: ['title','bottom'],
+      },
+      subTitle: {
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['titleDivider','bottom'],
+      },
+      subTitleDivider: {
+        visibility: 'gone',
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['subTitle','bottom'],
+      },
+      date: {
+        visibility: 'gone',
+        width: 'spread',
+        height: 'wrap',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['subTitleDivider','bottom'],
+      },
+      actions: {
+        width: 'spread',
+        height: 70,
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['subTitle','bottom'],
         custom: {
-          background: '#FF000000'
+          background: '#9b0024'
         }
       },
-      ivBack: {
-        width: 80,
-        height: 80,
-        top: [
-          'parent',
-          'top',
-          0
-        ],
-        start: [
-          'parent',
-          'start',
-          16
-        ],
-        end: [
-          'parent',
-          'end',
-          0
-        ]
+      text: {
+        width: 'spread',
+        height: 'spread',
+        start: ['parent', 'start'],
+        end: ['parent', 'end'],
+        top: ['actions','bottom',16],
+        bottom: ['parent','bottom'],
       },
-      ivFav: {
-        width: 80,
-        height: 80,
-        top: [
-          'parent',
-          'top',
-          0
-        ],
-        start: [
-          'parent',
-          'start',
-          0
-        ],
-        end: [
-          'parent',
-          'end',
-          16
-        ]
-      }
     },
-    Transitions: {
-      default: {
-        from: 'start',
-        to: 'end',
-        onSwipe: {
-          anchor: 'contentBg',
-          direction: 'up',
-          side: 'top',
-        },
-      }
+  },
+  Transitions: {
+    default: {
+      from: 'start',
+      to: 'end',
+      onSwipe: {
+        anchor: 'contentBg',
+        direction: 'up',
+        side: 'top',
+      },
     }
   }
 }
