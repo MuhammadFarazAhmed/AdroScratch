@@ -12,7 +12,8 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,17 +26,8 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.outlined.Star
-import androidx.compose.material.icons.outlined.ThumbUp
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -43,8 +35,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
 import androidx.compose.ui.input.nestedscroll.NestedScrollSource
@@ -53,10 +49,14 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -89,37 +89,9 @@ fun MerchantDetailScreen(
 
 }
 
-@OptIn(ExperimentalMotionApi::class)
+@OptIn(ExperimentalMotionApi::class, ExperimentalLayoutApi::class)
 @Composable
 private fun MainLayout(lazySections: List<MerchantDetailModel.Data.Detail>?) {
-
-    val maxPx = with(LocalDensity.current) { EXPANDED_TOP_BAR_HEIGHT.roundToPx().toFloat() }
-    val minPx = with(LocalDensity.current) { COLLAPSED_TOP_BAR_HEIGHT.roundToPx().toFloat() }
-    val toolbarHeight = remember { mutableStateOf(maxPx) }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                Log.d("TAG", "available: $available")
-                val height = toolbarHeight.value
-
-                if (height + available.y > maxPx) {
-                    toolbarHeight.value = maxPx
-                    return Offset(0f, maxPx - height)
-                }
-
-                if (height + available.y < minPx) {
-                    toolbarHeight.value = minPx
-                    return Offset(0f, minPx - height)
-                }
-
-                toolbarHeight.value += available.y
-                return Offset(0f, available.y)
-            }
-
-        }
-    }
-    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
 
     Surface(
         modifier = Modifier
@@ -142,15 +114,91 @@ private fun MainLayout(lazySections: List<MerchantDetailModel.Data.Detail>?) {
             motionLayoutState = motionState,
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.LightGray)
         ) {
 
-            Image(
-                painter = painterResource(id = com.example.base.R.drawable.demoimage),
-                contentDescription = "",
-                contentScale = ContentScale.Crop,
+            Box(modifier = Modifier.layoutId("collapsing_box")) {
+
+                Image(
+                    painter = painterResource(id = com.example.base.R.drawable.demoimage),
+                    contentDescription = "",
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .layoutId("collapsing_image")
+                        .drawWithCache {
+                            val gradient = Brush.verticalGradient(
+                                colors = listOf(Color.Transparent, Color.Black),
+                                startY = size.height / 3,
+                                endY = size.height
+                            )
+                            onDrawWithContent {
+                                drawContent()
+                                drawRect(gradient, blendMode = BlendMode.Multiply)
+                            }
+                        },
+                    alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
+                )
+
+            }
+
+            Text(
+                modifier = Modifier.layoutId("description"),
+                text = "description",
+                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+            )
+
+            Text(
+                modifier = Modifier.layoutId("location"),
+                text = "location",
+                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+            )
+
+            FlowRow(modifier = Modifier.layoutId("chips")) {
+                for (item in 1..10) {
+                    Text(text = buildAnnotatedString {
+                        withStyle(ParagraphStyle()) {
+                            append(" \u2022 ")
+                            append("$item")
+                        }
+                    }
+                    )
+                }
+            }
+
+            Divider(modifier = Modifier.layoutId("divider") ,thickness = 1.dp, color = Color.LightGray)
+
+            val property = motionProperties("toolbar")
+            Row(
                 modifier = Modifier
-                    .layoutId("headerImage")
+                    .layoutId("toolbar")
+                    .background(property.value.color("background"))
+            ) {}
+
+            val titleProperty = motionProperties("title")
+            Text(
+                modifier = Modifier
+                    .layoutId("title").background(Color.Magenta),
+                textAlign = TextAlign.Center,
+                text = "Title",
+                color = titleProperty.value.color("textColor"),
+                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                fontWeight = FontWeight(700),
+                fontSize = titleProperty.value.fontSize("textSize"),
+                style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
+            )
+
+            Image(
+                modifier = Modifier.layoutId("ivBack"),
+                painter = painterResource(com.example.base.R.drawable.ic_back),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+
+            Image(
+                modifier = Modifier.layoutId("ivFav"),
+                painter = painterResource(com.example.base.R.drawable.ic_favorite),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
             )
 
             Box(
@@ -161,103 +209,15 @@ private fun MainLayout(lazySections: List<MerchantDetailModel.Data.Detail>?) {
                         shape = RoundedCornerShape(topStart = corners, topEnd = corners)
                     )
                     .layoutId("contentBg")
-            )
-
-            Text(
-                text = "Fresh Strawberry Cake", fontSize = 22.sp,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.SemiBold, modifier = Modifier
-                    .layoutId("title")
-                    .fillMaxWidth()
-                    .padding(10.dp)
-            )
-
-            Divider(
-                Modifier
-                    .layoutId("titleDivider")
-                    .fillMaxWidth()
-                    .padding(horizontal = 34.dp)
-            )
-
-            Text(
-                text = "by John Kanell", fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                color = Color.Gray, fontStyle = FontStyle.Italic,
-                modifier = Modifier
-                    .layoutId("subTitle")
-                    .fillMaxWidth()
-                    .padding(6.dp)
-            )
-
-            Divider(
-                Modifier
-                    .layoutId("subTitleDivider")
-                    .fillMaxWidth()
-                    .padding(horizontal = 34.dp)
-            )
-
-            Text(
-                modifier = Modifier
-                    .layoutId("date")
-                    .fillMaxWidth()
-                    .padding(6.dp),
-                text = "September, 2022", fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                color = Color.Gray
-            )
-
-            val properties = motionProperties("actions")
-
-            Row(
-                modifier = Modifier
-                    .layoutId("actions")
-                    .background(properties.value.color("background")),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
-                IconButton(onClick = { }) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(Icons.Default.Share, contentDescription = "", tint = Color.White)
-                        Text(text = "SHARE", color = Color.White, fontSize = 12.sp)
+                val books = lazySections?.map { BookModel(it.sectionTitle ?: "", "", 0) }
+                Column(modifier = Modifier) {
+                    books?.forEach {
+                        Book(modifier = Modifier, it)
+                    } ?: DEFAULT_BOOKS.forEach {
+                        Book(modifier = Modifier, it)
                     }
                 }
-
-                IconButton(onClick = { }) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(Icons.Outlined.ThumbUp, contentDescription = "", tint = Color.White)
-                        Text(text = "LIKE", color = Color.White, fontSize = 12.sp)
-                    }
-                }
-
-                IconButton(onClick = { }) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Icon(Icons.Outlined.Star, contentDescription = "", tint = Color.White)
-                        Text(text = "SAVE", color = Color.White, fontSize = 12.sp)
-                    }
-                }
-            }
-
-            val books = lazySections?.map { BookModel(it.sectionTitle ?: "", "", 0) }
-            Column(modifier = Modifier) {
-                books?.forEach {
-                    Book(modifier = Modifier, it)
-                } ?: DEFAULT_BOOKS.forEach {
-                    Book(modifier = Modifier, it)
-                }
-            }
-
-            Button(
-                onClick = {
-
-                },
-                colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-                modifier = Modifier.layoutId("menu"), contentPadding = PaddingValues(4.dp),
-                elevation = ButtonDefaults.elevatedButtonElevation(defaultElevation = 0.dp),
-            ) {
-                Icon(
-                    Icons.Default.ArrowBack,
-                    contentDescription = ""
-                )
             }
 
 
