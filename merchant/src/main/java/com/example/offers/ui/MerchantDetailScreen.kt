@@ -93,6 +93,34 @@ fun MerchantDetailScreen(
 @Composable
 private fun MainLayout(lazySections: List<MerchantDetailModel.Data.Detail>?) {
 
+    val maxPx = with(LocalDensity.current) { EXPANDED_TOP_BAR_HEIGHT.roundToPx().toFloat() }
+    val minPx = with(LocalDensity.current) { COLLAPSED_TOP_BAR_HEIGHT.roundToPx().toFloat() }
+    val toolbarHeight = remember { mutableStateOf(maxPx) }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                Log.d("TAG", "available: $available")
+                val height = toolbarHeight.value
+
+                if (height + available.y > maxPx) {
+                    toolbarHeight.value = maxPx
+                    return Offset(0f, maxPx - height)
+                }
+
+                if (height + available.y < minPx) {
+                    toolbarHeight.value = minPx
+                    return Offset(0f, minPx - height)
+                }
+
+                toolbarHeight.value += available.y
+                return Offset(0f, available.y)
+            }
+
+        }
+    }
+    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
+
     Surface(
         modifier = Modifier
             .navigationBarsPadding()
