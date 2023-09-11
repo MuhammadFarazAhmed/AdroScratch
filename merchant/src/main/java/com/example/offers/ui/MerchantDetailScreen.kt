@@ -164,7 +164,7 @@ private fun MainLayout(lazySections: List<MerchantDetailModel.Data.Detail>?) {
                                 drawRect(gradient, blendMode = BlendMode.Multiply)
                             }
                         },
-                    alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
+                   // alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
                 )
 
             }
@@ -205,12 +205,12 @@ private fun MainLayout(lazySections: List<MerchantDetailModel.Data.Detail>?) {
             val titleProperty = motionProperties("title")
             Text(
                 modifier = Modifier
-                    .layoutId("title").background(Color.Magenta),
+                    .layoutId("title"),
                 textAlign = TextAlign.Center,
                 text = "Title",
                 color = titleProperty.value.color("textColor"),
                 fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                fontWeight = FontWeight(700),
+                fontWeight = FontWeight(500),
                 fontSize = titleProperty.value.fontSize("textSize"),
                 style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
             )
