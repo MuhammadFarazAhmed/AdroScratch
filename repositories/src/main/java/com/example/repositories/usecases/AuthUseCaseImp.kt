@@ -16,11 +16,7 @@ class AuthUseCaseImp(private val authRepository: AuthRepository) : AuthUseCase {
         return authRepository.login(params)
     }
 
-    override fun isUserLoggedIn(): Flow<Boolean> =
-        authRepository.isUserLoggedIn().map {
-            Log.d("TAG", "isUserLoggedIn: ${it.userId}")
-            it.userId != null
-        }
+    override fun isUserLoggedIn(): Flow<Boolean> = authRepository.isUserLoggedIn().map { it.userId != null }
 
     override fun getUser(): Flow<LoginResponse.Data.User> = authRepository.isUserLoggedIn()
 

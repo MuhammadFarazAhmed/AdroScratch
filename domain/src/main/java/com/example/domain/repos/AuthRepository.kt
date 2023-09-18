@@ -14,6 +14,8 @@ interface AuthRepository {
 
     fun isUserLoggedIn(): Flow<LoginResponse.Data.User>
 
+    fun getUser(): Flow<LoginResponse.Data.User>
+
     suspend fun logout() : Flow<Boolean>
 
     suspend fun fetchProfile(): List<ProfileResponse.Data>

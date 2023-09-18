@@ -46,6 +46,7 @@ import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.ClientRequestException
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.auth.Auth
+import io.ktor.client.plugins.auth.providers.BearerTokens
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
 import io.ktor.client.plugins.logging.LogLevel
@@ -71,11 +72,9 @@ import org.koin.dsl.module
 
 fun appModule() = listOf(AppModule, NetworkModule)
 
-fun networkModule() = listOf(NetworkModule)
-
 fun featureModules() = listOf(commonModule, authModule, homeModule, merchantModule, searchModule)
 
-public enum class DataStores {
+enum class DataStores {
     CONFIG, USER, APP
 }
 
@@ -123,7 +122,6 @@ val AppModule = module {
     single { ApisEncryptionUtils(CLibController) }
 
 }
-
 
 @OptIn(InternalAPI::class)
 val NetworkModule = module {
@@ -221,7 +219,6 @@ val authModule = module {
 val searchModule = module {
     viewModel { SearchViewModel(get(), get()) }
 }
-
 
 val merchantModule = module {
 

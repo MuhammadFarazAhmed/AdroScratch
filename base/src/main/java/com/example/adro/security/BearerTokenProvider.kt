@@ -18,20 +18,21 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class BearerTokenProvider(private val userDataStore: DataStore<LoginResponse.Data.User>) : AuthProvider {
+class BearerTokenProvider(private val userDataStore: DataStore<LoginResponse.Data.User>) :
+    AuthProvider {
 
-    private var token: String = ""
+    private var jwtToken: String = ""
 
     init {
         CoroutineScope(Dispatchers.IO + SupervisorJob()).launch {
             userDataStore.data.collectLatest {
-                token = it.sessionToken ?: ""
+                jwtToken = provideJWT(it.sessionToken ?: "")
             }
         }
     }
 
-    private fun provideJWT(): String {
-        return Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
+    private fun provideJWT(token: String) =
+        Jwts.builder().setHeaderParam(JwsHeader.TYPE, JwsHeader.JWT_TYPE)
             .claim("company", "ADO")
             .claim("session_token", token)
             .claim("api_token", XOREncryption.decryptFromCKey(CLibController.getJApiToken()))
@@ -42,7 +43,6 @@ class BearerTokenProvider(private val userDataStore: DataStore<LoginResponse.Dat
                     Base64.DEFAULT
                 )
             ).compact()
-    }
 
     override val sendWithoutRequest: Boolean
         get() = true
@@ -51,10 +51,10 @@ class BearerTokenProvider(private val userDataStore: DataStore<LoginResponse.Dat
         request: HttpRequestBuilder,
         authHeader: HttpAuthHeader?
     ) {
-        request.header("Authorization", "Bearer ${provideJWT()}")
+        request.header("Authorization", "Bearer $jwtToken")
     }
 
     override fun isApplicable(auth: HttpAuthHeader): Boolean {
-      return true
+        return true
     }
 }

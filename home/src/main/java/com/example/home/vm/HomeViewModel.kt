@@ -46,9 +46,4 @@ class HomeViewModel(
         Log.d("TAG", "HomeScreen Cleared")
     }
 
-    suspend fun setLanguage(language: String) {
-        commonUseCase.setLanguage(language)
-    }
-
-
 }

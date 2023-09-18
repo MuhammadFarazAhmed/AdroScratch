@@ -27,6 +27,8 @@ class AuthRepositoryImp(
 ) :
     AuthRepository {
 
+    override fun getUser(): Flow<LoginResponse.Data.User> = userDataStore.data
+
     override fun isUserLoggedIn() = userDataStore.data
 
     override suspend fun login(hashMap: HashMap<String, String>): Flow<ApiResult<LoginResponse>> =

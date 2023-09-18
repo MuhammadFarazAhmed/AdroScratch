@@ -1,15 +1,6 @@
 {
   ConstraintSets: {
     start: {
-      collapsing_box: {
-        width: "spread",
-        height: 'wrap',
-        top: ['parent', 'top', 0],
-        start: ['parent', 'start', 0],
-        end: ['parent', 'end', 0],
-        translationY: 0,
-        alpha: 1
-      },
       collapsing_image: {
         width: "spread",
         height: 250,
@@ -21,14 +12,13 @@
       },
       title: {
         height: 'wrap',
-        top: ['collapsing_box', 'bottom', 0],
+        top: ['parent', 'top', 250],
         start: ['parent', 'start', 16],
-        translationY: 0,
-        alpha: 1,
         custom: {
-          textColor: '#FF000000',
-          textSize: 40
-        }
+          textColor: '#000000',
+          textSize: 30
+        },
+        alpha: 1
       },
       description: {
         top: ['title', 'bottom'],
@@ -60,7 +50,7 @@
         height: 60,
         start: ['parent', 'start',0],
         end: ['parent', 'end',0],
-        top: ['parent','top', 0],
+        top: ['parent','top', 24],
         custom: {
           background: '#00ffffff'
         }
@@ -68,13 +58,13 @@
       ivBack: {
         width: 56,
         height: 56,
-        top: ['parent', 'top', 0],
+        top: ['parent', 'top', 24],
         start: ['parent', 'start', 0],
       },
       ivFav: {
         width: 56,
         height: 56,
-        top: ['parent', 'top', 0],
+        top: ['parent', 'top', 24],
         end: ['parent', 'end', 0]
       },
       contentBg: {
@@ -88,15 +78,6 @@
 
     },
     end: {
-      collapsing_box: {
-        width: "spread",
-        height: 'wrap',
-        top: ['parent', 'top', 0],
-        start: ['parent', 'start', 0],
-        end: ['parent', 'end', 0],
-        translationY: -250,
-        alpha: 0.3
-      },
       collapsing_image: {
         width: "spread",
         height: 250,
@@ -110,14 +91,13 @@
         height: 'wrap',
         centerVertically: 'toolbar',
         top: ['toolbar', 'top', 0],
-        bottom: ['toolbar', 'bottom', 0],
         start: ['ivBack', 'end', 0],
-        alpha: 1,
         custom: {
           textColor: '#FFFFFF',
           textSize: 28,
         }
       },
+      alpha: 1,
       description: {
         top: ['title', 'bottom'],
         start: ['parent', 'start', 16],
@@ -145,10 +125,10 @@
       },
       toolbar: {
         width: 'spread',
-        height: 56,
+        height: 60,
         start: ['parent', 'start',0],
         end: ['parent', 'end',0],
-        top: ['parent','top', 0],
+        top: ['parent','top', 24],
         custom: {
           background: '#000000'
         }
@@ -156,13 +136,13 @@
       ivBack: {
         width: 56,
         height: 56,
-        top: ['parent', 'top', 0],
+        top: ['parent', 'top', 24],
         start: ['parent', 'start', 0],
       },
       ivFav: {
         width: 56,
         height: 56,
-        top: ['parent', 'top', 0],
+        top: ['parent', 'top', 24],
         end: ['parent', 'end', 0]
       },
       contentBg: {
@@ -184,13 +164,15 @@
       KeyFrames: {
         KeyAttributes: [{
           target: ['title'],
-          frames: [0,50,100],
+          frames: [0, 50, 100],
           translationX: [0, 30, 0],
         }],
       },
       onSwipe: {
         anchor: 'contentBg',
         direction: 'up',
+        maxVelocity: 4.2,
+        maxAccel: 3,
         side: 'top',
       },
     }
