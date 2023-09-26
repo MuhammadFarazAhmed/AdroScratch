@@ -41,28 +41,22 @@ class MerchantRepositoryImp(
         params: HashMap<String, String>
     ): List<OffersResponse.Data.Outlet> {
 
-        return try {
-            val response = client.post {
-
-                setCommonParams(
-                    api = OUTLET,
-                    additionalParams = tabsParams?.convert<TabsResponse.Data.Tab.Params, HashMap<String, String>>(),
-                    params = hashMapOf<String, String>().apply {
-                        putAll(params)
-                        if (queryType != null && query != null) {
-                            put("query", query)
-                            put("query_type", queryType)
-                        }
+        val response = client.post {
+            setCommonParams(
+                api = OUTLET,
+                additionalParams = tabsParams?.convert<TabsResponse.Data.Tab.Params, HashMap<String, String>>(),
+                params = hashMapOf<String, String>().apply {
+                    putAll(params)
+                    if (queryType != null && query != null) {
+                        put("query", query)
+                        put("query_type", queryType)
                     }
-                )
+                }
+            )
 
-                url { path("/ets_api/v5/outlets") }
-            }
-            (response.body() as OffersResponse).data.outlets
-        } catch (e: Exception) {
-            emptyList()
+            url { path("/ets_api/v5/outlets") }
         }
-
+        return (response.body() as OffersResponse).data.outlets
     }
 
     override suspend fun fetchMerchantDetail(

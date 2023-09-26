@@ -2,14 +2,11 @@ package com.example.offers.vm
 
 import android.app.Application
 import androidx.lifecycle.*
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.domain.models.ApiStatus.*
 import com.example.domain.models.OffersResponse
 import com.example.domain.models.TabsResponse
-import com.example.adro.paging.BasePagingSource
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.MerchantUseCase
 import kotlinx.coroutines.FlowPreview
@@ -93,9 +90,10 @@ class OffersViewModel(
 
     private suspend fun getOutlets(tab: TabsResponse.Data.Tab) {
         merchantUseCase.fetchOffers(
+            isRefreshing,
+            tabsParams = tab.params,
             query = if (query.value != "") query.value else null,
             queryType = if (query.value != "") "name" else null,
-            tabsParams = tab.params,
             params = hashMapOf("is_adro_listing" to "1", "is_offer" to "true")
         ).cachedIn(viewModelScope).collectLatest {
             offers.value = it

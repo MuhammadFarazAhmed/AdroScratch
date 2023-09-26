@@ -20,6 +20,7 @@ class MerchantUseCaseImp(private val merchantRepository: MerchantRepository) :
         merchantRepository.fetchTabs(params)
 
     override suspend fun fetchOffers(
+        isRefreshing: MutableStateFlow<Boolean>,
         tabsParams: TabsResponse.Data.Tab.Params?,
         query: String?,
         queryType: String?,
