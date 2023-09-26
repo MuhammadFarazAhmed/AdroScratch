@@ -40,11 +40,10 @@ class SearchViewModel(
     }
 
     private suspend fun getOutlets() {
-        Pager(PagingConfig(pageSize = 60)) {
-            BasePagingSource(MutableStateFlow(false)) {
-                merchantUseCase.fetchOffers(query = query.value, queryType = "name")
-            }
-        }.flow.cachedIn(viewModelScope).collectLatest {
+       merchantUseCase.fetchOffers(
+           query = if (query.value != "") query.value else null,
+           queryType = if (query.value != "") "name" else null,
+       ).cachedIn(viewModelScope).collectLatest {
             offers.value = it
         }
     }

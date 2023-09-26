@@ -1,13 +1,8 @@
 package com.example.repositories.repos
 
-import com.example.adro.common.CommonFlowExtensions.convertToFlow
-import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
-import com.example.adro.common.CommonUtilsExtension
 import com.example.adro.common.CommonUtilsExtension.API.CORE
-import com.example.adro.common.CommonUtilsExtension.setDefaultParams
+import com.example.adro.common.CommonUtilsExtension.setCommonParams
 import com.example.domain.models.HomeResponse
-import com.example.domain.models.ProfileResponse
-import com.example.domain.models.asList
 import com.example.domain.repos.HomeRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -17,13 +12,12 @@ import io.ktor.http.path
 
 class HomeRepositoryImp(private val client: HttpClient) : HomeRepository {
 
-    override suspend fun fetchHome(): List<HomeResponse.Data.Section> {
+    override suspend fun fetchHome(): HomeResponse {
 
-        val response = client.post {
-            setDefaultParams(CORE)
+        return client.post {
+            setCommonParams(CORE)
             url { path("/ets_api/v5/home") }
-        }
-        return (response.body() as HomeResponse).data.sections
+        }.body() as HomeResponse
 
     }
 

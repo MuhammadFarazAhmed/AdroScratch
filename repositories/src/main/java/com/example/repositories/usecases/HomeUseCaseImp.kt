@@ -7,6 +7,6 @@ import javax.inject.Inject
 
 class HomeUseCaseImp @Inject constructor(private val homeRepository: HomeRepository) : HomeUseCase {
     
-    override suspend fun fetchHome(): List<HomeResponse.Data.Section> = homeRepository.fetchHome()
+    override suspend fun fetchHome(): List<HomeResponse.Data.Section> = homeRepository.fetchHome().data.sections
 }
 

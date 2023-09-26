@@ -1,5 +1,7 @@
 package com.example.domain.usecase
 
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.example.domain.models.ApiResult
 import com.example.domain.models.MerchantDetailModel
 import com.example.domain.models.OffersResponse
@@ -15,7 +17,7 @@ interface MerchantUseCase {
         query: String? = null,
         queryType: String? = null,
         params: HashMap<String, String> = hashMapOf()
-    ): List<OffersResponse.Data.Outlet>
+    ): Flow<PagingData<OffersResponse.Data.Outlet>>
 
 
     suspend fun fetchMerchantDetail(

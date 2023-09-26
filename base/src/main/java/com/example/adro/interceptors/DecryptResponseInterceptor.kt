@@ -12,10 +12,10 @@ import io.ktor.util.toByteArray
 import io.ktor.utils.io.ByteReadChannel
 import io.ktor.utils.io.readAvailable
 
-class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: com.example.adro.security.ApisEncryptionUtils) {
+class DecryptResponseInterceptor private constructor(private val apisEncryptionUtils: ApisEncryptionUtils) {
 
     class Config {
-        lateinit var apisEncryptionUtils: com.example.adro.security.ApisEncryptionUtils
+        lateinit var apisEncryptionUtils: ApisEncryptionUtils
     }
 
     private fun decryptedResponse(client: HttpClient) {

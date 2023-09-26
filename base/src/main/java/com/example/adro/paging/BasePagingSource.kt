@@ -22,7 +22,7 @@ open class BasePagingSource<Item : Any>(
             LoadResult.Page(
                 data = response,
                 prevKey = null,
-                nextKey = if (response.size < offset) null else offset.plus(1)
+                nextKey = if (response.size <= offset) null else offset.plus(1)
             )
         } catch (e: Exception) {
             isRefreshing.emit(false)

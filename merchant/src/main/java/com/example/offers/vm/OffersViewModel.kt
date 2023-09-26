@@ -92,18 +92,12 @@ class OffersViewModel(
     }
 
     private suspend fun getOutlets(tab: TabsResponse.Data.Tab) {
-        Pager(PagingConfig(pageSize = 60)) {
-            BasePagingSource(MutableStateFlow(false)) {
-
-                merchantUseCase.fetchOffers(
-                    query = if (query.value != "") query.value else null,
-                    queryType = if (query.value != "") "name" else null,
-                    tabsParams = tab.params,
-                    params = hashMapOf("is_adro_listing" to "1", "is_offer" to "true")
-                )
-
-            }
-        }.flow.cachedIn(viewModelScope).collectLatest {
+        merchantUseCase.fetchOffers(
+            query = if (query.value != "") query.value else null,
+            queryType = if (query.value != "") "name" else null,
+            tabsParams = tab.params,
+            params = hashMapOf("is_adro_listing" to "1", "is_offer" to "true")
+        ).cachedIn(viewModelScope).collectLatest {
             offers.value = it
         }
     }

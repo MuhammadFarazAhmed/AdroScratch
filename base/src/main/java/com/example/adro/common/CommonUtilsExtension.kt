@@ -13,7 +13,6 @@ import com.google.gson.reflect.TypeToken
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.setBody
 import io.ktor.util.AttributeKey
-import okhttp3.Request
 
 object CommonUtilsExtension {
 
@@ -39,7 +38,7 @@ object CommonUtilsExtension {
 
     val Apikey = AttributeKey<API>("api")
 
-    fun HttpRequestBuilder.setDefaultParams(
+    fun HttpRequestBuilder.setCommonParams(
         api: API,
         additionalParams: HashMap<String, String>? = hashMapOf(),
         params: HashMap<String, String> = hashMapOf()

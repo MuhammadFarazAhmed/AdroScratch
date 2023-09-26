@@ -30,7 +30,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         splashScreen.setKeepOnScreenCondition {
-            return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
+            false
+            // return@setKeepOnScreenCondition vm.keepOnSplashScreenOn.value
         }
 
         lifecycleScope.launch {
@@ -48,6 +49,11 @@ class MainActivity : ComponentActivity() {
 
             LocalizeApp(language) {
                 ThriveApp(appState = appState, vm = vm)
+//                TicketShapeComposable(color = Color(0xFFF58423)) {
+//                    Column {
+//                        Text(text = "Available Offer")
+//                    }
+//                }
             }
 
         }

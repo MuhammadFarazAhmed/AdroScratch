@@ -44,6 +44,9 @@ object HexToJetpackColor {
     fun getColor(colorString: String): Color {
         return Color(android.graphics.Color.parseColor("#$colorString"))
     }
+    fun getColorWithHash(colorString: String): Color {
+        return Color(android.graphics.Color.parseColor(colorString))
+    }
 }
 
 object CommonFlowExtensions {
@@ -54,48 +57,48 @@ object CommonFlowExtensions {
 
     fun Exception.toCustomExceptions(): com.example.domain.models.ApiResult<Error> = when (this) {
         is ClientRequestException -> {
-            com.example.domain.models.ApiResult.Error(
-                com.example.domain.models.ErrorResponse(
+            ApiResult.Error(
+                ErrorResponse(
                     message = message
                 )
             )
         }
 
         is ServerResponseException -> {
-            com.example.domain.models.ApiResult.Error(
-                com.example.domain.models.ErrorResponse(
+            ApiResult.Error(
+                ErrorResponse(
                     message = message
                 )
             )
         }
 
         is SocketTimeoutException -> {
-            com.example.domain.models.ApiResult.Error(
-                com.example.domain.models.ErrorResponse(
+            ApiResult.Error(
+                ErrorResponse(
                     message = message
                 )
             )
         }
 
         is UnknownHostException -> {
-            com.example.domain.models.ApiResult.Error(
-                com.example.domain.models.ErrorResponse(
+            ApiResult.Error(
+                ErrorResponse(
                     message = message
                 )
             )
         }
 
         is IOException -> {
-            com.example.domain.models.ApiResult.Error(
-                com.example.domain.models.ErrorResponse(
+            ApiResult.Error(
+                ErrorResponse(
                     message = message
                 )
             )
         }
 
         else -> {
-            com.example.domain.models.ApiResult.Error(
-                com.example.domain.models.ErrorResponse(
+            ApiResult.Error(
+                ErrorResponse(
                     message = message
                 )
             )
@@ -106,23 +109,24 @@ object CommonFlowExtensions {
         crossinline call: suspend () -> HttpResponse,
         crossinline success: suspend (data: T) -> Unit,
         crossinline failure: suspend () -> Unit
-    ): Flow<com.example.domain.models.ApiResult<T>> =
-        flow<com.example.domain.models.ApiResult<T>> {
-            emit(com.example.domain.models.ApiResult.Loading(true))
+    ): Flow<ApiResult<T>> =
+        flow<ApiResult<T>> {
+            emit(ApiResult.Loading(true))
             try {
                 val response = call()
-                emit(com.example.domain.models.ApiResult.Loading(false))
+                emit(ApiResult.Loading(false))
                 success(response.body())
-                emit(com.example.domain.models.ApiResult.Success(response.body()))
+                emit(ApiResult.Success(response.body()))
             } catch (e: Exception) {
-                emit(com.example.domain.models.ApiResult.Loading(false))
+                emit(ApiResult.Loading(false))
                 failure()
                 emit(
-                    com.example.domain.models.ApiResult.Error(
-                        com.example.domain.models.ErrorResponse(
+                    ApiResult.Error(
+                        ErrorResponse(
                             message = e.message
                         )
-                    ))
+                    )
+                )
             }
         }.flowOn(Dispatchers.IO)
 

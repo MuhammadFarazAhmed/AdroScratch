@@ -1,8 +1,11 @@
 package com.example.domain.usecase
 
 
+import androidx.paging.PagingData
 import com.example.domain.models.ApiResult
+import com.example.domain.models.ErrorResponse
 import com.example.domain.models.LoginResponse
+import com.example.domain.models.OffersResponse
 import com.example.domain.models.ProfileResponse
 import kotlinx.coroutines.flow.Flow
 

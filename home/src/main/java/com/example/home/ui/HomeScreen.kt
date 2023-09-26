@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -40,7 +39,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight.Companion.Bold
@@ -59,9 +57,9 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.components.SwipeToRefreshContainer
-import com.example.domain.models.HomeResponse
 import com.example.adro.ui.ProgressDialog
 import com.example.base.R
+import com.example.domain.models.HomeResponse
 import com.example.home.ui.HomeSections.CATEGORIES
 import com.example.home.ui.HomeSections.EXCLUSIVE_OFFERS
 import com.example.home.ui.HomeSections.GUEST_USER
@@ -121,8 +119,6 @@ fun HomeScreen(
     val pagerState = rememberPagerState()
     val exclusivePagerState = rememberPagerState()
     val recommendedPagerState = rememberPagerState()
-
-    val context = LocalContext.current
 
     val homeSection = vm.sections.collectAsLazyPagingItems()
     val isRefreshing by vm.isRefreshing.collectAsStateLifecycleAware()

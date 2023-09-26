@@ -3,6 +3,7 @@ package com.example.domain.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -38,7 +39,7 @@ data class OffersResponse(
         @SerialName("offset")
         val offset: Int? = null,
         @SerialName("outlets")
-        val outlets: List<Outlet>,
+        val outlets: List<Outlet> = arrayListOf(),
         @SerialName("page_size")
         val pageSize: Int? = null,
         @SerialName("ping_section")

@@ -12,11 +12,11 @@ class ThriveApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-
         startKoin {
             androidLogger()
             androidContext(this@ThriveApplication)
             modules(appModule() + featureModules())
         }
+
     }
 }

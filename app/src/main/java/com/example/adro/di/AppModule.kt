@@ -70,9 +70,9 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 
-fun appModule() = listOf(AppModule, NetworkModule)
+fun appModule() = listOf(AppModule, NetworkModule, commonModule)
 
-fun featureModules() = listOf(commonModule, authModule, homeModule, merchantModule, searchModule)
+fun featureModules() = listOf(authModule, homeModule, merchantModule, searchModule)
 
 enum class DataStores {
     CONFIG, USER, APP
@@ -203,7 +203,7 @@ val commonModule = module {
 val homeModule = module {
     single<HomeRepository> { HomeRepositoryImp(get()) }
     single<HomeUseCase> { HomeUseCaseImp(get()) }
-    viewModel { HomeViewModel(get(), get(), get(), get()) }
+    viewModel { HomeViewModel(get(), get(), get(), get(),get()) }
 }
 
 val authModule = module {
@@ -217,7 +217,7 @@ val authModule = module {
 }
 
 val searchModule = module {
-    viewModel { SearchViewModel(get(), get()) }
+    viewModel { SearchViewModel(application = get(), merchantUseCase = get()) }
 }
 
 val merchantModule = module {

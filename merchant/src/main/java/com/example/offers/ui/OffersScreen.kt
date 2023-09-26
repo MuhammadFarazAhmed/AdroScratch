@@ -4,13 +4,30 @@ import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material3.*
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
+import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ScrollableTabRow
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,7 +43,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemContentType
@@ -37,12 +53,15 @@ import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.CommonUtilsExtension.applyPagination
 import com.example.adro.components.Header
 import com.example.adro.components.SwipeToRefreshContainer
-import com.example.domain.models.OffersResponse
-import com.example.domain.models.TabsResponse
 import com.example.adro.theme.Black500
 import com.example.adro.ui.ProgressDialog
+import com.example.domain.models.OffersResponse
+import com.example.domain.models.TabsResponse
 import com.example.offers.vm.OffersViewModel
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
@@ -109,15 +128,15 @@ fun OffersScreen(
 
                         Tabs(tabs, pagerState, coroutineScope)
 
-                        Pager(tabs, pagerState, lazyOutlets, navigateToDetail)
+                        Pager(isRefreshing, tabs, pagerState, lazyOutlets, navigateToDetail)
 
-                        if (isRefreshing) {
-                            ProgressDialog(Color.White, alpha = 1.0)
-                        }
                     }
 
                 }
+
+
             }
+
         }
     )
 
@@ -161,6 +180,7 @@ fun Tabs(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Pager(
+    isRefreshing: Boolean,
     tabs: List<TabsResponse.Data.Tab>,
     pagerState: PagerState,
     lazyOutlets: LazyPagingItems<OffersResponse.Data.Outlet>,
@@ -193,6 +213,10 @@ fun Pager(
 
                 applyPagination(lazyOutlets)
             }
+
+            if (isRefreshing) {
+                ProgressDialog(Color.White, alpha = 1.0)
+            }
         }
     }
 }
@@ -204,7 +228,7 @@ class OutletProvider : PreviewParameterProvider<OffersResponse.Data.Outlet> {
 @Composable
 fun OutletItem(
     @PreviewParameter(OutletProvider::class) outlet: OffersResponse.Data.Outlet?,
-    navigateToDetail: (outlet:OffersResponse.Data.Outlet?) -> Unit
+    navigateToDetail: (outlet: OffersResponse.Data.Outlet?) -> Unit
 ) {
     Box(
         modifier = Modifier

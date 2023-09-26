@@ -9,6 +9,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.example.domain.models.HomeResponse
 import com.example.adro.paging.BasePagingSource
+import com.example.domain.repos.AuthRepository
 import com.example.domain.usecase.AuthUseCase
 import com.example.domain.usecase.CommonUseCase
 import com.example.domain.usecase.HomeUseCase
@@ -19,7 +20,8 @@ class HomeViewModel(
     application: Application,
     homeUseCase: HomeUseCase,
     authUseCase: AuthUseCase,
-    private val commonUseCase: CommonUseCase
+    private val commonUseCase: CommonUseCase,
+    private val authRepository: AuthRepository
 ) :
     AndroidViewModel(application) {
 

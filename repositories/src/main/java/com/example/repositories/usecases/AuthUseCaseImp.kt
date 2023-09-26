@@ -1,12 +1,16 @@
 package com.example.repositories.usecases
 
-import android.util.Log
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.adro.paging.BasePagingSource
 import com.example.domain.models.ApiResult
 import com.example.domain.models.LoginResponse
 import com.example.domain.models.ProfileResponse
 import com.example.domain.repos.AuthRepository
 import com.example.domain.usecase.AuthUseCase
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
 class AuthUseCaseImp(private val authRepository: AuthRepository) : AuthUseCase {
@@ -16,7 +20,8 @@ class AuthUseCaseImp(private val authRepository: AuthRepository) : AuthUseCase {
         return authRepository.login(params)
     }
 
-    override fun isUserLoggedIn(): Flow<Boolean> = authRepository.isUserLoggedIn().map { it.userId != null }
+    override fun isUserLoggedIn(): Flow<Boolean> =
+        authRepository.isUserLoggedIn().map { it.userId != null }
 
     override fun getUser(): Flow<LoginResponse.Data.User> = authRepository.isUserLoggedIn()
 

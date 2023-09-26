@@ -48,6 +48,7 @@ fun LoadingItem() {
 }
 
 @Composable
+@Preview
 fun ProgressDialog(color: Color = Color.Black.copy(.5f), alpha: Double = 0.5) {
     val context = LocalContext.current
     val imageLoader = ImageLoader.Builder(context)

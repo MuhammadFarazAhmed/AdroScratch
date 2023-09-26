@@ -6,12 +6,11 @@ import androidx.datastore.core.DataStore
 import com.example.adro.common.CommonFlowExtensions.convertToFlow
 import com.example.adro.common.CommonFlowExtensions.toCustomExceptions
 import com.example.adro.common.CommonUtilsExtension
-import com.example.adro.common.CommonUtilsExtension.setDefaultParams
+import com.example.adro.common.CommonUtilsExtension.setCommonParams
 import com.example.domain.models.ApiResult
 import com.example.domain.models.LoginResponse
 import com.example.domain.models.LogoutModel
 import com.example.domain.models.ProfileResponse
-import com.example.domain.models.asList
 import com.example.domain.repos.AuthRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -20,6 +19,7 @@ import io.ktor.http.path
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import com.example.domain.models.asList
 
 class AuthRepositoryImp(
     private val client: HttpClient,
@@ -36,7 +36,7 @@ class AuthRepositoryImp(
             call = {
                 client.post {
                     url { path("/et_user/v5/user/sign_in") }
-                    setDefaultParams(CommonUtilsExtension.API.USER, hashMap)
+                    setCommonParams(CommonUtilsExtension.API.USER, hashMap)
                 }
             }, success = { res ->
                 res.data?.user?.let { user ->
@@ -51,7 +51,7 @@ class AuthRepositoryImp(
             call = {
                 client.post {
                     url { path("/et_user/v5/user/logout") }
-                    setDefaultParams(CommonUtilsExtension.API.USER)
+                    setCommonParams(CommonUtilsExtension.API.USER)
                 }
             }, success = {
                 userDataStore.updateData { LoginResponse.Data.User() }
@@ -66,7 +66,7 @@ class AuthRepositoryImp(
         return try {
             val response = client.post {
                 url { path("et_user/v5/user/profile") }
-                setDefaultParams(CommonUtilsExtension.API.USER)
+                setCommonParams(CommonUtilsExtension.API.USER)
             }
             (response.body() as ProfileResponse).asList()
         } catch (e: Exception) {
