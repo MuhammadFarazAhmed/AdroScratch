@@ -25,7 +25,6 @@ fun ThriveApp(appState: ThriveAppState, vm: CommonViewModel) {
         Scaffold(modifier = Modifier,
 
             topBar = { Toolbar(appState.shouldShowToolBar, appState::navigate) },
-
             content = { padding ->
 
                 Box(
@@ -45,8 +44,8 @@ fun ThriveApp(appState: ThriveAppState, vm: CommonViewModel) {
 
                 }
 
-            }, bottomBar = {
-
+            }, 
+            bottomBar = {
                 BottomNavigationBar(
                     bottomBarState = appState.shouldShowBottomBar,
                     destinations = appState.topLevelDestinations,

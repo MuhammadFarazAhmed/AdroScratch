@@ -33,6 +33,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -74,7 +76,6 @@ import org.koin.androidx.compose.getViewModel
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-@Preview
 fun HomeScreenPreview() {
 
     val pagerState = rememberPagerState()
@@ -180,9 +181,10 @@ class SampleUserProvider : PreviewParameterProvider<HomeResponse.Data.Section> {
 }
 
 @Composable
+@Preview
 fun LoginView(
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section?,
-    navigateToAuth: () -> Unit
+    navigateToAuth: () -> Unit = {}
 ) {
 
     Surface {
@@ -338,8 +340,9 @@ fun LoginView(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
+@Preview
 fun MainCarousal(
-    pagerState: PagerState,
+    pagerState: PagerState = rememberPagerState(),
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
 ) {
 
@@ -414,9 +417,10 @@ fun MainCarousal(
 }
 
 @Composable
+@Preview
 fun Categories(
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section,
-    handleDeeplink: (deepLink: String) -> Unit
+    handleDeeplink: (deepLink: String) -> Unit = {_->}
 ) {
     Column {
 
@@ -483,8 +487,9 @@ fun Categories(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
+@Preview
 fun ExclusiveItem(
-    pagerState: PagerState,
+    pagerState: PagerState = rememberPagerState(),
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
 ) {
 
@@ -569,8 +574,9 @@ fun ExclusiveItem(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
+@Preview
 fun RecommendedItem(
-    pagerState: PagerState,
+    pagerState: PagerState = rememberPagerState(),
     @PreviewParameter(SampleUserProvider::class) section: HomeResponse.Data.Section
 ) {
 

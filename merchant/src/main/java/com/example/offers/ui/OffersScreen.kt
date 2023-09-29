@@ -39,7 +39,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
@@ -190,7 +189,7 @@ fun Pager(
         HorizontalPager(
             state = pagerState,
             count = tabs.size
-        ) { index ->
+        ) { _ ->
 
             LazyColumn(
                 modifier = Modifier.fillMaxSize(),
@@ -213,12 +212,12 @@ fun Pager(
 
                 applyPagination(lazyOutlets)
             }
-
-            if (isRefreshing) {
-                ProgressDialog(Color.White, alpha = 1.0)
-            }
+        }
+        if (isRefreshing) {
+            ProgressDialog(Color.White, alpha = 1.0)
         }
     }
+
 }
 
 class OutletProvider : PreviewParameterProvider<OffersResponse.Data.Outlet> {
@@ -273,7 +272,6 @@ fun OutletItem(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-@Preview
 fun OffersScreenPreview() {
     val coroutineScope = rememberCoroutineScope()
     val tabs = listOf(TabsResponse.Data.Tab("All Offers"))

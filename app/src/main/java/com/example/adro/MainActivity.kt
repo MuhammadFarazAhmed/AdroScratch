@@ -49,11 +49,6 @@ class MainActivity : ComponentActivity() {
 
             LocalizeApp(language) {
                 ThriveApp(appState = appState, vm = vm)
-//                TicketShapeComposable(color = Color(0xFFF58423)) {
-//                    Column {
-//                        Text(text = "Available Offer")
-//                    }
-//                }
             }
 
         }

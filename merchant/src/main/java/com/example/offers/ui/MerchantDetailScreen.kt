@@ -1,6 +1,7 @@
 package com.example.offers.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,6 +22,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -29,6 +32,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
@@ -37,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.toRect
@@ -47,9 +52,14 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathOperation
 import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.nestedscroll.NestedScrollConnection
+import androidx.compose.ui.input.nestedscroll.NestedScrollSource
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.PlatformTextStyle
@@ -69,6 +79,10 @@ import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutState
 import androidx.constraintlayout.compose.MotionScene
 import androidx.constraintlayout.compose.rememberMotionLayoutState
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.itemContentType
+import androidx.paging.compose.itemKey
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.vm.CommonViewModel
@@ -90,9 +104,7 @@ fun MerchantDetailScreen(
         detailVM.merchantDetailResponse.collectAsStateLifecycleAware().value
 
 
-    ChangeStatusBar(isCollapsed = motionState.currentProgress == 1f, vm = vm)
-
-    MainLayout(lazySections, motionState)
+    MainLayout(lazySections, vm)
 
 }
 
@@ -100,9 +112,39 @@ fun MerchantDetailScreen(
 @Composable
 private fun MainLayout(
     lazySections: List<MerchantDetailModel.Data.Detail>?,
-    motionState: MotionLayoutState
+    vm: CommonViewModel
 ) {
 
+    val maxPx = with(LocalDensity.current) { 250.dp.roundToPx().toFloat() }
+    val minPx = with(LocalDensity.current) { 50.dp.roundToPx().toFloat() }
+    val toolbarHeight = remember { mutableStateOf(maxPx) }
+
+    val nestedScrollConnection = remember {
+        object : NestedScrollConnection {
+            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                val height = toolbarHeight.value;
+
+                if (height + available.y > maxPx) {
+                    toolbarHeight.value = maxPx
+                    return Offset(0f, maxPx - height)
+                }
+
+                if (height + available.y < minPx) {
+                    toolbarHeight.value = minPx
+                    return Offset(0f, minPx - height)
+                }
+
+                toolbarHeight.value += available.y
+                return Offset(0f, available.y)
+            }
+
+        }
+    }
+
+    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
+
+    Log.d("progress", progress.toString())
+    ChangeStatusBar(isCollapsed = progress == 1f, vm = vm)
 
     Surface(
         modifier = Modifier
@@ -118,10 +160,14 @@ private fun MainLayout(
                 .decodeToString()
         }
 
+
+
+
         MotionLayout(
             motionScene = MotionScene(content = motionScene),
-            motionLayoutState = motionState,
+            progress = progress,
             modifier = Modifier
+                .nestedScroll(rememberNestedScrollInteropConnection())
                 .fillMaxSize()
         ) {
 
@@ -144,7 +190,7 @@ private fun MainLayout(
                             drawRect(gradient, blendMode = BlendMode.Multiply)
                         }
                     },
-                alignment = BiasAlignment(0f, 1f - ((1f - motionState.currentProgress) * 0.50f))
+                alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
             )
 
             val property = motionProperties("toolbar")
@@ -169,7 +215,7 @@ private fun MainLayout(
                 color = titleProperty.value.color("textColor"),
                 fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
                 fontWeight = FontWeight(500),
-                fontSize = titleProperty.value.fontSize("textSize"),
+//                fontSize = titleProperty.value.fontSize("textSize"),
                 // style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
             )
 
@@ -184,6 +230,7 @@ private fun MainLayout(
                 text = "location",
                 style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
             )
+
 
             FlowRow(modifier = Modifier.layoutId("chips")) {
                 for (item in 1..10) {
@@ -223,41 +270,70 @@ private fun MainLayout(
                     .background(
                         androidx.compose.material3.MaterialTheme.colorScheme.surface
                     )
+                    .nestedScroll(nestedScrollConnection)
                     .layoutId("contentBg")
             ) {
-                Column(modifier = Modifier) {
-                    lazySections?.forEachIndexed { index, it ->
-                        when (it.sectionIdentifier) {
-                            "available_offers" -> {
-                                Column {
-                                    Text(
-                                        text = "Available Offers",
-                                        style = TextStyle(
-                                            fontSize = 16.sp,
-                                            lineHeight = 21.sp,
-                                            fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                                            fontWeight = FontWeight(700),
-                                            color = Color(0xFF3F3E44),
-                                        )
-                                    )
-                                }
-                                lazySections[index].offers?.forEach {
-                                    it?.offersToDisplay?.forEach { offer ->
-                                        TicketShapeComposable(color = offer?.categoryColor?.let { it1 ->
-                                            HexToJetpackColor.getColorWithHash(it1)
-                                        })
+                lazySections?.let { lazyItems ->
+                    LazyColumn(modifier = Modifier) {
+                        items(lazyItems)
+                        {
+                            when (it.sectionIdentifier) {
+                                "available_offers" -> {
+                                    Column {
 
+                                        Text(
+                                            modifier = Modifier.zIndex(1f),
+                                            textAlign = TextAlign.Center,
+                                            fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                            fontWeight = FontWeight(500),
+                                            fontSize = titleProperty.value.fontSize("textSize"),
+                                            text = "Available Offers",
+                                            style = TextStyle(
+                                                fontSize = 16.sp,
+                                                lineHeight = 21.sp,
+                                                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                                fontWeight = FontWeight(700),
+                                                color = Color(0xFF3F3E44),
+                                            )
+                                        )
+                                    }
+                                    it.offers?.forEach {
+                                        it?.offersToDisplay?.forEach { offer ->
+                                            TicketShapeComposable(color = offer?.categoryColor?.let { it1 ->
+                                                HexToJetpackColor.getColorWithHash(it1)
+                                            })
+
+                                        }
+                                    }
+                                }
+
+                                "about" -> {
+                                    val item = it
+                                    Column(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 16.dp)
+                                    ) {
+                                        Text(
+                                            style = TextStyle(
+                                                fontSize = 16.sp,
+                                                lineHeight = 21.sp,
+                                                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                                fontWeight = FontWeight(700),
+                                                color = Color(0xFF3F3E44),
+                                            ),
+                                            modifier = Modifier.zIndex(1f),
+                                            textAlign = TextAlign.Center,
+                                            fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                            fontWeight = FontWeight(500),
+                                            fontSize = titleProperty.value.fontSize("textSize"),
+                                            text = item.sectionTitle.toString()
+                                        )
+                                        Text(text = item.outletDescription.toString())
                                     }
                                 }
                             }
 
-                            "about" -> {
-                                val item = lazySections[index]
-                                Column {
-                                    Text(text = item.sectionTitle.toString())
-                                    Text(text = item.outletDescription.toString())
-                                }
-                            }
                         }
                     }
                 }
@@ -349,8 +425,8 @@ fun TicketShapeComposable(
     }
 
 }
+
 @Composable
-@Preview
 private fun TicketInnerUI() {
 
     Row(
@@ -393,27 +469,30 @@ private fun TicketInnerUI() {
                         color = Color(0xFF282828),
                     )
                 )
-                    Text(modifier = Modifier
+                Text(
+                    modifier = Modifier
                         .background(
                             color = Color(0xFFFCF1DD),
                             shape = RoundedCornerShape(CornerSize(50.dp))
                         )
                         .wrapContentSize()
-                        .padding(horizontal = 6.dp)
-                        ,
-                        text = "Reusable",
-                        style = TextStyle(
-                            fontSize = 10.sp,
-                            lineHeight = 12.sp,
-                            fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra))
-                        ),
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFFF58423),
-                    )
+                        .padding(horizontal = 6.dp),
+                    text = "Reusable",
+                    style = TextStyle(
+                        fontSize = 10.sp,
+                        lineHeight = 12.sp,
+                        fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra))
+                    ),
+                    fontWeight = FontWeight(400),
+                    color = Color(0xFFF58423),
+                )
 
             }
             Text(modifier = Modifier.padding(start = 8.dp), text = "Dine-in")
-            Text(modifier = Modifier.padding(start = 8.dp, bottom = 8.dp), text = "Valid to 31 Dec 2021")
+            Text(
+                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp),
+                text = "Valid to 31 Dec 2021"
+            )
 
         }
 
@@ -423,9 +502,8 @@ private fun TicketInnerUI() {
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
-@Preview
 private fun ScreenPreview() {
-    MainLayout(null, rememberMotionLayoutState())
+//    MainLayout(null)
 }
 
 @Composable
