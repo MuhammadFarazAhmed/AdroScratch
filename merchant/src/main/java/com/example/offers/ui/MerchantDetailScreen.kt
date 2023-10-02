@@ -1,7 +1,7 @@
 package com.example.offers.ui
 
 import android.annotation.SuppressLint
-import android.util.Log
+import android.content.res.Resources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -26,7 +27,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
 import androidx.compose.material3.Text
@@ -37,7 +37,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.draw.drawWithCache
 import androidx.compose.ui.geometry.CornerRadius
@@ -62,7 +61,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.ParagraphStyle
-import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.Font
@@ -76,13 +74,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
-import androidx.constraintlayout.compose.MotionLayoutState
 import androidx.constraintlayout.compose.MotionScene
 import androidx.constraintlayout.compose.rememberMotionLayoutState
-import androidx.paging.compose.LazyPagingItems
-import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemContentType
-import androidx.paging.compose.itemKey
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.vm.CommonViewModel
@@ -104,7 +97,9 @@ fun MerchantDetailScreen(
         detailVM.merchantDetailResponse.collectAsStateLifecycleAware().value
 
 
-    MainLayout(lazySections, vm)
+    MainLayout(lazySections) {
+        ChangeStatusBar(isCollapsed = it == 1f, vm = vm)
+    }
 
 }
 
@@ -112,7 +107,7 @@ fun MerchantDetailScreen(
 @Composable
 private fun MainLayout(
     lazySections: List<MerchantDetailModel.Data.Detail>?,
-    vm: CommonViewModel
+    callback: @Composable (Float) -> Unit = {}
 ) {
 
     val maxPx = with(LocalDensity.current) { 250.dp.roundToPx().toFloat() }
@@ -141,10 +136,10 @@ private fun MainLayout(
         }
     }
 
-    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
 
-    Log.d("progress", progress.toString())
-    ChangeStatusBar(isCollapsed = progress == 1f, vm = vm)
+    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
+    callback(progress)
+
 
     Surface(
         modifier = Modifier
@@ -160,24 +155,18 @@ private fun MainLayout(
                 .decodeToString()
         }
 
-
-
-
         MotionLayout(
             motionScene = MotionScene(content = motionScene),
             progress = progress,
             modifier = Modifier
-                .nestedScroll(rememberNestedScrollInteropConnection())
                 .fillMaxSize()
         ) {
-
-
             Image(
                 painter = painterResource(id = com.example.base.R.drawable.demoimage),
                 contentDescription = "",
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .fillMaxSize()
                     .layoutId("collapsing_image")
                     .drawWithCache {
                         val gradient = Brush.verticalGradient(
@@ -193,30 +182,17 @@ private fun MainLayout(
                 alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
             )
 
-            val property = motionProperties("toolbar")
-            Box(
-                modifier = Modifier
-                    .layoutId("toolbar")
-                    .background(property.value.color("background"))
-            ) {}
-
             val titleProperty = motionProperties("title")
             Text(
-                style = TextStyle(
-                    platformStyle = PlatformTextStyle(
-                        includeFontPadding = false,
-                    ),
-                ),
                 modifier = Modifier
-                    .zIndex(1f)
-                    .layoutId("title"),
+                    .layoutId("title").zIndex(10f),
                 textAlign = TextAlign.Center,
                 text = "Title",
                 color = titleProperty.value.color("textColor"),
                 fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
                 fontWeight = FontWeight(500),
-//                fontSize = titleProperty.value.fontSize("textSize"),
-                // style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
+                fontSize = 30.sp,
+                style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
             )
 
             Text(
@@ -250,19 +226,34 @@ private fun MainLayout(
                 color = Color.LightGray
             )
 
-            Image(
-                modifier = Modifier.layoutId("ivBack"),
-                painter = painterResource(com.example.base.R.drawable.ic_back),
-                contentDescription = "",
-                contentScale = ContentScale.Crop
-            )
+            val property = motionProperties("toolbar")
+            Box(
+                contentAlignment = Alignment.BottomCenter,
+                modifier = Modifier
+                    .layoutId("toolbar")
+                    .background(property.value.color("background"))
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
 
-            Image(
-                modifier = Modifier.layoutId("ivFav"),
-                painter = painterResource(com.example.base.R.drawable.ic_favorite),
-                contentDescription = "",
-                contentScale = ContentScale.Crop
-            )
+                    Image(
+                        modifier = Modifier.height(55.dp),
+                        painter = painterResource(com.example.base.R.drawable.ic_back),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop
+                    )
+
+                    Image(
+                        modifier = Modifier.height(55.dp),
+                        painter = painterResource(com.example.base.R.drawable.ic_favorite),
+                        contentDescription = "",
+                        contentScale = ContentScale.Crop
+                    )
+                }
+            }
 
             Box(
                 modifier = Modifier
@@ -502,8 +493,9 @@ private fun TicketInnerUI() {
 
 @OptIn(ExperimentalMotionApi::class)
 @Composable
+@Preview
 private fun ScreenPreview() {
-//    MainLayout(null)
+    MainLayout(listOf())
 }
 
 @Composable
@@ -515,6 +507,10 @@ private fun ChangeStatusBar(isCollapsed: Boolean, vm: CommonViewModel) {
     DisposableEffect(systemUiController, useDarkIcons) {
         // make activity fit system window false for transparent status bar
         vm.makeStatusBarTranslucent.value = false
+        systemUiController.setSystemBarsColor(
+            color = Color.Transparent,
+            darkIcons = false
+        )
 
         onDispose {
             vm.makeStatusBarTranslucent.value = true
@@ -525,17 +521,17 @@ private fun ChangeStatusBar(isCollapsed: Boolean, vm: CommonViewModel) {
         }
     }
 
-    if (isCollapsed) {
-        systemUiController.setSystemBarsColor(
-            color = Color.Black,
-            darkIcons = false
-        )
-    } else {
-        systemUiController.setSystemBarsColor(
-            color = Color.Transparent,
-            darkIcons = false
-        )
-    }
+//    if (isCollapsed) {
+//        systemUiController.setSystemBarsColor(
+//            color = Color.Black,
+//            darkIcons = false
+//        )
+//    } else {
+//        systemUiController.setSystemBarsColor(
+//            color = Color.Transparent,
+//            darkIcons = false
+//        )
+//    }
 }
 
 

@@ -7,66 +7,46 @@
         top: ['parent', 'top', 0],
         start: ['parent', 'start', 0],
         end: ['parent', 'end', 0],
-        translationY: 0,
-        alpha: 1
+      },
+      toolbar: {
+        width: 'spread',
+        height: 90,
+        start: ['parent', 'start',0],
+        end: ['parent', 'end',0],
+        top: ['parent','top', 0],
+        custom: {
+          background: '#00ffffff'
+        }
       },
       title: {
-        height: 'wrap',
         top: ['parent', 'top', 250],
         start: ['parent', 'start', 16],
         custom: {
           textColor: '#000000',
-          textSize: 30
         },
-        alpha: 1
       },
       description: {
         top: ['title', 'bottom'],
         start: ['parent', 'start', 16],
         translationY: 0,
-        alpha: 1
       },
       location: {
         top: ['description', 'bottom', 8],
         start: ['parent', 'start', 16],
         translationY: 0,
-        alpha: 1
       },
       chips: {
         top: ['location', 'bottom', 8],
         start: ['parent', 'start', 16],
         translationY: 0,
-        alpha: 1
       },
       divider: {
         top: ['chips', 'bottom', 16],
         start: ['parent', 'start', 16],
         end: ['parent', 'end', 16],
         translationY: 0,
-        alpha: 1
       },
-      toolbar: {
-        width: 'spread',
-        height: 60,
-        start: ['parent', 'start',0],
-        end: ['parent', 'end',0],
-        top: ['parent','top', 24],
-        custom: {
-          background: '#00ffffff'
-        }
-      },
-      ivBack: {
-        width: 56,
-        height: 56,
-        top: ['parent', 'top', 24],
-        start: ['parent', 'start', 0],
-      },
-      ivFav: {
-        width: 56,
-        height: 56,
-        top: ['parent', 'top', 24],
-        end: ['parent', 'end', 0]
-      },
+
       contentBg: {
         width: 'spread',
         height: 'spread',
@@ -80,70 +60,51 @@
     end: {
       collapsing_image: {
         width: "spread",
-        height: 250,
+        height: 90,
         top: ['parent', 'top', 0],
         start: ['parent', 'start', 0],
         end: ['parent', 'end', 0],
-        translationY: -250,
-        alpha: 0.3
       },
-      title: {
-        height: 'wrap',
-        centerVertically: 'toolbar',
-        top: ['toolbar', 'top', 0],
-        start: ['ivBack', 'end', 0],
+      toolbar: {
+        width: 'spread',
+        height: 90,
+        start: ['parent', 'start',0],
+        end: ['parent', 'end',0],
+        top: ['parent','top', 0],
         custom: {
-          textColor: '#FFFFFF',
-          textSize: 28,
+          background: '#000000'
         }
       },
-      alpha: 1,
+      title: {
+        top: ['toolbar', 'top', 24],
+        start: ['toolbar', 'start', 72],
+        scaleX: 0.6,
+        scaleY: 0.6,
+        centerVertically: 'collapsing_image',
+        custom: {
+          textColor: '#FFFFFF',
+        }
+      },
       description: {
         top: ['title', 'bottom'],
         start: ['parent', 'start', 16],
-        translationY: -250,
         alpha: 0
       },
       location: {
         top: ['description', 'bottom', 8],
         start: ['parent', 'start', 16],
-        translationY: -250,
         alpha: 0
       },
       chips: {
         top: ['location', 'bottom', 8],
         start: ['parent', 'start', 16],
-        translationY: -250,
         alpha: 0
       },
       divider: {
         top: ['chips', 'bottom', 16],
         start: ['parent', 'start', 16],
         end: ['parent', 'end', 16],
-        translationY: -250,
         alpha: 0.3
-      },
-      toolbar: {
-        width: 'spread',
-        height: 60,
-        start: ['parent', 'start',0],
-        end: ['parent', 'end',0],
-        top: ['parent','top', 24],
-        custom: {
-          background: '#000000'
-        }
-      },
-      ivBack: {
-        width: 56,
-        height: 56,
-        top: ['parent', 'top', 24],
-        start: ['parent', 'start', 0],
-      },
-      ivFav: {
-        width: 56,
-        height: 56,
-        top: ['parent', 'top', 24],
-        end: ['parent', 'end', 0]
       },
       contentBg: {
         width: 'spread',
@@ -161,20 +122,6 @@
       from: 'start',
       to: 'end',
       pathMotionArc: 'startHorizontal',
-      KeyFrames: {
-        KeyAttributes: [{
-          target: ['title'],
-          frames: [0, 50, 100],
-          translationX: [0, 30, 0],
-        }],
-      },
-      onSwipe: {
-        anchor: 'contentBg',
-        direction: 'up',
-        maxVelocity: 4.2,
-        maxAccel: 3,
-        side: 'top',
-      },
     }
   }
 }
