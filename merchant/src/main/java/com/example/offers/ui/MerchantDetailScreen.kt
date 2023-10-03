@@ -1,7 +1,6 @@
 package com.example.offers.ui
 
 import android.annotation.SuppressLint
-import android.content.res.Resources
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,7 +18,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -58,7 +56,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.ParagraphStyle
 import androidx.compose.ui.text.TextStyle
@@ -74,8 +71,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
+import androidx.constraintlayout.compose.MotionLayoutScope
 import androidx.constraintlayout.compose.MotionScene
-import androidx.constraintlayout.compose.rememberMotionLayoutState
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.vm.CommonViewModel
@@ -84,7 +81,6 @@ import com.example.offers.vm.MerchantDetailViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import org.koin.androidx.compose.getViewModel
 
-@OptIn(ExperimentalMotionApi::class)
 @SuppressLint("InternalInsetResource", "DiscouragedApi")
 @Composable
 fun MerchantDetailScreen(
@@ -92,23 +88,8 @@ fun MerchantDetailScreen(
     detailVM: MerchantDetailViewModel = getViewModel()
 ) {
 
-    val motionState = rememberMotionLayoutState()
     val lazySections =
         detailVM.merchantDetailResponse.collectAsStateLifecycleAware().value
-
-
-    MainLayout(lazySections) {
-        ChangeStatusBar(isCollapsed = it == 1f, vm = vm)
-    }
-
-}
-
-@OptIn(ExperimentalMotionApi::class, ExperimentalLayoutApi::class)
-@Composable
-private fun MainLayout(
-    lazySections: List<MerchantDetailModel.Data.Detail>?,
-    callback: @Composable (Float) -> Unit = {}
-) {
 
     val maxPx = with(LocalDensity.current) { 250.dp.roundToPx().toFloat() }
     val minPx = with(LocalDensity.current) { 50.dp.roundToPx().toFloat() }
@@ -138,8 +119,21 @@ private fun MainLayout(
 
 
     val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
-    callback(progress)
 
+
+    ChangeStatusBar(vm)
+
+    MainLayout(lazySections, nestedScrollConnection, progress)
+
+}
+
+@OptIn(ExperimentalMotionApi::class)
+@Composable
+private fun MainLayout(
+    lazySections: List<MerchantDetailModel.Data.Detail>?,
+    nestedScrollConnection: NestedScrollConnection,
+    progress: Float
+) {
 
     Surface(
         modifier = Modifier
@@ -161,170 +155,186 @@ private fun MainLayout(
             modifier = Modifier
                 .fillMaxSize()
         ) {
+
+            MotionHeaderLayout(progress = progress)
+
+            lazySections?.let { lazyItems ->
+                MotionListLayout(lazyItems, nestedScrollConnection)
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+@Preview
+fun MotionLayoutScope.MotionHeaderLayout(progress: Float = 0f) {
+    Image(
+        painter = painterResource(id = com.example.base.R.drawable.demoimage),
+        contentDescription = "",
+        contentScale = ContentScale.Crop,
+        modifier = Modifier
+            .fillMaxSize()
+            .layoutId("collapsing_image")
+            .drawWithCache {
+                val gradient = Brush.verticalGradient(
+                    colors = listOf(Color.Transparent, Color.Black),
+                    startY = size.height / 3,
+                    endY = size.height
+                )
+                onDrawWithContent {
+                    drawContent()
+                    drawRect(gradient, blendMode = BlendMode.Multiply)
+                }
+            },
+        alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
+    )
+
+    val titleProperty = motionProperties("title")
+    Text(
+        modifier = Modifier
+            .layoutId("title")
+            .zIndex(10f),
+        textAlign = TextAlign.Center,
+        text = "Title",
+        color = titleProperty.value.color("textColor"),
+        fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+        fontWeight = FontWeight(500),
+        fontSize = 30.sp,
+        style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
+    )
+
+    Text(
+        modifier = Modifier.layoutId("description"),
+        text = "description",
+        style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+    )
+
+    Text(
+        modifier = Modifier.layoutId("location"),
+        text = "location",
+        style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
+    )
+
+
+    FlowRow(modifier = Modifier.layoutId("chips")) {
+        for (item in 1..10) {
+            Text(text = buildAnnotatedString {
+                withStyle(ParagraphStyle()) {
+                    append(" \u2022 ")
+                    append("$item")
+                }
+            }
+            )
+        }
+    }
+
+    Divider(
+        modifier = Modifier.layoutId("divider"),
+        thickness = 1.dp,
+        color = Color.LightGray
+    )
+
+    val property = motionProperties("toolbar")
+    Box(
+        contentAlignment = Alignment.BottomCenter,
+        modifier = Modifier
+            .layoutId("toolbar")
+            .background(property.value.color("background"))
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
             Image(
-                painter = painterResource(id = com.example.base.R.drawable.demoimage),
+                modifier = Modifier.height(55.dp),
+                painter = painterResource(com.example.base.R.drawable.ic_back),
                 contentDescription = "",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .layoutId("collapsing_image")
-                    .drawWithCache {
-                        val gradient = Brush.verticalGradient(
-                            colors = listOf(Color.Transparent, Color.Black),
-                            startY = size.height / 3,
-                            endY = size.height
-                        )
-                        onDrawWithContent {
-                            drawContent()
-                            drawRect(gradient, blendMode = BlendMode.Multiply)
+                contentScale = ContentScale.Crop
+            )
+
+            Image(
+                modifier = Modifier.height(55.dp),
+                painter = painterResource(com.example.base.R.drawable.ic_favorite),
+                contentDescription = "",
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
+}
+
+
+@Composable
+private fun MotionListLayout(
+    lazyItems: List<MerchantDetailModel.Data.Detail> = emptyList(),
+    nestedScrollConnection: NestedScrollConnection
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .background(
+                androidx.compose.material3.MaterialTheme.colorScheme.surface
+            )
+            .nestedScroll(nestedScrollConnection)
+            .layoutId("contentBg")
+    ) {
+        LazyColumn(modifier = Modifier) {
+            items(lazyItems)
+            {
+                when (it.sectionIdentifier) {
+                    "available_offers" -> {
+                        Column {
+
+                            Text(
+                                modifier = Modifier.zIndex(1f),
+                                textAlign = TextAlign.Center,
+                                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                fontWeight = FontWeight(500),
+                                fontSize = 30.sp,
+                                text = "Available Offers",
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 21.sp,
+                                    fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                    fontWeight = FontWeight(700),
+                                    color = Color(0xFF3F3E44),
+                                )
+                            )
                         }
-                    },
-                alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
-            )
+                        it.offers?.forEach {
+                            it?.offersToDisplay?.forEach { offer ->
+                                TicketShapeComposable(color = offer?.categoryColor?.let { it1 ->
+                                    HexToJetpackColor.getColorWithHash(it1)
+                                })
 
-            val titleProperty = motionProperties("title")
-            Text(
-                modifier = Modifier
-                    .layoutId("title").zIndex(10f),
-                textAlign = TextAlign.Center,
-                text = "Title",
-                color = titleProperty.value.color("textColor"),
-                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                fontWeight = FontWeight(500),
-                fontSize = 30.sp,
-                style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
-            )
-
-            Text(
-                modifier = Modifier.layoutId("description"),
-                text = "description",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
-            )
-
-            Text(
-                modifier = Modifier.layoutId("location"),
-                text = "location",
-                style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
-            )
-
-
-            FlowRow(modifier = Modifier.layoutId("chips")) {
-                for (item in 1..10) {
-                    Text(text = buildAnnotatedString {
-                        withStyle(ParagraphStyle()) {
-                            append(" \u2022 ")
-                            append("$item")
+                            }
                         }
                     }
-                    )
-                }
-            }
-
-            Divider(
-                modifier = Modifier.layoutId("divider"),
-                thickness = 1.dp,
-                color = Color.LightGray
-            )
-
-            val property = motionProperties("toolbar")
-            Box(
-                contentAlignment = Alignment.BottomCenter,
-                modifier = Modifier
-                    .layoutId("toolbar")
-                    .background(property.value.color("background"))
-            ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-
-                    Image(
-                        modifier = Modifier.height(55.dp),
-                        painter = painterResource(com.example.base.R.drawable.ic_back),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
-                    )
-
-                    Image(
-                        modifier = Modifier.height(55.dp),
-                        painter = painterResource(com.example.base.R.drawable.ic_favorite),
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
-                    )
-                }
-            }
-
-            Box(
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .background(
-                        androidx.compose.material3.MaterialTheme.colorScheme.surface
-                    )
-                    .nestedScroll(nestedScrollConnection)
-                    .layoutId("contentBg")
-            ) {
-                lazySections?.let { lazyItems ->
-                    LazyColumn(modifier = Modifier) {
-                        items(lazyItems)
-                        {
-                            when (it.sectionIdentifier) {
-                                "available_offers" -> {
-                                    Column {
-
-                                        Text(
-                                            modifier = Modifier.zIndex(1f),
-                                            textAlign = TextAlign.Center,
-                                            fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                                            fontWeight = FontWeight(500),
-                                            fontSize = titleProperty.value.fontSize("textSize"),
-                                            text = "Available Offers",
-                                            style = TextStyle(
-                                                fontSize = 16.sp,
-                                                lineHeight = 21.sp,
-                                                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                                                fontWeight = FontWeight(700),
-                                                color = Color(0xFF3F3E44),
-                                            )
-                                        )
-                                    }
-                                    it.offers?.forEach {
-                                        it?.offersToDisplay?.forEach { offer ->
-                                            TicketShapeComposable(color = offer?.categoryColor?.let { it1 ->
-                                                HexToJetpackColor.getColorWithHash(it1)
-                                            })
-
-                                        }
-                                    }
-                                }
-
-                                "about" -> {
-                                    val item = it
-                                    Column(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 16.dp)
-                                    ) {
-                                        Text(
-                                            style = TextStyle(
-                                                fontSize = 16.sp,
-                                                lineHeight = 21.sp,
-                                                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                                                fontWeight = FontWeight(700),
-                                                color = Color(0xFF3F3E44),
-                                            ),
-                                            modifier = Modifier.zIndex(1f),
-                                            textAlign = TextAlign.Center,
-                                            fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
-                                            fontWeight = FontWeight(500),
-                                            fontSize = titleProperty.value.fontSize("textSize"),
-                                            text = item.sectionTitle.toString()
-                                        )
-                                        Text(text = item.outletDescription.toString())
-                                    }
-                                }
-                            }
-
+                    "about" -> {
+                        val item = it
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp)
+                        ) {
+                            Text(
+                                style = TextStyle(
+                                    fontSize = 16.sp,
+                                    lineHeight = 21.sp,
+                                    fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                    fontWeight = FontWeight(700),
+                                    color = Color(0xFF3F3E44),
+                                ),
+                                modifier = Modifier.zIndex(1f),
+                                textAlign = TextAlign.Center,
+                                fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
+                                fontWeight = FontWeight(500),
+                                fontSize = 30.sp,
+                                text = item.sectionTitle.toString()
+                            )
+                            Text(text = item.outletDescription.toString())
                         }
                     }
                 }
@@ -491,15 +501,9 @@ private fun TicketInnerUI() {
     }
 }
 
-@OptIn(ExperimentalMotionApi::class)
-@Composable
-@Preview
-private fun ScreenPreview() {
-    MainLayout(listOf())
-}
 
 @Composable
-private fun ChangeStatusBar(isCollapsed: Boolean, vm: CommonViewModel) {
+private fun ChangeStatusBar(vm: CommonViewModel) {
 
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = !isSystemInDarkTheme()
@@ -520,18 +524,6 @@ private fun ChangeStatusBar(isCollapsed: Boolean, vm: CommonViewModel) {
             )
         }
     }
-
-//    if (isCollapsed) {
-//        systemUiController.setSystemBarsColor(
-//            color = Color.Black,
-//            darkIcons = false
-//        )
-//    } else {
-//        systemUiController.setSystemBarsColor(
-//            color = Color.Transparent,
-//            darkIcons = false
-//        )
-//    }
 }
 
 
