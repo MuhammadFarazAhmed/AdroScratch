@@ -23,6 +23,8 @@ object MerchantDestination : ThriveNavigationDestination {
 
     const val detail = "merchant_detail/"
 
+    const val redemption = "redemption/"
+
     const val specificOffers = "merchant_specific_category_route"
 }
 
@@ -53,5 +55,9 @@ fun NavGraphBuilder.merchantGraph(
         MerchantDestination.detail
     ) {
         MerchantDetailScreen(vm)
+    }
+
+    composable(MerchantDestination.redemption){
+        
     }
 }

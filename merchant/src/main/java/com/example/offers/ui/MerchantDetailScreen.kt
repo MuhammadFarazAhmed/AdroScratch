@@ -27,9 +27,11 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -65,7 +67,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -73,6 +74,7 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.constraintlayout.compose.MotionLayout
 import androidx.constraintlayout.compose.MotionLayoutScope
 import androidx.constraintlayout.compose.MotionScene
+import coil.compose.AsyncImage
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.common.HexToJetpackColor
 import com.example.adro.vm.CommonViewModel
@@ -91,39 +93,11 @@ fun MerchantDetailScreen(
     val lazySections =
         detailVM.merchantDetailResponse.collectAsStateLifecycleAware().value
 
-    val maxPx = with(LocalDensity.current) { 250.dp.roundToPx().toFloat() }
-    val minPx = with(LocalDensity.current) { 50.dp.roundToPx().toFloat() }
-    val toolbarHeight = remember { mutableStateOf(maxPx) }
-
-    val nestedScrollConnection = remember {
-        object : NestedScrollConnection {
-            override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
-                val height = toolbarHeight.value;
-
-                if (height + available.y > maxPx) {
-                    toolbarHeight.value = maxPx
-                    return Offset(0f, maxPx - height)
-                }
-
-                if (height + available.y < minPx) {
-                    toolbarHeight.value = minPx
-                    return Offset(0f, minPx - height)
-                }
-
-                toolbarHeight.value += available.y
-                return Offset(0f, available.y)
-            }
-
-        }
-    }
-
-
-    val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
 
 
     ChangeStatusBar(vm)
 
-    MainLayout(lazySections, nestedScrollConnection, progress)
+    MainLayout(lazySections)
 
 }
 
@@ -131,8 +105,6 @@ fun MerchantDetailScreen(
 @Composable
 private fun MainLayout(
     lazySections: List<MerchantDetailModel.Data.Detail>?,
-    nestedScrollConnection: NestedScrollConnection,
-    progress: Float
 ) {
 
     Surface(
@@ -149,17 +121,54 @@ private fun MainLayout(
                 .decodeToString()
         }
 
+        val maxPx = with(LocalDensity.current) { 250.dp.roundToPx().toFloat() }
+        val minPx = with(LocalDensity.current) { 50.dp.roundToPx().toFloat() }
+        val toolbarHeight = remember { mutableStateOf(maxPx) }
+
+        val nestedScrollConnection = remember {
+            object : NestedScrollConnection {
+                override fun onPreScroll(available: Offset, source: NestedScrollSource): Offset {
+                    val height = toolbarHeight.value;
+
+                    if (height + available.y > maxPx) {
+                        toolbarHeight.value = maxPx
+                        return Offset(0f, maxPx - height)
+                    }
+
+                    if (height + available.y < minPx) {
+                        toolbarHeight.value = minPx
+                        return Offset(0f, minPx - height)
+                    }
+
+                    toolbarHeight.value += available.y
+                    return Offset(0f, available.y)
+                }
+
+            }
+        }
+
+
+        val progress = 1 - (toolbarHeight.value - minPx) / (maxPx - minPx)
+
         MotionLayout(
             motionScene = MotionScene(content = motionScene),
             progress = progress,
             modifier = Modifier
                 .fillMaxSize()
         ) {
-
-            MotionHeaderLayout(progress = progress)
+            val titleProperty = motionProperties("title")
+            val property = motionProperties("toolbar")
 
             lazySections?.let { lazyItems ->
-                MotionListLayout(lazyItems, nestedScrollConnection)
+                if (lazyItems.isNotEmpty()) {
+                    MotionHeaderLayout(
+                        progress = progress,
+                        lazyItems[0],
+                        titleProperty = titleProperty,
+                        property
+                    )
+                    MotionListLayout(lazyItems, nestedScrollConnection)
+                }
             }
         }
     }
@@ -167,10 +176,15 @@ private fun MainLayout(
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-@Preview
-fun MotionLayoutScope.MotionHeaderLayout(progress: Float = 0f) {
-    Image(
-        painter = painterResource(id = com.example.base.R.drawable.demoimage),
+fun MotionHeaderLayout(
+    progress: Float = 0f,
+    item: MerchantDetailModel.Data.Detail,
+    titleProperty: State<MotionLayoutScope.MotionProperties>,
+    property: State<MotionLayoutScope.MotionProperties>
+) {
+
+    AsyncImage(
+        model = item.imageUrl,
         contentDescription = "",
         contentScale = ContentScale.Crop,
         modifier = Modifier
@@ -190,39 +204,40 @@ fun MotionLayoutScope.MotionHeaderLayout(progress: Float = 0f) {
         alignment = BiasAlignment(0f, 1f - ((1f - progress) * 0.50f))
     )
 
-    val titleProperty = motionProperties("title")
     Text(
         modifier = Modifier
             .layoutId("title")
             .zIndex(10f),
         textAlign = TextAlign.Center,
-        text = "Title",
+        text = item.merchantName ?: "",
         color = titleProperty.value.color("textColor"),
         fontFamily = FontFamily(Font(com.example.base.R.font.emad_diana_extra)),
         fontWeight = FontWeight(500),
-        fontSize = 30.sp,
+        fontSize = 22.sp,
         style = androidx.compose.material3.MaterialTheme.typography.headlineLarge
     )
 
     Text(
-        modifier = Modifier.layoutId("description"),
-        text = "description",
+        modifier = Modifier
+            .layoutId("description"),
+        text = item.locationDescription ?: "",
         style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
     )
 
     Text(
-        modifier = Modifier.layoutId("location"),
-        text = "location",
+        modifier = Modifier
+            .layoutId("location"),
+        text = item.locationDescription ?: "",
         style = androidx.compose.material3.MaterialTheme.typography.bodyMedium
     )
 
 
     FlowRow(modifier = Modifier.layoutId("chips")) {
-        for (item in 1..10) {
+        item.categoryItem?.forEach {
             Text(text = buildAnnotatedString {
                 withStyle(ParagraphStyle()) {
                     append(" \u2022 ")
-                    append("$item")
+                    append("${it?.itemName}")
                 }
             }
             )
@@ -235,7 +250,7 @@ fun MotionLayoutScope.MotionHeaderLayout(progress: Float = 0f) {
         color = Color.LightGray
     )
 
-    val property = motionProperties("toolbar")
+
     Box(
         contentAlignment = Alignment.BottomCenter,
         modifier = Modifier
@@ -249,7 +264,9 @@ fun MotionLayoutScope.MotionHeaderLayout(progress: Float = 0f) {
         ) {
 
             Image(
-                modifier = Modifier.height(55.dp),
+                modifier = Modifier
+                    .layoutId("ivBack")
+                    .height(55.dp),
                 painter = painterResource(com.example.base.R.drawable.ic_back),
                 contentDescription = "",
                 contentScale = ContentScale.Crop
@@ -263,6 +280,8 @@ fun MotionLayoutScope.MotionHeaderLayout(progress: Float = 0f) {
             )
         }
     }
+
+
 }
 
 
@@ -274,9 +293,7 @@ private fun MotionListLayout(
     Box(
         modifier = Modifier
             .fillMaxHeight()
-            .background(
-                androidx.compose.material3.MaterialTheme.colorScheme.surface
-            )
+            .background(MaterialTheme.colorScheme.surface)
             .nestedScroll(nestedScrollConnection)
             .layoutId("contentBg")
     ) {
@@ -312,6 +329,7 @@ private fun MotionListLayout(
                             }
                         }
                     }
+
                     "about" -> {
                         val item = it
                         Column(
@@ -343,7 +361,6 @@ private fun MotionListLayout(
     }
 }
 
-@Preview
 @Composable
 fun TicketShapeComposable(
     modifier: Modifier = Modifier,

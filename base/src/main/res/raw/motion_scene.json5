@@ -31,7 +31,7 @@
         translationY: 0,
       },
       location: {
-        top: ['description', 'bottom', 8],
+        top: ['description', 'bottom', 0],
         start: ['parent', 'start', 16],
         translationY: 0,
       },
@@ -76,11 +76,11 @@
         }
       },
       title: {
-        top: ['toolbar', 'top', 24],
-        start: ['toolbar', 'start', 72],
-        scaleX: 0.6,
-        scaleY: 0.6,
-        centerVertically: 'collapsing_image',
+        top: ['parent', 'top', 24],
+        start: ['toolbar', 'start', 32],
+        centerVertically: 'toolbar',
+        scaleX: 0.7,
+        scaleY: 0.7,
         custom: {
           textColor: '#FFFFFF',
         }
@@ -121,7 +121,15 @@
     default: {
       from: 'start',
       to: 'end',
-      pathMotionArc: 'startHorizontal',
+
+      onSwipe: {
+        anchor: 'contentBg',
+        side: 'top',
+        direction : "up",
+        touchUp : "autocomplete",
+        maxVelocity : 1.0,
+        maxAccel : 1.2
+      }
     }
   }
 }
