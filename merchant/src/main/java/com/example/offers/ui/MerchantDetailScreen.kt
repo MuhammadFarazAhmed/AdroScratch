@@ -324,7 +324,9 @@ private fun MotionListLayout(
                             it?.offersToDisplay?.forEach { offer ->
                                 TicketShapeComposable(color = offer?.categoryColor?.let { it1 ->
                                     HexToJetpackColor.getColorWithHash(it1)
-                                })
+                                }) {
+                                    TicketInnerUI()
+                                }
 
                             }
                         }
@@ -364,7 +366,8 @@ private fun MotionListLayout(
 @Composable
 fun TicketShapeComposable(
     modifier: Modifier = Modifier,
-    color: Color? = Color(0xFFF58423)
+    color: Color? = Color(0xFFF58423),
+    content: @Composable () -> Unit,
 ) {
 
     Box(modifier = modifier
@@ -438,7 +441,7 @@ fun TicketShapeComposable(
         .padding(4.dp)
     ) {
 
-        TicketInnerUI()
+        content()
 
     }
 

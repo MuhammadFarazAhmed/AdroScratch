@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import com.example.adro.common.CommonFlowExtensions.LocalizeApp
 import com.example.adro.common.CommonFlowExtensions.collectAsStateLifecycleAware
 import com.example.adro.vm.CommonViewModel
+import com.example.offers.ui.RedemptionScreen
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -47,9 +48,11 @@ class MainActivity : ComponentActivity() {
             val appState = rememberAdroAppState()
             navController = appState.navController
 
-            LocalizeApp(language) {
-                ThriveApp(appState = appState, vm = vm)
-            }
+//            LocalizeApp(language) {
+//                ThriveApp(appState = appState, vm = vm)
+//            }
+
+            RedemptionScreen()
 
         }
 
